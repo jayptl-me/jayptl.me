@@ -1,0 +1,78 @@
+/**
+ * Jay Patel Portfolio - Main Stylesheet Entry Point
+ * Professional CSS Architecture using ITCSS (Inverted Triangle CSS) methodology
+ * 
+ * Architecture Structure:
+ * 1. Settings - Variables, configuration
+ * 2. Tools - Mixins and functions (if using preprocessor)
+ * 3. Generic - Reset, normalize, base styles
+ * 4. Elements - Base HTML element styles
+ * 5. Objects - Layout patterns, grids
+ * 6. Components - UI components
+ * 7. Utilities - Helper classes
+ * 
+ * @author Jay Patel
+ * @version 2.0.0
+ */
+
+/* ==========================================================================
+   SETTINGS - Variables and Configuration
+   ========================================================================== */
+@import 'base/variables.css';
+@import 'base/theme.css';
+
+/* ==========================================================================
+   GENERIC - Reset and Base Styles
+   ========================================================================== */
+@import 'base/reset.css';
+@import 'base/fonts.css';
+
+/* ==========================================================================
+   ELEMENTS - Base HTML Element Styles
+   ========================================================================== */
+@import 'base/typography.css';
+@import 'base/forms.css';
+
+/* ==========================================================================
+   OBJECTS - Layout Patterns and Grids
+   ========================================================================== */
+@import 'layout/grid.css';
+@import 'layout/containers.css';
+@import 'layout/flexbox.css';
+
+/* ==========================================================================
+   COMPONENTS - UI Components
+   ========================================================================== */
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/navigation.css';
+@import 'components/hero.css';
+@import 'components/sections.css';
+@import 'components/footer.css';
+@import 'components/forms.css';
+@import 'components/tags.css';
+@import 'components/animations.css';
+@import 'components/scroll-indicator.css';
+@import 'components/scroll-reveal.css';
+
+/* ==========================================================================
+   PAGES - Page Specific Styles
+   ========================================================================== */
+@import 'pages/home.css';
+@import 'pages/about.css';
+@import 'pages/projects.css';
+@import 'pages/contact.css';
+@import 'pages/blog.css';
+
+/* ==========================================================================
+   UTILITIES - Helper Classes and Overrides
+   ========================================================================== */
+@import 'utilities/spacing.css';
+@import 'utilities/display.css';
+@import 'utilities/text.css';
+@import 'utilities/responsive.css';
+
+/* ==========================================================================
+   SHAME - Quick fixes and hacks (remove when possible)
+   ========================================================================== */
+@import 'utilities/shame.css';

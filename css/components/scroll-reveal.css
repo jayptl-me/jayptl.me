@@ -1,0 +1,509 @@
+/**
+ * Scroll-to-Reveal Text Component
+ * Scroll-based text revelation with stepper controls and progress indication
+ * 
+ * @file components/scroll-reveal.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   SCROLL REVEAL TEXT CONTAINER
+   ========================================================================== */
+
+.text-reveal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 5;
+  background: transparent;
+  pointer-events: none;
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+.text-reveal-container.in-view {
+  pointer-events: auto;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+.text-reveal-list {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(80px, 15vh, 140px);
+}
+
+.text-reveal-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  max-width: none;
+  padding: clamp(1rem, 4vw, 2rem);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  text-align: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.text-reveal-item.revealed {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.text-reveal-item.active {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* ==========================================================================
+   GRADIENT OVERLAYS
+   ========================================================================== */
+
+.gradient-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.gradient-top {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bg-primary) 0%,
+    var(--bg-primary) 20%,
+    rgba(var(--bg-primary-rgb), 0.9) 50%,
+    rgba(var(--bg-primary-rgb), 0.3) 80%,
+    transparent 100%
+  );
+}
+
+.gradient-bottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    var(--bg-primary) 0%,
+    var(--bg-primary) 20%,
+    rgba(var(--bg-primary-rgb), 0.9) 50%,
+    rgba(var(--bg-primary-rgb), 0.3) 80%,
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   SCROLL REVEAL SYSTEM - REMOVED STEPPER CONTROLS
+   ========================================================================== */
+
+.scroll-reveal-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+
+/* ==========================================================================
+   TEXT STYLING WITH GRADIENTS
+   ========================================================================== */
+
+.text-reveal-item .text-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.8rem, 3vw, 1.5rem);
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: center;
+}
+
+.text-reveal-item .word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1em;
+  white-space: nowrap;
+}
+
+.text-reveal-item .char {
+  display: inline-block;
+  font-family: 'Audiowide', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.text-reveal-item.revealed .char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gradient-text {
+  color: #69B4FF;
+  /* Remove gradient masking - use solid color for better visibility */
+}
+
+/* Theme-aware gradient */
+@media (prefers-color-scheme: light) {
+  .gradient-text {
+    color: #1e3a8a;
+  }
+}
+
+/* Active item gradient enhancement */
+.text-reveal-item.active .gradient-text {
+  color: #69B4FF;
+  text-shadow: 
+    0 0 20px rgba(105, 180, 255, 0.3),
+    0 0 40px rgba(0, 111, 255, 0.2);
+}
+
+/* Theme-aware gradient for active items */
+@media (prefers-color-scheme: light) {
+  .text-reveal-item.active .gradient-text {
+    color: #1e3a8a;
+    text-shadow: 
+      0 0 20px rgba(30, 58, 138, 0.3),
+      0 0 40px rgba(96, 165, 250, 0.2);
+  }
+}
+
+/* Character hover effects */
+.text-reveal-item.active .char:hover {
+  transform: scale(1.05) translateY(0);
+  text-shadow: 
+    0 0 30px rgba(105, 180, 255, 0.5),
+    0 0 60px rgba(0, 111, 255, 0.3);
+}
+
+/* ==========================================================================
+   CHARACTER ANIMATIONS WITH STAGGERED REVEAL
+   ========================================================================== */
+
+.text-reveal-item .char {
+  transition-delay: 0s;
+}
+
+.text-reveal-item.revealed .char:nth-child(1) { transition-delay: 0.1s; }
+.text-reveal-item.revealed .char:nth-child(2) { transition-delay: 0.15s; }
+.text-reveal-item.revealed .char:nth-child(3) { transition-delay: 0.2s; }
+.text-reveal-item.revealed .char:nth-child(4) { transition-delay: 0.25s; }
+.text-reveal-item.revealed .char:nth-child(5) { transition-delay: 0.3s; }
+.text-reveal-item.revealed .char:nth-child(6) { transition-delay: 0.35s; }
+.text-reveal-item.revealed .char:nth-child(7) { transition-delay: 0.4s; }
+.text-reveal-item.revealed .char:nth-child(8) { transition-delay: 0.45s; }
+.text-reveal-item.revealed .char:nth-child(9) { transition-delay: 0.5s; }
+.text-reveal-item.revealed .char:nth-child(10) { transition-delay: 0.55s; }
+
+.char.animate-in {
+  animation: charReveal 0.6s ease-out forwards;
+}
+
+@keyframes charReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   SCROLL PROGRESS INDICATOR - REMOVED
+   ========================================================================== */
+
+/* Progress indicator styles removed - stepper scroll only */
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Extra Small Devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+  
+  .text-reveal-list {
+    min-height: 80px;
+  }
+  
+  .text-reveal-item {
+    padding: 1rem;
+    width: 100vw;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(1.2rem, 8vw, 2rem);
+  }
+  
+  .text-reveal-item .text-line {
+    gap: clamp(0.5rem, 2vw, 0.8rem);
+  }
+  
+  .text-reveal-item .word {
+    gap: 0.05em;
+  }
+}
+
+/* Small Devices (landscape phones, 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+  
+  .text-reveal-list {
+    min-height: 90px;
+  }
+  
+  .text-reveal-item {
+    padding: 1.5rem;
+    width: 100vw;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(1.4rem, 6vw, 2.5rem);
+  }
+  
+  .text-reveal-item .text-line {
+    gap: clamp(0.8rem, 2.5vw, 1rem);
+  }
+  
+  .text-reveal-item .word {
+    gap: 0.08em;
+  }
+}
+
+/* Medium Devices (tablets, 769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+  
+  .text-reveal-list {
+    min-height: 100px;
+  }
+  
+  .text-reveal-item {
+    padding: 2rem;
+    width: 100vw;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+  }
+  
+  .text-reveal-item .text-line {
+    gap: clamp(1rem, 3vw, 1.2rem);
+  }
+}
+
+/* Large Devices (laptops/desktops, 1025px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .text-reveal-list {
+    min-height: 120px;
+  }
+  
+  .text-reveal-item {
+    padding: 2.5rem;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+  }
+  
+  .text-reveal-item .text-line {
+    gap: clamp(1.2rem, 3vw, 1.5rem);
+  }
+}
+
+/* Extra Large Devices (large laptops/desktops, 1441px and up) */
+@media (min-width: 1441px) {
+  .text-reveal-list {
+    min-height: 140px;
+  }
+  
+  .text-reveal-item {
+    padding: 3rem;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(2.8rem, 3vw, 4.5rem);
+  }
+  
+  .text-reveal-item .text-line {
+    gap: clamp(1.5rem, 3vw, 2rem);
+  }
+}
+
+/* Ultra Wide Screens (1920px and up) */
+@media (min-width: 1920px) {
+  .text-reveal-item .char {
+    font-size: clamp(3.2rem, 2.5vw, 5rem);
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .text-reveal-list {
+    min-height: 60px;
+  }
+  
+  .text-reveal-item {
+    padding: 1rem;
+  }
+  
+  .text-reveal-item .char {
+    font-size: clamp(1rem, 6vw, 1.8rem);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal-item,
+  .char,
+  .gradient-text,
+  .stepper-button,
+  .progress-fill {
+    animation: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+  
+  .text-reveal-item.revealed .char {
+    transition-delay: 0s !important;
+  }
+  
+  .text-reveal-item.active .gradient-text {
+    color: #69B4FF;
+  }
+}
+
+/* ==========================================================================
+   THEME ADAPTATIONS
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .gradient-top {
+    background: linear-gradient(
+      to bottom,
+      var(--bg-primary) 0%,
+      var(--bg-primary) 20%,
+      rgba(18, 18, 18, 0.9) 50%,
+      rgba(18, 18, 18, 0.3) 80%,
+      transparent 100%
+    );
+  }
+  
+  .gradient-bottom {
+    background: linear-gradient(
+      to top,
+      var(--bg-primary) 0%,
+      var(--bg-primary) 20%,
+      rgba(18, 18, 18, 0.9) 50%,
+      rgba(18, 18, 18, 0.3) 80%,
+      transparent 100%
+    );
+  }
+}
+
+/* ==========================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================================================== */
+
+.text-reveal-container {
+  will-change: scroll-position;
+  transform: translateZ(0);
+}
+
+.text-reveal-item {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.gradient-text {
+  will-change: background-position;
+  transform: translateZ(0);
+}
+
+/* ==========================================================================
+   ULTRA-STRICT SCROLL CONTROL
+   ========================================================================== */
+
+/* Disable smooth scrolling and momentum scrolling for strict control */
+html {
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+body {
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+/* Disable momentum scrolling on all elements */
+* {
+  -webkit-overflow-scrolling: auto !important;
+}
+
+/* Ultra-strict scroll container */
+.text-reveal-container {
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+/* Prevent any scroll momentum on mobile devices */
+@media (max-width: 768px) {
+  html, body {
+    -webkit-overflow-scrolling: auto !important;
+    overscroll-behavior-y: none;
+    -webkit-overscroll-behavior-y: none;
+  }
+  
+  .text-reveal-container {
+    touch-action: pan-y;
+    -webkit-touch-action: pan-y;
+    overscroll-behavior: none;
+    -webkit-overscroll-behavior: none;
+  }
+}

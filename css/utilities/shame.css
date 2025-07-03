@@ -1,0 +1,70 @@
+/**
+ * Shame.css - Quick fixes and temporary styles
+ * This file contains temporary fixes, hacks, and styles that need to be
+ * refactored into the proper ITCSS layers later.
+ * 
+ * @file utilities/shame.css
+ * @author Jay Patel
+ * 
+ * Guidelines:
+ * - Add a comment explaining why each style is here
+ * - Include a TODO for proper refactoring
+ * - Remove styles once they're properly organized
+ * - Keep this file as small as possible
+ */
+
+/* ==========================================================================
+   TEMPORARY FIXES
+   ========================================================================== */
+
+/* 
+ * TODO: Move to proper component once finalized
+ * Temporary fix for specific browser compatibility issue
+ */
+/* Add any quick fixes here when needed */
+
+/* ==========================================================================
+   BROWSER-SPECIFIC HACKS
+   ========================================================================== */
+
+/* 
+ * TODO: Create proper cross-browser component
+ * Safari-specific fixes
+ */
+/* Add Safari-specific fixes here when needed */
+
+/* 
+ * TODO: Create proper cross-browser component  
+ * Firefox-specific fixes
+ */
+/* Add Firefox-specific fixes here when needed */
+
+/* ==========================================================================
+   THIRD-PARTY OVERRIDES
+   ========================================================================== */
+
+/*
+ * TODO: Create proper component wrapper
+ * Temporary overrides for external libraries
+ */
+/* Add library overrides here when needed */
+
+/* ==========================================================================
+   DEVELOPMENT HELPERS
+   ========================================================================== */
+
+/*
+ * TODO: Remove before production
+ * Development and debugging styles
+ */
+/* Add debugging styles here when needed */
+
+/* 
+ * Example debugging helper (commented out by default)
+ * Uncomment to visualize layout boundaries during development
+ */
+/*
+.debug * {
+  outline: 1px solid red !important;
+}
+*/

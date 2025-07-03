@@ -1,0 +1,142 @@
+/**
+ * Theme System - Light and Dark Mode Support
+ * Semantic color tokens that adapt to theme changes
+ * 
+ * @file base/theme.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   LIGHT THEME (DEFAULT)
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --theme-bg: var(--white);
+  --theme-bg-secondary: var(--gray-50);
+  --theme-bg-elevated: var(--white);
+  --theme-bg-overlay: rgba(255, 255, 255, 0.95);
+  
+  --theme-text: var(--gray-900);
+  --theme-text-secondary: var(--gray-600);
+  --theme-text-tertiary: var(--gray-500);
+  --theme-text-inverse: var(--white);
+  --theme-text-muted: var(--gray-400);
+  --text-primary: var(--gray-900);
+  
+  --theme-primary: var(--primary-500);
+  --theme-primary-hover: var(--primary-600);
+  --theme-primary-active: var(--primary-700);
+  --theme-primary-light: var(--primary-100);
+  
+  --theme-border: var(--gray-200);
+  --theme-border-strong: var(--gray-300);
+  --theme-border-light: var(--gray-100);
+  --theme-divider: var(--gray-100);
+  
+  --theme-overlay: rgba(0, 0, 0, 0.5);
+  --theme-backdrop: rgba(0, 0, 0, 0.25);
+  
+  --theme-shadow: var(--shadow);
+  --theme-shadow-elevated: var(--shadow-lg);
+  
+  --theme-gradient-primary: linear-gradient(135deg, var(--accent-700), var(--accent-400));
+  --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+  --theme-gradient-text: linear-gradient(135deg, var(--accent-800), var(--primary-700));
+}
+
+/* ==========================================================================
+   DARK THEME
+   ========================================================================== */
+[data-theme="dark"] {
+  --theme-bg: var(--black);
+  --theme-bg-secondary: var(--gray-900);
+  --theme-bg-elevated: var(--gray-800);
+  --theme-bg-overlay: rgba(33, 33, 33, 0.95);
+  
+  --theme-text: var(--gray-100);
+  --theme-text-secondary: var(--gray-300);
+  --theme-text-tertiary: var(--gray-400);
+  --theme-text-inverse: var(--gray-900);
+  --theme-text-muted: var(--gray-500);
+  --text-primary: var(--gray-100);
+  
+  --theme-primary: var(--primary-400);
+  --theme-primary-hover: var(--primary-300);
+  --theme-primary-active: var(--primary-200);
+  --theme-primary-light: var(--primary-800);
+  
+  --theme-border: var(--gray-700);
+  --theme-border-strong: var(--gray-600);
+  --theme-border-light: var(--gray-800);
+  --theme-divider: var(--gray-800);
+  
+  --theme-overlay: rgba(0, 0, 0, 0.7);
+  --theme-backdrop: rgba(0, 0, 0, 0.5);
+  
+  --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --theme-shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  
+  --theme-gradient-primary: linear-gradient(135deg, var(--accent-200), var(--accent-400));
+  --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+  --theme-gradient-text: linear-gradient(135deg, var(--accent-200), var(--primary-300));
+}
+
+/* ==========================================================================
+   THEME TRANSITIONS
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  transition: background-color var(--duration-normal) var(--ease-out),
+              border-color var(--duration-normal) var(--ease-out),
+              color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+
+/* ==========================================================================
+   THEME UTILITIES
+   ========================================================================== */
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-dark {
+  color-scheme: dark;
+}
+
+/* Auto theme based on system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --theme-bg: var(--black);
+    --theme-bg-secondary: var(--gray-900);
+    --theme-bg-elevated: var(--gray-800);
+    --theme-bg-overlay: rgba(33, 33, 33, 0.95);
+    
+    --theme-text: var(--gray-100);
+    --theme-text-secondary: var(--gray-300);
+    --theme-text-tertiary: var(--gray-400);
+    --theme-text-inverse: var(--gray-900);
+    --theme-text-muted: var(--gray-500);
+    --text-primary: var(--gray-100);
+    
+    --theme-primary: var(--primary-400);
+    --theme-primary-hover: var(--primary-300);
+    --theme-primary-active: var(--primary-200);
+    --theme-primary-light: var(--primary-800);
+    
+    --theme-border: var(--gray-700);
+    --theme-border-strong: var(--gray-600);
+    --theme-border-light: var(--gray-800);
+    --theme-divider: var(--gray-800);
+    
+    --theme-overlay: rgba(0, 0, 0, 0.7);
+    --theme-backdrop: rgba(0, 0, 0, 0.5);
+    
+    --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --theme-shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    
+    --theme-gradient-primary: linear-gradient(135deg, var(--accent-200), var(--accent-400));
+    --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+    --theme-gradient-text: linear-gradient(135deg, var(--accent-200), var(--primary-300));
+  }
+}

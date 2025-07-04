@@ -12,7 +12,7 @@ A modern, responsive portfolio website built with plain HTML, CSS, and JavaScrip
 - **Semantic HTML**: Accessible and SEO-friendly marku
 - **No Dependencies**: Pure HTML, CSS, and JavaScript - no build tools required
 
-## Project Structure
+## Project Structur
 
 ```
 jayptl.me/

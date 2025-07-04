@@ -9,7 +9,7 @@ A modern, responsive portfolio website built with plain HTML, CSS, and JavaScrip
 - **Modern CSS**: Uses CSS custom properties (variables) and modern layout techniques
 - **Professional Animations**: Smooth scroll animations and hover effects
 - **Clean Code**: Well-organized and maintainable code structure
-- **Semantic HTML**: Accessible and SEO-friendly markup
+- **Semantic HTML**: Accessible and SEO-friendly marku
 - **No Dependencies**: Pure HTML, CSS, and JavaScript - no build tools required
 
 ## Project Structure

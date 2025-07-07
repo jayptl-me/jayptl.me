@@ -1,40 +1,157 @@
-// Theme Management
+// Initialize theme as early as possible to prevent flash
+(function() {
+    const userPreference = localStorage.getItem('theme-preference');
+    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    
+    // Apply theme immediately to prevent flash
+    if (userPreference === 'light' || userPreference === 'dark') {
+        document.documentElement.setAttribute('data-theme', userPreference);
+    } else {
+        // Use system preference or remove attribute for CSS to handle
+        document.documentElement.removeAttribute('data-theme');
+    }
+    
+    // Set color-scheme for optimal browser UI
+    document.documentElement.style.colorScheme = 'light dark';
+})();
+
+// Theme Detection Utilities
+const ThemeUtils = {
+    getCurrentTheme() {
+        return window.themeManager ? window.themeManager.getCurrentTheme() : 
+               (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    },
+    
+    getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    },
+    
+    onThemeChange(callback) {
+        document.addEventListener('themechange', callback);
+    },
+    
+    offThemeChange(callback) {
+        document.removeEventListener('themechange', callback);
+    }
+};
+
+// Make utilities globally available
+window.ThemeUtils = ThemeUtils;
+
+// Enhanced Theme Management with Device Detection
 class ThemeManager {
     constructor() {
-        this.initAutoTheme();
+        this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        this.currentTheme = null;
+        this.userPreference = localStorage.getItem('theme-preference');
+        
+        this.initTheme();
         this.watchSystemTheme();
+        this.applyColorScheme();
     }
 
-    initAutoTheme() {
-        // Remove any existing data-theme attribute to let CSS handle system preference
-        if (!document.documentElement.hasAttribute('data-theme')) {
-            // Let CSS @media (prefers-color-scheme) handle the initial theme
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            this.currentTheme = prefersDark ? 'dark' : 'light';
+    initTheme() {
+        // Priority: 1. User preference, 2. System preference, 3. Light (default)
+        if (this.userPreference && ['light', 'dark', 'auto'].includes(this.userPreference)) {
+            if (this.userPreference === 'auto') {
+                this.setAutoTheme();
+            } else {
+                this.applyTheme(this.userPreference);
+            }
+        } else {
+            // Default to auto theme (follow system preference)
+            this.setAutoTheme();
         }
     }
 
+    setAutoTheme() {
+        // Remove data-theme attribute to let CSS media queries handle it
+        document.documentElement.removeAttribute('data-theme');
+        this.currentTheme = this.mediaQuery.matches ? 'dark' : 'light';
+        
+        // Update meta theme-color for mobile browsers
+        this.updateMetaThemeColor();
+        
+        // Dispatch theme change event
+        this.dispatchThemeChange();
+    }
+
     applyTheme(theme) {
-        // Only set data-theme if user manually chooses a theme
-        // For auto detection, we let CSS handle it
+        if (!['light', 'dark'].includes(theme)) return;
+        
         document.documentElement.setAttribute('data-theme', theme);
         this.currentTheme = theme;
+        
+        // Update meta theme-color for mobile browsers
+        this.updateMetaThemeColor();
+        
+        // Dispatch theme change event
+        this.dispatchThemeChange();
+    }
+
+    updateMetaThemeColor() {
+        // Update theme-color meta tag for mobile browsers
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]') || 
+                              document.createElement('meta');
+        
+        if (!themeColorMeta.parentNode) {
+            themeColorMeta.setAttribute('name', 'theme-color');
+            document.head.appendChild(themeColorMeta);
+        }
+        
+        // Get the current theme background color
+        const bgColor = this.currentTheme === 'dark' ? '#000000' : '#ffffff';
+        themeColorMeta.setAttribute('content', bgColor);
+    }
+
+    applyColorScheme() {
+        // Set color-scheme property for optimal browser UI
+        document.documentElement.style.colorScheme = this.currentTheme || 'light dark';
     }
 
     watchSystemTheme() {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', (e) => {
-            // Only update if no manual theme is set
+        this.mediaQuery.addEventListener('change', (e) => {
+            // Only update if using auto theme (no data-theme attribute)
             if (!document.documentElement.hasAttribute('data-theme')) {
                 this.currentTheme = e.matches ? 'dark' : 'light';
+                this.updateMetaThemeColor();
+                this.dispatchThemeChange();
             }
         });
     }
 
-    // Method to manually toggle theme (if you want to add a toggle button later)
+    dispatchThemeChange() {
+        // Dispatch custom event for other components to listen to
+        const event = new CustomEvent('themechange', {
+            detail: { theme: this.currentTheme }
+        });
+        document.dispatchEvent(event);
+    }
+
+    // Public methods for theme control
+    setTheme(theme) {
+        if (theme === 'auto') {
+            localStorage.setItem('theme-preference', 'auto');
+            this.userPreference = 'auto';
+            this.setAutoTheme();
+        } else if (['light', 'dark'].includes(theme)) {
+            localStorage.setItem('theme-preference', theme);
+            this.userPreference = theme;
+            this.applyTheme(theme);
+        }
+    }
+
     toggleTheme() {
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        this.applyTheme(newTheme);
+        this.setTheme(newTheme);
+    }
+
+    getCurrentTheme() {
+        return this.currentTheme;
+    }
+
+    getSystemTheme() {
+        return this.mediaQuery.matches ? 'dark' : 'light';
     }
 }
 
@@ -176,6 +293,9 @@ class FormManager {
             message: formData.get('message')
         };
 
+        // Track form submission analytics
+        AnalyticsHelper.trackFormSubmission('contact_form');
+
         // Show success message (you can replace this with actual form submission logic)
         this.showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
         this.contactForm.reset();
@@ -215,6 +335,42 @@ class FormManager {
                 document.body.removeChild(notification);
             }, 300);
         }, 3000);
+    }
+}
+
+// Analytics Helper Functions
+class AnalyticsHelper {
+    static trackEvent(eventName, parameters = {}) {
+        if (window.consentManager && window.consentManager.consentGiven) {
+            window.consentManager.trackEvent(eventName, parameters);
+        }
+    }
+    
+    static trackPageView(title = document.title, location = window.location.href) {
+        if (window.consentManager && window.consentManager.consentGiven) {
+            window.consentManager.trackPageView(title, location);
+        }
+    }
+    
+    static trackFormSubmission(formName) {
+        this.trackEvent('form_submit', {
+            event_category: 'engagement',
+            event_label: formName
+        });
+    }
+    
+    static trackButtonClick(buttonName) {
+        this.trackEvent('button_click', {
+            event_category: 'engagement',
+            event_label: buttonName
+        });
+    }
+    
+    static trackScrollDepth(percentage) {
+        this.trackEvent('scroll_depth', {
+            event_category: 'engagement',
+            value: percentage
+        });
     }
 }
 
@@ -322,7 +478,7 @@ class ParticleEffect {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all managers
-    new ThemeManager();
+    window.themeManager = new ThemeManager();
     new NavigationManager();
     new AnimationManager();
     new FormManager();
@@ -331,6 +487,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof ScrollIndicator !== 'undefined') {
         new ScrollIndicator();
     }
+    
+    // Initialize consent manager (already auto-initialized in consent-manager.js)
+    // Access via window.consentManager if needed
     
     // Optional: Initialize particle effect (uncomment if you want particles)
     // new ParticleEffect();

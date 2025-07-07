@@ -12,15 +12,13 @@
 
 .hero {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background: var(--theme-bg) !important;
   background-image: none !important;
-  /* Add space for scroll indicator to work */
-  padding-bottom: 50vh;
 }
 
 .hero-container {

@@ -57,7 +57,7 @@ body {
     background: var(--theme-bg);
     color: var(--theme-text);
     line-height: var(--leading-relaxed);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Critical hero styles */

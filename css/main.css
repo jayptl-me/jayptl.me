@@ -54,6 +54,7 @@
 @import 'components/animations.css';
 @import 'components/scroll-indicator.css';
 @import 'components/scroll-reveal.css';
+@import 'components/consent-banner.css';
 
 /* ==========================================================================
    PAGES - Page Specific Styles
@@ -63,6 +64,7 @@
 @import 'pages/projects.css';
 @import 'pages/contact.css';
 @import 'pages/blog.css';
+@import 'pages/privacy.css';
 
 /* ==========================================================================
    UTILITIES - Helper Classes and Overrides

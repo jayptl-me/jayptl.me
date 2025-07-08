@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Theme & Consent</title>
+    <style>
+        /* Basic test styles */
+        :root {
+            --bg-light: #ffffff;
+            --bg-dark: #1a1a1a;
+            --text-light: #000000;
+            --text-dark: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: var(--bg-light);
+            color: var(--text-light);
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) body {
+                background: var(--bg-dark);
+                color: var(--text-dark);
+            }
+        }
+
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .test-button:hover {
+            background: #0056b3;
+        }
+
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        [data-theme="dark"] .status {
+            background: #2d3748;
+            border-color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Theme & Consent Test</h1>
+        
+        <button class="theme-toggle theme-toggle--fab" aria-label="Toggle theme"></button>
+        
+        <div class="status" id="status">
+            <h3>Status:</h3>
+            <p id="themeStatus">Loading...</p>
+            <p id="consentStatus">Loading...</p>
+        </div>
+        
+        <div>
+            <h3>Test Actions:</h3>
+            <button class="test-button" onclick="testThemeToggle()">Toggle Theme</button>
+            <button class="test-button" onclick="testAnalyticsEvent()">Test Analytics Event</button>
+            <button class="test-button" onclick="testConsentRevoke()">Revoke Consent</button>
+            <button class="test-button" onclick="testConsentGrant()">Grant Consent</button>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus() {
+            const themeStatus = document.getElementById('themeStatus');
+            const consentStatus = document.getElementById('consentStatus');
+            
+            if (window.themeManager) {
+                themeStatus.textContent = `Theme: ${window.themeManager.getCurrentTheme()}`;
+            } else {
+                themeStatus.textContent = 'Theme Manager: Not loaded';
+            }
+            
+            if (window.consentManager) {
+                consentStatus.textContent = `Consent: ${window.consentManager.consentGiven ? 'Granted' : 'Not granted'} | DNT: ${window.consentManager.doNotTrackEnabled ? 'Enabled' : 'Disabled'}`;
+            } else {
+                consentStatus.textContent = 'Consent Manager: Not loaded';
+            }
+        }
+
+        function testThemeToggle() {
+            if (window.themeManager) {
+                window.themeManager.toggleTheme();
+                updateStatus();
+            } else {
+                alert('Theme Manager not loaded');
+            }
+        }
+
+        function testAnalyticsEvent() {
+            if (window.AnalyticsHelper) {
+                window.AnalyticsHelper.trackEvent('test_event', {
+                    event_category: 'test',
+                    event_label: 'manual_test'
+                });
+            } else {
+                alert('AnalyticsHelper not loaded');
+            }
+        }
+
+        function testConsentRevoke() {
+            if (window.consentManager) {
+                window.consentManager.revokeConsent();
+                updateStatus();
+            } else {
+                alert('Consent Manager not loaded');
+            }
+        }
+
+        function testConsentGrant() {
+            if (window.consentManager) {
+                window.consentManager.grantConsent();
+                updateStatus();
+            } else {
+                alert('Consent Manager not loaded');
+            }
+        }
+
+        // Update status periodically
+        setInterval(updateStatus, 1000);
+    </script>
+
+    <!-- Load the actual scripts -->
+    <script src="js/components/theme-toggle.js"></script>
+    <script src="js/components/consent-manager.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

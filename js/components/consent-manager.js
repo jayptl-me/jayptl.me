@@ -14,29 +14,40 @@ class ConsentManager {
         this.consentBanner = null;
         this.consentGiven = false;
         this.bannerShown = false;
+        this.debug = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         
         this.init();
+    }
+
+    log(...args) {
+        if (this.debug) {
+            console.log('ConsentManager:', ...args);
+        }
     }
     
     init() {
         // Check if user has already made a choice
         this.checkExistingConsent();
         
-        // Create and show banner if needed
-        if (!this.consentGiven && !this.bannerShown) {
+        // Respect Do Not Track header first
+        this.respectDoNotTrack();
+        
+        // Create and show banner if needed (only if DNT is not set)
+        if (!this.consentGiven && !this.bannerShown && !this.doNotTrackEnabled) {
             this.createConsentBanner();
             setTimeout(() => this.showBanner(), 2000); // Show after 2 seconds
         }
         
-        // Initialize Google Analytics if consent given
+        // Initialize Google Analytics ONLY if consent given
         if (this.consentGiven) {
             this.initializeGoogleAnalytics();
         }
         
-        // Respect Do Not Track header
-        this.respectDoNotTrack();
-        
-        console.log('ConsentManager initialized');
+        this.log('Initialized', {
+            consentGiven: this.consentGiven,
+            bannerShown: this.bannerShown,
+            doNotTrack: this.doNotTrackEnabled
+        });
     }
     
     checkExistingConsent() {
@@ -46,7 +57,7 @@ class ConsentManager {
         this.consentGiven = consent === 'granted';
         this.bannerShown = bannerShown === 'true';
         
-        console.log('Existing consent status:', {
+        this.log('Existing consent status:', {
             consentGiven: this.consentGiven,
             bannerShown: this.bannerShown
         });
@@ -54,14 +65,21 @@ class ConsentManager {
     
     respectDoNotTrack() {
         // Check for Do Not Track header
-        if (navigator.doNotTrack === '1' || 
+        this.doNotTrackEnabled = (
+            navigator.doNotTrack === '1' || 
             window.doNotTrack === '1' || 
-            navigator.msDoNotTrack === '1') {
-            console.log('Do Not Track detected - respecting user preference');
+            navigator.msDoNotTrack === '1'
+        );
+        
+        if (this.doNotTrackEnabled) {
+            this.log('Do Not Track detected - respecting user preference');
             this.consentGiven = false;
+            localStorage.setItem(this.consentKey, 'denied');
             this.hideBanner();
-            return;
+            return true;
         }
+        
+        return false;
     }
     
     createConsentBanner() {
@@ -108,7 +126,7 @@ class ConsentManager {
         // Add event listeners
         this.addEventListeners();
         
-        console.log('Consent banner created');
+        this.log('Consent banner created');
     }
     
     addEventListeners() {
@@ -157,7 +175,7 @@ class ConsentManager {
                 setTimeout(() => acceptBtn.focus(), 300);
             }
             
-            console.log('Consent banner shown');
+            this.log('Consent banner shown');
         }
     }
     
@@ -173,7 +191,7 @@ class ConsentManager {
                 }
             }, 300);
             
-            console.log('Consent banner hidden');
+            this.log('Consent banner hidden');
         }
     }
     
@@ -187,7 +205,7 @@ class ConsentManager {
         // Show confirmation (optional)
         this.showConsentConfirmation('Analytics enabled. Thank you!');
         
-        console.log('User accepted analytics consent');
+        this.log('User accepted analytics consent');
     }
     
     declineConsent() {
@@ -199,7 +217,7 @@ class ConsentManager {
         // Show confirmation (optional)
         this.showConsentConfirmation('Analytics disabled. Your privacy is respected.');
         
-        console.log('User declined analytics consent');
+        this.log('User declined analytics consent');
     }
     
     markBannerAsShown() {
@@ -258,11 +276,10 @@ class ConsentManager {
     }
     
     initializeGoogleAnalytics() {
-        if (!this.consentGiven) {
-            console.log('Analytics consent not given - skipping GA initialization');
+        if (!this.canUseAnalytics()) {
             return;
         }
-        
+
         // Load Google Analytics 4
         const script = document.createElement('script');
         script.async = true;
@@ -292,39 +309,43 @@ class ConsentManager {
             // Custom settings
             custom_map: {},
             
-            // Debug mode (remove in production)
-            debug_mode: window.location.hostname === 'localhost'
+            // Debug mode (only in development)
+            debug_mode: this.debug
         });
         
         // Track initial page view
         this.trackPageView();
         
-        console.log('Google Analytics initialized with privacy-focused settings');
+        this.log('Google Analytics initialized with privacy-focused settings');
     }
-    
+     /**
+     * Check if analytics can be used (consent given, Do Not Track not enabled, and gtag is available)
+     * @returns {boolean} Whether analytics can be used
+     */
+    canUseAnalytics() {
+        return this.consentGiven && !this.doNotTrackEnabled && typeof gtag !== 'undefined';
+    }
+
     trackPageView(page_title = document.title, page_location = window.location.href) {
-        if (!this.consentGiven || typeof gtag === 'undefined') {
+        if (!this.canUseAnalytics()) {
             return;
         }
-        
+
         gtag('event', 'page_view', {
             page_title: page_title,
             page_location: page_location,
             custom_parameter: 'privacy_focused_tracking'
         });
     }
-    
+
     trackEvent(event_name, parameters = {}) {
-        if (!this.consentGiven || typeof gtag === 'undefined') {
+        if (!this.canUseAnalytics()) {
             return;
         }
-        
+
         // Sanitize parameters to ensure no PII
         const sanitizedParams = this.sanitizeEventParameters(parameters);
-        
         gtag('event', event_name, sanitizedParams);
-        
-        console.log('Analytics event tracked:', event_name, sanitizedParams);
     }
     
     sanitizeEventParameters(params) {
@@ -359,8 +380,11 @@ class ConsentManager {
             });
         }
         
-        console.log('Analytics consent revoked');
-        this.showConsentConfirmation('Analytics disabled.');
+        // Clear analytics cookies
+        this.clearAnalyticsCookies();
+        
+        this.log('Analytics consent revoked');
+        this.showConsentConfirmation('Analytics disabled and cookies cleared.');
     }
     
     grantConsent() {
@@ -376,6 +400,27 @@ class ConsentManager {
         };
     }
     
+    clearAnalyticsCookies() {
+        // Clear Google Analytics cookies
+        const cookiesToClear = [
+            '_ga',
+            '_ga_' + this.gaTrackingId.replace('G-', ''),
+            '_gid',
+            '_gat',
+            '_gat_gtag_' + this.gaTrackingId
+        ];
+        
+        cookiesToClear.forEach(cookieName => {
+            // Clear for current domain
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            // Clear for parent domain
+            const domain = window.location.hostname.split('.').slice(-2).join('.');
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
+        });
+        
+        this.log('Analytics cookies cleared');
+    }
+    
     // Cleanup method
     destroy() {
         if (this.consentBanner) {
@@ -386,16 +431,16 @@ class ConsentManager {
         document.removeEventListener('keydown', this.handleKeydown);
         document.removeEventListener('click', this.handleClick);
         
-        console.log('ConsentManager destroyed');
+        this.log('ConsentManager destroyed');
     }
 }
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if not in development/localhost
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    // Only initialize if not already initialized and not in development/localhost
+    if (!window.consentManager && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
         window.consentManager = new ConsentManager();
-    } else {
+    } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         console.log('ConsentManager disabled on localhost');
     }
 });

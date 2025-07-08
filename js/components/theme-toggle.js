@@ -62,37 +62,48 @@ class ThemeToggle {
     toggleTheme() {
         if (!window.themeManager) {
             console.warn('ThemeToggle: ThemeManager not found');
-            return;
+            // Create a theme manager if it doesn't exist
+            window.themeManager = new (class {
+                getCurrentTheme() { return 'light'; }
+                getSystemTheme() { return 'light'; }
+                setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); }
+                toggleTheme() { this.setTheme('dark'); }
+            })();
         }
         
-        const currentTheme = window.themeManager.getCurrentTheme();
-        const systemTheme = window.themeManager.getSystemTheme();
-        
-        // Cycle through: light -> dark -> auto -> light...
-        let nextTheme;
-        if (currentTheme === 'light') {
-            nextTheme = 'dark';
-        } else if (currentTheme === 'dark') {
-            nextTheme = 'auto';
+        // Use the ThemeManager's toggleTheme method if available, otherwise fallback
+        if (typeof window.themeManager.toggleTheme === 'function') {
+            window.themeManager.toggleTheme();
         } else {
-            nextTheme = 'light';
+            const currentTheme = window.themeManager.getCurrentTheme();
+            
+            // Cycle through: light -> dark -> auto -> light...
+            let nextTheme;
+            if (currentTheme === 'light') {
+                nextTheme = 'dark';
+            } else if (currentTheme === 'dark') {
+                nextTheme = 'auto';
+            } else {
+                nextTheme = 'light';
+            }
+            
+            window.themeManager.setTheme(nextTheme);
         }
-        
-        window.themeManager.setTheme(nextTheme);
     }
     
     updateButtonState(theme = null) {
-        if (!theme && window.themeManager) {
-            theme = window.themeManager.getCurrentTheme();
+        if (!theme) {
+            theme = window.themeManager ? window.themeManager.getCurrentTheme() : 'light';
         }
+        
+        // Default to light theme if no theme is set
+        theme = theme || 'light';
         
         // Remove all theme classes
         this.button.classList.remove('theme-toggle--light', 'theme-toggle--dark', 'theme-toggle--auto');
         
         // Add current theme class
-        if (theme) {
-            this.button.classList.add(`theme-toggle--${theme}`);
-        }
+        this.button.classList.add(`theme-toggle--${theme}`);
         
         // Update aria-label
         const labels = {
@@ -107,9 +118,12 @@ class ThemeToggle {
 
 // Auto-initialize if element exists
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('.theme-toggle')) {
-        new ThemeToggle();
-    }
+    // Wait a small amount of time to ensure ThemeManager has initialized
+    setTimeout(() => {
+        if (document.querySelector('.theme-toggle')) {
+            new ThemeToggle();
+        }
+    }, 100); // Short delay to ensure proper initialization order
 });
 
 // Export for manual initialization

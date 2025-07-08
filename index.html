@@ -25,10 +25,10 @@
     
     <!-- Critical CSS inline for fastest render -->
     <style>
-        /* Essential theme variables for critical styles */
-        :root{--font-display:'Audiowide',sans-serif;--text-2xl:1.5rem;--text-3xl:1.875rem;--text-5xl:3rem;--text-xl:1.25rem;--weight-normal:400;--space-1:0.25rem;--space-2:0.5rem;--space-4:1rem;--space-8:2rem;--leading-relaxed:1.625;--duration-300:300ms;--ease-out:cubic-bezier(0.25,0.46,0.45,0.94);--theme-bg:#ffffff;--theme-text:#212121;--theme-border-light:#f5f5f5;--theme-gradient-text:linear-gradient(135deg,#1976d2,#00796b);--theme-gradient-primary:linear-gradient(135deg,#1976d2,#42a5f5)}@media (prefers-color-scheme:dark){:root{--theme-bg:#000000;--theme-text:#f5f5f5;--theme-border-light:#424242;--theme-gradient-text:linear-gradient(135deg,#90caf9,#4db6ac);--theme-gradient-primary:linear-gradient(135deg,#90caf9,#42a5f5)}}
-        /* Critical above-the-fold styles using theme system */
-        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{font-family:var(--font-display);background:var(--theme-bg);color:var(--theme-text);line-height:var(--leading-relaxed);overflow-x:hidden}.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;background:var(--theme-bg)}.hero-container{max-width:1200px;margin:0 auto;padding:0 var(--space-8);width:100%}.hero-content{text-align:center;position:relative;z-index:2}.text-reveal-container{overflow:hidden;position:relative}.text-reveal-item{opacity:0;transform:translateY(100px);font-size:clamp(var(--text-2xl),5vw,var(--text-5xl));font-weight:var(--weight-normal);margin:var(--space-4) 0}.text-reveal-item.active{opacity:1;transform:translateY(0);transition:all .8s cubic-bezier(.23,1,.32,1)}.gradient-text{background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent}.text-line{display:block}.word{display:inline-block;margin:0 var(--space-2)}.char{display:inline-block;transition:transform var(--duration-300) var(--ease-out)}.progress-indicator{position:fixed;top:0;left:0;width:100%;height:4px;z-index:1000;background:var(--theme-border-light)}.progress-bar{height:100%;width:0%;background:var(--theme-gradient-primary);transition:width var(--duration-300) var(--ease-out)}@media (max-width:768px){.hero-container{padding:0 var(--space-4)}.text-reveal-item{font-size:clamp(var(--text-xl),4vw,var(--text-3xl));margin:var(--space-2) 0}.word{margin:0 var(--space-1)}}
+        /* Optimized essential theme variables - only what's needed for initial render */
+        :root{--font-display:'Audiowide',sans-serif;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:1.875rem;--text-5xl:3rem;--weight-normal:400;--space-1:0.25rem;--space-2:0.5rem;--space-4:1rem;--space-8:2rem;--leading-relaxed:1.625;--duration-300:300ms;--ease-out:cubic-bezier(0.25,0.46,0.45,0.94);--theme-bg:#ffffff;--theme-text:#212121;--theme-gradient-text:linear-gradient(135deg,#1976d2,#00796b)}@media (prefers-color-scheme:dark){:root{--theme-bg:#000000;--theme-text:#f5f5f5;--theme-gradient-text:linear-gradient(135deg,#90caf9,#4db6ac)}}
+        /* Truly critical above-the-fold styles only */
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--font-display);background:var(--theme-bg);color:var(--theme-text);line-height:var(--leading-relaxed)}.hero{min-height:100vh;display:flex;align-items:center;justify-content:center}.hero-container{max-width:1200px;margin:0 auto;padding:0 var(--space-8);width:100%}.hero-content{text-align:center;position:relative;z-index:2}.text-reveal-container{overflow:hidden;position:relative}.text-reveal-item{opacity:0;transform:translateY(100px);font-size:clamp(var(--text-2xl),5vw,var(--text-5xl));font-weight:var(--weight-normal);margin:var(--space-4) 0}.gradient-text{background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}@media (max-width:768px){.hero-container{padding:0 var(--space-4)}.text-reveal-item{font-size:clamp(var(--text-xl),4vw,var(--text-3xl));margin:var(--space-2) 0}}
     </style>
     
     <!-- Load non-critical CSS asynchronously -->
@@ -197,6 +197,8 @@
     <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>
     <script defer src="js/components/consent-manager.js"></script>
+    <script defer src="js/components/consent-toggle.js"></script>
+    <script defer src="js/components/particle-effect.js"></script>
     <script defer src="js/main.js"></script>
 </body>
 </html>

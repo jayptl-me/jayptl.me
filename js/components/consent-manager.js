@@ -15,6 +15,7 @@ class ConsentManager {
         this.consentGiven = false;
         this.bannerShown = false;
         this.debug = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        this.useFloatingButton = true; // Use the new floating button approach instead of the banner
         
         this.init();
     }
@@ -32,8 +33,8 @@ class ConsentManager {
         // Respect Do Not Track header first
         this.respectDoNotTrack();
         
-        // Create and show banner if needed (only if DNT is not set)
-        if (!this.consentGiven && !this.bannerShown && !this.doNotTrackEnabled) {
+        // Create and show banner if needed (only if DNT is not set and we're not using the floating button)
+        if (!this.consentGiven && !this.bannerShown && !this.doNotTrackEnabled && !this.useFloatingButton) {
             this.createConsentBanner();
             setTimeout(() => this.showBanner(), 2000); // Show after 2 seconds
         }
@@ -437,11 +438,14 @@ class ConsentManager {
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if not already initialized and not in development/localhost
-    if (!window.consentManager && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    // Always initialize to make the consent manager available globally
+    if (!window.consentManager) {
         window.consentManager = new ConsentManager();
-    } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('ConsentManager disabled on localhost');
+    }
+    
+    // Log if we're on localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('ConsentManager running in debug mode on localhost');
     }
 });
 

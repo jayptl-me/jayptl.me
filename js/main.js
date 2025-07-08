@@ -46,6 +46,15 @@ class ThemeManager {
         this.setTheme(this.currentTheme);
     }
 
+    createThemeEvent(theme) {
+        // For auto theme, include the actual system theme in the event detail
+        const detail = theme === 'auto' 
+            ? { theme: 'auto', systemTheme: this.getSystemTheme() } 
+            : { theme: theme };
+            
+        return new CustomEvent('themechange', { detail });
+    }
+
     setTheme(theme) {
         if (['light', 'dark', 'auto'].includes(theme)) {
             this.currentTheme = theme;
@@ -64,11 +73,8 @@ class ThemeManager {
             document.body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
             document.body.classList.add(`theme-${theme}`);
 
-            // Dispatch custom event for theme change
-            const event = new CustomEvent('themechange', {
-                detail: { theme: theme }
-            });
-            document.dispatchEvent(event);
+            // Dispatch custom event for theme change using the helper method
+            document.dispatchEvent(this.createThemeEvent(theme));
         }
     }
 
@@ -77,11 +83,8 @@ class ThemeManager {
         mediaQuery.addEventListener('change', (e) => {
             // Only update if theme is set to auto
             if (this.currentTheme === 'auto') {
-                // Dispatch theme change event even for auto mode
-                const event = new CustomEvent('themechange', {
-                    detail: { theme: 'auto', systemTheme: e.matches ? 'dark' : 'light' }
-                });
-                document.dispatchEvent(event);
+                // Dispatch theme change event using the helper method
+                document.dispatchEvent(this.createThemeEvent('auto'));
             }
         });
     }
@@ -257,33 +260,21 @@ class FormManager {
     showNotification(message, type = 'info') {
         // Create notification element
         const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
+        notification.className = `notification notification--${type}`;
         notification.textContent = message;
         
-        // Style the notification
-        Object.assign(notification.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            padding: '1rem 1.5rem',
-            borderRadius: '8px',
-            color: 'white',
-            backgroundColor: type === 'success' ? '#26A69A' : '#333',
-            zIndex: '10000',
-            transform: 'translateX(400px)',
-            transition: 'transform 0.3s ease'
-        });
-
         document.body.appendChild(notification);
 
-        // Show notification
+        // Show notification (allow a moment for the DOM to update)
         setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
+            notification.classList.add('notification--visible');
+        }, 10);
 
         // Hide notification after 3 seconds
         setTimeout(() => {
-            notification.style.transform = 'translateX(400px)';
+            notification.classList.remove('notification--visible');
+            
+            // Remove from DOM after animation completes
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 300);
@@ -295,7 +286,7 @@ class FormManager {
 const Analytics = {
     trackEvent(eventName, parameters = {}) {
         if (window.consentManager?.canUseAnalytics()) {
-            window.consentManager.trackEvent(eventName, parameters);
+            window.consentManagerManager.trackEvent(eventName, parameters);
         }
     },
     
@@ -348,88 +339,18 @@ class Utils {
     }
 }
 
-// Particle Effect (Optional Enhancement)
-class ParticleEffect {
-    constructor() {
-        this.canvas = null;
-        this.ctx = null;
-        this.particles = [];
-        this.init();
-    }
-
-    init() {
-        // Create canvas for particles
-        this.canvas = document.createElement('canvas');
-        this.canvas.style.position = 'fixed';
-        this.canvas.style.top = '0';
-        this.canvas.style.left = '0';
-        this.canvas.style.pointerEvents = 'none';
-        this.canvas.style.zIndex = '-1';
-        this.canvas.style.opacity = '0.1';
-        
-        document.body.appendChild(this.canvas);
-        this.ctx = this.canvas.getContext('2d');
-        
-        this.resize();
-        this.createParticles();
-        this.animate();
-        
-        window.addEventListener('resize', () => this.resize());
-    }
-
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-
-    createParticles() {
-        const particleCount = Math.floor(window.innerWidth / 20);
-        
-        for (let i = 0; i < particleCount; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                radius: Math.random() * 2 + 1
-            });
-        }
-    }
-
-    animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.particles.forEach(particle => {
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            
-            // Wrap around edges
-            if (particle.x < 0) particle.x = this.canvas.width;
-            if (particle.x > this.canvas.width) particle.x = 0;
-            if (particle.y < 0) particle.y = this.canvas.height;
-            if (particle.y > this.canvas.height) particle.y = 0;
-            
-            // Draw particle
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = getComputedStyle(document.documentElement)
-                .getPropertyValue('--current-primary');
-            this.ctx.fill();
-        });
-        
-        requestAnimationFrame(() => this.animate());
-    }
-}
+// Particle Effect class is now in js/components/particle-effect.js
 
 // Initialize theme manager immediately and make it globally available
 window.themeManager = new ThemeManager();
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all other managers
+    // Initialize all managers
     new NavigationManager();
     new AnimationManager();
     new FormManager();
+    new PerformanceManager();
     
     // Initialize scroll indicator
     if (typeof ScrollIndicator !== 'undefined') {
@@ -444,7 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ConsentManager auto-initializes in consent-manager.js
     
     // Optional: Initialize particle effect (uncomment if you want particles)
-    // new ParticleEffect();
+    // if (typeof ParticleEffect !== 'undefined') {
+    //     new ParticleEffect();
+    // }
     
     // Add loading animation
     document.body.style.opacity = '0';
@@ -465,22 +388,25 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Performance optimization: Lazy load images when they come into view
-const lazyLoadImages = () => {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-            }
+// Performance Optimization Manager
+class PerformanceManager {
+    constructor() {
+        this.initLazyLoading();
+    }
+
+    initLazyLoading() {
+        const images = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                }
+            });
         });
-    });
 
-    images.forEach(img => imageObserver.observe(img));
-};
-
-// Initialize lazy loading
-lazyLoadImages();
+        images.forEach(img => imageObserver.observe(img));
+    }
+}

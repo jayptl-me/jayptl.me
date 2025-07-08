@@ -52,12 +52,12 @@
   gap: var(--space-6);
 }
 
-@media (min-width: 768px) {
-  .blog-filters-container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+/* Using responsive patterns from utilities/responsive-patterns.css */
+.blog-filters-container {
+  /* This will use the responsive-filters-container pattern at 768px breakpoint */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
 .blog-search {

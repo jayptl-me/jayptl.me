@@ -20,6 +20,7 @@
    ========================================================================== */
 @import 'base/variables.css';
 @import 'base/theme.css';
+@import 'base/consistency.css';
 
 /* ==========================================================================
    GENERIC - Reset and Base Styles
@@ -55,6 +56,9 @@
 @import 'components/scroll-indicator.css';
 @import 'components/scroll-reveal.css';
 @import 'components/consent-banner.css';
+@import 'components/consent-toggle.css';
+@import 'components/notifications.css';
+@import 'components/theme-toggle.css';
 
 /* ==========================================================================
    PAGES - Page Specific Styles
@@ -73,6 +77,7 @@
 @import 'utilities/display.css';
 @import 'utilities/text.css';
 @import 'utilities/responsive.css';
+@import 'utilities/responsive-patterns.css';
 
 /* ==========================================================================
    SHAME - Quick fixes and hacks (remove when possible)

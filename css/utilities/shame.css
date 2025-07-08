@@ -14,54 +14,24 @@
  */
 
 /* ==========================================================================
-   TEMPORARY FIXES
-   ========================================================================== */
-
-/* 
- * TODO: Move to proper component once finalized
- * Temporary fix for specific browser compatibility issue
- */
-/* Add any quick fixes here when needed */
-
-/* ==========================================================================
    BROWSER-SPECIFIC HACKS
    ========================================================================== */
 
-/* 
- * TODO: Create proper cross-browser component
- * Safari-specific fixes
- */
-/* Add Safari-specific fixes here when needed */
-
-/* 
- * TODO: Create proper cross-browser component  
- * Firefox-specific fixes
- */
-/* Add Firefox-specific fixes here when needed */
-
-/* ==========================================================================
-   THIRD-PARTY OVERRIDES
-   ========================================================================== */
-
-/*
- * TODO: Create proper component wrapper
- * Temporary overrides for external libraries
- */
-/* Add library overrides here when needed */
+/* Safari-specific flexbox fix for hero section */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .hero-content {
+      transform: translateZ(0);
+    }
+  }
+}
 
 /* ==========================================================================
    DEVELOPMENT HELPERS
    ========================================================================== */
 
-/*
- * TODO: Remove before production
- * Development and debugging styles
- */
-/* Add debugging styles here when needed */
-
 /* 
- * Example debugging helper (commented out by default)
- * Uncomment to visualize layout boundaries during development
+ * Only uncomment during development for debugging layout issues
  */
 /*
 .debug * {

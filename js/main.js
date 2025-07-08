@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new NavigationManager();
     new AnimationManager();
     new FormManager();
-    new PerformanceManager();
+    // PerformanceManager is now handled in js/performance.js
     
     // Initialize scroll indicator
     if (typeof ScrollIndicator !== 'undefined') {

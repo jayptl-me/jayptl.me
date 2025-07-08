@@ -28,7 +28,6 @@ class PerformanceManager {
      */
     setupResourceLoading() {
         if (this.resourcesLoaded) return;
-        
         window.addEventListener('load', () => {
             requestIdleCallback(() => {
                 // Load any deferred resources here
@@ -62,15 +61,16 @@ class PerformanceManager {
      * Initialize Core Web Vitals tracking
      */
     initCoreWebVitals() {
-        if (this.metricsInitialized || !('web-vitals' in window)) return;
-        
-        // Import web-vitals library dynamically
-        import('https://unpkg.com/web-vitals?module').then(({ getCLS, getFID, getLCP }) => {
-            getCLS(this.sendToAnalytics.bind(this));
-            getFID(this.sendToAnalytics.bind(this));
-            getLCP(this.sendToAnalytics.bind(this));
-            this.metricsInitialized = true;
-        });
+        if (this.metricsInitialized) return;
+        // Import web-vitals library dynamically if available
+        if ('web-vitals' in window) {
+            import('https://unpkg.com/web-vitals?module').then(({ getCLS, getFID, getLCP }) => {
+                getCLS(this.sendToAnalytics.bind(this));
+                getFID(this.sendToAnalytics.bind(this));
+                getLCP(this.sendToAnalytics.bind(this));
+                this.metricsInitialized = true;
+            });
+        }
     }
 
     /**
@@ -79,7 +79,6 @@ class PerformanceManager {
      */
     sendToAnalytics(metric) {
         if (!window.consentManager?.canUseAnalytics()) return;
-        
         window.consentManager.trackEvent('web_vital', {
             event_category: 'Web Vitals',
             event_label: metric.name,
@@ -93,10 +92,8 @@ class PerformanceManager {
      */
     optimizeScrollPerformance() {
         if (this.observersInitialized || !('IntersectionObserver' in window)) return;
-
         // Setup lazy loading for images and other elements
         this.setupLazyLoading();
-        
         // Set flag to prevent duplicate initialization
         this.observersInitialized = true;
     }
@@ -105,35 +102,27 @@ class PerformanceManager {
      * Initialize lazy loading for images and other content
      */
     setupLazyLoading() {
-        const lazyElements = document.querySelectorAll('[data-lazy]');
-        
+        // Consolidate lazy loading for [data-lazy] and [data-src] images
+        const lazyElements = document.querySelectorAll('[data-lazy], img[data-src]');
         if (!lazyElements.length) return;
-        
         const lazyObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
-                
                 const element = entry.target;
-                
-                if (element.tagName === 'IMG') {
+                if (element.tagName === 'IMG' && element.dataset.src) {
                     element.src = element.dataset.src;
                     element.removeAttribute('data-src');
                 }
-                
                 // Handle other element types as needed
-                
                 lazyObserver.unobserve(element);
             });
         }, { rootMargin: '200px' });
-        
         lazyElements.forEach(element => lazyObserver.observe(element));
     }
 }
 
 // Initialize performance optimizations
 const performanceManager = new PerformanceManager();
-
-// Use idle callback if available, otherwise use timeout
 if (window.requestIdleCallback) {
     requestIdleCallback(() => performanceManager.init());
 } else {

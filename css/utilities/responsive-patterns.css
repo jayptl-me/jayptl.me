@@ -10,20 +10,7 @@
    RESPONSIVE MIXINS
    ========================================================================== */
 
-/* Common responsive container patterns that can be used site-wide */
-@media (min-width: 768px) {
-  .responsive-container-row {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .responsive-filters-container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
+/* Responsive container patterns are now consolidated in responsive.css for consistency. */
 
 /* Dark mode responsive tweaks for better contrast in sections */
 @media (prefers-color-scheme: dark) {

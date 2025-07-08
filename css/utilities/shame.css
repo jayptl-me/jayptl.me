@@ -18,6 +18,7 @@
    ========================================================================== */
 
 /* Safari-specific flexbox fix for hero section */
+/* TODO: Move this to the hero component CSS with a browser-specific comment */
 @media not all and (min-resolution:.001dpcm) { 
   @supports (-webkit-appearance:none) {
     .hero-content {
@@ -38,3 +39,5 @@
   outline: 1px solid red !important;
 }
 */
+
+/* TODO: Review all styles in this file and refactor into appropriate component or utility files. Remove once migrated. */

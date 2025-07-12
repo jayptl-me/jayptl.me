@@ -1,0 +1,413 @@
+/**
+ * Custom Cursor Component
+ * Light-blue glassmorphic cursor with smooth animations
+ * 
+ * @file components/custom-cursor.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   CURSOR VARIABLES
+   ========================================================================== */
+
+:root {
+    /* Cursor colors */
+    --cursor-primary: rgba(33, 150, 243, 0.8);
+    --cursor-primary-hover: rgba(33, 150, 243, 0.9);
+    --cursor-secondary: rgba(33, 150, 243, 0.3);
+    --cursor-accent: rgba(66, 165, 245, 0.6);
+
+    /* Cursor sizes */
+    --cursor-size-small: 8px;
+    --cursor-size-default: 20px;
+    --cursor-size-hover: 40px;
+    --cursor-size-click: 60px;
+
+    /* Cursor animations */
+    --cursor-duration: 0.2s;
+    --cursor-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cursor-primary: rgba(100, 181, 246, 0.9);
+        --cursor-primary-hover: rgba(100, 181, 246, 1);
+        --cursor-secondary: rgba(100, 181, 246, 0.4);
+        --cursor-accent: rgba(144, 202, 249, 0.7);
+    }
+}
+
+html[data-theme="dark"] {
+    --cursor-primary: rgba(100, 181, 246, 0.9);
+    --cursor-primary-hover: rgba(100, 181, 246, 1);
+    --cursor-secondary: rgba(100, 181, 246, 0.4);
+    --cursor-accent: rgba(144, 202, 249, 0.7);
+}
+
+/* ==========================================================================
+   HIDE DEFAULT CURSOR
+   ========================================================================== */
+
+* {
+    cursor: none !important;
+}
+
+/* Override for inputs and textareas */
+input,
+textarea,
+[contenteditable] {
+    cursor: text !important;
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR ELEMENTS
+   ========================================================================== */
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size-default);
+    height: var(--cursor-size-default);
+    background: var(--cursor-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: var(--z-maximum);
+    mix-blend-mode: difference;
+    transition: all var(--cursor-duration) var(--cursor-ease);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 0 20px var(--cursor-secondary),
+        0 0 40px var(--cursor-secondary),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.custom-cursor::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all var(--cursor-duration) var(--cursor-ease);
+}
+
+.cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size-hover);
+    height: var(--cursor-size-hover);
+    background: var(--cursor-secondary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: calc(var(--z-maximum) - 1);
+    transition: all 0.4s var(--cursor-ease);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   CURSOR STATES
+   ========================================================================== */
+
+/* Hover state */
+.custom-cursor.hover {
+    width: var(--cursor-size-hover);
+    height: var(--cursor-size-hover);
+    background: var(--cursor-primary-hover);
+    box-shadow:
+        0 0 30px var(--cursor-accent),
+        0 0 60px var(--cursor-accent),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.custom-cursor.hover::before {
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 1);
+}
+
+.cursor-follower.hover {
+    width: calc(var(--cursor-size-hover) + 20px);
+    height: calc(var(--cursor-size-hover) + 20px);
+    opacity: 0.8;
+}
+
+/* Click state */
+.custom-cursor.click {
+    width: var(--cursor-size-click);
+    height: var(--cursor-size-click);
+    background: var(--cursor-accent);
+    box-shadow:
+        0 0 40px var(--cursor-primary),
+        0 0 80px var(--cursor-primary),
+        inset 0 0 40px rgba(255, 255, 255, 0.3);
+}
+
+.cursor-follower.click {
+    width: calc(var(--cursor-size-click) + 30px);
+    height: calc(var(--cursor-size-click) + 30px);
+    opacity: 1;
+}
+
+/* Text state */
+.custom-cursor.text {
+    width: 2px;
+    height: 20px;
+    border-radius: 2px;
+    background: var(--cursor-primary);
+    box-shadow: 0 0 10px var(--cursor-primary);
+}
+
+.custom-cursor.text::before {
+    display: none;
+}
+
+.cursor-follower.text {
+    width: 20px;
+    height: 30px;
+    border-radius: 10px;
+    opacity: 0.4;
+}
+
+/* Hidden state */
+.custom-cursor.hidden,
+.cursor-follower.hidden {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+/* ==========================================================================
+   INTERACTIVE ELEMENTS
+   ========================================================================== */
+
+/* Links and buttons */
+a,
+button,
+[role="button"],
+.clickable {
+    position: relative;
+    overflow: hidden;
+}
+
+a::before,
+button::before,
+[role="button"]::before,
+.clickable::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, var(--cursor-secondary) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s var(--cursor-ease);
+    pointer-events: none;
+    z-index: 0;
+}
+
+a:hover::before,
+button:hover::before,
+[role="button"]:hover::before,
+.clickable:hover::before {
+    width: 200%;
+    height: 200%;
+}
+
+/* ==========================================================================
+   SPECIAL CURSOR ANIMATIONS
+   ========================================================================== */
+
+/* Magnetic effect for important elements */
+.cursor-magnetic {
+    transition: transform 0.1s ease-out;
+}
+
+/* Ripple effect on click */
+@keyframes cursor-ripple {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.cursor-ripple {
+    position: fixed;
+    width: var(--cursor-size-default);
+    height: var(--cursor-size-default);
+    border: 2px solid var(--cursor-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: calc(var(--z-maximum) - 2);
+    animation: cursor-ripple 0.6s ease-out forwards;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Hide custom cursor on touch devices */
+    .custom-cursor,
+    .cursor-follower {
+        display: none;
+    }
+
+    * {
+        cursor: auto !important;
+    }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .custom-cursor,
+    .cursor-follower {
+        transition: none;
+    }
+
+    .cursor-ripple {
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .custom-cursor {
+        background: var(--theme-text);
+        border-color: var(--theme-bg);
+        box-shadow: none;
+        mix-blend-mode: normal;
+    }
+
+    .cursor-follower {
+        background: transparent;
+        border: 2px solid var(--theme-text);
+    }
+}
+
+/* ==========================================================================
+   DIALOG AND MODAL SPECIFIC CURSOR SUPPORT
+   ========================================================================== */
+
+/* Ensure custom cursor appears on dialogs and modals */
+.consent-settings-dialog,
+.consent-banner,
+[role="dialog"],
+[role="modal"],
+.modal,
+.dialog {
+    /* Ensure these elements don't interfere with custom cursor */
+    position: relative;
+}
+
+.consent-settings-dialog *,
+.consent-banner *,
+[role="dialog"] *,
+[role="modal"] *,
+.modal *,
+.dialog * {
+    /* Reset cursor to none for dialog children to allow custom cursor */
+    cursor: none !important;
+}
+
+/* Override for interactive elements in dialogs */
+.consent-settings-dialog button,
+.consent-settings-dialog a,
+.consent-settings-dialog [role="button"],
+.consent-banner button,
+.consent-banner a,
+.consent-banner [role="button"],
+[role="dialog"] button,
+[role="dialog"] a,
+[role="dialog"] [role="button"],
+[role="modal"] button,
+[role="modal"] a,
+[role="modal"] [role="button"],
+.modal button,
+.modal a,
+.modal [role="button"],
+.dialog button,
+.dialog a,
+.dialog [role="button"] {
+    cursor: none !important;
+}
+
+/* Ensure text inputs in dialogs show text cursor */
+.consent-settings-dialog input[type="text"],
+.consent-settings-dialog input[type="email"],
+.consent-settings-dialog textarea,
+.consent-settings-dialog [contenteditable],
+.consent-banner input[type="text"],
+.consent-banner input[type="email"],
+.consent-banner textarea,
+.consent-banner [contenteditable],
+[role="dialog"] input[type="text"],
+[role="dialog"] input[type="email"],
+[role="dialog"] textarea,
+[role="dialog"] [contenteditable],
+[role="modal"] input[type="text"],
+[role="modal"] input[type="email"],
+[role="modal"] textarea,
+[role="modal"] [contenteditable] {
+    cursor: text !important;
+}
+
+/* ==========================================================================
+   CURSOR FOR SPECIFIC ELEMENTS
+   ========================================================================== */
+
+/* Loading state */
+.custom-cursor.loading {
+    animation: cursor-spin 1s linear infinite;
+}
+
+@keyframes cursor-spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Disabled state */
+.custom-cursor.disabled {
+    background: var(--theme-text-muted);
+    opacity: 0.5;
+}
+
+/* Error state */
+.custom-cursor.error {
+    background: var(--theme-error);
+    box-shadow: 0 0 20px var(--theme-error);
+}
+
+/* Success state */
+.custom-cursor.success {
+    background: var(--theme-success);
+    box-shadow: 0 0 20px var(--theme-success);
+}

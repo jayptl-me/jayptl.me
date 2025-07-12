@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.jayptl.me/sitemap.xml
+
+# Specific directives
+Allow: /privacy.html
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+
+# Optional: Block any admin or private directories if they exist
+# Disallow: /admin/
+# Disallow: /private/

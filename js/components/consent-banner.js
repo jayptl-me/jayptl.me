@@ -1,3 +1,6 @@
+
+"use strict";
+
 /**
  * Consent Banner Component
  * GDPR/Privacy compliant consent management for Google Analytics
@@ -131,6 +134,8 @@ Analytics helps me understand which sections are most engaging and improve the u
                             <li>Keystrokes or form inputs</li>
                             <li>Cross-site browsing activity</li>
                         </ul>
+                        
+                        <p><a href="/privacy.html" target="_blank" rel="noopener">Read our full Privacy Policy</a> for complete details.</p>
                     </div>
                 </div>
                 <div class="consent-settings-dialog-actions">
@@ -167,6 +172,10 @@ Analytics helps me understand which sections are most engaging and improve the u
     closeSettingsDialog() {
         const dialog = document.getElementById('consent-settings-dialog');
         if (dialog) {
+            // Reset cursor state before removing dialog
+            if (window.customCursor) {
+                window.customCursor.setHoverState(false);
+            }
             dialog.remove();
         }
     }
@@ -273,7 +282,7 @@ For questions about data handling, you can contact me through the portfolio cont
             padding: 12px 16px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10000;
+            z-index: 45;
             font-size: 14px;
             max-width: 300px;
             transform: translateX(100%);
@@ -370,7 +379,7 @@ For questions about data handling, you can contact me through the portfolio cont
 
     loadGoogleAnalytics() {
         // Replace 'GA_MEASUREMENT_ID' with your actual Google Analytics 4 Measurement ID
-        const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: Replace with your actual GA4 ID
+        const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J'; // Your actual GA4 Measurement ID
 
         // Load Google Analytics
         const script1 = document.createElement('script');
@@ -383,21 +392,28 @@ For questions about data handling, you can contact me through the portfolio cont
         function gtag() { dataLayer.push(arguments); }
         window.gtag = gtag;
 
+        // Update consent for analytics
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+        });
+
         gtag('js', new Date());
         gtag('config', GA_MEASUREMENT_ID, {
             anonymize_ip: true,
             cookie_flags: 'SameSite=Lax;Secure',
-            send_page_view: true
+            send_page_view: true,
+            allow_google_signals: false,
+            allow_ad_personalization_signals: false
         });
 
         console.log('Google Analytics initialized with consent');
     }
 
     disableAnalyticsTracking() {
-        // Disable Google Analytics
+        // Disable Google Analytics through consent mode
         if (window.gtag) {
             window.gtag('consent', 'update', {
-                analytics_storage: 'denied'
+                'analytics_storage': 'denied'
             });
         }
 
@@ -414,7 +430,7 @@ For questions about data handling, you can contact me through the portfolio cont
             document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
         });
 
-        console.log('Google Analytics disabled');
+        console.log('Google Analytics disabled and cookies cleared');
     }
 
     addKeyboardListeners() {

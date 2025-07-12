@@ -41,6 +41,8 @@
 /* ==========================================================================
    COMPONENTS - UI Components (Only Used Ones)
    ========================================================================== */
+@import 'components/custom-cursor.css';
+@import 'components/custom-scrollbar.css';
 @import 'components/hero.css';
 @import 'components/scroll-indicator.css';
 @import 'components/scroll-reveal.css';
@@ -51,9 +53,11 @@
    PAGES - Page Specific Styles (Only Home)
    ========================================================================== */
 @import 'pages/home.css';
+@import 'pages/privacy.css';
 
 /* ==========================================================================
    UTILITIES - Helper Classes and Overrides (Essential Only)
    ========================================================================== */
 @import 'utilities/display.css';
 @import 'utilities/light-dark.css';
+@import 'utilities/cursor.css';

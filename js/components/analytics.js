@@ -1,135 +1,163 @@
+
+"use strict";
+
 /**
  * Google Analytics Integration with Consent Management
  * Loads and configures Google Analytics only with user consent
- * 
  * @file js/components/analytics.js
  * @author Jay Patel
  */
 
+
+/**
+ * @class AnalyticsManager
+ * @classdesc Handles Google Analytics integration with consent management and custom portfolio tracking.
+ */
 class AnalyticsManager {
+    /**
+     * @constructor
+     */
     constructor() {
-        // Replace with your actual Google Analytics 4 Measurement ID
-        this.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: Update this with your real GA4 ID
+        /** @type {string} Google Analytics Measurement ID */
+        this.GA_MEASUREMENT_ID = 'G-GGZTYJVH9J'; // Your actual GA4 Measurement ID
+        /** @type {boolean} Indicates if GA script is loaded */
         this.isLoaded = false;
         this.init();
     }
 
+    /**
+     * Initializes consent check and analytics loading.
+     */
     init() {
-        // Wait for consent banner to be ready
         this.waitForConsent();
     }
 
+    /**
+     * Waits for user consent before loading Google Analytics.
+     */
     waitForConsent() {
         const checkConsent = () => {
-            if (window.consentBanner) {
-                if (window.consentBanner.hasConsent()) {
-                    this.loadGoogleAnalytics();
-                }
+            if (window.consentBanner && window.consentBanner.hasConsent()) {
+                this.loadGoogleAnalytics();
             } else {
-                // Retry if consent banner not ready yet
                 setTimeout(checkConsent, 100);
             }
         };
-
         checkConsent();
     }
 
+
+    /**
+     * Loads the Google Analytics script and initializes gtag.
+     */
     loadGoogleAnalytics() {
         if (this.isLoaded) return;
-
-        // Load Google Analytics script
         const script = document.createElement('script');
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${this.GA_MEASUREMENT_ID}`;
-        script.onload = () => {
-            this.initializeGtag();
-        };
+        script.onload = () => this.initializeGtag();
         document.head.appendChild(script);
-
         this.isLoaded = true;
     }
 
+
+    /**
+     * Initializes gtag and configures Google Analytics.
+     */
     initializeGtag() {
-        // Initialize dataLayer
         window.dataLayer = window.dataLayer || [];
+        window.gtag = (...args) => window.dataLayer.push(args);
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        // Set consent mode defaults
+        gtag('consent', 'default', {
+            'analytics_storage': 'granted',
+            'ad_storage': 'denied',
+            'personalization_storage': 'denied',
+            'functionality_storage': 'granted',
+            'security_storage': 'granted'
+        });
 
-        window.gtag = gtag;
-
-        // Configure Google Analytics
         gtag('js', new Date());
         gtag('config', this.GA_MEASUREMENT_ID, {
-            // Privacy-focused configuration
+            // Privacy-first configuration
             anonymize_ip: true,
             cookie_flags: 'SameSite=Lax;Secure',
             send_page_view: true,
-
-            // Enhanced privacy settings
             allow_google_signals: false,
             allow_ad_personalization_signals: false,
 
-            // Custom parameters for portfolio analytics
-            custom_map: {
-                'custom_parameter_1': 'portfolio_section'
-            }
+            // Cookie settings
+            cookie_expires: 365 * 24 * 60 * 60, // 1 year in seconds
+            cookie_update: true,
+            cookie_domain: 'auto',
+
+            // Debug mode (set to false for production)
+            debug_mode: false,
+
+            // Enhanced measurement is controlled in GA4 dashboard
+            // These settings ensure compatibility
+            page_title: document.title,
+            page_location: window.location.href
         });
 
         // Track initial page view
         this.trackPageView();
-
-        // Set up custom events for portfolio interactions
         this.setupPortfolioTracking();
-
         console.log('Google Analytics initialized with privacy-first configuration');
     }
 
+
+    /**
+     * Tracks a page view event.
+     * @param {string|null} pagePath
+     * @param {string|null} pageTitle
+     */
     trackPageView(pagePath = null, pageTitle = null) {
         if (!this.isAnalyticsReady()) return;
-
         const params = {};
         if (pagePath) params.page_path = pagePath;
         if (pageTitle) params.page_title = pageTitle;
-
         gtag('event', 'page_view', params);
     }
 
+
+    /**
+     * Tracks a custom event.
+     * @param {string} eventName
+     * @param {Object} parameters
+     */
     trackEvent(eventName, parameters = {}) {
         if (!this.isAnalyticsReady()) return;
-
         gtag('event', eventName, parameters);
     }
 
+
+    /**
+     * Sets up custom portfolio tracking events.
+     */
     setupPortfolioTracking() {
-        // Track theme changes
-        window.addEventListener('themechange', (e) => {
+        window.addEventListener('themechange', e => {
             this.trackEvent('theme_change', {
                 theme: e.detail.theme,
                 event_category: 'user_preference'
             });
         });
-
-        // Track scroll depth
         this.setupScrollTracking();
-
-        // Track time on page
         this.setupTimeTracking();
-
-        // Track portfolio section interactions
         this.setupSectionTracking();
     }
 
-    setupScrollTracking() {
-        let scrollDepths = [25, 50, 75, 90];
-        let trackedDepths = new Set();
 
+    /**
+     * Tracks scroll depth milestones using throttled event listener.
+     */
+    setupScrollTracking() {
+        const scrollDepths = [25, 50, 75, 90];
+        const trackedDepths = new Set();
         const trackScrollDepth = () => {
             const scrollPercent = Math.round(
                 (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
             );
-
             scrollDepths.forEach(depth => {
                 if (scrollPercent >= depth && !trackedDepths.has(depth)) {
                     trackedDepths.add(depth);
@@ -140,8 +168,6 @@ class AnalyticsManager {
                 }
             });
         };
-
-        // Throttled scroll tracking
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
@@ -154,10 +180,12 @@ class AnalyticsManager {
         }, { passive: true });
     }
 
+
+    /**
+     * Tracks time milestones and total session duration.
+     */
     setupTimeTracking() {
         const startTime = Date.now();
-
-        // Track time milestones
         const timepoints = [10, 30, 60, 120, 300]; // seconds
         timepoints.forEach(seconds => {
             setTimeout(() => {
@@ -167,8 +195,6 @@ class AnalyticsManager {
                 });
             }, seconds * 1000);
         });
-
-        // Track total time on page when leaving
         window.addEventListener('beforeunload', () => {
             const timeSpent = Math.round((Date.now() - startTime) / 1000);
             this.trackEvent('session_duration', {
@@ -178,11 +204,13 @@ class AnalyticsManager {
         });
     }
 
-    setupSectionTracking() {
-        // Track when different portfolio sections come into view
-        const sections = document.querySelectorAll('[id]');
 
-        const observer = new IntersectionObserver((entries) => {
+    /**
+     * Tracks when portfolio sections come into view using IntersectionObserver.
+     */
+    setupSectionTracking() {
+        const sections = document.querySelectorAll('[id]');
+        const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && entry.target.id) {
                     this.trackEvent('section_view', {
@@ -195,15 +223,24 @@ class AnalyticsManager {
             threshold: 0.5,
             rootMargin: '0px 0px -20% 0px'
         });
-
         sections.forEach(section => observer.observe(section));
     }
 
+
+    /**
+     * Checks if analytics is ready for tracking.
+     * @returns {boolean}
+     */
     isAnalyticsReady() {
         return this.isLoaded && typeof gtag !== 'undefined';
     }
 
-    // Public methods for custom tracking
+
+    /**
+     * Tracks button click events.
+     * @param {string} buttonName
+     * @param {string} location
+     */
     trackButtonClick(buttonName, location = '') {
         this.trackEvent('button_click', {
             button_name: buttonName,
@@ -212,6 +249,11 @@ class AnalyticsManager {
         });
     }
 
+    /**
+     * Tracks file download events.
+     * @param {string} fileName
+     * @param {string} fileType
+     */
     trackDownload(fileName, fileType = '') {
         this.trackEvent('file_download', {
             file_name: fileName,
@@ -220,6 +262,10 @@ class AnalyticsManager {
         });
     }
 
+    /**
+     * Tracks contact form submissions.
+     * @param {string} method
+     */
     trackContactFormSubmission(method = '') {
         this.trackEvent('contact_form_submit', {
             contact_method: method,
@@ -227,6 +273,11 @@ class AnalyticsManager {
         });
     }
 
+    /**
+     * Tracks external link clicks.
+     * @param {string} url
+     * @param {string} linkText
+     */
     trackExternalLink(url, linkText = '') {
         this.trackEvent('external_link_click', {
             link_url: url,
@@ -236,13 +287,14 @@ class AnalyticsManager {
     }
 }
 
+
 // Initialize analytics manager
 document.addEventListener('DOMContentLoaded', () => {
     window.analyticsManager = new AnalyticsManager();
 });
 
 // Utility function to easily track events from anywhere
-window.trackEvent = function (eventName, parameters = {}) {
+window.trackEvent = (eventName, parameters = {}) => {
     if (window.analyticsManager) {
         window.analyticsManager.trackEvent(eventName, parameters);
     }

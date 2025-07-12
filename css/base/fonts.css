@@ -19,11 +19,15 @@
 
 /* Enable font features for better typography */
 body {
-  font-feature-settings: 
-    "kern" 1,          /* Kerning */
-    "liga" 1,          /* Standard ligatures */
-    "clig" 1,          /* Contextual ligatures */
-    "calt" 1;          /* Contextual alternates */
+  font-feature-settings:
+    "kern" 1,
+    /* Kerning */
+    "liga" 1,
+    /* Standard ligatures */
+    "clig" 1,
+    /* Contextual ligatures */
+    "calt" 1;
+  /* Contextual alternates */
 }
 
 /* Optimize number rendering */
@@ -39,7 +43,7 @@ body {
 /* Optimize display fonts (Audiowide) */
 .font-display {
   font-family: var(--font-display);
-  font-feature-settings: 
+  font-feature-settings:
     "kern" 1,
     "liga" 1,
     "calt" 1;
@@ -48,7 +52,7 @@ body {
 /* Monospace fallback with Audiowide */
 .font-mono {
   font-family: var(--font-mono);
-  font-feature-settings: 
+  font-feature-settings:
     "kern" 1,
     "liga" 1,
     "calt" 1;
@@ -57,8 +61,3 @@ body {
 /* ==========================================================================
    FONT LOADING OPTIMIZATION
    ========================================================================== */
-
-/* Preload critical font for better performance */
-link[href*="fonts.googleapis.com"] {
-  font-display: swap;
-}

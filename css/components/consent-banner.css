@@ -1,22 +1,53 @@
-/**
- * Consent Banner Component Styles
- * GDPR/Privacy compliant consent banner for Google Analytics
- * Fully integrated with light/dark theme system
- * 
- * @file css/components/consent-banner.css
- * @author Jay Patel
- */
+/* ========================================================================== */
+/* VARIABLES & THEME OVERRIDES */
+/* ========================================================================== */
+:root {
+    --theme-bg-rgb: 255, 255, 255;
+    --theme-surface-secondary: #f9fafb;
+    --success-50: #f0fdf4;
+    --success-700: #15803d;
+    --warning-50: #fffbeb;
+    --warning-700: #a16207;
+}
 
-/* ==========================================================================
-   CONSENT BANNER COMPONENT
-   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-bg-rgb: 0, 0, 0;
+        --theme-surface-secondary: #23272f;
+        --success-50: #064e3b;
+        --success-700: #10b981;
+        --warning-50: #78350f;
+        --warning-700: #f59e0b;
+    }
+}
 
+html[data-theme="light"] {
+    --theme-bg-rgb: 255, 255, 255;
+    --theme-surface-secondary: #f9fafb;
+    --success-50: #f0fdf4;
+    --success-700: #15803d;
+    --warning-50: #fffbeb;
+    --warning-700: #a16207;
+}
+
+html[data-theme="dark"] {
+    --theme-bg-rgb: 0, 0, 0;
+    --theme-surface-secondary: #23272f;
+    --success-50: #064e3b;
+    --success-700: #10b981;
+    --warning-50: #78350f;
+    --warning-700: #f59e0b;
+}
+
+/* ========================================================================== */
+/* COMPONENT BASE STYLES */
+/* ========================================================================== */
 .consent-banner {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
+    z-index: var(--z-overlay);
     background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -37,32 +68,6 @@
     transform: translateY(100%);
 }
 
-/* Theme-aware background colors */
-:root {
-    --theme-bg-rgb: 255, 255, 255;
-    --theme-surface-secondary: #f9fafb;
-    /* Soft off-white, not grey */
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --theme-bg-rgb: 0, 0, 0;
-        --theme-surface-secondary: #23272f;
-        /* Keep dark mode as is */
-    }
-}
-
-html[data-theme="light"] {
-    --theme-bg-rgb: 255, 255, 255;
-    --theme-surface-secondary: #f9fafb;
-}
-
-html[data-theme="dark"] {
-    --theme-bg-rgb: 0, 0, 0;
-    --theme-surface-secondary: #23272f;
-}
-
-/* Banner content container */
 .consent-banner-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -73,7 +78,6 @@ html[data-theme="dark"] {
     flex-wrap: wrap;
 }
 
-/* Banner text */
 .consent-banner-text {
     flex: 1;
     min-width: 280px;
@@ -99,7 +103,6 @@ html[data-theme="dark"] {
     text-decoration: none;
 }
 
-/* Banner actions */
 .consent-banner-actions {
     display: flex;
     align-items: center;
@@ -107,7 +110,9 @@ html[data-theme="dark"] {
     flex-shrink: 0;
 }
 
-/* Banner buttons */
+/* ========================================================================== */
+/* BUTTON STYLES */
+/* ========================================================================== */
 .consent-btn {
     font-family: var(--font-body);
     font-size: var(--text-sm);
@@ -125,7 +130,6 @@ html[data-theme="dark"] {
     white-space: nowrap;
 }
 
-/* Primary accept button */
 .consent-btn-accept {
     background: var(--theme-primary);
     color: var(--white);
@@ -146,7 +150,6 @@ html[data-theme="dark"] {
     box-shadow: 0 2px 4px rgba(var(--primary-500-rgb), 0.2);
 }
 
-/* Secondary decline button */
 .consent-btn-decline {
     background: transparent;
     color: var(--theme-text);
@@ -165,7 +168,6 @@ html[data-theme="dark"] {
     background: var(--theme-surface-tertiary);
 }
 
-/* Settings/customize button */
 .consent-btn-settings {
     background: transparent;
     color: var(--theme-primary);
@@ -182,7 +184,9 @@ html[data-theme="dark"] {
     outline: none;
 }
 
-/* Close button */
+/* ========================================================================== */
+/* CLOSE BUTTON */
+/* ========================================================================== */
 .consent-banner-close {
     position: absolute;
     top: var(--space-2);
@@ -214,15 +218,14 @@ html[data-theme="dark"] {
     fill: currentColor;
 }
 
-/* ==========================================================================
-   CONSENT SETTINGS TOGGLE BUTTON
-   ========================================================================== */
-
+/* ========================================================================== */
+/* SETTINGS TOGGLE BUTTON */
+/* ========================================================================== */
 .consent-settings-toggle {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 999;
+    z-index: var(--z-header);
     background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -273,12 +276,13 @@ html[data-theme="dark"] {
     font-weight: var(--weight-medium);
 }
 
-/* Hide toggle when banner is visible */
 .consent-banner.show~.consent-settings-toggle {
     display: none;
 }
 
-/* Status indicator */
+/* ========================================================================== */
+/* STATUS INDICATOR */
+/* ========================================================================== */
 .consent-status-indicator {
     width: 8px;
     height: 8px;
@@ -297,17 +301,16 @@ html[data-theme="dark"] {
     box-shadow: 0 0 4px rgba(245, 158, 11, 0.3);
 }
 
-/* ==========================================================================
-   CONSENT SETTINGS DIALOG
-   ========================================================================== */
-
+/* ========================================================================== */
+/* DIALOG STYLES */
+/* ========================================================================== */
 .consent-settings-dialog {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10000;
+    z-index: var(--z-modal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -417,13 +420,13 @@ html[data-theme="dark"] {
 }
 
 .consent-status-value.accepted {
-    background: var(--success-50, #f0fdf4);
-    color: var(--success-700, #15803d);
+    background: var(--success-50);
+    color: var(--success-700);
 }
 
 .consent-status-value.declined {
-    background: var(--warning-50, #fffbeb);
-    color: var(--warning-700, #a16207);
+    background: var(--warning-50);
+    color: var(--warning-700);
 }
 
 .consent-status-value.not-set {
@@ -532,16 +535,15 @@ html[data-theme="dark"] {
 
 .consent-dialog-btn-reset:hover,
 .consent-dialog-btn-reset:focus {
-    background: var(--warning-50, #fffbeb);
-    color: var(--warning-700, #a16207);
+    background: var(--warning-50);
+    color: var(--warning-700);
     border-color: var(--warning-400, #f59e0b);
     outline: none;
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN
-   ========================================================================== */
-
+/* ========================================================================== */
+/* RESPONSIVE DESIGN */
+/* ========================================================================== */
 @media (max-width: 768px) {
     .consent-banner {
         padding: var(--space-3) var(--space-3) var(--space-4);
@@ -648,101 +650,9 @@ html[data-theme="dark"] {
     }
 }
 
-/* ==========================================================================
-   DARK THEME SUPPORT FOR DIALOG
-   ========================================================================== */
-
-/* Light theme overrides for better contrast */
-.consent-status-value.accepted {
-    background: #f0fdf4;
-    color: #15803d;
-}
-
-.consent-status-value.declined {
-    background: #fffbeb;
-    color: #a16207;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --success-50: #064e3b;
-        --success-700: #10b981;
-        --warning-50: #78350f;
-        --warning-700: #f59e0b;
-    }
-
-    .consent-status-value.accepted {
-        background: #064e3b;
-        color: #6ee7b7;
-    }
-
-    .consent-status-value.declined {
-        background: #78350f;
-        color: #fcd34d;
-    }
-
-    .consent-status-value.not-set {
-        background: #1565c0;
-        color: #bbdefb;
-    }
-}
-
-html[data-theme="light"] .consent-status-value.accepted {
-    background: #f0fdf4;
-    color: #15803d;
-}
-
-html[data-theme="light"] .consent-status-value.declined {
-    background: #fffbeb;
-    color: #a16207;
-}
-
-html[data-theme="light"] .consent-status-value.not-set {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-html[data-theme="dark"] {
-    --success-50: #064e3b;
-    --success-700: #10b981;
-    --warning-50: #78350f;
-    --warning-700: #f59e0b;
-}
-
-html[data-theme="dark"] .consent-status-value.accepted {
-    background: #064e3b;
-    color: #6ee7b7;
-}
-
-html[data-theme="dark"] .consent-status-value.declined {
-    background: #78350f;
-    color: #fcd34d;
-}
-
-html[data-theme="dark"] .consent-status-value.not-set {
-    background: #1565c0;
-    color: #bbdefb;
-}
-
-/* Theme-aware current status background */
-@media (prefers-color-scheme: dark) {
-    /* .consent-current-status will inherit theme variables in dark mode */
-}
-
-html[data-theme="light"] .consent-current-status {
-    background: var(--theme-surface-secondary);
-    border-color: var(--theme-border);
-}
-
-html[data-theme="dark"] .consent-current-status {
-    background: var(--theme-surface-secondary);
-    border-color: var(--theme-border);
-}
-
-/* ==========================================================================
-   ACCESSIBILITY ENHANCEMENTS
-   ========================================================================== */
-
+/* ========================================================================== */
+/* ACCESSIBILITY & PRINT STYLES */
+/* ========================================================================== */
 .consent-banner:focus-within {
     outline: 2px solid var(--theme-primary);
     outline-offset: -2px;
@@ -753,7 +663,6 @@ html[data-theme="dark"] .consent-current-status {
     outline-offset: 2px;
 }
 
-/* Screen reader text */
 .consent-settings-sr-text {
     position: absolute;
     width: 1px;
@@ -766,20 +675,11 @@ html[data-theme="dark"] .consent-current-status {
     border-width: 0;
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-    .consent-banner {
-        transition: none;
-    }
 
-    .consent-btn {
-        transition: none;
-    }
-
-    .consent-btn-accept:hover {
-        transform: none;
-    }
-
+    .consent-banner,
+    .consent-btn,
+    .consent-btn-accept:hover,
     .consent-settings-toggle,
     .consent-settings-toggle-icon,
     .consent-status-indicator {
@@ -791,7 +691,6 @@ html[data-theme="dark"] .consent-current-status {
     }
 }
 
-/* High contrast mode support */
 @media (prefers-contrast: high) {
     .consent-banner {
         border-top-width: 2px;
@@ -806,10 +705,6 @@ html[data-theme="dark"] .consent-current-status {
         color: var(--theme-bg);
     }
 }
-
-/* ==========================================================================
-   PRINT STYLES
-   ========================================================================== */
 
 @media print {
     .consent-banner {

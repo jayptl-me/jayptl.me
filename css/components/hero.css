@@ -561,7 +561,10 @@
 /* Large Devices (laptops/desktops, 1025px and up) */
 @media (min-width: 1025px) {
   .hero {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-bottom: 50vh;
   }
 
@@ -579,7 +582,10 @@
 /* Landscape orientation adjustments for mobile */
 @media (max-height: 600px) and (orientation: landscape) {
   .hero {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-bottom: 10vh;
   }
 

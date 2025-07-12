@@ -37,7 +37,10 @@
 
 /* Main Content */
 .privacy-main {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-top: 80px;
     background: var(--theme-bg);
 }

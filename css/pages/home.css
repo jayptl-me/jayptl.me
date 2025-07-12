@@ -11,14 +11,15 @@
    ========================================================================== */
 
 .home-hero {
-  min-height: 100vh;
+  min-height: 100svh;
+  /* Small viewport height for better mobile support */
+  min-height: 100dvh;
+  /* Dynamic viewport height fallback */
   display: flex;
   align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--primary-50) 0%,
-    var(--accent-50) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--primary-50) 0%,
+      var(--accent-50) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -30,7 +31,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     radial-gradient(circle at 25% 25%, var(--primary-100) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, var(--accent-100) 0%, transparent 50%);
   z-index: 1;
@@ -422,11 +423,9 @@
 
 .home-contact {
   padding: var(--space-20) 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--accent-500) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      var(--accent-500) 100%);
   color: white;
   text-align: center;
 }
@@ -504,19 +503,17 @@
 
 @media (prefers-color-scheme: dark) {
   .home-hero {
-    background: linear-gradient(
-      135deg,
-      var(--primary-900) 0%,
-      var(--accent-900) 100%
-    );
+    background: linear-gradient(135deg,
+        var(--primary-900) 0%,
+        var(--accent-900) 100%);
   }
-  
+
   .home-skill-item {
     background-color: var(--primary-900);
     color: var(--primary-300);
     border-color: var(--primary-800);
   }
-  
+
   .home-project-tag {
     background-color: var(--accent-900);
     color: var(--accent-300);

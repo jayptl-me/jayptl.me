@@ -65,13 +65,43 @@
                 --theme-text:var(--white);
                 --theme-gradient-text:linear-gradient(135deg,#1976d2,#42a5f5);
             }
-            html, body { background-color: var(--black); color: var(--white); }
+            
+            html {
+                background-color: var(--black);
+                color: var(--white);
+            }
+            
+            body {
+                background-color: var(--black);
+                color: var(--white);
+            }
+        }
+        
+        /* Light theme - ensure it applies properly */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --theme-bg:var(--white);
+                --theme-text:var(--gray-900);
+                --theme-primary:var(--primary-500);
+                --theme-gradient-text:linear-gradient(135deg,var(--primary-500),#1976d2);
+            }
+            
+            html {
+                background-color: var(--white);
+                color: var(--gray-900);
+            }
+            
+            body {
+                background-color: var(--white);
+                color: var(--gray-900);
+            }
         }
         
         /* Theme specific styles based on data-theme attribute */
         html[data-theme="light"] {
             --theme-bg: var(--white);
             --theme-text: var(--gray-900);
+            --theme-primary: var(--primary-500);
             --theme-gradient-text: linear-gradient(135deg,var(--primary-500),#1976d2);
             background-color: var(--white);
             color: var(--gray-900);
@@ -83,6 +113,11 @@
             --theme-gradient-text: linear-gradient(135deg,#1976d2,#42a5f5);
             background-color: var(--black);
             color: var(--white);
+        }
+        
+        /* Force immediate theme application */
+        html {
+            color-scheme: light dark;
         }
         
         /* Truly critical above-the-fold styles only */
@@ -330,6 +365,9 @@
             </div>
         </section>
     </main>
+
+    <!-- Consent Banner Container -->
+    <div id="consent-banner-container"></div>
 
     <!-- JavaScript - Non-blocking load -->
     <script defer src="js/performance.js"></script>

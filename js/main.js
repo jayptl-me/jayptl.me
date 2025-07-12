@@ -38,26 +38,62 @@ class ThemeManager {
     toggleTheme() {
         const currentTheme = this.getCurrentTheme();
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
+
         this.setThemePreference(newTheme);
         this.applyTheme(newTheme);
-        
+
         return newTheme;
     }
 
     setThemePreference(theme) {
         this.userPreference = theme;
-        // Save preference to a cookie for 1 year
-        document.cookie = `preferred-theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
+
+        // Save to localStorage (primary method)
+        try {
+            localStorage.setItem('user-theme-preference', theme);
+        } catch (e) {
+            console.warn('Failed to save theme preference to localStorage:', e);
+        }
+
+        // Save to cookie as fallback for cross-session persistence
+        try {
+            document.cookie = `preferred-theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
+        } catch (e) {
+            console.warn('Failed to save theme preference to cookie:', e);
+        }
     }
 
     getThemePreference() {
-        const cookies = document.cookie.split('; ');
-        const themeCookie = cookies.find(row => row.startsWith('preferred-theme='));
-        if (themeCookie) {
-            const theme = themeCookie.split('=')[1];
-            return theme;
+        // Try localStorage first (primary method)
+        try {
+            const stored = localStorage.getItem('user-theme-preference');
+            if (stored && (stored === 'light' || stored === 'dark')) {
+                return stored;
+            }
+        } catch (e) {
+            console.warn('Failed to read theme preference from localStorage:', e);
         }
+
+        // Fallback to cookie
+        try {
+            const cookies = document.cookie.split('; ');
+            const themeCookie = cookies.find(row => row.startsWith('preferred-theme='));
+            if (themeCookie) {
+                const theme = themeCookie.split('=')[1];
+                if (theme === 'light' || theme === 'dark') {
+                    // Migrate cookie value to localStorage for future use
+                    try {
+                        localStorage.setItem('user-theme-preference', theme);
+                    } catch (e) {
+                        // Silent fail for migration
+                    }
+                    return theme;
+                }
+            }
+        } catch (e) {
+            console.warn('Failed to read theme preference from cookie:', e);
+        }
+
         return null;
     }
 
@@ -120,7 +156,7 @@ class Utils {
 
     static throttle(func, limit) {
         let inThrottle;
-        return function() {
+        return function () {
             const args = arguments;
             const context = this;
             if (!inThrottle) {
@@ -142,12 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize only what's actually used
     new AnimationManager();
     // PerformanceManager is now handled in js/performance.js
-    
+
     // Initialize scroll indicator
     if (typeof ScrollIndicator !== 'undefined') {
         new ScrollIndicator();
     }
-    
+
     // Add loading animation
     document.body.style.opacity = '0';
     setTimeout(() => {

@@ -1,149 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <title>Jay Patel - Portfolio</title>
-    
+
     <!-- Resource hints and performance optimizations -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//static.cloudflareinsights.com">
-    
+
     <!-- Preconnect hints for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://static.cloudflareinsights.com">
-    
+
     <!-- Critical font preload for better performance -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap"></noscript>
-    
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap">
+    </noscript>
+
     <!-- Preload critical CSS -->
     <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/main.css"></noscript>
-    
+    <noscript>
+        <link rel="stylesheet" href="css/main.css">
+    </noscript>
+
     <!-- Critical CSS inline for fastest render -->
     <style>
         /* Critical theme variables - only what's needed for initial render */
-        :root{
-            --font-display:'Audiowide',sans-serif;
-            --text-xl:1.25rem;
-            --text-2xl:1.5rem;
-            --text-3xl:1.875rem;
-            --text-5xl:3rem;
-            --weight-normal:400;
-            --space-1:0.25rem;
-            --space-2:0.5rem;
-            --space-4:1rem;
-            --space-8:2rem;
-            --leading-relaxed:1.625;
-            --duration-300:300ms;
-            --duration-normal:250ms;
-            --ease-out:cubic-bezier(0,0,0.2,1);
-            
+        :root {
+            --font-display: 'Audiowide', sans-serif;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-5xl: 3rem;
+            --weight-normal: 400;
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-4: 1rem;
+            --space-8: 2rem;
+            --leading-relaxed: 1.625;
+            --duration-300: 300ms;
+            --duration-normal: 250ms;
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
             /* Essential color palette */
-            --white:#ffffff;
-            --black:#000000;
-            --gray-50:#f9fafb;
-            --gray-100:#f5f5f5;
-            --gray-900:#111827;
-            --primary-500:#2196f3;
-            
+            --white: #ffffff;
+            --black: #000000;
+            --gray-50: #f9fafb;
+            --gray-100: #f5f5f5;
+            --gray-900: #111827;
+            --primary-500: #2196f3;
+
+            /* Theme-aware background RGB for transparency */
+            --theme-bg-rgb: 255, 255, 255;
+            --primary-500-rgb: 33, 150, 243;
+
             /* Light theme (default) */
-            --theme-bg:var(--white);
-            --theme-text:var(--gray-900);
-            --theme-primary:var(--primary-500);
-            --theme-gradient-text:linear-gradient(135deg,var(--primary-500),#1976d2);
+            --theme-bg: var(--white);
+            --theme-text: var(--gray-900);
+            --theme-primary: var(--primary-500);
+            --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
         }
-        
+
         /* Dark theme - system preference */
         @media (prefers-color-scheme: dark) {
             :root {
-                --theme-bg:var(--black);
-                --theme-text:var(--white);
-                --theme-gradient-text:linear-gradient(135deg,#1976d2,#42a5f5);
+                --theme-bg: var(--black);
+                --theme-text: var(--white);
+                --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+                --theme-bg-rgb: 0, 0, 0;
             }
-            
+
             html {
                 background-color: var(--black);
                 color: var(--white);
             }
-            
+
             body {
                 background-color: var(--black);
                 color: var(--white);
             }
         }
-        
+
         /* Light theme - ensure it applies properly */
         @media (prefers-color-scheme: light) {
             :root {
-                --theme-bg:var(--white);
-                --theme-text:var(--gray-900);
-                --theme-primary:var(--primary-500);
-                --theme-gradient-text:linear-gradient(135deg,var(--primary-500),#1976d2);
+                --theme-bg: var(--white);
+                --theme-text: var(--gray-900);
+                --theme-primary: var(--primary-500);
+                --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
             }
-            
+
             html {
                 background-color: var(--white);
                 color: var(--gray-900);
             }
-            
+
             body {
                 background-color: var(--white);
                 color: var(--gray-900);
             }
         }
-        
+
         /* Theme specific styles based on data-theme attribute */
         html[data-theme="light"] {
             --theme-bg: var(--white);
             --theme-text: var(--gray-900);
             --theme-primary: var(--primary-500);
-            --theme-gradient-text: linear-gradient(135deg,var(--primary-500),#1976d2);
+            --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
             background-color: var(--white);
             color: var(--gray-900);
         }
-        
+
         html[data-theme="dark"] {
             --theme-bg: var(--black);
             --theme-text: var(--white);
-            --theme-gradient-text: linear-gradient(135deg,#1976d2,#42a5f5);
+            --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+            --theme-bg-rgb: 0, 0, 0;
             background-color: var(--black);
             color: var(--white);
         }
-        
+
         /* Force immediate theme application */
         html {
             color-scheme: light dark;
         }
-        
+
         /* Truly critical above-the-fold styles only */
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{
-            font-family:var(--font-display);
-            background-color:var(--theme-bg);
-            color:var(--theme-text);
-            line-height:var(--leading-relaxed);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font-display);
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
+            line-height: var(--leading-relaxed);
             transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
         }
-        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center}
-        .hero-container{max-width:1200px;margin:0 auto;padding:0 var(--space-8);width:100%}
-        .hero-content{text-align:center;position:relative;z-index:2}
-        .text-reveal-container{overflow:hidden;position:relative}
-        .text-reveal-item{opacity:0;transform:translateY(100px);font-size:clamp(var(--text-2xl),5vw,var(--text-5xl));font-weight:var(--weight-normal);margin:var(--space-4) 0}
-        .gradient-text{background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        @media (max-width:768px){.hero-container{padding:0 var(--space-4)}.text-reveal-item{font-size:clamp(var(--text-xl),4vw,var(--text-3xl));margin:var(--space-2) 0}}
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            width: 100%
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2
+        }
+
+        .text-reveal-container {
+            overflow: hidden;
+            position: relative
+        }
+
+        .text-reveal-item {
+            opacity: 0;
+            transform: translateY(100px);
+            font-size: clamp(var(--text-2xl), 5vw, var(--text-5xl));
+            font-weight: var(--weight-normal);
+            margin: var(--space-4) 0
+        }
+
+        .gradient-text {
+            background: var(--theme-gradient-text);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        @media (max-width:768px) {
+            .hero-container {
+                padding: 0 var(--space-4)
+            }
+
+            .text-reveal-item {
+                font-size: clamp(var(--text-xl), 4vw, var(--text-3xl));
+                margin: var(--space-2) 0
+            }
+        }
     </style>
-    
+
     <!-- Load non-critical CSS asynchronously -->
     <link rel="stylesheet" href="css/main.css">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
+
     <!-- Theme toggle styles -->
     <style>
         .theme-toggle {
@@ -163,48 +224,180 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
-        
+
         .theme-toggle:hover {
             transform: scale(1.1);
             background: rgba(0, 150, 136, 0.2);
         }
-        
+
         .theme-toggle svg {
             width: 24px;
             height: 24px;
             fill: var(--theme-text);
             transition: all 0.3s ease;
         }
-        
+
         /* Show/hide based on current theme */
         .theme-toggle .sun-icon {
             display: none;
         }
-        
+
         .theme-toggle .moon-icon {
             display: block;
         }
-        
+
         html[data-theme="dark"] .theme-toggle .sun-icon {
             display: block;
         }
-        
+
         html[data-theme="dark"] .theme-toggle .moon-icon {
             display: none;
         }
+
+        /* Consent settings toggle styles */
+        .consent-settings-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            border-radius: 50px;
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            color: var(--theme-text);
+            opacity: 0.8;
+        }
+
+        .consent-settings-toggle:hover {
+            transform: translateY(-2px);
+            opacity: 1;
+            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95);
+            border-color: var(--primary-500);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+        }
+
+        .consent-settings-toggle-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .consent-settings-toggle:hover .consent-settings-toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .consent-settings-toggle-text {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .consent-status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #94a3b8;
+            transition: background 0.3s ease;
+        }
+
+        .consent-status-indicator.accepted {
+            background: #10b981;
+            box-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
+        }
+
+        .consent-status-indicator.declined {
+            background: #f59e0b;
+            box-shadow: 0 0 4px rgba(245, 158, 11, 0.3);
+        }
+
+        .consent-settings-sr-text {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Hide consent settings toggle by default */
+        .consent-settings-toggle {
+            display: none;
+        }
+
+        /* Show consent settings toggle when JavaScript is enabled */
+        .js .consent-settings-toggle {
+            display: flex;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .consent-settings-toggle {
+                bottom: 16px;
+                left: 16px;
+                padding: 8px;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+
+            .consent-settings-toggle-text {
+                display: none;
+            }
+
+            .consent-settings-toggle-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .consent-status-indicator {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                width: 10px;
+                height: 10px;
+                border: 2px solid var(--theme-bg);
+            }
+        }
     </style>
 </head>
-<body>
+
+<body class="js">
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
         <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1zm9-9h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zM4 12H3a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm14.95-5.05a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zm-11.9 11.9a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zM6.34 6.34a1 1 0 0 1 1.414 0l.707.707A1 1 0 0 1 7.05 8.46l-.707-.707a1 1 0 0 1 0-1.414zm11.32 11.32a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414z"/>
+            <path
+                d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1zm9-9h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zM4 12H3a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm14.95-5.05a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zm-11.9 11.9a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zM6.34 6.34a1 1 0 0 1 1.414 0l.707.707A1 1 0 0 1 7.05 8.46l-.707-.707a1 1 0 0 1 0-1.414zm11.32 11.32a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414z" />
         </svg>
         <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"/>
+            <path
+                d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z" />
         </svg>
     </button>
-    
+
+    <!-- Consent Settings Toggle Button -->
+    <button class="consent-settings-toggle" id="consentSettingsToggle" aria-label="Privacy settings"
+        title="Manage analytics preferences">
+        <div class="consent-status-indicator" id="consentStatusIndicator"></div>
+        <svg class="consent-settings-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+                d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97c0-.33-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1c0 .33.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z" />
+        </svg>
+        <span class="consent-settings-toggle-text">Privacy</span>
+        <span class="consent-settings-sr-text">Open privacy settings to manage analytics consent</span>
+    </button>
+
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
@@ -214,7 +407,7 @@
                 <div class="progress-bar"></div>
             </div>
 
-          
+
             <div class="hero-container">
                 <div class="hero-content">
                     <!-- Scroll-to-Reveal Text System -->
@@ -227,26 +420,26 @@
                                         <span class="char gradient-text">L</span>
                                         <span class="char gradient-text">O</span>
                                         <span class="char gradient-text">O</span>
-                                         <span class="char gradient-text">K</span>
+                                        <span class="char gradient-text">K</span>
                                         <span class="char gradient-text">I</span>
                                         <span class="char gradient-text">N</span>
-                                         <span class="char gradient-text">G</span>
-                                      
+                                        <span class="char gradient-text">G</span>
+
                                     </span>
                                     <span class="word" data-text="FOR">
-                                      
-                                         <span class="char gradient-text">F</span>
+
+                                        <span class="char gradient-text">F</span>
                                         <span class="char gradient-text">O</span>
                                         <span class="char gradient-text">R</span>
                                     </span>
                                     <span class="word" data-text="JAY?">
-                                       <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">J</span>
                                         <span class="char gradient-text">A</span>
                                         <span class="char gradient-text">Y?</span>
                                     </span>
                                 </span>
                             </div>
-                            
+
                             <div class="text-reveal-item" data-role="SOFTWARE DEVELOPER">
                                 <span class="text-line">
                                     <span class="word" data-text="SOFTWARE">
@@ -272,7 +465,7 @@
                                     </span>
                                 </span>
                             </div>
-                            
+
                             <div class="text-reveal-item" data-role="UI DESIGNER">
                                 <span class="text-line">
                                     <span class="word" data-text="UI">
@@ -291,7 +484,7 @@
                                     </span>
                                 </span>
                             </div>
-                            
+
                             <div class="text-reveal-item" data-role="UX DESIGNER">
                                 <span class="text-line">
                                     <span class="word" data-text="UX">
@@ -310,7 +503,7 @@
                                     </span>
                                 </span>
                             </div>
-                            
+
                             <div class="text-reveal-item" data-role="MOBILE DEVELOPER">
                                 <span class="text-line">
                                     <span class="word" data-text="MOBILE">
@@ -334,7 +527,7 @@
                                     </span>
                                 </span>
                             </div>
-                            
+
                             <div class="text-reveal-item" data-role="CREATIVE DIRECTOR">
                                 <span class="text-line">
                                     <span class="word" data-text="CREATIVE">
@@ -366,14 +559,14 @@
         </section>
     </main>
 
-    <!-- Consent Banner Container -->
-    <div id="consent-banner-container"></div>
-
     <!-- JavaScript - Non-blocking load -->
     <script defer src="js/performance.js"></script>
     <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>
     <script defer src="js/components/theme-toggle.js"></script>
+    <script defer src="js/components/consent-banner.js"></script>
+    <script defer src="js/components/analytics.js"></script>
     <script defer src="js/main.js"></script>
 </body>
+
 </html>

@@ -32,7 +32,6 @@
    ELEMENTS - Base HTML Element Styles
    ========================================================================== */
 @import 'base/typography.css';
-@import 'base/forms.css';
 
 /* ==========================================================================
    OBJECTS - Layout Patterns and Grids (Minimal)
@@ -46,6 +45,7 @@
 @import 'components/scroll-indicator.css';
 @import 'components/scroll-reveal.css';
 @import 'components/theme-toggle.css';
+@import 'components/consent-banner.css';
 
 /* ==========================================================================
    PAGES - Page Specific Styles (Only Home)

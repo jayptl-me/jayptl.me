@@ -18,18 +18,14 @@ class ScrollIndicator {
     
     init() {
         if (!this.progressBar) {
-            console.warn('ScrollIndicator: Progress bar element not found');
             return;
         }
         
         this.setupEventListeners();
         this.updateProgress(); // Initial update
-        
-        console.log('ScrollIndicator initialized');
     }
     
     setupEventListeners() {
-        // Throttled scroll event
         let scrollTimeout;
         const handleScroll = () => {
             if (scrollTimeout) {
@@ -39,7 +35,7 @@ class ScrollIndicator {
             scrollTimeout = setTimeout(() => {
                 this.updateProgress();
                 this.trackScrollDepth();
-            }, 16); // ~60fps
+            }, 16);
         };
         
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -75,8 +71,6 @@ class ScrollIndicator {
                 if (typeof AnalyticsHelper !== 'undefined') {
                     AnalyticsHelper.trackScrollDepth(threshold);
                 }
-                
-                console.log(`Scroll depth milestone reached: ${threshold}%`);
             }
         });
     }
@@ -94,7 +88,6 @@ class ScrollIndicator {
     destroy() {
         window.removeEventListener('scroll', this.handleScroll);
         window.removeEventListener('resize', this.updateProgress);
-        console.log('ScrollIndicator destroyed');
     }
 }
 

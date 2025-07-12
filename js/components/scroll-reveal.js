@@ -34,20 +34,15 @@ class ScrollRevealComponent {
     
     init() {
         if (!this.container || !this.listElement || !this.items.length) {
-            console.warn('Scroll reveal elements not found');
             return;
         }
         
         this.setupEventListeners();
         this.setupIntersectionObserver();
         this.initializeItems();
-        
-        console.log('ScrollRevealComponent initialized with ultra-strict controls');
     }
     
     initializeItems() {
-        console.log('Initializing items, found:', this.items.length);
-        
         // Hide all items initially except the first one
         this.items.forEach((item, index) => {
             item.classList.remove('revealed', 'active');
@@ -56,11 +51,40 @@ class ScrollRevealComponent {
             item.style.transform = 'translate(-50%, -50%)';
             
             if (index === 0) {
-                // Show only the first item
+                // Animate the "WHO AM I?" text on initial load with a slight delay for better UX
                 setTimeout(() => {
-                    this.revealItem(item);
-                }, 100);
+                    this.animateInitialLoad(item);
+                }, 500); // Delay to allow page to settle
             }
+        });
+    }
+    
+    // New method for initial load animation
+    animateInitialLoad(item) {
+        item.classList.add('revealed', 'active');
+        
+        // Animate characters with staggered delay for initial reveal
+        const chars = item.querySelectorAll('.char');
+        const charDelay = this.isMobile ? 50 : 80; // Slightly slower for initial impact
+        
+        // Start with a more dramatic initial position
+        item.style.opacity = '0';
+        item.style.transform = 'translate(-50%, -50%) translateY(40px) scale(0.95)';
+        item.style.pointerEvents = 'auto';
+        
+        // Animate container first
+        requestAnimationFrame(() => {
+            const duration = this.isMobile ? '0.8s' : '1s'; // Longer duration for initial reveal
+            item.style.transition = `transform ${duration} cubic-bezier(0.34, 1.56, 0.64, 1), opacity ${duration} ease-out`;
+            item.style.transform = 'translate(-50%, -50%) scale(1)';
+            item.style.opacity = '1';
+        });
+        
+        // Then animate characters with staggered delay and special initial class
+        chars.forEach((char, index) => {
+            setTimeout(() => {
+                char.classList.add('animate-in', 'initial-load');
+            }, 300 + (index * charDelay)); // Add 300ms delay after container starts animating
         });
     }
     
@@ -288,7 +312,6 @@ class ScrollRevealComponent {
             this.hideItem(this.items[this.currentIndex]);
             this.currentIndex--;
             this.revealItem(this.items[this.currentIndex]);
-            console.log(`Stepped UP to item ${this.currentIndex}`);
         }
     }
     
@@ -298,7 +321,6 @@ class ScrollRevealComponent {
             this.hideItem(this.items[this.currentIndex]);
             this.currentIndex++;
             this.revealItem(this.items[this.currentIndex]);
-            console.log(`Stepped DOWN to item ${this.currentIndex}`);
         }
     }
     
@@ -316,8 +338,6 @@ class ScrollRevealComponent {
     }
     
     revealItem(item) {
-        console.log('Revealing item:', item);
-        
         // Hide all other items first
         this.items.forEach(otherItem => {
             if (otherItem !== item) {
@@ -366,7 +386,7 @@ class ScrollRevealComponent {
             // Reset character animations
             const chars = item.querySelectorAll('.char');
             chars.forEach(char => {
-                char.classList.remove('animate-in');
+                char.classList.remove('animate-in', 'initial-load');
             });
             
             // Reset styles for next reveal
@@ -398,8 +418,6 @@ class ScrollRevealComponent {
         if (this.scrollResetTimer) {
             clearTimeout(this.scrollResetTimer);
         }
-        
-        console.log('ScrollRevealComponent destroyed');
     }
 }
 

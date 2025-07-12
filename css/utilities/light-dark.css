@@ -1,0 +1,214 @@
+/**
+ * Modern Light-Dark Function Support
+ * Uses CSS light-dark() function where supported with fallbacks
+ * 
+ * @file css/utilities/light-dark.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   MODERN LIGHT-DARK FUNCTION UTILITIES
+   ========================================================================== */
+
+/* Background utilities using light-dark() function */
+@supports (color: light-dark(white, black)) {
+  .bg-light-dark {
+    background-color: light-dark(var(--white), var(--black));
+  }
+  
+  .bg-light-dark-surface {
+    background-color: light-dark(var(--gray-50), var(--gray-900));
+  }
+  
+  .bg-light-dark-elevated {
+    background-color: light-dark(var(--white), var(--gray-800));
+  }
+  
+  /* Text utilities using light-dark() function */
+  .text-light-dark {
+    color: light-dark(var(--gray-900), var(--gray-100));
+  }
+  
+  .text-light-dark-secondary {
+    color: light-dark(var(--gray-600), var(--gray-300));
+  }
+  
+  .text-light-dark-muted {
+    color: light-dark(var(--gray-400), var(--gray-500));
+  }
+  
+  /* Border utilities using light-dark() function */
+  .border-light-dark {
+    border-color: light-dark(var(--gray-200), var(--gray-700));
+  }
+  
+  .border-light-dark-strong {
+    border-color: light-dark(var(--gray-300), var(--gray-600));
+  }
+  
+  /* Shadow utilities using light-dark() function */
+  .shadow-light-dark {
+    box-shadow: light-dark(
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 3px 0 rgba(0, 0, 0, 0.4)
+    );
+  }
+  
+  .shadow-light-dark-lg {
+    box-shadow: light-dark(
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 10px 15px -3px rgba(0, 0, 0, 0.4)
+    );
+  }
+}
+
+/* ==========================================================================
+   FALLBACK SUPPORT FOR OLDER BROWSERS
+   ========================================================================== */
+
+/* Fallback for browsers without light-dark() support */
+@supports not (color: light-dark(white, black)) {
+  .bg-light-dark {
+    background-color: var(--theme-bg);
+  }
+  
+  .bg-light-dark-surface {
+    background-color: var(--theme-surface);
+  }
+  
+  .bg-light-dark-elevated {
+    background-color: var(--theme-bg-elevated);
+  }
+  
+  .text-light-dark {
+    color: var(--theme-text);
+  }
+  
+  .text-light-dark-secondary {
+    color: var(--theme-text-secondary);
+  }
+  
+  .text-light-dark-muted {
+    color: var(--theme-text-muted);
+  }
+  
+  .border-light-dark {
+    border-color: var(--theme-border);
+  }
+  
+  .border-light-dark-strong {
+    border-color: var(--theme-border-strong);
+  }
+  
+  .shadow-light-dark {
+    box-shadow: var(--theme-shadow);
+  }
+  
+  .shadow-light-dark-lg {
+    box-shadow: var(--theme-shadow-elevated);
+  }
+}
+
+/* ==========================================================================
+   PROGRESSIVE ENHANCEMENT UTILITIES
+   ========================================================================== */
+
+/* Enhanced theme-aware components */
+.modern-theme-card {
+  background-color: var(--theme-surface);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+@supports (color: light-dark(white, black)) {
+  .modern-theme-card {
+    background-color: light-dark(var(--white), var(--gray-900));
+    color: light-dark(var(--gray-900), var(--gray-100));
+    border-color: light-dark(var(--gray-200), var(--gray-700));
+    box-shadow: light-dark(
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 3px 0 rgba(0, 0, 0, 0.4)
+    );
+  }
+}
+
+/* Enhanced form inputs */
+.modern-theme-input {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+}
+
+@supports (color: light-dark(white, black)) {
+  .modern-theme-input {
+    background-color: light-dark(var(--white), var(--gray-900));
+    color: light-dark(var(--gray-900), var(--gray-100));
+    border-color: light-dark(var(--gray-300), var(--gray-600));
+  }
+  
+  .modern-theme-input:focus {
+    border-color: light-dark(var(--primary-500), var(--primary-400));
+    box-shadow: light-dark(
+      0 0 0 3px rgba(var(--primary-500-rgb), 0.1),
+      0 0 0 3px rgba(var(--primary-400), 0.2)
+    );
+  }
+}
+
+/* ==========================================================================
+   THEME DETECTION UTILITIES
+   ========================================================================== */
+
+/* Hide/show elements based on theme preference */
+.light-only {
+  display: block;
+}
+
+.dark-only {
+  display: none;
+}
+
+/* ==========================================================================
+   VISIBILITY UTILITIES FOR THEME-SPECIFIC CONTENT
+   ========================================================================== */
+
+/* Show/hide content based on system theme preference AND data-theme attribute */
+/* Default - respond to system preference */
+@media (prefers-color-scheme: light) {
+  .dark-only {
+    display: none;
+  }
+  
+  .light-only {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .light-only {
+    display: none;
+  }
+  
+  .dark-only {
+    display: block;
+  }
+}
+
+/* Override with data-theme attribute when manually set */
+html[data-theme="light"] .dark-only {
+  display: none !important;
+}
+
+html[data-theme="light"] .light-only {
+  display: block !important;
+}
+
+html[data-theme="dark"] .light-only {
+  display: none !important;
+}
+
+html[data-theme="dark"] .dark-only {
+  display: block !important;
+}

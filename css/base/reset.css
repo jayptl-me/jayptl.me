@@ -62,7 +62,7 @@ html {
 
 /* Set core body defaults */
 body {
-  height: 100vh;
+  min-height: 100vh;
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
@@ -71,7 +71,7 @@ body {
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* A elements that don't have a class get default styles */

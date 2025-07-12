@@ -12,22 +12,28 @@
      ========================================================================== */
   
   /* Primary Brand Colors */
-  --primary-50: #e0f2f1;
-  --primary-100: #b2dfdb;
-  --primary-200: #80cbc4;
-  --primary-300: #4db6ac;
-  --primary-400: #26a69a;
-  --primary-500: #009688;
-  --primary-600: #00897b;
-  --primary-700: #00796b;
-  --primary-800: #00695c;
-  --primary-900: #004d40;
+  --primary-50: #e3f2fd;
+  --primary-100: #bbdefb;
+  --primary-200: #90caf9;
+  --primary-300: #64b5f6;
+  --primary-400: #42a5f5;
+  --primary-500: #2196f3; /* Blue */
+  --primary-600: #1e88e5;
+  --primary-700: #1976d2;
+  --primary-800: #1565c0;
+  --primary-900: #0d47a1;
 
   /* Primary Brand Colors RGB (for alpha transparency) */
-  --primary-500-rgb: 0, 150, 136;
-  --primary-600-rgb: 0, 137, 123;
+  --primary-500-rgb: 33, 150, 243;
+  --primary-600-rgb: 30, 136, 229;
 
-  /* Secondary Colors */
+  /* Semantic Colors RGB (for alpha transparency) */
+  --success-rgb: 76, 175, 80;
+  --danger-rgb: 244, 67, 54;
+  --warning-rgb: 255, 152, 0;
+  --info-rgb: 33, 150, 243;
+
+  /* Secondary Colors (Gray) */
   --secondary-50: #f5f5f5;
   --secondary-100: #eeeeee;
   --secondary-200: #e0e0e0;
@@ -56,6 +62,54 @@
   --warning: #ff9800;
   --error: #f44336;
   --info: #2196f3;
+
+  /* Success Colors Scale */
+  --success-50: #e8f5e8;
+  --success-100: #c8e6c9;
+  --success-200: #a5d6a7;
+  --success-300: #81c784;
+  --success-400: #66bb6a;
+  --success-500: #4caf50;
+  --success-600: #43a047;
+  --success-700: #388e3c;
+  --success-800: #2e7d32;
+  --success-900: #1b5e20;
+
+  /* Warning Colors Scale */
+  --warning-50: #fff3e0;
+  --warning-100: #ffe0b2;
+  --warning-200: #ffcc80;
+  --warning-300: #ffb74d;
+  --warning-400: #ffa726;
+  --warning-500: #ff9800;
+  --warning-600: #fb8c00;
+  --warning-700: #f57f17;
+  --warning-800: #ef6c00;
+  --warning-900: #e65100;
+
+  /* Danger/Error Colors Scale */
+  --danger-50: #ffebee;
+  --danger-100: #ffcdd2;
+  --danger-200: #ef9a9a;
+  --danger-300: #e57373;
+  --danger-400: #ef5350;
+  --danger-500: #f44336;
+  --danger-600: #e53935;
+  --danger-700: #d32f2f;
+  --danger-800: #c62828;
+  --danger-900: #b71c1c;
+
+  /* Info Colors Scale */
+  --info-50: #e3f2fd;
+  --info-100: #bbdefb;
+  --info-200: #90caf9;
+  --info-300: #64b5f6;
+  --info-400: #42a5f5;
+  --info-500: #2196f3;
+  --info-600: #1e88e5;
+  --info-700: #1976d2;
+  --info-800: #1565c0;
+  --info-900: #0d47a1;
 
   /* Neutral Colors */
   --white: #ffffff;
@@ -92,17 +146,13 @@
   --text-4xl: 2.25rem;    /* 36px */
   --text-5xl: 3rem;       /* 48px */
   --text-6xl: 3.75rem;    /* 60px */
-  --text-7xl: 4.5rem;     /* 72px */
 
   /* Font Weights */
-  --weight-thin: 100;
   --weight-light: 300;
   --weight-normal: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  --weight-extrabold: 800;
-  --weight-black: 900;
 
   /* Line Heights */
   --leading-none: 1;
@@ -159,6 +209,7 @@
   --z-dropdown: 1000;
   --z-sticky: 1020;
   --z-fixed: 1030;
+  --z-floating: 1035;
   --z-modal-backdrop: 1040;
   --z-modal: 1050;
   --z-popover: 1060;
@@ -180,11 +231,6 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ==========================================================================
-     BREAKPOINTS
+     BREAKPOINTS (removed - using direct media queries for better performance)
      ========================================================================== */
-  --bp-sm: 640px;
-  --bp-md: 768px;
-  --bp-lg: 1024px;
-  --bp-xl: 1280px;
-  --bp-2xl: 1536px;
 }

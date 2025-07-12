@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Jay Patel - Portfolio</title>
     
     <!-- Resource hints and performance optimizations -->
@@ -25,10 +26,81 @@
     
     <!-- Critical CSS inline for fastest render -->
     <style>
-        /* Optimized essential theme variables - only what's needed for initial render */
-        :root{--font-display:'Audiowide',sans-serif;--text-xl:1.25rem;--text-2xl:1.5rem;--text-3xl:1.875rem;--text-5xl:3rem;--weight-normal:400;--space-1:0.25rem;--space-2:0.5rem;--space-4:1rem;--space-8:2rem;--leading-relaxed:1.625;--duration-300:300ms;--ease-out:cubic-bezier(0.25,0.46,0.45,0.94);--theme-bg:#ffffff;--theme-text:#212121;--theme-gradient-text:linear-gradient(135deg,#1976d2,#00796b)}@media (prefers-color-scheme:dark){:root{--theme-bg:#000000;--theme-text:#f5f5f5;--theme-gradient-text:linear-gradient(135deg,#90caf9,#4db6ac)}}
+        /* Critical theme variables - only what's needed for initial render */
+        :root{
+            --font-display:'Audiowide',sans-serif;
+            --text-xl:1.25rem;
+            --text-2xl:1.5rem;
+            --text-3xl:1.875rem;
+            --text-5xl:3rem;
+            --weight-normal:400;
+            --space-1:0.25rem;
+            --space-2:0.5rem;
+            --space-4:1rem;
+            --space-8:2rem;
+            --leading-relaxed:1.625;
+            --duration-300:300ms;
+            --duration-normal:250ms;
+            --ease-out:cubic-bezier(0,0,0.2,1);
+            
+            /* Essential color palette */
+            --white:#ffffff;
+            --black:#000000;
+            --gray-50:#f9fafb;
+            --gray-100:#f5f5f5;
+            --gray-900:#111827;
+            --primary-500:#2196f3;
+            
+            /* Light theme (default) */
+            --theme-bg:var(--white);
+            --theme-text:var(--gray-900);
+            --theme-primary:var(--primary-500);
+            --theme-gradient-text:linear-gradient(135deg,var(--primary-500),#1976d2);
+        }
+        
+        /* Dark theme - system preference */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme-bg:var(--black);
+                --theme-text:var(--white);
+                --theme-gradient-text:linear-gradient(135deg,#1976d2,#42a5f5);
+            }
+            html, body { background-color: var(--black); color: var(--white); }
+        }
+        
+        /* Theme specific styles based on data-theme attribute */
+        html[data-theme="light"] {
+            --theme-bg: var(--white);
+            --theme-text: var(--gray-900);
+            --theme-gradient-text: linear-gradient(135deg,var(--primary-500),#1976d2);
+            background-color: var(--white);
+            color: var(--gray-900);
+        }
+        
+        html[data-theme="dark"] {
+            --theme-bg: var(--black);
+            --theme-text: var(--white);
+            --theme-gradient-text: linear-gradient(135deg,#1976d2,#42a5f5);
+            background-color: var(--black);
+            color: var(--white);
+        }
+        
         /* Truly critical above-the-fold styles only */
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--font-display);background:var(--theme-bg);color:var(--theme-text);line-height:var(--leading-relaxed)}.hero{min-height:100vh;display:flex;align-items:center;justify-content:center}.hero-container{max-width:1200px;margin:0 auto;padding:0 var(--space-8);width:100%}.hero-content{text-align:center;position:relative;z-index:2}.text-reveal-container{overflow:hidden;position:relative}.text-reveal-item{opacity:0;transform:translateY(100px);font-size:clamp(var(--text-2xl),5vw,var(--text-5xl));font-weight:var(--weight-normal);margin:var(--space-4) 0}.gradient-text{background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}@media (max-width:768px){.hero-container{padding:0 var(--space-4)}.text-reveal-item{font-size:clamp(var(--text-xl),4vw,var(--text-3xl));margin:var(--space-2) 0}}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:var(--font-display);
+            background-color:var(--theme-bg);
+            color:var(--theme-text);
+            line-height:var(--leading-relaxed);
+            transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
+        }
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .hero-container{max-width:1200px;margin:0 auto;padding:0 var(--space-8);width:100%}
+        .hero-content{text-align:center;position:relative;z-index:2}
+        .text-reveal-container{overflow:hidden;position:relative}
+        .text-reveal-item{opacity:0;transform:translateY(100px);font-size:clamp(var(--text-2xl),5vw,var(--text-5xl));font-weight:var(--weight-normal);margin:var(--space-4) 0}
+        .gradient-text{background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        @media (max-width:768px){.hero-container{padding:0 var(--space-4)}.text-reveal-item{font-size:clamp(var(--text-xl),4vw,var(--text-3xl));margin:var(--space-2) 0}}
     </style>
     
     <!-- Load non-critical CSS asynchronously -->
@@ -36,8 +108,68 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Theme toggle styles -->
+    <style>
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(0, 150, 136, 0.2);
+        }
+        
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--theme-text);
+            transition: all 0.3s ease;
+        }
+        
+        /* Show/hide based on current theme */
+        .theme-toggle .sun-icon {
+            display: none;
+        }
+        
+        .theme-toggle .moon-icon {
+            display: block;
+        }
+        
+        html[data-theme="dark"] .theme-toggle .sun-icon {
+            display: block;
+        }
+        
+        html[data-theme="dark"] .theme-toggle .moon-icon {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1zm9-9h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zM4 12H3a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm14.95-5.05a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zm-11.9 11.9a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zM6.34 6.34a1 1 0 0 1 1.414 0l.707.707A1 1 0 0 1 7.05 8.46l-.707-.707a1 1 0 0 1 0-1.414zm11.32 11.32a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414z"/>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"/>
+        </svg>
+    </button>
+    
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
@@ -56,18 +188,26 @@
                         <div class="text-reveal-list" id="textRevealList">
                             <div class="text-reveal-item" data-role="WHO AM I?">
                                 <span class="text-line">
-                                    <span class="word" data-text="WHO">
-                                        <span class="char gradient-text">W</span>
-                                        <span class="char gradient-text">H</span>
+                                    <span class="word" data-text="LOOKING">
+                                        <span class="char gradient-text">L</span>
                                         <span class="char gradient-text">O</span>
-                                    </span>
-                                    <span class="word" data-text="AM">
-                                        <span class="char gradient-text">A</span>
-                                        <span class="char gradient-text">M</span>
-                                    </span>
-                                    <span class="word" data-text="I?">
+                                        <span class="char gradient-text">O</span>
+                                         <span class="char gradient-text">K</span>
                                         <span class="char gradient-text">I</span>
-                                        <span class="char gradient-text">?</span>
+                                        <span class="char gradient-text">N</span>
+                                         <span class="char gradient-text">G</span>
+                                      
+                                    </span>
+                                    <span class="word" data-text="FOR">
+                                      
+                                         <span class="char gradient-text">F</span>
+                                        <span class="char gradient-text">O</span>
+                                        <span class="char gradient-text">R</span>
+                                    </span>
+                                    <span class="word" data-text="JAY?">
+                                       <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">Y?</span>
                                     </span>
                                 </span>
                             </div>
@@ -193,12 +333,9 @@
 
     <!-- JavaScript - Non-blocking load -->
     <script defer src="js/performance.js"></script>
-    <script defer src="js/components/theme-toggle.js"></script>
     <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>
-    <script defer src="js/components/consent-manager.js"></script>
-    <script defer src="js/components/consent-toggle.js"></script>
-    <script defer src="js/components/particle-effect.js"></script>
+    <script defer src="js/components/theme-toggle.js"></script>
     <script defer src="js/main.js"></script>
 </body>
 </html>

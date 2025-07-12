@@ -1,10 +1,19 @@
 /**
- * Text Utilities
- * Typography, text styling, and content utility classes
+ * Text Utilities - Minimal used classes only
  * 
  * @file utilities/text.css
  * @author Jay Patel
  */
+
+/* Text alignment - commonly used */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Common text colors from typography.css */
+.text-primary { color: var(--theme-text); }
+.text-secondary { color: var(--theme-text-secondary); }
+.text-brand { color: var(--theme-primary); }
 
 /* ==========================================================================
    FONT FAMILY
@@ -29,23 +38,16 @@
 .text-4xl { font-size: var(--text-4xl); }
 .text-5xl { font-size: var(--text-5xl); }
 .text-6xl { font-size: var(--text-6xl); }
-.text-7xl { font-size: var(--text-7xl); }
-.text-8xl { font-size: var(--text-8xl); }
-.text-9xl { font-size: var(--text-9xl); }
 
 /* ==========================================================================
    FONT WEIGHT
    ========================================================================== */
 
-.font-thin { font-weight: var(--weight-thin); }
-.font-extralight { font-weight: var(--weight-extralight); }
 .font-light { font-weight: var(--weight-light); }
 .font-normal { font-weight: var(--weight-normal); }
 .font-medium { font-weight: var(--weight-medium); }
 .font-semibold { font-weight: var(--weight-semibold); }
 .font-bold { font-weight: var(--weight-bold); }
-.font-extrabold { font-weight: var(--weight-extrabold); }
-.font-black { font-weight: var(--weight-black); }
 
 /* ==========================================================================
    FONT STYLE

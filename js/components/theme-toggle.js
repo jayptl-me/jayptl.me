@@ -1,130 +1,46 @@
 /**
  * Theme Toggle Component
- * Optional theme toggle button that you can add to your site
+ * Provides manual control for toggling between light and dark themes
  * 
  * @file js/components/theme-toggle.js
  * @author Jay Patel
  */
 
 class ThemeToggle {
-    constructor(selector = '.theme-toggle') {
-        this.button = document.querySelector(selector);
-        if (!this.button) {
-            console.warn('ThemeToggle: No element found with selector:', selector);
-            return;
-        }
-        
+    constructor() {
+        this.themeToggle = document.getElementById('themeToggle');
         this.init();
     }
     
     init() {
-        this.createButton();
-        this.attachEventListeners();
-        this.updateButtonState();
-    }
-    
-    createButton() {
-        // Create button HTML if it doesn't exist
-        if (!this.button.innerHTML.trim()) {
-            this.button.innerHTML = `
-                <span class="theme-toggle__icon">
-                    <svg class="theme-toggle__sun" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                    <svg class="theme-toggle__moon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </span>
-                <span class="theme-toggle__text">
-                    <span class="theme-toggle__light-text">Light</span>
-                    <span class="theme-toggle__dark-text">Dark</span>
-                    <span class="theme-toggle__auto-text">Auto</span>
-                </span>
-            `;
+        if (!this.themeToggle) {
+            return;
         }
         
-        // Add CSS classes
-        this.button.classList.add('theme-toggle');
-        this.button.setAttribute('aria-label', 'Toggle theme');
-        this.button.setAttribute('type', 'button');
-    }
-    
-    attachEventListeners() {
-        this.button.addEventListener('click', () => this.toggleTheme());
+        this.themeToggle.addEventListener('click', this.toggleTheme.bind(this));
         
-        // Listen for theme changes
-        document.addEventListener('themechange', (e) => {
-            this.updateButtonState(e.detail.theme);
+        window.addEventListener('themechange', (e) => {
+            this.updateToggleState(e.detail.theme);
         });
+
+        if (window.themeManager) {
+            this.updateToggleState(window.themeManager.getCurrentTheme());
+        }
     }
     
     toggleTheme() {
-        if (!window.themeManager) {
-            console.warn('ThemeToggle: ThemeManager not found');
-            // Create a theme manager if it doesn't exist
-            window.themeManager = new (class {
-                getCurrentTheme() { return 'light'; }
-                getSystemTheme() { return 'light'; }
-                setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); }
-                toggleTheme() { this.setTheme('dark'); }
-            })();
-        }
-        
-        // Use the ThemeManager's toggleTheme method if available, otherwise fallback
-        if (typeof window.themeManager.toggleTheme === 'function') {
-            window.themeManager.toggleTheme();
-        } else {
-            const currentTheme = window.themeManager.getCurrentTheme();
-            
-            // Cycle through: light -> dark -> auto -> light...
-            let nextTheme;
-            if (currentTheme === 'light') {
-                nextTheme = 'dark';
-            } else if (currentTheme === 'dark') {
-                nextTheme = 'auto';
-            } else {
-                nextTheme = 'light';
-            }
-            
-            window.themeManager.setTheme(nextTheme);
+        if (window.themeManager) {
+            const newTheme = window.themeManager.toggleTheme();
         }
     }
-    
-    updateButtonState(theme = null) {
-        if (!theme) {
-            theme = window.themeManager ? window.themeManager.getCurrentTheme() : 'light';
+
+    updateToggleState(theme) {
+        if (this.themeToggle) {
+            this.themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
         }
-        
-        // Default to light theme if no theme is set
-        theme = theme || 'light';
-        
-        // Remove all theme classes
-        this.button.classList.remove('theme-toggle--light', 'theme-toggle--dark', 'theme-toggle--auto');
-        
-        // Add current theme class
-        this.button.classList.add(`theme-toggle--${theme}`);
-        
-        // Update aria-label
-        const labels = {
-            light: 'Switch to dark theme',
-            dark: 'Switch to auto theme',
-            auto: 'Switch to light theme'
-        };
-        
-        this.button.setAttribute('aria-label', labels[theme] || 'Toggle theme');
     }
 }
 
-// Auto-initialize if element exists
 document.addEventListener('DOMContentLoaded', () => {
-    // Wait a small amount of time to ensure ThemeManager has initialized
-    setTimeout(() => {
-        if (document.querySelector('.theme-toggle')) {
-            new ThemeToggle();
-        }
-    }, 100); // Short delay to ensure proper initialization order
+    window.themeToggleComponent = new ThemeToggle();
 });
-
-// Export for manual initialization
-window.ThemeToggle = ThemeToggle;

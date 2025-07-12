@@ -56,7 +56,7 @@ All colors are defined as CSS custom properties in `css/main.css`. Update the co
 
 ```css
 :root {
-  --color-primary-500: #009688; /* Change primary color */
+  --color-primary-500: #2196f3; /* Change primary color */
   --color-accent-500: #2196f3; /* Change accent color */
   /* ... other color variables */
 }

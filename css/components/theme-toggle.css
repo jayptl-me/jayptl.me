@@ -1,213 +1,105 @@
 /**
  * Theme Toggle Component Styles
+ * Styles for the theme toggle button and related animations
  * 
  * @file css/components/theme-toggle.css
  * @author Jay Patel
  */
 
+/* ==========================================================================
+   THEME TOGGLE COMPONENT
+   ========================================================================== */
 
-
+/* Theme toggle button */
 .theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--theme-border);
-  border-radius: var(--radius-md);
-  background: var(--theme-bg-elevated);
-  color: var(--theme-text);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-out);
-  user-select: none;
-  
-  &:hover {
-    background: var(--theme-bg-secondary);
-    border-color: var(--theme-border-strong);
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-  
-  &:focus-visible {
-    outline: 2px solid var(--theme-primary);
-    outline-offset: 2px;
-  }
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(128, 128, 128, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease-out);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Icon container */
-.theme-toggle__icon {
-  position: relative;
-  display: inline-flex;
-  width: 20px;
-  height: 20px;
+.theme-toggle:hover, 
+.theme-toggle:focus {
+    transform: scale(1.1);
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.15);
+    outline: none;
 }
 
-/* Icons */
-.theme-toggle__sun,
-.theme-toggle__moon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: all var(--duration-normal) var(--ease-out);
-  color: var(--theme-text-secondary);
+.theme-toggle:active {
+    transform: scale(0.95);
 }
 
-/* Text labels */
-.theme-toggle__text {
-  position: relative;
-  overflow: hidden;
-  height: 1.2em;
+/* Icons within the toggle */
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--theme-text);
+    transition: all 0.3s var(--ease-out);
 }
 
-.theme-toggle__light-text,
-.theme-toggle__dark-text,
-.theme-toggle__auto-text {
-  position: absolute;
-  left: 0;
-  transition: all var(--duration-normal) var(--ease-out);
-  white-space: nowrap;
-}
-
-/* Default state (auto/system preference) */
-.theme-toggle {
-  .theme-toggle__sun {
-    opacity: 0;
-    transform: rotate(180deg) scale(0.8);
-  }
-  
-  .theme-toggle__moon {
-    opacity: 0.7;
-    transform: rotate(0deg) scale(1);
-  }
-  
-  .theme-toggle__light-text {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  
-  .theme-toggle__dark-text {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  
-  .theme-toggle__auto-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Light theme state */
-.theme-toggle--light {
-  .theme-toggle__sun {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-    color: var(--accent-500);
-  }
-  
-  .theme-toggle__moon {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.8);
-  }
-  
-  .theme-toggle__light-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .theme-toggle__dark-text {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  
-  .theme-toggle__auto-text {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
-
-/* Dark theme state */
-.theme-toggle--dark {
-  .theme-toggle__sun {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.8);
-  }
-  
-  .theme-toggle__moon {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-    color: var(--accent-400);
-  }
-  
-  .theme-toggle__light-text {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  
-  .theme-toggle__dark-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .theme-toggle__auto-text {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-}
-
-/* Compact version without text */
-.theme-toggle--compact {
-  padding: var(--space-2);
-  
-  .theme-toggle__text {
+/* Light mode - show moon (default) */
+.theme-toggle .sun-icon {
     display: none;
-  }
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
 }
 
-/* Floating action button style */
-.theme-toggle--fab {
-  position: fixed;
-  bottom: var(--space-6);
-  right: var(--space-6);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  padding: 0;
-  justify-content: center;
-  box-shadow: var(--theme-shadow-elevated);
-  z-index: var(--z-floating);
-  
-  .theme-toggle__text {
+.theme-toggle .moon-icon {
+    display: block;
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* Dark mode - show sun */
+html[data-theme="dark"] .theme-toggle .sun-icon {
+    display: block;
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+html[data-theme="dark"] .theme-toggle .moon-icon {
     display: none;
-  }
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--theme-shadow-elevated), 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
+    opacity: 0;
+    transform: rotate(-90deg) scale(0);
+}
+
+/* Animations for icon transitions */
+@media (prefers-reduced-motion: no-preference) {
+    .theme-toggle svg {
+        transition: opacity 0.3s var(--ease-out),
+                    transform 0.5s var(--ease-out);
+    }
+    
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+        position: absolute;
+    }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .theme-toggle--fab {
-    bottom: var(--space-4);
-    right: var(--space-4);
-    width: 48px;
-    height: 48px;
-  }
-}
-
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .theme-toggle,
-  .theme-toggle__sun,
-  .theme-toggle__moon,
-  .theme-toggle__light-text,
-  .theme-toggle__dark-text,
-  .theme-toggle__auto-text {
-    transition: none;
-  }
+    .theme-toggle {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
 }

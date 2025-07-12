@@ -20,10 +20,23 @@
 }
 
 /* Remove default margins and padding */
-h1, h2, h3, h4, h5, h6,
-p, blockquote, pre,
-dl, dd, ol, ul,
-figure, hr, fieldset, legend {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+ol,
+ul,
+figure,
+hr,
+fieldset,
+legend {
   margin: 0;
   padding: 0;
 }
@@ -50,7 +63,7 @@ html {
   html {
     scroll-behavior: auto;
   }
-  
+
   *,
   *::before,
   *::after {
@@ -62,7 +75,10 @@ html {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+  min-height: 100svh;
+  /* Small viewport height for better mobile support */
+  min-height: 100dvh;
+  /* Dynamic viewport height fallback */
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
@@ -101,9 +117,9 @@ select {
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
-   scroll-behavior: auto;
+    scroll-behavior: auto;
   }
-  
+
   *,
   *::before,
   *::after {

@@ -12,7 +12,10 @@
 
 .hero {
   position: relative;
-  height: 100vh;
+  height: 100svh;
+  /* Small viewport height for better mobile support */
+  height: 100dvh;
+  /* Dynamic viewport height fallback */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,14 +71,14 @@
   width: 100%;
   margin-left: auto !important;
   margin-right: auto !important;
-  
+
   /* Theme-aware Gradient Text Effect */
   background: var(--theme-gradient-text);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  
+
   /* Fallback for browsers that don't support background-clip: text */
   @supports not (background-clip: text) {
     color: var(--theme-text);
@@ -168,7 +171,10 @@
 
 /* Full-screen Hero */
 .hero-fullscreen {
-  height: 100vh;
+  height: 100svh;
+  /* Small viewport height for better mobile support */
+  height: 100dvh;
+  /* Dynamic viewport height fallback */
   position: fixed;
   top: 0;
   left: 0;
@@ -221,11 +227,9 @@
    ========================================================================== */
 
 .hero-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--accent-500) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      var(--accent-500) 100%);
   color: white;
 }
 
@@ -356,12 +360,19 @@
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateX(-50%) translateY(0);
   }
+
   40% {
     transform: translateX(-50%) translateY(-10px);
   }
+
   60% {
     transform: translateX(-50%) translateY(-5px);
   }
@@ -406,9 +417,12 @@
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
@@ -442,12 +456,15 @@
     transform: translateY(100vh) rotate(0deg);
     opacity: 0;
   }
+
   10% {
     opacity: 0.6;
   }
+
   90% {
     opacity: 0.6;
   }
+
   100% {
     transform: translateY(-100px) rotate(360deg);
     opacity: 0;
@@ -463,11 +480,11 @@
     min-height: 80vh;
     padding: var(--space-8) 0;
   }
-  
+
   .hero-container {
     padding: var(--space-4);
   }
-  
+
   .hero-scroll-indicator {
     display: none;
   }
@@ -480,15 +497,18 @@
 /* Extra Small Devices (phones, 480px and down) */
 @media (max-width: 480px) {
   .hero {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-bottom: 20vh;
   }
-  
+
   .hero-container {
     padding: var(--space-3);
     max-width: 100%;
   }
-  
+
   .hero-content {
     min-height: 70vh;
     max-width: 100%;
@@ -499,15 +519,18 @@
 /* Small Devices (landscape phones, 481px to 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   .hero {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-bottom: 30vh;
   }
-  
+
   .hero-container {
     padding: var(--space-4);
     max-width: 95%;
   }
-  
+
   .hero-content {
     min-height: 65vh;
     max-width: 90%;
@@ -517,15 +540,18 @@
 /* Medium Devices (tablets, 769px to 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .hero {
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
     padding-bottom: 40vh;
   }
-  
+
   .hero-container {
     padding: var(--space-6);
     max-width: 90%;
   }
-  
+
   .hero-content {
     min-height: 60vh;
     max-width: 85%;
@@ -538,12 +564,12 @@
     min-height: 100vh;
     padding-bottom: 50vh;
   }
-  
+
   .hero-container {
     padding: var(--space-8);
     max-width: 1200px;
   }
-  
+
   .hero-content {
     min-height: 60vh;
     max-width: 800px;
@@ -556,7 +582,7 @@
     min-height: 100vh;
     padding-bottom: 10vh;
   }
-  
+
   .hero-content {
     min-height: 80vh;
   }
@@ -570,7 +596,7 @@
   .hero {
     background: linear-gradient(135deg, var(--primary-900), var(--accent-900));
   }
-  
+
   .floating-element {
     opacity: 0.05;
   }

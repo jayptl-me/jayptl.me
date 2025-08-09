@@ -491,6 +491,64 @@
 }
 
 /* ==========================================================================
+   PROJECTS SECTION (basic showcase)
+   ========================================================================== */
+.projects-section {
+  padding: var(--space-20) var(--space-6);
+  background: var(--theme-bg);
+}
+
+.projects-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.projects-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: var(--space-8);
+  color: var(--theme-text);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-card {
+  border: 1px solid var(--theme-border);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-5);
+  background: var(--theme-surface);
+  box-shadow: var(--theme-shadow);
+  transition: transform var(--duration-300) var(--ease-out), box-shadow var(--duration-300) var(--ease-out);
+}
+
+.project-card:hover,
+.project-card:focus {
+  transform: translateY(-4px);
+  box-shadow: var(--theme-shadow-elevated);
+  outline: none;
+}
+
+.project-title {
+  font-weight: var(--weight-semibold);
+  color: var(--theme-text);
+  margin-bottom: var(--space-2);
+}
+
+.project-desc {
+  color: var(--theme-text-secondary);
+}
+
+/* ==========================================================================
    RESPONSIVE HERO STYLES
    ========================================================================== */
 

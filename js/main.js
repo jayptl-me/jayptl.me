@@ -104,37 +104,7 @@ class ThemeManager {
 
 // Navigation Management - REMOVED (no navigation in current HTML)
 
-// Animation Manager - SIMPLIFIED (removed unused animations)
-class AnimationManager {
-    constructor() {
-        this.initScrollAnimations();
-    }
-
-    initScrollAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Add animation classes to elements that actually exist
-        const animatedElements = document.querySelectorAll('.text-reveal-item');
-        animatedElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
-    }
-}
+// Animation handled by components/scroll-reveal.js; removing duplicate logic
 
 // Form Management - REMOVED (no forms in current HTML)
 
@@ -175,30 +145,106 @@ window.themeManager = new ThemeManager();
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize only what's actually used
-    new AnimationManager();
-    // PerformanceManager is now handled in js/performance.js
-
-    // Initialize scroll indicator
+    // Initialize scroll indicator (components handles auto-init; this is a safety check)
     if (typeof ScrollIndicator !== 'undefined') {
-        new ScrollIndicator();
+        if (!window.scrollIndicator) window.scrollIndicator = new ScrollIndicator();
     }
 
-    // Add loading animation
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
+    // Hide/Show glass navbar based on scroll direction after reveal is released
+    const glassNav = document.getElementById('glassNav');
+    if (glassNav) {
+        let lastY = window.scrollY;
+        let ticking = false;
+
+        const onScroll = () => {
+            const y = window.scrollY;
+            const goingDown = y > lastY + 2; // small threshold
+            const goingUp = y < lastY - 2;
+            lastY = y;
+
+            // Only control visibility when reveal overlay is released
+            const overlayReleased = document.querySelector('.text-reveal-container')?.classList.contains('released');
+            if (!overlayReleased) return;
+
+            if (goingDown) {
+                glassNav.classList.add('visible');
+            } else if (goingUp) {
+                glassNav.classList.remove('visible');
+            }
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    onScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Enhance nav link UX: active state and smooth anchor scrolling when overlay is released
+        const navLinks = Array.from(glassNav.querySelectorAll('.nav-link[href^="#"]'));
+        const sections = navLinks
+            .map(a => document.querySelector(a.getAttribute('href')))
+            .filter(Boolean);
+
+        const setActiveLink = () => {
+            // Only when overlay released
+            const overlayReleased = document.querySelector('.text-reveal-container')?.classList.contains('released');
+            if (!overlayReleased) return;
+            const y = window.scrollY + 80; // offset for fixed nav height
+            let active = null;
+            for (const sec of sections) {
+                const rect = sec.getBoundingClientRect();
+                const top = rect.top + window.scrollY;
+                if (y >= top) active = sec;
+            }
+            navLinks.forEach(a => a.classList.toggle('active', active && a.getAttribute('href') === '#' + active.id));
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    setActiveLink();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Anchor click behavior: wait for overlay release, then smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href').slice(1);
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                const overlay = document.querySelector('.text-reveal-container');
+                const released = overlay?.classList.contains('released');
+                if (!released) {
+                    // If overlay still active, release it first by jumping to final step and performing one stepDown
+                    e.preventDefault();
+                    try {
+                        const comp = window.scrollRevealComponent;
+                        if (comp) {
+                            // Jump to last item and release
+                            comp.goToSection(comp.items.length - 1);
+                            comp.stepDown();
+                        }
+                    } catch { }
+                    // Delay smooth scroll slightly to allow release animation
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 350);
+                } else {
+                    // Overlay already released
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    }
 });
 
 // Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Pause animations when tab is not visible
-        document.body.style.animationPlayState = 'paused';
-    } else {
-        // Resume animations when tab becomes visible
-        document.body.style.animationPlayState = 'running';
-    }
-});
+// Keep minimal visibility handlers if needed later

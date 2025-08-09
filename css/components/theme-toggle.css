@@ -115,3 +115,37 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
         min-height: 16px;
     }
 }
+
+/* Lightsaber variant (used on home page) */
+.theme-toggle .lightsaber-blade {
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 4px #3b82f6);
+    transition: all 0.3s var(--ease-out);
+}
+
+.theme-toggle .lightsaber-glow {
+    fill: #60a5fa;
+    opacity: 0.6;
+}
+
+html[data-theme="light"] .theme-toggle .lightsaber-blade {
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 4px #3b82f6);
+}
+
+html[data-theme="light"] .theme-toggle .lightsaber-glow {
+    fill: #60a5fa;
+}
+
+html[data-theme="dark"] .theme-toggle .lightsaber-blade {
+    fill: #ef4444;
+    filter: drop-shadow(0 0 4px #ef4444);
+}
+
+html[data-theme="dark"] .theme-toggle .lightsaber-glow {
+    fill: #f87171;
+}
+
+.theme-toggle:hover .lightsaber-blade {
+    filter: drop-shadow(0 0 8px currentColor);
+}

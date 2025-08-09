@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 
 <head>
 
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <title>Jay Patel - Portfolio</title>
+    <link rel="canonical" href="https://jayptl.me/" />
 
     <!-- SEO & Social Sharing -->
     <meta name="description"
@@ -27,11 +28,13 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//static.cloudflareinsights.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
 
     <!-- Preconnect hints for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://static.cloudflareinsights.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
 
     <!-- Critical font preload for better performance -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap" as="style"
@@ -185,7 +188,11 @@
 
         .text-reveal-container {
             overflow: hidden;
-            position: relative
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
         }
 
         .text-reveal-item {
@@ -215,10 +222,11 @@
         }
     </style>
 
-    <!-- Load non-critical CSS asynchronously -->
-    <link rel="stylesheet" href="css/main.css">
+    <!-- Theme color for light and dark -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
 
-    <!-- Theme Detection Script - Prevent FOUC -->
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
     <script>
         // Prevent Flash of Unstyled Content by setting theme immediately
         (function () {
@@ -262,221 +270,37 @@
 
             document.documentElement.setAttribute('data-theme', theme);
             document.documentElement.style.colorScheme = theme;
+            // Mark JS-enabled
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
         })();
     </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Theme toggle styles -->
-    <style>
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 15;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Jay Patel",
+            "url": "https://jayptl.me/",
+            "jobTitle": "Software Developer, UI/UX Designer, Creative Director",
+            "sameAs": []
         }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            background: rgba(0, 150, 136, 0.2);
-        }
-
-        .theme-toggle svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--theme-text);
-            transition: all 0.3s ease;
-        }
-
-        /* Lightsaber styling */
-        .lightsaber-blade {
-            fill: #3b82f6;
-            filter: drop-shadow(0 0 4px #3b82f6);
-            transition: all 0.3s ease;
-        }
-
-        .lightsaber-glow {
-            fill: #60a5fa;
-            opacity: 0.6;
-        }
-
-        /* Theme-based lightsaber colors */
-        html[data-theme="light"] .lightsaber-blade {
-            fill: #3b82f6;
-            filter: drop-shadow(0 0 4px #3b82f6);
-        }
-
-        html[data-theme="light"] .lightsaber-glow {
-            fill: #60a5fa;
-        }
-
-        html[data-theme="dark"] .lightsaber-blade {
-            fill: #ef4444;
-            filter: drop-shadow(0 0 4px #ef4444);
-        }
-
-        html[data-theme="dark"] .lightsaber-glow {
-            fill: #f87171;
-        }
-
-        /* Hover effects */
-        .theme-toggle:hover .lightsaber-blade {
-            filter: drop-shadow(0 0 8px currentColor);
-        }
-
-        /* Remove old sun/moon icon styles */
-
-        /* Consent settings toggle styles */
-        .consent-settings-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 30;
-            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.9);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            border-radius: 50px;
-            padding: 8px 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            font-size: 12px;
-            color: var(--theme-text);
-            opacity: 0.8;
-        }
-
-        .consent-settings-toggle:hover {
-            transform: translateY(-2px);
-            opacity: 1;
-            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95);
-            border-color: var(--primary-500);
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
-        }
-
-        .consent-settings-toggle-icon {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .consent-settings-toggle:hover .consent-settings-toggle-icon {
-            transform: rotate(90deg);
-        }
-
-        .consent-settings-toggle-text {
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .consent-status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #94a3b8;
-            transition: background 0.3s ease;
-        }
-
-        .consent-status-indicator.accepted {
-            background: #10b981;
-            box-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
-        }
-
-        .consent-status-indicator.declined {
-            background: #f59e0b;
-            box-shadow: 0 0 4px rgba(245, 158, 11, 0.3);
-        }
-
-        .consent-settings-sr-text {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-
-        /* Hide consent settings toggle by default */
-        .consent-settings-toggle {
-            display: none;
-        }
-
-        /* Show consent settings toggle when JavaScript is enabled */
-        .js .consent-settings-toggle {
-            display: flex;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .consent-settings-toggle {
-                bottom: 16px;
-                left: 16px;
-                padding: 8px;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                justify-content: center;
-            }
-
-            .consent-settings-toggle-text {
-                display: none;
-            }
-
-            .consent-settings-toggle-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .consent-status-indicator {
-                position: absolute;
-                top: -2px;
-                right: -2px;
-                width: 10px;
-                height: 10px;
-                border: 2px solid var(--theme-bg);
-            }
-        }
-    </style>
+        </script>
 </head>
 
-<body class="js">
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle cursor-magnetic cursor-glow" id="themeToggle" aria-label="Toggle dark/light mode"
-        tabindex="0">
-        <svg class="lightsaber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
-            focusable="false">
-            <!-- Lightsaber Handle -->
-            <rect x="10.5" y="18" width="3" height="4" rx="1.5" fill="currentColor" opacity="0.8" />
-            <rect x="10" y="16" width="4" height="2" rx="1" fill="currentColor" opacity="0.6" />
-            <rect x="10.2" y="17" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
-            <rect x="10.2" y="18.5" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
-            <rect x="10.2" y="20" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
+<body>
+    <noscript>
+        <style>
+            .no-js .consent-settings-toggle {
+                display: none !important;
+            }
+        </style>
+    </noscript>
 
-            <!-- Lightsaber Blade -->
-            <rect x="11.2" y="2" width="1.6" height="14" rx="0.8" class="lightsaber-blade" />
-
-            <!-- Blade Glow Effect -->
-            <rect x="11.4" y="2" width="1.2" height="14" rx="0.6" class="lightsaber-glow" />
-        </svg>
-    </button>
 
     <!-- Consent Settings Toggle Button -->
     <button class="consent-settings-toggle cursor-magnetic cursor-pulse" id="consentSettingsToggle"
@@ -492,9 +316,11 @@
     </button>
 
     <!-- Main Content -->
-    <main>
+    <main aria-label="Jay Patel Portfolio">
+        <h1 class="sr-only">Jay Patel — Software Developer, UI/UX Designer & Creative Director</h1>
         <!-- Hero Section -->
         <section id="home" class="hero" aria-labelledby="heroTitle">
+            <h2 id="heroTitle" class="sr-only">Welcome to Jay Patel’s Portfolio</h2>
             <!-- Progress Indicator -->
             <div class="progress-indicator" aria-hidden="true">
                 <div class="progress-bar"></div>
@@ -643,8 +469,61 @@
                                     </span>
                                 </span>
                             </div>
+                            <!-- Final: Ahhhh, Just Jay! -->
+                            <div class="text-reveal-item final" data-role="JUST JAY">
+                                <span class="text-line">
+                                    <span class="word" data-text="Ahhhh,">
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">,</span>
+                                    </span>
+                                    <span class="word" data-text="Just">
+                                        <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">u</span>
+                                        <span class="char gradient-text">s</span>
+                                        <span class="char gradient-text">t</span>
+                                    </span>
+                                    <span class="word word-jay" data-text="Jay!">
+                                        <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">a</span>
+                                        <span class="char gradient-text">y</span>
+                                        <span class="char gradient-text">!</span>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Bottom Scroll Indicator -->
+            <div class="hero-scroll-indicator" id="bottomScrollHint" aria-hidden="true">
+                <div class="hero-scroll-arrow"></div>
+                <span>Scroll</span>
+            </div>
+
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section" aria-labelledby="projectsTitle">
+            <div class="projects-container">
+                <h2 id="projectsTitle" class="projects-title">Projects</h2>
+                <div class="projects-grid">
+                    <article class="project-card" tabindex="0">
+                        <h3 class="project-title">Project One</h3>
+                        <p class="project-desc">Short description of the project. Tech stack and role.</p>
+                    </article>
+                    <article class="project-card" tabindex="0">
+                        <h3 class="project-title">Project Two</h3>
+                        <p class="project-desc">Short description of the project. Tech stack and role.</p>
+                    </article>
+                    <article class="project-card" tabindex="0">
+                        <h3 class="project-title">Project Three</h3>
+                        <p class="project-desc">Short description of the project. Tech stack and role.</p>
+                    </article>
                 </div>
             </div>
         </section>
@@ -652,6 +531,7 @@
 
     <!-- JavaScript - Non-blocking load -->
     <script defer src="js/performance.js"></script>
+    <script defer src="js/components/navbar.js"></script>
     <script defer src="js/components/custom-cursor.js"></script>
     <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>

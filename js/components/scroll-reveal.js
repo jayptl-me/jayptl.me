@@ -14,6 +14,7 @@ class ScrollRevealComponent {
         this.container = document.querySelector('.text-reveal-container');
         this.listElement = document.querySelector('.text-reveal-list');
         this.items = document.querySelectorAll('.text-reveal-item');
+        this.bottomHint = document.getElementById('bottomScrollHint');
 
         // Configuration
         this.currentIndex = 0;
@@ -31,6 +32,7 @@ class ScrollRevealComponent {
         this.debounceTimer = null;
         this.accumulatedScroll = 0;
         this.scrollResetTimer = null;
+        this.releaseArmed = false; // require one more scroll on last item to release
 
         this.init();
     }
@@ -43,6 +45,63 @@ class ScrollRevealComponent {
         this.setupEventListeners();
         this.setupIntersectionObserver();
         this.initializeItems();
+
+        // Lock page scroll until reveal is complete
+        this.lockBodyScroll();
+        // Ensure overlay is interactive from start
+        this.container.classList.add('in-view');
+        if (this.bottomHint) this.bottomHint.classList.remove('hidden');
+
+        // Observe when hero section comes back into view to re-enable reveal (no hard reset)
+        const hero = document.getElementById('home');
+        if (hero) {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Seamless re-engagement: add a subtle fade/slide-in before locking
+                        const wasReleased = this.container.classList.contains('released');
+                        this.container.classList.remove('released');
+                        this.container.classList.remove('liquid-exit');
+                        this.container.classList.add('reengaging');
+                        this.container.classList.add('liquid-enter');
+                        this.container.style.display = '';
+                        // allow one frame for CSS to pick up the reengaging state
+                        requestAnimationFrame(() => {
+                            // keep mask opaque during re-engagement
+                            this.container.classList.remove('reveal-hidden');
+                            this.lockBodyScroll();
+                            // If we are coming back from released state, start at the final item ("Ahhhh, Just Jay!")
+                            if (wasReleased && this.items.length) {
+                                // Hide everything and reveal only the final item
+                                this.items.forEach(it => this.hideItem(it));
+                                this.currentIndex = this.items.length - 1;
+                                this.revealItem(this.items[this.currentIndex]);
+                                // Reset scroll accumulators and add a tiny guard to avoid immediate double-step
+                                this.accumulatedScroll = 0;
+                                this.lastScrollY = window.scrollY;
+                                this.lastStepTime = Date.now();
+                                this.isProcessingScroll = false;
+                                this.scrollEventLocked = false;
+                            }
+                            // remove reengaging after transition
+                            setTimeout(() => this.container.classList.remove('reengaging'), 300);
+                            // clean up liquid-enter after animation completes
+                            const onEnterEnd = () => {
+                                this.container.classList.remove('liquid-enter');
+                                this.container.removeEventListener('animationend', onEnterEnd);
+                            };
+                            this.container.addEventListener('animationend', onEnterEnd);
+                        });
+                        // Keep the bottom hint visible even on the last item; release happens on next scroll
+                        if (this.bottomHint) this.bottomHint.classList.remove('hidden');
+                        this.releaseArmed = false;
+                        // Reverse scroll will step back one-by-one from the final item
+                    }
+                });
+            }, { threshold: 0.6 });
+            obs.observe(hero);
+            this._heroObserver = obs;
+        }
     }
 
     initializeItems() {
@@ -95,6 +154,7 @@ class ScrollRevealComponent {
         // Ultra-strict scroll event with heavy debouncing
         let scrollLocked = false;
         const handleScroll = () => {
+            if (this.container.classList.contains('released')) return;
             if (scrollLocked) return;
 
             scrollLocked = true;
@@ -156,7 +216,14 @@ class ScrollRevealComponent {
 
             // Ultra-strict single swipe trigger
             if (Math.abs(deltaY) > 40 && deltaX < 100) {
-                this.executeStep(deltaY > 0 ? 1 : -1);
+                const direction = deltaY > 0 ? 1 : -1;
+                const atLast = this.currentIndex >= this.items.length - 1;
+                if (atLast && direction > 0) {
+                    // Release on last item swipe down; native scrolling will proceed
+                    this.stepDown();
+                } else {
+                    this.executeStep(direction);
+                }
             }
         }, { passive: true });
     }
@@ -187,7 +254,8 @@ class ScrollRevealComponent {
 
     handleScroll() {
         // Ultra-strict guards to prevent multiple steps
-        if (!this.container.classList.contains('in-view') ||
+        if (this.container.classList.contains('released') ||
+            !this.container.classList.contains('in-view') ||
             this.scrollCooldown ||
             this.isProcessingScroll ||
             this.scrollEventLocked) {
@@ -257,7 +325,8 @@ class ScrollRevealComponent {
     }
 
     handleWheel(e) {
-        if (!this.container.classList.contains('in-view') ||
+        if (this.container.classList.contains('released') ||
+            !this.container.classList.contains('in-view') ||
             this.scrollCooldown ||
             this.isProcessingScroll ||
             this.scrollEventLocked) return;
@@ -268,16 +337,24 @@ class ScrollRevealComponent {
             return;
         }
 
+        // Determine direction early
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const atLast = this.currentIndex >= this.items.length - 1;
+
+        // If at last item and scrolling down, release immediately (no second scroll required)
+        if (atLast && direction > 0) {
+            this.stepDown(); // triggers release
+            return; // do not preventDefault; allow native scroll
+        }
+
         // Prevent default scroll behavior when in stepper mode
         e.preventDefault();
-
-        // Determine direction but allow only ONE step per wheel event
-        const direction = e.deltaY > 0 ? 1 : -1;
         this.executeStep(direction);
     }
 
     handleKeyboard(e) {
-        if (!this.container.classList.contains('in-view') ||
+        if (this.container.classList.contains('released') ||
+            !this.container.classList.contains('in-view') ||
             this.isProcessingScroll ||
             this.scrollEventLocked) return;
 
@@ -298,12 +375,18 @@ class ScrollRevealComponent {
                 e.preventDefault();
                 if (this.currentIndex < this.items.length - 1) {
                     this.executeStep(1);
+                } else {
+                    // On last item, release immediately
+                    this.stepDown();
                 }
                 break;
             case ' ': // Spacebar
                 e.preventDefault();
                 if (this.currentIndex < this.items.length - 1) {
                     this.executeStep(1);
+                } else {
+                    // On last item, release immediately
+                    this.stepDown();
                 }
                 break;
         }
@@ -324,6 +407,35 @@ class ScrollRevealComponent {
             this.hideItem(this.items[this.currentIndex]);
             this.currentIndex++;
             this.revealItem(this.items[this.currentIndex]);
+        } else {
+            // On last item: fade out the current item, reveal the navbar, and release to native scroll
+            try {
+                const glassNav = document.getElementById('glassNav');
+                if (glassNav) {
+                    glassNav.classList.add('visible');
+                }
+
+                // Fade the final item out for a smoother transition
+                const currentItem = this.items[this.currentIndex];
+                if (currentItem) {
+                    this.hideItem(currentItem);
+                }
+
+                // Release native scroll
+                this.unlockBodyScroll();
+                this.container.classList.add('released');
+                this.container.classList.add('liquid-exit');
+                const onAnimEnd = () => {
+                    this.container.classList.remove('liquid-exit');
+                    this.container.removeEventListener('animationend', onAnimEnd);
+                };
+                this.container.addEventListener('animationend', onAnimEnd);
+                if (this.bottomHint) this.bottomHint.classList.add('hidden');
+            } catch (err) {
+                this.unlockBodyScroll();
+                this.container.classList.add('released');
+                if (this.bottomHint) this.bottomHint.classList.add('hidden');
+            }
         }
     }
 
@@ -367,16 +479,35 @@ class ScrollRevealComponent {
 
         requestAnimationFrame(() => {
             const duration = this.isMobile ? '0.4s' : '0.6s';
-            item.style.transition = `transform ${duration} ease-out, opacity ${duration} ease-out`;
+            item.style.transition = `transform ${duration} cubic-bezier(0.22, 1, 0.36, 1), opacity ${duration} ease-out`;
             item.style.transform = 'translate(-50%, -50%)';
             item.style.opacity = '1';
         });
+
+        // Toggle bottom hint and lock based on position
+        const atLast = this.currentIndex >= this.items.length - 1;
+        // Keep the bottom hint visible while overlay is active
+        if (this.bottomHint) this.bottomHint.classList.remove('hidden');
+        // While showing the last item, keep the overlay fixed and the page locked.
+        // Only when the user scrolls down again from the last item (handled in stepDown), release to native scroll.
+        this.container.classList.remove('reveal-hidden');
+        this.container.classList.remove('released');
+        this.container.classList.remove('liquid-exit');
+        this.lockBodyScroll();
+
+        // Add a subtle spring bounce when the last item becomes active
+        if (atLast) {
+            item.classList.add('bounce-in');
+        } else {
+            item.classList.remove('bounce-in');
+            this.releaseArmed = false;
+        }
     }
 
     hideItem(item) {
         if (!item.classList.contains('revealed')) return;
 
-        const duration = this.isMobile ? '0.3s' : '0.4s';
+        const duration = this.isMobile ? '0.35s' : '0.5s';
 
         item.style.transition = `transform ${duration} ease-in, opacity ${duration} ease-in`;
         item.style.transform = 'translate(-50%, -50%) translateY(-20px)';
@@ -385,6 +516,7 @@ class ScrollRevealComponent {
 
         setTimeout(() => {
             item.classList.remove('revealed', 'active');
+            item.classList.remove('bounce-in');
 
             // Reset character animations
             const chars = item.querySelectorAll('.char');
@@ -397,6 +529,16 @@ class ScrollRevealComponent {
             item.style.opacity = '0';
             item.style.transition = '';
         }, this.isMobile ? 300 : 400);
+    }
+
+    // Final message removed
+
+    lockBodyScroll() {
+        document.body.classList.add('lock-scroll');
+    }
+
+    unlockBodyScroll() {
+        document.body.classList.remove('lock-scroll');
     }
 
     getScrollPercentage() {

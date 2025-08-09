@@ -29,20 +29,20 @@ class ScrollIndicator {
     }
 
     setupEventListeners() {
+        this._resizeHandler = () => this.updateProgress();
         let scrollTimeout;
-        const handleScroll = () => {
+        this._scrollHandler = () => {
             if (scrollTimeout) {
                 clearTimeout(scrollTimeout);
             }
-
             scrollTimeout = setTimeout(() => {
                 this.updateProgress();
                 this.trackScrollDepth();
             }, 16);
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('resize', () => this.updateProgress(), { passive: true });
+        window.addEventListener('scroll', this._scrollHandler, { passive: true });
+        window.addEventListener('resize', this._resizeHandler, { passive: true });
     }
 
     updateProgress() {
@@ -89,20 +89,19 @@ class ScrollIndicator {
 
     // Cleanup method
     destroy() {
-        window.removeEventListener('scroll', this.handleScroll);
-        window.removeEventListener('resize', this.updateProgress);
+        if (this._scrollHandler) window.removeEventListener('scroll', this._scrollHandler);
+        if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
     }
 }
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.scrollIndicator = new ScrollIndicator();
+    if (!window.scrollIndicator) {
+        window.scrollIndicator = new ScrollIndicator();
+    }
 });
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ScrollIndicator;
-    document.addEventListener('DOMContentLoaded', () => {
-        window.scrollIndicator = new ScrollIndicator();
-    });
 }

@@ -245,6 +245,15 @@ html[data-theme="dark"] {
     transform: translateY(0);
 }
 
+/* Progressive enhancement: hidden by default without JS */
+.no-js .consent-settings-toggle {
+    display: none !important;
+}
+
+.js .consent-settings-toggle {
+    display: inline-flex;
+}
+
 .consent-settings-toggle:hover,
 .consent-settings-toggle:focus {
     opacity: 1;

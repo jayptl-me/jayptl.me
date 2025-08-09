@@ -31,11 +31,80 @@
   -webkit-scroll-behavior: auto !important;
   overscroll-behavior: none;
   -webkit-overscroll-behavior: none;
+  opacity: 1;
+  transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
 }
 
 .text-reveal-container.in-view {
   pointer-events: auto;
   -webkit-overflow-scrolling: auto !important;
+  z-index: var(--z-overlay, 9999);
+  /* Opaque theme background to fully mask underlying content while active */
+  background: var(--bg-primary, var(--theme-bg, #000));
+}
+
+.text-reveal-container.reveal-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Smooth re-engagement animation when returning into hero (no opacity drop to avoid flashing underlying content) */
+.text-reveal-container.reengaging {
+  transform: translateY(24px);
+}
+
+/* Liquid-like enter when overlay re-engages */
+.text-reveal-container.liquid-enter {
+  animation: liquidEnter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes liquidEnter {
+  0% {
+    transform: translateY(14px) scaleY(0.985);
+  }
+
+  55% {
+    transform: translateY(-6px) scaleY(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* When released, container is no longer fixed; it occupies normal flow and scrolls away */
+.text-reveal-container.released {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: 100svh;
+  height: 100dvh;
+  opacity: 1;
+}
+
+/* Liquid-like exit when releasing to native scroll */
+.text-reveal-container.released.liquid-exit {
+  animation: liquidExit 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  background: transparent;
+}
+
+@keyframes liquidExit {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+
+  45% {
+    transform: translateY(-10px) scaleY(0.98);
+  }
+
+  80% {
+    transform: translateY(3px) scaleY(1.008);
+  }
+
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
 }
 
 .text-reveal-list {
@@ -60,7 +129,7 @@
   max-width: none;
   padding: clamp(1rem, 4vw, 2rem);
   opacity: 0;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease-out;
   pointer-events: none;
   text-align: center;
   will-change: transform, opacity;
@@ -76,6 +145,56 @@
 .text-reveal-item.active {
   transform: translate(-50%, -50%) scale(1.05);
 }
+
+/* Subtle jelly bounce for the last item */
+.text-reveal-item.bounce-in {
+  animation: jellyIn 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 50ms both;
+}
+
+@keyframes jellyIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.98) translateY(6px);
+    filter: saturate(0.95) blur(0.2px);
+  }
+
+  35% {
+    transform: translate(-50%, -50%) scale(1.04) translateY(-4px);
+  }
+
+  65% {
+    transform: translate(-50%, -50%) scale(0.997) translateY(1px);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+    filter: saturate(1) blur(0);
+  }
+}
+
+/* Bottom scroll indicator */
+#bottomScrollHint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-text-secondary);
+  font-size: var(--text-sm);
+  z-index: 10;
+  opacity: 1;
+  transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
+  pointer-events: none;
+}
+
+#bottomScrollHint.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Final message removed */
 
 /* ==========================================================================
    GRADIENT OVERLAYS
@@ -581,11 +700,217 @@ html {
   -webkit-overscroll-behavior: none;
 }
 
+/* ==========================================================================
+   GLASSMORPHIC NAVBAR (revealed after final item)
+   ========================================================================== */
+
+.glass-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  padding: 8px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.glass-nav.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.glass-nav-inner {
+  display: contents;
+}
+
+.glass-nav .nav-left,
+.glass-nav .nav-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.glass-nav .nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-nav .nav-brand {
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  background: linear-gradient(180deg,
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.28),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.18));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: var(--theme-text);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.glass-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  color: var(--theme-text);
+  text-decoration: none;
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.glass-nav .nav-link:hover {
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Active and focus-visible states for nav links */
+.glass-nav .nav-link.active {
+  background: linear-gradient(180deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.18),
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.1));
+  border-color: rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.glass-nav .nav-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+}
+
+.glass-nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.glass-nav .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--theme-text);
+  text-decoration: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.glass-nav .icon-btn:hover {
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.26);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Focus-visible for accessibility */
+.glass-nav .nav-link:focus-visible,
+.glass-nav .icon-btn:focus-visible,
+.glass-nav .nav-brand:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+}
+
+/* Button revamp utility (can be used elsewhere) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg,
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.2),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--theme-text);
+  text-decoration: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.26);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.btn:active {
+  transform: translateY(0);
+  filter: saturate(1.05);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.12));
+  border-color: rgba(33, 150, 243, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, rgba(33, 150, 243, 0.28), rgba(33, 150, 243, 0.16));
+}
+
+/* Transition of final 'Jay' to navbar */
+.jay-to-nav {
+  position: fixed !important;
+  top: 14px !important;
+  left: 50% !important;
+  transform: translate(-50%, 0) !important;
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 450ms var(--ease-out);
+}
+
+.text-reveal-item.final .word-jay {
+  position: relative;
+  z-index: 10001;
+}
+
+/* Brand pulse effect when text switches to Jay Patel */
+.glass-nav .nav-brand.pulse {
+  animation: brandPulse 600ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
+}
+
+@keyframes brandPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
 body {
   scroll-behavior: auto !important;
   -webkit-scroll-behavior: auto !important;
   overscroll-behavior: none;
   -webkit-overscroll-behavior: none;
+}
+
+/* Lock body scrolling during reveal */
+body.lock-scroll {
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Disable momentum scrolling on all elements */

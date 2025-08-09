@@ -48,17 +48,24 @@ html[data-theme="dark"] {
     left: 0;
     right: 0;
     z-index: var(--z-overlay);
-    background: linear-gradient(180deg,
-            rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
-            rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
-    backdrop-filter: blur(12px) saturate(120%);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    /* Fallback solid background for unsupported browsers */
+    background: rgb(var(--theme-bg-rgb, 255, 255, 255));
+
+    /* Only apply blur and gradient if supported */
+    @supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+        background: linear-gradient(180deg,
+                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
+                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
+        backdrop-filter: blur(12px) saturate(120%);
+        -webkit-backdrop-filter: blur(12px) saturate(120%);
+    }
+
     border-top: 1px solid var(--theme-border);
     padding: var(--space-4) var(--space-4) var(--space-6);
     transform: translateY(100%);
     transition: transform var(--duration-300) var(--ease-out),
-        background-color var(--duration-normal) var(--ease-out),
-        border-color var(--duration-normal) var(--ease-out);
+    background-color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
     box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.12);
 }
 
@@ -137,6 +144,17 @@ html[data-theme="dark"] {
     color: var(--white);
     border-color: transparent;
 }
+
+.consent-btn-accept:hover,
+.consent-btn-accept:focus-visible {
+    background: var(--theme-gradient-primary);
+    color: var(--white);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px var(--focus-ring-color, #2563eb), 0 4px 12px rgba(var(--primary-500-rgb), 0.3);
+    outline: none;
+    transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
 
 .consent-btn-accept:hover,
 .consent-btn-accept:focus {
@@ -427,6 +445,8 @@ html[data-theme="dark"] {
 
 .consent-settings-dialog-body {
     padding: var(--space-6);
+    padding-bottom: calc(var(--space-6) + 56px);
+    /* Reserve space for sticky actions */
 }
 
 .consent-current-status {
@@ -551,6 +571,20 @@ html[data-theme="dark"] {
     background: var(--theme-gradient-primary);
     color: var(--white);
     border-color: transparent;
+}
+
+.consent-dialog-btn-enable:hover,
+.consent-dialog-btn-enable:focus {
+    background: var(--theme-primary-hover);
+    border-color: var(--theme-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-500-rgb), 0.3);
+    outline: none;
+}
+
+.consent-dialog-btn-enable:focus-visible {
+    outline: 2px solid var(--theme-primary-hover);
+    outline-offset: 2px;
 }
 
 .consent-dialog-btn-enable:hover,
@@ -782,7 +816,7 @@ html[data-theme="dark"] {
 
 .consent-switch {
     --switch-w: 54px;
-    --switch-h: 30px;
+    --switch-h: 44px;
     position: relative;
     width: var(--switch-w);
     height: var(--switch-h);
@@ -790,13 +824,32 @@ html[data-theme="dark"] {
     border: 1px solid var(--theme-border);
     background: var(--theme-surface);
     cursor: pointer;
-    padding: 0;
+    padding: 6px 0;
+    /* vertical padding for larger hit area */
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
     transition: background-color var(--duration-normal) var(--ease-out),
         border-color var(--duration-normal) var(--ease-out),
         box-shadow var(--duration-normal) var(--ease-out);
+    box-sizing: border-box;
+}
+
+.consent-switch-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.consent-switch-input:focus-visible+.switch-handle {
+    outline: 2px solid var(--theme-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(var(--primary-500-rgb), 0.15);
 }
 
 .consent-switch .switch-handle {
@@ -812,6 +865,7 @@ html[data-theme="dark"] {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     transition: transform var(--duration-300) var(--ease-out),
         background-color var(--duration-normal) var(--ease-out);
+    z-index: 1;
 }
 
 .consent-switch .switch-label-on,
@@ -837,6 +891,14 @@ html[data-theme="dark"] {
 .consent-switch.is-on .switch-handle {
     transform: translate(calc(var(--switch-w) - var(--size) - 6px), -50%);
     background: var(--white);
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .consent-switch,
+        .consent-switch .switch-handle {
+            transition: none !important;
+        }
+    }
 }
 
 .consent-switch.is-on .switch-label-on {

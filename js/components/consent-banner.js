@@ -124,10 +124,12 @@ Analytics helps me understand which sections are most engaging and improve the u
                             <p class="toggle-subtext">Help improve this site with anonymous usage insights. No personal data collected.</p>
                         </div>
                         <button class="consent-switch" id="analyticsSwitch" aria-pressed="${this.consentData.accepted && this.consentData.hasResponded ? 'true' : 'false'}" aria-label="Toggle analytics">
-                            <span class="switch-handle"></span>
-                            <span class="switch-label-on">On</span>
-                            <span class="switch-label-off">Off</span>
-                        </button>
+                            <label class="consent-switch" id="analyticsSwitch" role="switch" aria-checked="${this.consentData.accepted && this.consentData.hasResponded ? 'true' : 'false'}" tabindex="0">
+                                <input type="checkbox" class="consent-switch-input" ${this.consentData.accepted && this.consentData.hasResponded ? 'checked' : ''} aria-label="Toggle analytics" />
+                                <span class="switch-handle"></span>
+                                <span class="switch-label-on">On</span>
+                                <span class="switch-label-off">Off</span>
+                            </label>
                     </div>
                     
                     <div class="consent-settings-info">
@@ -169,7 +171,9 @@ Analytics helps me understand which sections are most engaging and improve the u
 
         document.body.appendChild(dialog);
         // lock body scroll while dialog is open
-        this._prevOverflow = document.body.style.overflow;
+        if (typeof this._prevOverflow === 'undefined') {
+            this._prevOverflow = document.body.style.overflow;
+        }
         document.body.style.overflow = 'hidden';
 
         // Focus the dialog

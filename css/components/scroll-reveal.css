@@ -24,7 +24,7 @@
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
-  z-index: 5;
+  z-index: var(--z-content, 10);
   background: transparent;
   pointer-events: none;
   scroll-behavior: auto !important;
@@ -38,7 +38,7 @@
 .text-reveal-container.in-view {
   pointer-events: auto;
   -webkit-overflow-scrolling: auto !important;
-  z-index: var(--z-overlay, 9999);
+  z-index: var(--z-overlay, 1000);
   /* Opaque theme background to fully mask underlying content while active */
   background: var(--bg-primary, var(--theme-bg, #000));
 }
@@ -81,6 +81,12 @@
   height: 100svh;
   height: 100dvh;
   opacity: 1;
+}
+
+/* Transitional fade state when releasing to native scroll */
+.text-reveal-container.releasing {
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
 }
 
 /* Liquid-like exit when releasing to native scroll */
@@ -183,7 +189,7 @@
   gap: 8px;
   color: var(--theme-text-secondary);
   font-size: var(--text-sm);
-  z-index: 10;
+  z-index: var(--z-above-content, 2000);
   opacity: 1;
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
   pointer-events: none;
@@ -206,7 +212,7 @@
   right: 0;
   height: 120px;
   pointer-events: none;
-  z-index: 10;
+  z-index: var(--z-above-content);
 }
 
 .gradient-top {
@@ -688,6 +694,439 @@
   transform: translateZ(0);
 }
 
+/* ========================================================================
+   MOBILE STEPPER UI
+   ======================================================================== */
+/* Stepper visible on all breakpoints */
+.reveal-stepper {
+  position: fixed;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.75),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.55),
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.15),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.65));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 10px 14px;
+  z-index: var(--z-overlay, 2200);
+  transition:
+    background 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    backdrop-filter 220ms var(--ease-out);
+}
+
+/* Animated progress bars on sides of stepper - grow equally from both ends */
+.reveal-stepper::before,
+.reveal-stepper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.8),
+      rgba(105, 180, 255, 0.9));
+  box-shadow:
+    0 0 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+    0 0 24px rgba(105, 180, 255, 0.3);
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.9;
+}
+
+/* Left expanding bar - grows from center outward */
+.reveal-stepper::before {
+  right: 100%;
+  margin-right: 16px;
+  width: 120px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.8));
+}
+
+/* Right expanding bar - grows from center outward */
+.reveal-stepper::after {
+  left: 100%;
+  margin-left: 16px;
+  width: 120px;
+  background: linear-gradient(90deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.8),
+      transparent);
+}
+
+/* Progress-based bar animation states - both bars start at 100% and deplete equally */
+.reveal-stepper.progress-100::before {
+  width: 120px;
+}
+
+.reveal-stepper.progress-100::after {
+  width: 120px;
+}
+
+.reveal-stepper.progress-80::before {
+  width: 96px;
+}
+
+.reveal-stepper.progress-80::after {
+  width: 96px;
+}
+
+.reveal-stepper.progress-60::before {
+  width: 72px;
+}
+
+.reveal-stepper.progress-60::after {
+  width: 72px;
+}
+
+.reveal-stepper.progress-40::before {
+  width: 48px;
+}
+
+.reveal-stepper.progress-40::after {
+  width: 48px;
+}
+
+.reveal-stepper.progress-20::before {
+  width: 24px;
+}
+
+.reveal-stepper.progress-20::after {
+  width: 24px;
+}
+
+.reveal-stepper.progress-0::before {
+  width: 0;
+}
+
+.reveal-stepper.progress-0::after {
+  width: 0;
+}
+
+/* Enhanced visual effects at key progress points */
+.reveal-stepper.progress-100::before,
+.reveal-stepper.progress-100::after {
+  box-shadow:
+    0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 0 32px rgba(105, 180, 255, 0.4),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3);
+}
+
+/* Smooth pulsing effect for full bars */
+.reveal-stepper.progress-100::before,
+.reveal-stepper.progress-100::after {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+
+  0%,
+  100% {
+    opacity: 0.9;
+    filter: brightness(1);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.1);
+  }
+}
+
+.stepper-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepper-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0;
+  transition:
+    width 240ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    transform 140ms ease,
+    border-color 200ms var(--ease-out);
+  cursor: pointer;
+}
+
+.stepper-dot.active {
+  width: 16px !important;
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9) !important;
+  border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25) !important;
+}
+
+.stepper-dot:hover {
+  transform: translateY(-1px) scale(1.05);
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.stepper-dot.active:hover {
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 1) !important;
+  box-shadow:
+    0 0 18px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3) !important;
+}
+
+.stepper-dot:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3);
+  transform: translateY(-1px) scale(1.05);
+}
+
+.stepper-dot.active:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) !important;
+}
+
+/* Force active stepper dot to be blue regardless of theme */
+.reveal-stepper .stepper-dot.active {
+  width: 16px !important;
+  background: #2196F3 !important;
+  /* Solid blue fallback */
+  background: rgba(33, 150, 243, 0.9) !important;
+  border: 1px solid rgba(33, 150, 243, 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(33, 150, 243, 0.5),
+    0 2px 8px rgba(33, 150, 243, 0.25) !important;
+}
+
+
+
+/* ==========================================================================
+   LIGHT & DARK THEME ADAPTATIONS FOR STEPPER
+   ========================================================================== */
+
+/* Light theme adaptations */
+@media (prefers-color-scheme: light) {
+  .reveal-stepper {
+    background: linear-gradient(135deg,
+        rgba(var(--theme-bg-rgb, 255, 255, 255), 0.90),
+        rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75),
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.12),
+        rgba(var(--theme-bg-rgb, 255, 255, 255), 0.85));
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.06),
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    box-shadow:
+      0 0 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+      0 0 16px rgba(30, 58, 138, 0.2);
+  }
+
+  .reveal-stepper::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.9));
+  }
+
+  .reveal-stepper::after {
+    background: linear-gradient(90deg,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.9),
+        transparent);
+  }
+
+  .stepper-dot {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .stepper-dot.active {
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.95) !important;
+    border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.3) !important;
+    box-shadow:
+      0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+      0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.2) !important;
+  }
+
+  .stepper-dot:hover {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .stepper-dot.active:hover {
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 1);
+    box-shadow:
+      0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+      0 3px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25);
+  }
+}
+
+/* Dark theme adaptations */
+@media (prefers-color-scheme: dark) {
+  .reveal-stepper {
+    background: linear-gradient(135deg,
+        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.80),
+        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.60),
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.18),
+        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.70));
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 4px 16px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    box-shadow:
+      0 0 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+      0 0 24px rgba(105, 180, 255, 0.4);
+  }
+
+  .reveal-stepper::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.8));
+  }
+
+  .reveal-stepper::after {
+    background: linear-gradient(90deg,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.8),
+        transparent);
+  }
+
+  .stepper-dot {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .stepper-dot.active {
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9) !important;
+    border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
+    box-shadow:
+      0 0 18px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+      0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3) !important;
+  }
+
+  .stepper-dot:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .stepper-dot.active:hover {
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 1);
+    box-shadow:
+      0 0 24px rgba(var(--primary-500-rgb, 33, 150, 243), 0.7),
+      0 6px 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4);
+  }
+}
+
+/* Manual theme overrides for explicit theme switching */
+html[data-theme="light"] .reveal-stepper {
+  background: linear-gradient(135deg,
+      rgba(var(--theme-bg-rgb, 255, 255, 255), 0.90),
+      rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75),
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.12),
+      rgba(var(--theme-bg-rgb, 255, 255, 255), 0.85));
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+html[data-theme="light"] .reveal-stepper::before,
+html[data-theme="light"] .reveal-stepper::after {
+  box-shadow:
+    0 0 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+    0 0 16px rgba(30, 58, 138, 0.2);
+}
+
+html[data-theme="light"] .reveal-stepper::before {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.9));
+}
+
+html[data-theme="light"] .reveal-stepper::after {
+  background: linear-gradient(90deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.9),
+      transparent);
+}
+
+html[data-theme="light"] .stepper-dot {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .stepper-dot:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .reveal-stepper {
+  background: linear-gradient(135deg,
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.80),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.60),
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.18),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.70));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .reveal-stepper::before,
+html[data-theme="dark"] .reveal-stepper::after {
+  box-shadow:
+    0 0 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 0 24px rgba(105, 180, 255, 0.4);
+}
+
+html[data-theme="dark"] .reveal-stepper::before {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.8));
+}
+
+html[data-theme="dark"] .reveal-stepper::after {
+  background: linear-gradient(90deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.8),
+      transparent);
+}
+
+html[data-theme="dark"] .stepper-dot {
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .stepper-dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+
 /* ==========================================================================
    ULTRA-STRICT SCROLL CONTROL
    ========================================================================== */
@@ -698,6 +1137,14 @@ html {
   -webkit-scroll-behavior: auto !important;
   overscroll-behavior: none;
   -webkit-overscroll-behavior: none;
+}
+
+/* Additional strict scroll control for body */
+body {
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
 }
 
 /* ==========================================================================
@@ -714,7 +1161,7 @@ html {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  z-index: 10000;
+  z-index: var(--z-header, 1200);
   pointer-events: none;
   opacity: 0;
   transform: translateY(-12px) scale(0.98);
@@ -875,7 +1322,7 @@ html {
 
 .text-reveal-item.final .word-jay {
   position: relative;
-  z-index: 10001;
+  z-index: var(--z-tooltip);
 }
 
 /* Brand pulse effect when text switches to Jay Patel */

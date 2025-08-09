@@ -74,15 +74,13 @@
 <body>
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" tabindex="0">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+        <!-- Lightsaber icon -->
+        <svg class="lightsaber" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 24" aria-hidden="true"
             focusable="false">
-            <path
-                d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1zm9-9h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zM4 12H3a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm14.95-5.05a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zm-11.9 11.9a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zM6.34 6.34a1 1 0 0 1 1.414 0l.707.707A1 1 0 0 1 7.05 8.46l-.707-.707a1 1 0 0 1 0-1.414zm11.32 11.32a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414z" />
-        </svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
-            focusable="false">
-            <path
-                d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z" />
+            <rect x="2" y="10" width="16" height="4" rx="1" fill="currentColor" />
+            <rect x="18" y="9" width="6" height="6" rx="1" fill="currentColor" opacity="0.6" />
+            <rect class="lightsaber-glow" x="24" y="9" width="36" height="6" rx="3" />
+            <rect class="lightsaber-blade" x="24" y="10" width="36" height="4" rx="2" />
         </svg>
     </button>
 
@@ -100,9 +98,25 @@
     </button>
 
     <!-- Navigation Header -->
-    <nav class="privacy-nav">
+    <nav class="privacy-nav" aria-label="Secondary Navigation">
         <div class="privacy-nav-container">
-            <a href="/" class="privacy-nav-brand">← Back to Portfolio</a>
+            <div class="privacy-nav-left">
+                <a href="/" class="privacy-nav-link" aria-label="Back to Portfolio">← Back</a>
+            </div>
+            <div class="privacy-nav-center">
+                <a href="/" class="privacy-nav-brand" aria-label="Home">Jay Patel</a>
+            </div>
+            <div class="privacy-nav-right">
+                <button class="theme-toggle" aria-label="Toggle dark/light mode">
+                    <svg class="lightsaber" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 24" aria-hidden="true"
+                        focusable="false">
+                        <rect x="2" y="10" width="16" height="4" rx="1" fill="currentColor" />
+                        <rect x="18" y="9" width="6" height="6" rx="1" fill="currentColor" opacity="0.6" />
+                        <rect class="lightsaber-glow" x="24" y="9" width="36" height="6" rx="3" />
+                        <rect class="lightsaber-blade" x="24" y="10" width="36" height="4" rx="2" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </nav>
 

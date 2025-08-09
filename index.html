@@ -166,6 +166,21 @@
             transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
         }
 
+        /* Hide vertical scrollbar globally while keeping scroll functional */
+        html {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE/Edge legacy */
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 0px;
+            /* Chrome/Safari */
+            height: 0px;
+        }
+
         .hero {
             min-height: 100vh;
             display: flex;
@@ -322,9 +337,7 @@
         <section id="home" class="hero" aria-labelledby="heroTitle">
             <h2 id="heroTitle" class="sr-only">Welcome to Jay Patel’s Portfolio</h2>
             <!-- Progress Indicator -->
-            <div class="progress-indicator" aria-hidden="true">
-                <div class="progress-bar"></div>
-            </div>
+
 
             <div class="hero-container">
                 <div class="hero-content">
@@ -499,11 +512,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Bottom Scroll Indicator -->
-            <div class="hero-scroll-indicator" id="bottomScrollHint" aria-hidden="true">
-                <div class="hero-scroll-arrow"></div>
-                <span>Scroll</span>
-            </div>
+
 
         </section>
 
@@ -533,7 +542,6 @@
     <script defer src="js/performance.js"></script>
     <script defer src="js/components/navbar.js"></script>
     <script defer src="js/components/custom-cursor.js"></script>
-    <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>
     <script defer src="js/components/theme-toggle.js"></script>
     <script defer src="js/components/consent-banner.js"></script>

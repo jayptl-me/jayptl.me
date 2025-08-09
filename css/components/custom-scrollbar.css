@@ -50,9 +50,10 @@ html[data-theme="dark"] {
    ========================================================================== */
 
 /* Scrollbar width */
+/* Globally hidden scrollbars override */
 ::-webkit-scrollbar {
-    width: var(--scrollbar-width);
-    height: var(--scrollbar-width);
+    width: 0px !important;
+    height: 0px !important;
 }
 
 /* Scrollbar track */
@@ -107,13 +108,14 @@ html[data-theme="dark"] {
 
 /* Firefox scrollbar styling */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: none !important;
+    /* Firefox hidden */
+    scrollbar-color: transparent transparent !important;
 }
 
 html {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: none !important;
+    scrollbar-color: transparent transparent !important;
 }
 
 /* ==========================================================================

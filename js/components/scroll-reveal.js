@@ -14,25 +14,31 @@ class ScrollRevealComponent {
         this.container = document.querySelector('.text-reveal-container');
         this.listElement = document.querySelector('.text-reveal-list');
         this.items = document.querySelectorAll('.text-reveal-item');
-        this.bottomHint = document.getElementById('bottomScrollHint');
+        this.bottomHint = null;
+        this.stepper = null;
+        this.stepperDots = [];
+        this.stepperLeftFill = null;
+        this.stepperRightFill = null;
 
         // Configuration
         this.currentIndex = 0;
-        this.scrollThreshold = 15; // Minimum scroll distance to trigger step
+        this.scrollThreshold = 30; // Increased minimum scroll distance to trigger step
         this.lastScrollY = window.scrollY;
         this.scrollCooldown = false;
-        this.cooldownDuration = 1200; // 1.2 second cooldown - ultra strict
         this.isMobile = window.innerWidth <= 768;
+        // Strict cooldowns for ultra-precise one-step-at-a-time control
+        this.cooldownDuration = this.isMobile ? 400 : 500;
 
         // Ultra-strict scroll control
         this.isProcessingScroll = false;
         this.lastStepTime = 0;
-        this.minStepInterval = 1200; // Minimum 1.2 seconds between steps
+        this.minStepInterval = this.isMobile ? 350 : 450; // Longer intervals for stricter stepping
         this.scrollEventLocked = false;
         this.debounceTimer = null;
         this.accumulatedScroll = 0;
         this.scrollResetTimer = null;
         this.releaseArmed = false; // require one more scroll on last item to release
+        this.hasReleased = false; // avoid re-engaging overlay after release
 
         this.init();
     }
@@ -45,6 +51,7 @@ class ScrollRevealComponent {
         this.setupEventListeners();
         this.setupIntersectionObserver();
         this.initializeItems();
+        this.createStepper();
 
         // Lock page scroll until reveal is complete
         this.lockBodyScroll();
@@ -58,6 +65,7 @@ class ScrollRevealComponent {
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        // Re-engage overlay when hero comes back into view, even after release
                         // Seamless re-engagement: add a subtle fade/slide-in before locking
                         const wasReleased = this.container.classList.contains('released');
                         this.container.classList.remove('released');
@@ -65,6 +73,11 @@ class ScrollRevealComponent {
                         this.container.classList.add('reengaging');
                         this.container.classList.add('liquid-enter');
                         this.container.style.display = '';
+                        if (this.stepper) {
+                            this.stepper.style.display = '';
+                        }
+                        // We are re-engaging; allow stepper to handle input again
+                        this.hasReleased = false;
                         // allow one frame for CSS to pick up the reengaging state
                         requestAnimationFrame(() => {
                             // keep mask opaque during re-engagement
@@ -95,6 +108,7 @@ class ScrollRevealComponent {
                         // Keep the bottom hint visible even on the last item; release happens on next scroll
                         if (this.bottomHint) this.bottomHint.classList.remove('hidden');
                         this.releaseArmed = false;
+                        this.updateStepper();
                         // Reverse scroll will step back one-by-one from the final item
                     }
                 });
@@ -171,7 +185,8 @@ class ScrollRevealComponent {
             }, 100); // 100ms debounce
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Disable window scroll listener to ensure stepper-only control
+        // Scrolling steps are handled via wheel/touch/keyboard on the overlay
 
         // Keyboard navigation
         document.addEventListener('keydown', this.handleKeyboard.bind(this));
@@ -186,6 +201,80 @@ class ScrollRevealComponent {
 
         // Responsive resize handler
         window.addEventListener('resize', this.handleResize.bind(this));
+    }
+
+    createStepper() {
+        if (!this.container || !this.items?.length) return;
+
+        // Avoid duplicate
+        if (this.stepper && this.stepper.isConnected) return;
+
+        const stepper = document.createElement('div');
+        stepper.className = 'reveal-stepper';
+        stepper.setAttribute('role', 'group');
+        stepper.setAttribute('aria-label', 'Reveal navigation');
+
+        // Dots in center (only element needed)
+        const dotsWrap = document.createElement('div');
+        dotsWrap.className = 'stepper-dots';
+        this.stepperDots = [];
+        this.items.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'stepper-dot';
+            dot.setAttribute('aria-label', `Go to step ${i + 1}`);
+            dot.addEventListener('click', () => {
+                this.goToSection(i);
+                this.updateStepper();
+            });
+            this.stepperDots.push(dot);
+            dotsWrap.appendChild(dot);
+        });
+
+        // Assemble: only dots (gradient bars are CSS pseudo-elements)
+        stepper.appendChild(dotsWrap);
+
+        this.container.appendChild(stepper);
+        this.stepper = stepper;
+        this.updateStepper();
+    }
+
+    updateStepper() {
+        if (!this.stepper) return;
+
+        // Update dots
+        this.stepperDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentIndex);
+            dot.setAttribute('aria-current', i === this.currentIndex ? 'step' : 'false');
+        });
+
+        // Calculate progress (starts at 100% and depletes as we scroll down)
+        const total = Math.max(this.items.length - 1, 1);
+        const progressRatio = Math.min(Math.max(this.currentIndex / total, 0), 1);
+        const remainingProgress = 1 - progressRatio; // Invert: start at 100%, go to 0%
+
+        // Update animated gradient bars with progress classes
+        // Remove all progress classes first
+        this.stepper.classList.remove('progress-0', 'progress-20', 'progress-40',
+            'progress-60', 'progress-80', 'progress-100');
+
+        // Add appropriate progress class based on remaining progress
+        const progressPercent = Math.round(remainingProgress * 100);
+        let progressClass = 'progress-0';
+
+        if (progressPercent >= 95) {
+            progressClass = 'progress-100';
+        } else if (progressPercent >= 75) {
+            progressClass = 'progress-80';
+        } else if (progressPercent >= 55) {
+            progressClass = 'progress-60';
+        } else if (progressPercent >= 35) {
+            progressClass = 'progress-40';
+        } else if (progressPercent >= 15) {
+            progressClass = 'progress-20';
+        }
+
+        this.stepper.classList.add(progressClass);
     }
 
     setupTouchEvents() {
@@ -214,8 +303,8 @@ class ScrollRevealComponent {
                 return;
             }
 
-            // Ultra-strict single swipe trigger
-            if (Math.abs(deltaY) > 40 && deltaX < 100) {
+            // Ultra-strict single swipe trigger with higher threshold
+            if (Math.abs(deltaY) > 60 && deltaX < 80) {
                 const direction = deltaY > 0 ? 1 : -1;
                 const atLast = this.currentIndex >= this.items.length - 1;
                 if (atLast && direction > 0) {
@@ -282,20 +371,17 @@ class ScrollRevealComponent {
             this.accumulatedScroll = 0;
         }, 200);
 
-        // Only trigger on significant accumulated scroll movement
-        if (Math.abs(this.accumulatedScroll) > this.scrollThreshold) {
-            const direction = this.accumulatedScroll > 0 ? 1 : -1;
-            this.executeStep(direction);
-            this.accumulatedScroll = 0; // Reset after step
-        }
+        // Window scroll is ignored in strict stepper mode
+        return;
 
         this.lastScrollY = currentScrollY;
     }
 
     executeStep(direction) {
-        // Lock all scroll processing immediately
+        // Triple-lock all scroll processing immediately for ultra-strict control
         this.isProcessingScroll = true;
         this.scrollEventLocked = true;
+        this.scrollCooldown = true;
         this.lastStepTime = Date.now();
 
         // Execute only ONE step regardless of scroll intensity
@@ -307,21 +393,15 @@ class ScrollRevealComponent {
             this.stepUp();
         }
 
-        // Immediate and extended cooldown to prevent multiple steps
-        this.activateCooldown();
+        // Extended cooldown to ensure absolutely no multiple steps
+        const extendedCooldown = this.cooldownDuration * 1.2;
 
         // Reset all locks after extended cooldown
         setTimeout(() => {
             this.isProcessingScroll = false;
             this.scrollEventLocked = false;
-        }, this.cooldownDuration);
-    }
-
-    activateCooldown() {
-        this.scrollCooldown = true;
-        setTimeout(() => {
             this.scrollCooldown = false;
-        }, this.cooldownDuration);
+        }, extendedCooldown);
     }
 
     handleWheel(e) {
@@ -334,6 +414,12 @@ class ScrollRevealComponent {
         // Check minimum time interval
         const now = Date.now();
         if (now - this.lastStepTime < this.minStepInterval) {
+            return;
+        }
+
+        // Require a more significant scroll delta to trigger step (stricter control)
+        const minScrollDelta = this.isMobile ? 25 : 35;
+        if (Math.abs(e.deltaY) < minScrollDelta) {
             return;
         }
 
@@ -398,6 +484,7 @@ class ScrollRevealComponent {
             this.hideItem(this.items[this.currentIndex]);
             this.currentIndex--;
             this.revealItem(this.items[this.currentIndex]);
+            this.updateStepper();
         }
     }
 
@@ -407,6 +494,7 @@ class ScrollRevealComponent {
             this.hideItem(this.items[this.currentIndex]);
             this.currentIndex++;
             this.revealItem(this.items[this.currentIndex]);
+            this.updateStepper();
         } else {
             // On last item: fade out the current item, reveal the navbar, and release to native scroll
             try {
@@ -421,20 +509,29 @@ class ScrollRevealComponent {
                     this.hideItem(currentItem);
                 }
 
-                // Release native scroll
+                // Release native scroll with fluid fade of overlay (stay fixed during fade)
                 this.unlockBodyScroll();
-                this.container.classList.add('released');
-                this.container.classList.add('liquid-exit');
-                const onAnimEnd = () => {
-                    this.container.classList.remove('liquid-exit');
-                    this.container.removeEventListener('animationend', onAnimEnd);
-                };
-                this.container.addEventListener('animationend', onAnimEnd);
+                this.container.classList.add('releasing');
+                // After fade finishes, fully remove overlay from flow and enable scroll snap
+                setTimeout(() => {
+                    this.container.classList.remove('releasing');
+                    this.container.classList.add('released');
+                    this.container.style.display = 'none';
+                    // Enable scroll snap for strict one-step-at-a-time scrolling
+                    this.enableScrollSnap();
+                }, 420);
+                this.hasReleased = true;
                 if (this.bottomHint) this.bottomHint.classList.add('hidden');
+                if (this.stepper) this.stepper.style.display = 'none';
             } catch (err) {
                 this.unlockBodyScroll();
                 this.container.classList.add('released');
+                this.container.style.display = 'none';
+                this.hasReleased = true;
                 if (this.bottomHint) this.bottomHint.classList.add('hidden');
+                if (this.stepper) this.stepper.style.display = 'none';
+                // Enable scroll snap even on error
+                this.enableScrollSnap();
             }
         }
     }
@@ -486,8 +583,7 @@ class ScrollRevealComponent {
 
         // Toggle bottom hint and lock based on position
         const atLast = this.currentIndex >= this.items.length - 1;
-        // Keep the bottom hint visible while overlay is active
-        if (this.bottomHint) this.bottomHint.classList.remove('hidden');
+
         // While showing the last item, keep the overlay fixed and the page locked.
         // Only when the user scrolls down again from the last item (handled in stepDown), release to native scroll.
         this.container.classList.remove('reveal-hidden');
@@ -502,6 +598,7 @@ class ScrollRevealComponent {
             item.classList.remove('bounce-in');
             this.releaseArmed = false;
         }
+        this.updateStepper();
     }
 
     hideItem(item) {
@@ -534,11 +631,33 @@ class ScrollRevealComponent {
     // Final message removed
 
     lockBodyScroll() {
+        if (this._scrollLocked) return;
+        this._scrollLocked = true;
+        this._scrollYBeforeLock = window.scrollY || 0;
         document.body.classList.add('lock-scroll');
+        // iOS-friendly scroll lock
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this._scrollYBeforeLock}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.scrollBehavior = 'auto';
     }
 
     unlockBodyScroll() {
+        if (!this._scrollLocked) return;
+        this._scrollLocked = false;
         document.body.classList.remove('lock-scroll');
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        // Restore scroll to previous position to avoid jump
+        window.scrollTo(0, this._scrollYBeforeLock || 0);
+        document.documentElement.style.scrollBehavior = '';
     }
 
     getScrollPercentage() {
@@ -562,6 +681,26 @@ class ScrollRevealComponent {
         }
         if (this.scrollResetTimer) {
             clearTimeout(this.scrollResetTimer);
+        }
+    }
+
+    // Enable scroll snap for strict step-by-step scrolling after overlay release
+    enableScrollSnap() {
+        document.body.classList.add('scroll-snap-enabled');
+
+        // Add scroll-snap-section class to main content sections
+        const sections = ['#about', '#projects', '#contact'];
+        sections.forEach(selector => {
+            const section = document.querySelector(selector);
+            if (section) {
+                section.classList.add('scroll-snap-section');
+            }
+        });
+
+        // Also add to hero if it exists
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.classList.add('scroll-snap-section');
         }
     }
 }

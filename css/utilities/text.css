@@ -6,26 +6,8 @@
  */
 
 /* Text alignment - commonly used */
-.text-left {
-   text-align: left;
-}
-
-.text-center {
-   text-align: center;
-}
-
-.text-right {
-   text-align: right;
-}
 
 /* Common text colors from typography.css */
-.text-primary {
-   color: var(--theme-text);
-}
-
-.text-secondary {
-   color: var(--theme-text-secondary);
-}
 
 .text-brand {
    color: var(--theme-primary);
@@ -40,7 +22,7 @@
 }
 
 .font-serif {
-   font-family: var(--font-sans);
+   font-family: var(--font-serif);
 }
 
 .font-mono {

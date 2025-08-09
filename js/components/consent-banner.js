@@ -66,13 +66,13 @@ class ConsentBanner {
 
         const message = `Current Privacy Settings:
         
-📊 Analytics Status: ${currentStatus}
+Analytics Status: ${currentStatus}
 
 What would you like to do?
 
-✅ Enable Analytics - Help improve this portfolio
-❌ Disable Analytics - Browse privately
-🔄 Reset - Show the consent banner again
+Enable Analytics - Help improve this portfolio
+Disable Analytics - Browse privately
+Reset - Show the consent banner again
 
 Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.`;
 
@@ -93,6 +93,7 @@ Analytics helps me understand which sections are most engaging and improve the u
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.setAttribute('aria-labelledby', 'consent-dialog-title');
+        dialog.setAttribute('aria-describedby', 'consent-dialog-desc');
 
         const currentStatus = this.consentData.hasResponded
             ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled')
@@ -102,7 +103,10 @@ Analytics helps me understand which sections are most engaging and improve the u
             <div class="consent-settings-dialog-overlay" onclick="window.consentBanner?.closeSettingsDialog()"></div>
             <div class="consent-settings-dialog-content">
                 <div class="consent-settings-dialog-header">
-                    <h3 id="consent-dialog-title">Privacy Settings</h3>
+                    <div class="consent-settings-dialog-titlewrap">
+                        <h3 id="consent-dialog-title">Privacy Settings</h3>
+                                <p id="consent-dialog-desc" class="consent-dialog-subtitle">You're in control. Adjust analytics preferences for this site.</p>
+                    </div>
                     <button class="consent-settings-dialog-close" onclick="window.consentBanner?.closeSettingsDialog()" aria-label="Close dialog">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/>
@@ -114,13 +118,24 @@ Analytics helps me understand which sections are most engaging and improve the u
                         <span class="consent-status-label">Current Status:</span>
                         <span class="consent-status-value ${this.consentData.hasResponded ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set'}">${currentStatus}</span>
                     </div>
+                    <div class="consent-toggle-row" role="group" aria-labelledby="analyticsToggleLabel">
+                        <div class="toggle-text">
+                            <h4 id="analyticsToggleLabel">Analytics</h4>
+                            <p class="toggle-subtext">Help improve this site with anonymous usage insights. No personal data collected.</p>
+                        </div>
+                        <button class="consent-switch" id="analyticsSwitch" aria-pressed="${this.consentData.accepted && this.consentData.hasResponded ? 'true' : 'false'}" aria-label="Toggle analytics">
+                            <span class="switch-handle"></span>
+                            <span class="switch-label-on">On</span>
+                            <span class="switch-label-off">Off</span>
+                        </button>
+                    </div>
                     
                     <div class="consent-settings-info">
                         <h4>About Analytics</h4>
                         <p>This portfolio uses Google Analytics to understand how visitors interact with the site, helping me improve the user experience.</p>
                         
                         <h4>What we track:</h4>
-                        <ul>
+                        <ul class="consent-feature-list">
                             <li>Page views and navigation patterns</li>
                             <li>Time spent on different sections</li>
                             <li>Device and browser information (anonymized)</li>
@@ -128,7 +143,7 @@ Analytics helps me understand which sections are most engaging and improve the u
                         </ul>
                         
                         <h4>What we DON'T track:</h4>
-                        <ul>
+                        <ul class="consent-feature-list">
                             <li>Personal information or identity</li>
                             <li>Exact location or IP address</li>
                             <li>Keystrokes or form inputs</li>
@@ -153,20 +168,59 @@ Analytics helps me understand which sections are most engaging and improve the u
         `;
 
         document.body.appendChild(dialog);
+        // lock body scroll while dialog is open
+        this._prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
 
         // Focus the dialog
         setTimeout(() => {
             dialog.querySelector('.consent-dialog-btn-enable')?.focus();
         }, 100);
 
-        // Add escape key handler
-        const handleEscape = (e) => {
+        // Add handlers: Escape, focus trap, and switch init
+        const handleKeydown = (e) => {
             if (e.key === 'Escape') {
                 this.closeSettingsDialog();
-                document.removeEventListener('keydown', handleEscape);
+                return;
+            }
+            if (e.key === 'Tab') {
+                // Basic focus trap inside dialog content
+                const focusable = dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                const focusables = Array.from(focusable).filter(el => !el.hasAttribute('disabled'));
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    last.focus();
+                    e.preventDefault();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    first.focus();
+                    e.preventDefault();
+                }
             }
         };
-        document.addEventListener('keydown', handleEscape);
+        document.addEventListener('keydown', handleKeydown);
+
+        // Initialize switch state and handlers
+        const switchEl = dialog.querySelector('#analyticsSwitch');
+        if (switchEl) {
+            this._syncSwitch(switchEl);
+            switchEl.addEventListener('click', () => {
+                const next = !(this.consentData.accepted && this.consentData.hasResponded);
+                this.setConsentInline(next);
+                this._syncSwitch(switchEl);
+                this._syncStatusChip(dialog);
+            });
+            switchEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    switchEl.click();
+                }
+            });
+        }
+
+        // store cleanup to remove listeners on close
+        this._dialogKeydownHandler = handleKeydown;
     }
 
     closeSettingsDialog() {
@@ -177,6 +231,15 @@ Analytics helps me understand which sections are most engaging and improve the u
                 window.customCursor.setHoverState(false);
             }
             dialog.remove();
+            // restore body scroll
+            if (this._prevOverflow !== undefined) {
+                document.body.style.overflow = this._prevOverflow;
+                this._prevOverflow = undefined;
+            }
+            if (this._dialogKeydownHandler) {
+                document.removeEventListener('keydown', this._dialogKeydownHandler);
+                this._dialogKeydownHandler = null;
+            }
         }
     }
 
@@ -306,6 +369,34 @@ For questions about data handling, you can contact me through the portfolio cont
                 }
             }, 300);
         }, 3000);
+    }
+
+    setConsentInline(accepted) {
+        // Save without closing the dialog; update analytics and indicator
+        this.saveConsent(accepted, true);
+        if (accepted) {
+            this.initializeAnalytics();
+        } else {
+            this.disableAnalyticsTracking();
+        }
+        this.updateConsentIndicator();
+        this.showConfirmation(accepted ? 'Analytics enabled.' : 'Analytics disabled.');
+    }
+
+    _syncSwitch(switchEl) {
+        const isOn = this.consentData.accepted && this.consentData.hasResponded;
+        switchEl.classList.toggle('is-on', isOn);
+        switchEl.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    }
+
+    _syncStatusChip(root = document) {
+        const statusEl = root.querySelector('.consent-status-value');
+        if (!statusEl) return;
+        statusEl.classList.remove('accepted', 'declined', 'not-set');
+        const has = this.consentData.hasResponded;
+        const txt = has ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled') : 'Not set';
+        statusEl.textContent = txt;
+        statusEl.classList.add(has ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set');
     }
 
     saveConsent(accepted, hasResponded = true) {

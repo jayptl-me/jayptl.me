@@ -154,7 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const glassNav = document.getElementById('glassNav');
     if (glassNav) {
         let lastY = window.scrollY;
-        let ticking = false;
+        const navLinks = Array.from(glassNav.querySelectorAll('.nav-link[href^="#"]'));
+        const sections = navLinks
+            .map(a => document.querySelector(a.getAttribute('href')))
+            .filter(Boolean);
 
         const onScroll = () => {
             const y = window.scrollY;
@@ -164,30 +167,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Only control visibility when reveal overlay is released
             const overlayReleased = document.querySelector('.text-reveal-container')?.classList.contains('released');
-            if (!overlayReleased) return;
-
-            if (goingDown) {
-                glassNav.classList.add('visible');
-            } else if (goingUp) {
-                glassNav.classList.remove('visible');
+            if (overlayReleased) {
+                if (goingDown) {
+                    if (window.setNavbarAccessibility) {
+                        window.setNavbarAccessibility(glassNav, true);
+                    } else {
+                        glassNav.classList.add('visible');
+                    }
+                } else if (goingUp) {
+                    if (window.setNavbarAccessibility) {
+                        window.setNavbarAccessibility(glassNav, false);
+                    } else {
+                        glassNav.classList.remove('visible');
+                    }
+                }
             }
         };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    onScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-
-        // Enhance nav link UX: active state and smooth anchor scrolling when overlay is released
-        const navLinks = Array.from(glassNav.querySelectorAll('.nav-link[href^="#"]'));
-        const sections = navLinks
-            .map(a => document.querySelector(a.getAttribute('href')))
-            .filter(Boolean);
 
         const setActiveLink = () => {
             // Only when overlay released
@@ -203,9 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.forEach(a => a.classList.toggle('active', active && a.getAttribute('href') === '#' + active.id));
         };
 
+        // Single scroll event listener for both handlers
+        let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
+                    onScroll();
                     setActiveLink();
                     ticking = false;
                 });
@@ -232,10 +230,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             comp.stepDown();
                         }
                     } catch { }
-                    // Delay smooth scroll slightly to allow release animation
-                    setTimeout(() => {
+                    // Wait for overlay release animation to finish before scrolling
+                    const scrollHandler = () => {
                         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 350);
+                        overlay.removeEventListener('transitionend', scrollHandler);
+                        overlay.removeEventListener('animationend', scrollHandler);
+                    };
+                    // Attach both transitionend and animationend for robustness
+                    overlay.addEventListener('transitionend', scrollHandler);
+                    overlay.addEventListener('animationend', scrollHandler);
                 } else {
                     // Overlay already released
                     e.preventDefault();

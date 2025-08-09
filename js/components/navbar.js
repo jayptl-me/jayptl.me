@@ -12,8 +12,10 @@
 
 (function () {
   function buildNavHTML() {
-    const onHome = location.pathname === "/" || /index\.html?$/.test(location.pathname);
-    const projectsHref = onHome ? "#projects" : "/#projects";
+    // Robust base path detection for sub-directory deployments
+    const basePath = new URL("/", location).pathname;
+    const onHome = location.pathname === basePath || /index\.html?$/.test(location.pathname);
+    const projectsHref = onHome ? "#projects" : basePath + "#projects";
 
     return `
       <header id="glassNav" class="glass-nav" aria-label="Primary Navigation" role="banner">
@@ -95,6 +97,24 @@
         </div>
       </header>
     `;
+  }
+
+  // Accessibility management for navbar visibility
+  function setNavbarAccessibility(nav, visible) {
+    if (visible) {
+      nav.classList.add('visible');
+      nav.removeAttribute('aria-hidden');
+      try { nav.inert = false; } catch { }
+    } else {
+      nav.classList.remove('visible');
+      nav.setAttribute('aria-hidden', 'true');
+      try { nav.inert = true; } catch { }
+
+      // If focus is within the navbar when hiding, move it to body to avoid invisible focus
+      if (nav.contains(document.activeElement)) {
+        try { document.activeElement.blur(); } catch { }
+      }
+    }
   }
 
   function insertNav() {
@@ -220,9 +240,14 @@
     const overlay = document.querySelector('.text-reveal-container');
     const isReleased = overlay && overlay.classList.contains('released');
     if (!overlay || isReleased) {
-      nav.classList.add('visible');
+      setNavbarAccessibility(nav, true);
+    } else {
+      setNavbarAccessibility(nav, false);
     }
   }
+
+  // Expose navbar accessibility function globally for other components
+  window.setNavbarAccessibility = setNavbarAccessibility;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', insertNav);

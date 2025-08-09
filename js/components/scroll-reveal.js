@@ -14,7 +14,7 @@ class ScrollRevealComponent {
         this.container = document.querySelector('.text-reveal-container');
         this.listElement = document.querySelector('.text-reveal-list');
         this.items = document.querySelectorAll('.text-reveal-item');
-        this.bottomHint = null;
+        this.bottomHint = document.querySelector('.text-reveal-bottom-hint');
         this.stepper = null;
         this.stepperDots = [];
         this.stepperLeftFill = null;
@@ -22,11 +22,11 @@ class ScrollRevealComponent {
 
         // Configuration
         this.currentIndex = 0;
-        this.scrollThreshold = 30; // Increased minimum scroll distance to trigger step
+        this.scrollThreshold = 20; // Decreased minimum scroll distance to trigger step (faster reveal)
         this.lastScrollY = window.scrollY;
         this.scrollCooldown = false;
         this.isMobile = window.innerWidth <= 768;
-        // Strict cooldowns for ultra-precise one-step-at-a-time control
+        // Reduced cooldowns for faster stepper response
         this.cooldownDuration = this.isMobile ? 400 : 500;
 
         // Ultra-strict scroll control
@@ -372,8 +372,7 @@ class ScrollRevealComponent {
         }, 200);
 
         // Window scroll is ignored in strict stepper mode
-        return;
-
+        // If you need to ignore scroll, use a conditional return here
         this.lastScrollY = currentScrollY;
     }
 
@@ -417,8 +416,8 @@ class ScrollRevealComponent {
             return;
         }
 
-        // Require a more significant scroll delta to trigger step (stricter control)
-        const minScrollDelta = this.isMobile ? 25 : 35;
+        // Require a less significant scroll delta to trigger step (faster reveal)
+        const minScrollDelta = this.isMobile ? 10 : 15;
         if (Math.abs(e.deltaY) < minScrollDelta) {
             return;
         }
@@ -500,7 +499,11 @@ class ScrollRevealComponent {
             try {
                 const glassNav = document.getElementById('glassNav');
                 if (glassNav) {
-                    glassNav.classList.add('visible');
+                    if (window.setNavbarAccessibility) {
+                        window.setNavbarAccessibility(glassNav, true);
+                    } else {
+                        glassNav.classList.add('visible');
+                    }
                 }
 
                 // Fade the final item out for a smoother transition

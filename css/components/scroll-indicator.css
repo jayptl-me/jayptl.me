@@ -10,18 +10,17 @@
    SCROLL PROGRESS INDICATOR
    ========================================================================== */
 
-/* Disabled: scroll indicator removed */
-.progress-indicator {
-  display: none !important;
+
+/* Disabled: scroll indicator removed, scoped to [data-scroll-indicator="off"] */
+[data-scroll-indicator="off"] .progress-indicator,
+[data-scroll-indicator="off"] .progress-bar {
+  display: none;
 }
 
-.progress-bar {
-  display: none !important;
-}
-
-.progress-bar::after {
-  display: none !important;
-  content: none !important;
+/* Optionally, scope ::after disabling as well */
+[data-scroll-indicator="off"] .progress-bar::after {
+  display: none;
+  content: none;
 }
 
 @keyframes shimmer {

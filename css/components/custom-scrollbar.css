@@ -52,11 +52,24 @@ html[data-theme="dark"] {
 /* Scrollbar width */
 /* Globally hidden scrollbars override */
 ::-webkit-scrollbar {
-    width: 0px !important;
-    height: 0px !important;
+    width: 0px;
+    height: 0px;
 }
 
 /* Scrollbar track */
+/* Utility: Hide scrollbar only where needed */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
 ::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
     border-radius: var(--scrollbar-thumb-radius);
@@ -107,10 +120,13 @@ html[data-theme="dark"] {
    ========================================================================== */
 
 /* Firefox scrollbar styling */
-* {
-    scrollbar-width: none !important;
-    /* Firefox hidden */
-    scrollbar-color: transparent transparent !important;
+
+/* Utility: Hide scrollbar only where needed */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    scrollbar-color: transparent transparent;
+    /* Firefox */
 }
 
 html {

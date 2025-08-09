@@ -14,8 +14,7 @@ class ThemeToggle {
     }
 
     init() {
-        if (!this.toggles.length) return;
-
+        // Always register global listeners and sync theme, even if no toggles exist
         this.toggles.forEach(btn => btn.addEventListener('click', this.onClick));
 
         window.addEventListener('themechange', (e) => {

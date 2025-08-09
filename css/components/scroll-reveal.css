@@ -35,6 +35,12 @@
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal-container {
+    transition: none !important;
+  }
+}
+
 .text-reveal-container.in-view {
   pointer-events: auto;
   -webkit-overflow-scrolling: auto !important;
@@ -1356,9 +1362,16 @@ body {
 
 /* Lock body scrolling during reveal */
 body.lock-scroll {
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
 }
+
+@supports (height: 100dvh) {
+  body.lock-scroll {
+    height: 100dvh;
+  }
+}
+
 
 /* Disable momentum scrolling on all elements */
 * {

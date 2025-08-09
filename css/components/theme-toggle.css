@@ -131,6 +131,16 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
     transition: opacity 0.3s var(--ease-out), filter 0.3s var(--ease-out);
 }
 
+/* Accessibility: Disable transitions and glow for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .theme-toggle .lightsaber-blade,
+    .theme-toggle .lightsaber-glow {
+        transition: none !important;
+        filter: none !important;
+    }
+}
+
 /* Light: saber off (black), no glow */
 html[data-theme="light"] .theme-toggle .lightsaber-blade {
     fill: #000;
@@ -153,6 +163,13 @@ html[data-theme="dark"] .theme-toggle .lightsaber-glow {
     filter: drop-shadow(0 0 10px #60a5fa);
 }
 
-.theme-toggle:hover .lightsaber-blade {
-    filter: drop-shadow(0 0 6px currentColor);
+/* Intensified blue glow on hover in dark theme */
+html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
+    filter:
+        drop-shadow(0 0 8px #3b82f6) drop-shadow(0 0 16px #3b82f6) drop-shadow(0 0 24px #60a5fa);
+}
+
+/* No glow on hover in light theme to avoid black halo */
+html[data-theme="light"] .theme-toggle:hover .lightsaber-blade {
+    filter: none;
 }

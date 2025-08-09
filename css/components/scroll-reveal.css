@@ -35,11 +35,7 @@
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .text-reveal-container {
-    transition: none !important;
-  }
-}
+
 
 .text-reveal-container.in-view {
   pointer-events: auto;
@@ -638,11 +634,13 @@
 
 @media (prefers-reduced-motion: reduce) {
 
+
   .text-reveal-item,
   .char,
   .gradient-text,
   .stepper-button,
-  .progress-fill {
+  .progress-fill,
+  .text-reveal-container {
     animation: none !important;
     transition: opacity 0.2s ease !important;
   }

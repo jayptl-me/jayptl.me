@@ -38,6 +38,7 @@ class ScrollRevealComponent {
         this.accumulatedScroll = 0;
         this.scrollResetTimer = null;
         this.releaseArmed = false; // require one more scroll on last item to release
+        this._releaseDisarmTimer = null; // timer to auto-disarm the armed state
         this.hasReleased = false; // avoid re-engaging overlay after release
 
         this.init();
@@ -275,6 +276,13 @@ class ScrollRevealComponent {
         }
 
         this.stepper.classList.add(progressClass);
+
+        // Toggle armed state class for visual indication (CSS can style .release-armed on container too)
+        if (this.releaseArmed) {
+            this.stepper.classList.add('armed');
+        } else {
+            this.stepper.classList.remove('armed');
+        }
     }
 
     setupTouchEvents() {
@@ -307,9 +315,37 @@ class ScrollRevealComponent {
             if (Math.abs(deltaY) > 60 && deltaX < 80) {
                 const direction = deltaY > 0 ? 1 : -1;
                 const atLast = this.currentIndex >= this.items.length - 1;
+
+                // If at last item and swiping down, behave like wheel: arm first, then release
                 if (atLast && direction > 0) {
-                    // Release on last item swipe down; native scrolling will proceed
-                    this.stepDown();
+                    if (!this.releaseArmed) {
+                        // Arm the release (intermediate clip/stepper state)
+                        this.releaseArmed = true;
+                        this.container.classList.add('release-armed');
+                        if (this.bottomHint) this.bottomHint.classList.add('armed');
+                        this.updateStepper();
+
+                        if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
+                        this._releaseDisarmTimer = setTimeout(() => {
+                            this.releaseArmed = false;
+                            this.container.classList.remove('release-armed');
+                            if (this.bottomHint) this.bottomHint.classList.remove('armed');
+                            this.updateStepper();
+                            this._releaseDisarmTimer = null;
+                        }, 900);
+                    } else {
+                        // Already armed -> perform final release
+                        if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                        this.stepDown();
+                    }
+                } else if (this.releaseArmed && direction < 0) {
+                    // Cancel armed release on upward swipe and step up one
+                    this.releaseArmed = false;
+                    this.container.classList.remove('release-armed');
+                    if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                    if (this.bottomHint) this.bottomHint.classList.remove('armed');
+                    this.updateStepper();
+                    this.executeStep(-1);
                 } else {
                     this.executeStep(direction);
                 }
@@ -426,10 +462,43 @@ class ScrollRevealComponent {
         const direction = e.deltaY > 0 ? 1 : -1;
         const atLast = this.currentIndex >= this.items.length - 1;
 
-        // If at last item and scrolling down, release immediately (no second scroll required)
+        // If at last item and scrolling down, arm release first; second scroll releases
         if (atLast && direction > 0) {
-            this.stepDown(); // triggers release
-            return; // do not preventDefault; allow native scroll
+            // Prevent default to keep overlay until fully released
+            e.preventDefault();
+
+            if (!this.releaseArmed) {
+                this.releaseArmed = true;
+                this.container.classList.add('release-armed');
+                if (this.bottomHint) this.bottomHint.classList.add('armed');
+                this.updateStepper();
+
+                if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
+                this._releaseDisarmTimer = setTimeout(() => {
+                    this.releaseArmed = false;
+                    this.container.classList.remove('release-armed');
+                    if (this.bottomHint) this.bottomHint.classList.remove('armed');
+                    this.updateStepper();
+                    this._releaseDisarmTimer = null;
+                }, 900);
+            } else {
+                if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                // Second scroll while armed -> release to native scroll
+                this.stepDown();
+            }
+            return; // handled
+        }
+
+        // If an armed release exists and user scrolls up, cancel it and step up
+        if (this.releaseArmed && direction < 0) {
+            e.preventDefault();
+            this.releaseArmed = false;
+            this.container.classList.remove('release-armed');
+            if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+            if (this.bottomHint) this.bottomHint.classList.remove('armed');
+            this.updateStepper();
+            this.executeStep(-1);
+            return;
         }
 
         // Prevent default scroll behavior when in stepper mode
@@ -461,8 +530,25 @@ class ScrollRevealComponent {
                 if (this.currentIndex < this.items.length - 1) {
                     this.executeStep(1);
                 } else {
-                    // On last item, release immediately
-                    this.stepDown();
+                    // On last item, arm first, then release on second press
+                    if (!this.releaseArmed) {
+                        this.releaseArmed = true;
+                        this.container.classList.add('release-armed');
+                        if (this.bottomHint) this.bottomHint.classList.add('armed');
+                        this.updateStepper();
+
+                        if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
+                        this._releaseDisarmTimer = setTimeout(() => {
+                            this.releaseArmed = false;
+                            this.container.classList.remove('release-armed');
+                            if (this.bottomHint) this.bottomHint.classList.remove('armed');
+                            this.updateStepper();
+                            this._releaseDisarmTimer = null;
+                        }, 900);
+                    } else {
+                        if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                        this.stepDown();
+                    }
                 }
                 break;
             case ' ': // Spacebar
@@ -470,8 +556,24 @@ class ScrollRevealComponent {
                 if (this.currentIndex < this.items.length - 1) {
                     this.executeStep(1);
                 } else {
-                    // On last item, release immediately
-                    this.stepDown();
+                    if (!this.releaseArmed) {
+                        this.releaseArmed = true;
+                        this.container.classList.add('release-armed');
+                        if (this.bottomHint) this.bottomHint.classList.add('armed');
+                        this.updateStepper();
+
+                        if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
+                        this._releaseDisarmTimer = setTimeout(() => {
+                            this.releaseArmed = false;
+                            this.container.classList.remove('release-armed');
+                            if (this.bottomHint) this.bottomHint.classList.remove('armed');
+                            this.updateStepper();
+                            this._releaseDisarmTimer = null;
+                        }, 900);
+                    } else {
+                        if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                        this.stepDown();
+                    }
                 }
                 break;
         }
@@ -481,6 +583,13 @@ class ScrollRevealComponent {
         if (this.currentIndex > 0) {
             // Ultra-strict single-step: hide current item and show ONLY the previous one
             this.hideItem(this.items[this.currentIndex]);
+            // Cancel any armed release when moving up
+            if (this.releaseArmed) {
+                this.releaseArmed = false;
+                this.container.classList.remove('release-armed');
+                if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                if (this.bottomHint) this.bottomHint.classList.remove('armed');
+            }
             this.currentIndex--;
             this.revealItem(this.items[this.currentIndex]);
             this.updateStepper();
@@ -515,6 +624,11 @@ class ScrollRevealComponent {
                 // Release native scroll with fluid fade of overlay (stay fixed during fade)
                 this.unlockBodyScroll();
                 this.container.classList.add('releasing');
+                // clear any armed state
+                this.releaseArmed = false;
+                this.container.classList.remove('release-armed');
+                if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                if (this.bottomHint) this.bottomHint.classList.remove('armed');
                 // After fade finishes, fully remove overlay from flow and enable scroll snap
                 setTimeout(() => {
                     this.container.classList.remove('releasing');
@@ -522,6 +636,18 @@ class ScrollRevealComponent {
                     this.container.style.display = 'none';
                     // Enable scroll snap for strict one-step-at-a-time scrolling
                     this.enableScrollSnap();
+                    // After enabling scroll snap, nudge the page to the next section so native scroll continues
+                    // Allow a small delay for layout to settle
+                    setTimeout(() => {
+                        const nextSection = document.querySelector('#projects') || document.querySelector('.projects-section');
+                        const targetTop = nextSection ? nextSection.offsetTop : (window.scrollY + window.innerHeight);
+                        try {
+                            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+                        } catch (err) {
+                            // fallback for older browsers
+                            window.scrollTo(0, targetTop);
+                        }
+                    }, 60);
                 }, 420);
                 this.hasReleased = true;
                 if (this.bottomHint) this.bottomHint.classList.add('hidden');

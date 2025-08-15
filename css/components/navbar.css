@@ -174,6 +174,7 @@
 .mobile-menu {
     position: fixed;
     inset: 0;
+    /* Use design-system z tokens so layering is predictable across components */
     z-index: var(--z-overlay, 2000);
     opacity: 0;
     pointer-events: none;
@@ -182,7 +183,7 @@
 .mobile-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.55);
     opacity: 0;
     transition: opacity 180ms var(--ease-out);
 }
@@ -191,8 +192,8 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%),
-        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.92);
+        radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%),
+        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.95);
     backdrop-filter: blur(16px) saturate(120%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     color: var(--theme-text);
@@ -216,15 +217,15 @@
     letter-spacing: 0.01em;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 20px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.07));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 6px 20px rgba(0, 0, 0, 0.25);
     transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out), transform 160ms var(--ease-out), box-shadow 200ms var(--ease-out), opacity 200ms var(--ease-out);
 }
 
 .mobile-item:hover {
-    background: rgba(128, 128, 128, 0.14);
-    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(128, 128, 128, 0.18);
+    border-color: rgba(255, 255, 255, 0.18);
     transform: translateX(2px);
 }
 
@@ -461,14 +462,14 @@ html.no-scroll {
     border-radius: 14px;
     text-decoration: none;
     color: inherit;
-    background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .04));
-    border: 1px solid rgba(255, 255, 255, .12);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 6px 20px rgba(0, 0, 0, .25);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .08));
+    border: 1px solid rgba(255, 255, 255, .18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .20), 0 6px 20px rgba(0, 0, 0, .25);
 }
 
 .mobile-link:hover {
-    background: rgba(128, 128, 128, .14);
-    border-color: rgba(255, 255, 255, .18);
+    background: rgba(128, 128, 128, .18);
+    border-color: rgba(255, 255, 255, .22);
 }
 
 .mobile-link:active {

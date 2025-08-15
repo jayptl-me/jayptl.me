@@ -182,15 +182,7 @@ Analytics helps me understand which sections are most engaging and improve the u
         // inner structure for switch (build via DOM to avoid innerHTML)
         const handle = document.createElement('span');
         handle.className = 'switch-handle';
-        const labelOn = document.createElement('span');
-        labelOn.className = 'switch-label-on';
-        labelOn.textContent = 'On';
-        const labelOff = document.createElement('span');
-        labelOff.className = 'switch-label-off';
-        labelOff.textContent = 'Off';
         switchBtn.appendChild(handle);
-        switchBtn.appendChild(labelOn);
-        switchBtn.appendChild(labelOff);
         // click toggles consent
         switchBtn.addEventListener('click', () => {
             const next = !(this.consentData.accepted && this.consentData.hasResponded);
@@ -254,29 +246,6 @@ Analytics helps me understand which sections are most engaging and improve the u
         info.appendChild(ulDont);
         info.appendChild(privacyP);
 
-        // Actions
-        const actions = document.createElement('div');
-        actions.className = 'consent-settings-dialog-actions';
-
-        const enableBtn = document.createElement('button');
-        enableBtn.className = 'consent-dialog-btn consent-dialog-btn-enable';
-        enableBtn.textContent = 'Enable Analytics';
-        enableBtn.addEventListener('click', () => this.enableAnalytics());
-
-        const disableBtn = document.createElement('button');
-        disableBtn.className = 'consent-dialog-btn consent-dialog-btn-disable';
-        disableBtn.textContent = 'Disable Analytics';
-        disableBtn.addEventListener('click', () => this.disableAnalytics());
-
-        const resetBtn = document.createElement('button');
-        resetBtn.className = 'consent-dialog-btn consent-dialog-btn-reset';
-        resetBtn.textContent = 'Reset Consent';
-        resetBtn.addEventListener('click', () => this.resetConsentFromDialog());
-
-        actions.appendChild(enableBtn);
-        actions.appendChild(disableBtn);
-        actions.appendChild(resetBtn);
-
         // assemble
         body.appendChild(currentStatusWrap);
         body.appendChild(toggleRow);
@@ -284,7 +253,6 @@ Analytics helps me understand which sections are most engaging and improve the u
 
         content.appendChild(header);
         content.appendChild(body);
-        content.appendChild(actions);
 
         dialog.appendChild(content);
 
@@ -296,7 +264,7 @@ Analytics helps me understand which sections are most engaging and improve the u
 
         // Focus the dialog
         setTimeout(() => {
-            dialog.querySelector('.consent-dialog-btn-enable')?.focus();
+            dialog.querySelector('.consent-switch')?.focus();
         }, 100);
 
         // Add handlers: Escape, focus trap, and switch init

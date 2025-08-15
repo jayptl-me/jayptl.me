@@ -85,15 +85,7 @@ html[data-theme="dark"] {
     justify-content: space-between;
     gap: var(--space-4);
     flex-wrap: wrap;
-}
 
-.consent-banner-text {
-    flex: 1;
-    min-width: 280px;
-    color: var(--theme-text);
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
-    font-family: var(--font-body);
 }
 
 .consent-banner-text p {
@@ -102,6 +94,18 @@ html[data-theme="dark"] {
 
 .consent-banner-text a {
     color: var(--theme-primary);
+
+    /* Only apply blur and gradient if supported */
+    @supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+        .consent-banner {
+            background: linear-gradient(180deg,
+                    rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
+                    rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
+            backdrop-filter: blur(12px) saturate(120%);
+            -webkit-backdrop-filter: blur(12px) saturate(120%);
+        }
+    }
+
     text-decoration: underline;
     transition: color var(--duration-normal) var(--ease-out);
 }
@@ -146,16 +150,6 @@ html[data-theme="dark"] {
 }
 
 .consent-btn-accept:hover,
-.consent-btn-accept:focus-visible {
-    background: var(--theme-gradient-primary);
-    color: var(--white);
-    border-color: transparent;
-    box-shadow: 0 0 0 3px var(--focus-ring-color, #2563eb), 0 4px 12px rgba(var(--primary-500-rgb), 0.3);
-    outline: none;
-    transition: box-shadow var(--duration-normal) var(--ease-out);
-}
-
-
 .consent-btn-accept:hover,
 .consent-btn-accept:focus {
     background: var(--theme-primary-hover);
@@ -163,6 +157,18 @@ html[data-theme="dark"] {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(var(--primary-500-rgb), 0.3);
     outline: none;
+    transition: box-shadow var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out);
+}
+
+.consent-btn-accept:focus-visible {
+    /* Preserve a clear focus ring for keyboard users. This rule intentionally comes
+       after the general :focus rule so the ring is not overridden by it. */
+    background: var(--theme-gradient-primary);
+    color: var(--white);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px var(--focus-ring-color, #2563eb), 0 4px 12px rgba(var(--primary-500-rgb), 0.3);
+    outline: none;
+    transition: box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .consent-btn-accept:active {
@@ -778,6 +784,14 @@ html[data-theme="dark"] {
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+    .consent-switch,
+    .consent-switch .switch-handle {
+        transition: none !important;
+    }
+}
+
 @media (prefers-contrast: high) {
     .consent-banner {
         border-top-width: 2px;
@@ -891,14 +905,6 @@ html[data-theme="dark"] {
 .consent-switch.is-on .switch-handle {
     transform: translate(calc(var(--switch-w) - var(--size) - 6px), -50%);
     background: var(--white);
-
-    @media (prefers-reduced-motion: reduce) {
-
-        .consent-switch,
-        .consent-switch .switch-handle {
-            transition: none !important;
-        }
-    }
 }
 
 .consent-switch.is-on .switch-label-on {

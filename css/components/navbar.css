@@ -421,10 +421,7 @@ html.no-scroll {
     overflow: hidden;
 }
 
-/* Safe-area-aware drawer padding */
-.mobile-menu-inner {
-    padding-bottom: calc(16px + env(safe-area-inset-bottom));
-}
+
 
 /* Panel structure */
 .mobile-header {

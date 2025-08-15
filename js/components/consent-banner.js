@@ -290,9 +290,8 @@ Analytics helps me understand which sections are most engaging and improve the u
 
         document.body.appendChild(dialog);
         // lock body scroll while dialog is open
-        if (typeof this._prevOverflow === 'undefined') {
-            this._prevOverflow = document.body.style.overflow;
-        }
+        // Always capture the current overflow so we restore the exact value on close
+        this._prevOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
 
         // Focus the dialog
@@ -349,11 +348,11 @@ Analytics helps me understand which sections are most engaging and improve the u
                 window.customCursor.setHoverState(false);
             }
             dialog.remove();
-            // restore body scroll
-            if (this._prevOverflow !== undefined) {
+            // restore body scroll (if we captured a value) and clear stored value
+            if (typeof this._prevOverflow !== 'undefined') {
                 document.body.style.overflow = this._prevOverflow;
-                this._prevOverflow = undefined;
             }
+            this._prevOverflow = undefined;
             if (this._dialogKeydownHandler) {
                 document.removeEventListener('keydown', this._dialogKeydownHandler);
                 this._dialogKeydownHandler = null;

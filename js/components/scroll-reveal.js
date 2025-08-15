@@ -40,6 +40,8 @@ class ScrollRevealComponent {
         this.releaseArmed = false; // require one more scroll on last item to release
         this._releaseDisarmTimer = null; // timer to auto-disarm the armed state
         this.hasReleased = false; // avoid re-engaging overlay after release
+        this.isTransitioning = false; // prevent multiple transitions
+        this._scrollTriggerHandler = null; // reference for cleanup
 
         this.init();
     }
@@ -53,6 +55,9 @@ class ScrollRevealComponent {
         this.setupIntersectionObserver();
         this.initializeItems();
         this.createStepper();
+
+        // New scroll trigger system for better UX transitions
+        this.setupScrollTriggers();
 
         // Lock page scroll until reveal is complete
         this.lockBodyScroll();
@@ -202,6 +207,128 @@ class ScrollRevealComponent {
 
         // Responsive resize handler
         window.addEventListener('resize', this.handleResize.bind(this));
+    }
+
+    // New scroll trigger system for responsive UX transitions
+    setupScrollTriggers() {
+        // Track scroll direction and momentum
+        let lastScrollY = window.scrollY;
+        let scrollDirection = 0;
+        let isScrolling = false;
+
+        const scrollTriggerHandler = () => {
+            const currentScrollY = window.scrollY;
+            const newDirection = currentScrollY > lastScrollY ? 1 : -1;
+
+            // Only update direction if movement is significant (avoid noise)
+            if (Math.abs(currentScrollY - lastScrollY) > 5) {
+                scrollDirection = newDirection;
+            }
+
+            lastScrollY = currentScrollY;
+
+            // Check if we should transition back to scroll reveal
+            this.checkScrollUpTransition(scrollDirection);
+
+            // Clear scrolling flag after a delay
+            clearTimeout(isScrolling);
+            isScrolling = setTimeout(() => {
+                scrollDirection = 0;
+            }, 150);
+        };
+
+        // Global scroll listener for transitions (separate from stepper control)
+        window.addEventListener('scroll', scrollTriggerHandler, { passive: true });
+
+        // Store reference for cleanup
+        this._scrollTriggerHandler = scrollTriggerHandler;
+    }
+
+    // Check if we should transition back to scroll reveal when scrolling up
+    checkScrollUpTransition(scrollDirection) {
+        // Only check if overlay is released and user is scrolling up
+        if (!this.container.classList.contains('released') || scrollDirection >= 0) {
+            return;
+        }
+
+        // Find the introduction section
+        const introSection = document.querySelector('#introduction') || document.querySelector('.introduction-section');
+        if (!introSection) return;
+
+        // Get the introduction title element
+        const introTitle = introSection.querySelector('h2') || introSection.querySelector('.intro-headline');
+        if (!introTitle) return;
+
+        // Check if intro title is below 75% of viewport
+        const titleRect = introTitle.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const threshold75 = viewportHeight * 0.75;
+
+        // If title is below 75% mark, transition back to scroll reveal
+        if (titleRect.top > threshold75) {
+            console.log('Scroll up detected - transitioning back to scroll reveal');
+            this.transitionToScrollReveal();
+        }
+    }
+
+    // Transition back to scroll reveal overlay
+    transitionToScrollReveal() {
+        // Prevent multiple transitions
+        if (!this.container.classList.contains('released') || this.isTransitioning) {
+            return;
+        }
+
+        this.isTransitioning = true;
+
+        // Re-engage the overlay
+        this.container.classList.remove('released');
+        this.container.classList.add('reengaging', 'liquid-enter');
+        this.container.style.display = '';
+
+        if (this.stepper) {
+            this.stepper.style.display = '';
+        }
+
+        // Reset state
+        this.hasReleased = false;
+        this.releaseArmed = false;
+
+        // Show the final item ("Ahhhh, Just Jay!")
+        requestAnimationFrame(() => {
+            this.container.classList.remove('reveal-hidden');
+            this.lockBodyScroll();
+
+            // Start at the final item
+            this.items.forEach(item => this.hideItem(item));
+            this.currentIndex = this.items.length - 1;
+            this.revealItem(this.items[this.currentIndex]);
+            this.updateStepper();
+
+            // Reset scroll state
+            this.accumulatedScroll = 0;
+            this.lastScrollY = window.scrollY;
+            this.lastStepTime = Date.now();
+            this.isProcessingScroll = false;
+            this.scrollEventLocked = false;
+
+            // Clean up transition state
+            setTimeout(() => {
+                this.container.classList.remove('reengaging');
+                this.isTransitioning = false;
+            }, 300);
+
+            // Handle liquid-enter animation end
+            const onEnterEnd = () => {
+                this.container.classList.remove('liquid-enter');
+                this.container.removeEventListener('animationend', onEnterEnd);
+            };
+            this.container.addEventListener('animationend', onEnterEnd);
+        });
+
+        // Show bottom hint
+        if (this.bottomHint) {
+            this.bottomHint.classList.remove('hidden');
+        }
     }
 
     createStepper() {
@@ -629,25 +756,19 @@ class ScrollRevealComponent {
                 this.container.classList.remove('release-armed');
                 if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
                 if (this.bottomHint) this.bottomHint.classList.remove('armed');
-                // After fade finishes, fully remove overlay from flow and enable scroll snap
+                // After fade finishes, fully remove overlay and enable natural scrolling
                 setTimeout(() => {
                     this.container.classList.remove('releasing');
                     this.container.classList.add('released');
                     this.container.style.display = 'none';
-                    // Enable scroll snap for strict one-step-at-a-time scrolling
-                    this.enableScrollSnap();
-                    // After enabling scroll snap, nudge the page to the next section so native scroll continues
-                    // Allow a small delay for layout to settle
+
+                    // Enable natural scrolling without scroll snap constraints
+                    this.enableNaturalScrolling();
+
+                    // Smoothly scroll to intro section at 20% from top for better UX
                     setTimeout(() => {
-                        const nextSection = document.querySelector('#projects') || document.querySelector('.projects-section');
-                        const targetTop = nextSection ? nextSection.offsetTop : (window.scrollY + window.innerHeight);
-                        try {
-                            window.scrollTo({ top: targetTop, behavior: 'smooth' });
-                        } catch (err) {
-                            // fallback for older browsers
-                            window.scrollTo(0, targetTop);
-                        }
-                    }, 60);
+                        this.scrollToIntroSection();
+                    }, 100);
                 }, 420);
                 this.hasReleased = true;
                 if (this.bottomHint) this.bottomHint.classList.add('hidden');
@@ -659,8 +780,10 @@ class ScrollRevealComponent {
                 this.hasReleased = true;
                 if (this.bottomHint) this.bottomHint.classList.add('hidden');
                 if (this.stepper) this.stepper.style.display = 'none';
-                // Enable scroll snap even on error
-                this.enableScrollSnap();
+                // Enable natural scrolling even on error
+                this.enableNaturalScrolling();
+                // Try to scroll to intro section even on error
+                setTimeout(() => this.scrollToIntroSection(), 100);
             }
         }
     }
@@ -814,22 +937,80 @@ class ScrollRevealComponent {
     }
 
     // Enable scroll snap for strict step-by-step scrolling after overlay release
-    enableScrollSnap() {
-        document.body.classList.add('scroll-snap-enabled');
+    // Enable natural scrolling after overlay release
+    enableNaturalScrolling() {
+        // Remove any scroll restrictions
+        document.body.classList.remove('lock-scroll');
+        document.documentElement.style.scrollBehavior = 'smooth';
 
-        // Add scroll-snap-section class to main content sections
-        const sections = ['#about', '#projects', '#contact'];
-        sections.forEach(selector => {
-            const section = document.querySelector(selector);
-            if (section) {
-                section.classList.add('scroll-snap-section');
+        console.log('Natural scrolling enabled - overlay released');
+    }
+
+    // Smoothly scroll to introduction section at 20% from top
+    scrollToIntroSection() {
+        const introSection = document.querySelector('#introduction') || document.querySelector('.introduction-section');
+
+        if (introSection) {
+            // Get the absolute position of the introduction section
+            const sectionRect = introSection.getBoundingClientRect();
+            const sectionPageY = window.scrollY + sectionRect.top;
+
+            // Account for fixed navbar if present
+            let navOffset = 0;
+            const navEl = document.getElementById('glassNav') || document.querySelector('.glass-nav');
+            if (navEl && navEl.offsetHeight) {
+                const navStyle = window.getComputedStyle(navEl);
+                if (navStyle.position === 'fixed' || navStyle.position === 'sticky') {
+                    navOffset = navEl.offsetHeight;
+                }
             }
-        });
 
-        // Also add to hero if it exists
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            hero.classList.add('scroll-snap-section');
+            // Calculate position so the section top sits at 20% of viewport height
+            const viewportOffset = window.innerHeight * 0.20;
+            const targetTop = Math.max(0, Math.round(sectionPageY - viewportOffset - navOffset));
+
+            console.log('Scrolling to intro section at 20% from top:', {
+                sectionPageY,
+                viewportOffset,
+                navOffset,
+                targetTop,
+                currentScroll: window.scrollY
+            });
+
+            // Smooth scroll to the calculated position
+            try {
+                window.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth'
+                });
+            } catch (err) {
+                // Fallback for older browsers
+                window.scrollTo(0, targetTop);
+            }
+        } else {
+            // Fallback: scroll down a viewport height
+            const targetTop = window.scrollY + window.innerHeight * 0.8;
+            try {
+                window.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth'
+                });
+            } catch (err) {
+                window.scrollTo(0, targetTop);
+            }
+        }
+    }
+
+    // Cleanup method
+    destroy() {
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+        }
+        if (this.scrollResetTimer) {
+            clearTimeout(this.scrollResetTimer);
+        }
+        if (this._scrollTriggerHandler) {
+            window.removeEventListener('scroll', this._scrollTriggerHandler);
         }
     }
 }

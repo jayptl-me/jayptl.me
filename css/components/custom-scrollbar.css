@@ -129,9 +129,12 @@ html[data-theme="dark"] {
     /* Firefox */
 }
 
-html {
-    scrollbar-width: none !important;
-    scrollbar-color: transparent transparent !important;
+/* Global: opt-in site-wide hide scrollbars for Firefox.
+   Apply by adding the `hide-scrollbars-global` class to the html element.
+   This is intentionally opt-in so element-specific rules can override it. */
+html.hide-scrollbars-global {
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
 }
 
 /* ==========================================================================

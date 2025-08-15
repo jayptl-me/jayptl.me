@@ -139,6 +139,13 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
         transition: none !important;
         filter: none !important;
     }
+
+    /* Ensure the glow is completely hidden in reduced-motion mode */
+    .theme-toggle .lightsaber-glow {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
 }
 
 /* Light: saber off (black), no glow */

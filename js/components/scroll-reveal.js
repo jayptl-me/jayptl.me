@@ -936,7 +936,6 @@ class ScrollRevealComponent {
         };
     }
 
-    // (removed duplicate destroy - consolidated below)
 
     // Enable scroll snap for strict step-by-step scrolling after overlay release
     // Enable natural scrolling after overlay release

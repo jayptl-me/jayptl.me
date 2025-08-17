@@ -1378,8 +1378,8 @@ body.lock-scroll {
 /* Prevent any scroll momentum on mobile devices */
 @media (max-width: 768px) {
 
-  html,
-  body {
+  html.lock-scroll,
+  body.lock-scroll {
     /* Keep overscroll disabled during mobile overlay activation via body.lock-scroll */
     overscroll-behavior-y: none;
   }

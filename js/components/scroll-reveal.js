@@ -195,7 +195,8 @@ class ScrollRevealComponent {
         // Scrolling steps are handled via wheel/touch/keyboard on the overlay
 
         // Keyboard navigation
-        document.addEventListener('keydown', this.handleKeyboard.bind(this));
+        this._keyboardHandler = this.handleKeyboard.bind(this);
+        document.addEventListener('keydown', this._keyboardHandler);
 
         // Touch events for mobile
         if (this.isMobile) {
@@ -203,10 +204,12 @@ class ScrollRevealComponent {
         }
 
         // Wheel event for stepper scrolling - very strict
-        this.container.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
+        this._wheelHandler = this.handleWheel.bind(this);
+        this.container.addEventListener('wheel', this._wheelHandler, { passive: false });
 
         // Responsive resize handler
-        window.addEventListener('resize', this.handleResize.bind(this));
+        this._resizeHandler = this.handleResize.bind(this);
+        window.addEventListener('resize', this._resizeHandler);
     }
 
     // New scroll trigger system for responsive UX transitions
@@ -501,6 +504,7 @@ class ScrollRevealComponent {
         }, options);
 
         observer.observe(this.container);
+        this._containerObserver = observer;
     }
 
     handleScroll() {
@@ -925,15 +929,7 @@ class ScrollRevealComponent {
         };
     }
 
-    // Cleanup method
-    destroy() {
-        if (this.debounceTimer) {
-            clearTimeout(this.debounceTimer);
-        }
-        if (this.scrollResetTimer) {
-            clearTimeout(this.scrollResetTimer);
-        }
-    }
+    // (removed duplicate destroy - consolidated below)
 
     // Enable scroll snap for strict step-by-step scrolling after overlay release
     // Enable natural scrolling after overlay release
@@ -996,17 +992,71 @@ class ScrollRevealComponent {
         }
     }
 
-    // Cleanup method
+    // Cleanup method - comprehensive
     destroy() {
+        // Clear timers
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
+            this.debounceTimer = null;
         }
         if (this.scrollResetTimer) {
             clearTimeout(this.scrollResetTimer);
+            this.scrollResetTimer = null;
         }
-        if (this._scrollTriggerHandler) {
-            window.removeEventListener('scroll', this._scrollTriggerHandler);
+        if (this._releaseDisarmTimer) {
+            clearTimeout(this._releaseDisarmTimer);
+            this._releaseDisarmTimer = null;
         }
+
+        // Remove event listeners
+        try {
+            if (this._scrollTriggerHandler) {
+                window.removeEventListener('scroll', this._scrollTriggerHandler);
+                this._scrollTriggerHandler = null;
+            }
+            if (this._keyboardHandler) {
+                document.removeEventListener('keydown', this._keyboardHandler);
+                this._keyboardHandler = null;
+            }
+            if (this._wheelHandler && this.container) {
+                this.container.removeEventListener('wheel', this._wheelHandler, { passive: false });
+                this._wheelHandler = null;
+            }
+            if (this._resizeHandler) {
+                window.removeEventListener('resize', this._resizeHandler);
+                this._resizeHandler = null;
+            }
+        } catch (err) {
+            // defensive: ignore errors during cleanup
+        }
+
+        // Disconnect observers
+        try {
+            if (this._containerObserver && typeof this._containerObserver.disconnect === 'function') {
+                this._containerObserver.disconnect();
+                this._containerObserver = null;
+            }
+            if (this._heroObserver && typeof this._heroObserver.disconnect === 'function') {
+                this._heroObserver.disconnect();
+                this._heroObserver = null;
+            }
+        } catch (err) {
+            // ignore
+        }
+
+        // Null out handler references and DOM refs to help GC
+        this._keyboardHandler = null;
+        this._wheelHandler = null;
+        this._resizeHandler = null;
+        this._scrollTriggerHandler = null;
+
+        // Null DOM references (do not modify the DOM structure here)
+        this.container = null;
+        this.listElement = null;
+        this.items = null;
+        this.stepper = null;
+        this.stepperDots = null;
+        this.bottomHint = null;
     }
 }
 

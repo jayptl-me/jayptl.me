@@ -95,17 +95,6 @@ html[data-theme="dark"] {
 .consent-banner-text a {
     color: var(--theme-primary);
 
-    /* Only apply blur and gradient if supported */
-    @supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
-        .consent-banner {
-            background: linear-gradient(180deg,
-                    rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
-                    rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
-            backdrop-filter: blur(12px) saturate(120%);
-            -webkit-backdrop-filter: blur(12px) saturate(120%);
-        }
-    }
-
     text-decoration: underline;
     transition: color var(--duration-normal) var(--ease-out);
 }

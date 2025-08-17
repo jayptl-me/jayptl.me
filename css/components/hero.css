@@ -664,7 +664,9 @@
 .introduction-section {
   padding: var(--space-20) var(--space-6);
   background: var(--theme-bg);
+  /* Fallback for older browsers, then prefer dynamic viewport height to avoid mobile address-bar jumps */
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
 }

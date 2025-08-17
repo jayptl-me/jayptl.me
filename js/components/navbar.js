@@ -13,9 +13,11 @@
 (function () {
   function buildNavHTML() {
     // Robust base path detection for sub-directory deployments
-    const basePath = new URL("/", location).pathname;
-    const onHome = location.pathname === basePath || /index\.html?$/.test(location.pathname);
-    const projectsHref = onHome ? "#projects" : basePath + "#projects";
+    // Use current directory as base (e.g., "/jayptl.me/") for subdir deployments
+    const basePath = new URL(".", location).pathname;
+    const onHome = location.pathname === basePath || /(?:^|\/)index\.html?$/i.test(location.pathname);
+    const homeHref = basePath; // directory path (always ends with "/")
+    const projectsHref = onHome ? "#projects" : `${basePath}#projects`;
 
     return `
       <header id="glassNav" class="glass-nav" aria-label="Primary Navigation" role="banner">
@@ -36,7 +38,7 @@
           </div>
 
           <div class="nav-center">
-            <a href="/" id="glassNavBrand" class="nav-brand" aria-label="Brand" tabindex="0">Jay Patel</a>
+            <a href="${homeHref}" id="glassNavBrand" class="nav-brand" aria-label="Brand" tabindex="0">Jay Patel</a>
           </div>
 
           <div class="nav-right">
@@ -71,14 +73,14 @@
           <div class="mobile-overlay" aria-hidden="true"></div>
           <div class="mobile-panel" role="dialog" aria-modal="true" aria-label="Mobile menu">
             <div class="mobile-header">
-              <a href="/" class="mobile-brand">Jay Patel</a>
+              <a href="${homeHref}" class="mobile-brand">Jay Patel</a>
               <button class="mobile-close" id="mobileClose" aria-label="Close menu">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
             <nav class="mobile-list" aria-label="Primary">
               <a href="${projectsHref}" class="mobile-link"><span>Projects</span></a>
-              <a href="/" class="mobile-link"><span>Home</span></a>
+              <a href="${homeHref}" class="mobile-link"><span>Home</span></a>
               <a href="/privacy.html" class="mobile-link"><span>Privacy</span></a>
               <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="mobile-link"><span>GitHub</span></a>
               <a href="https://www.linkedin.com/in/jayptl/" target="_blank" rel="noopener" class="mobile-link"><span>LinkedIn</span></a>
@@ -243,6 +245,16 @@
       setNavbarAccessibility(nav, true);
     } else {
       setNavbarAccessibility(nav, false);
+      // Auto-show when overlay releases
+      try {
+        const mo = new MutationObserver(() => {
+          if (overlay.classList.contains('released')) {
+            setNavbarAccessibility(nav, true);
+            mo.disconnect();
+          }
+        });
+        mo.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+      } catch { /* noop */ }
     }
   }
 

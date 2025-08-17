@@ -166,20 +166,8 @@
             transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
         }
 
-        /* Hide vertical scrollbar globally while keeping scroll functional */
-        html {
-            scrollbar-width: none;
-            /* Firefox */
-            -ms-overflow-style: none;
-            /* IE/Edge legacy */
-        }
-
-        html::-webkit-scrollbar,
-        body::-webkit-scrollbar {
-            width: 0px;
-            /* Chrome/Safari */
-            height: 0px;
-        }
+        /* Consider using a scoped utility (e.g., .hide-scrollbar) or an explicit opt-in class on <html> */
+        /* See: css/components/custom-scrollbar.css */
 
         .hero {
             min-height: 100vh;
@@ -606,6 +594,10 @@
                             stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
                     </svg>
                 </div>
+            </div>
+            <!-- Bottom scroll hint for reveal flow -->
+            <div id="bottomScrollHint" aria-live="polite" aria-atomic="true">
+                <span style="display:inline-block;padding-bottom:1.5rem">Scroll</span>
             </div>
         </section>
     </main>

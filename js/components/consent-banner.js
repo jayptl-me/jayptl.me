@@ -605,7 +605,11 @@ For questions about data handling, you can contact me through the portfolio cont
         // Attempt to clear any existing GA cookies using several permutations.
         const cookieNames = ['_ga', '_gid', '_gat'];
         const hostname = window.location.hostname;
-        const domainVariants = [`.${hostname}`, hostname];
+        const parts = hostname.split('.');
+        const baseDomain = parts.length > 2 ? parts.slice(-2).join('.') : hostname;
+        // Unique variants: subdomain, bare, eTLD+1 (with/without dot)
+        const domainVariants = [`.${hostname}`, hostname, `.${baseDomain}`, baseDomain]
+            .filter((v, i, arr) => arr.indexOf(v) === i);
         const pathVariants = ['/', ''];
         const secureVariants = ['', ';Secure'];
 

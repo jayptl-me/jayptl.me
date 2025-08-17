@@ -219,6 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!target) return;
                 const overlay = document.querySelector('.text-reveal-container');
                 const released = overlay?.classList.contains('released');
+                // If no overlay exists, scroll immediately
+                if (!overlay) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
                 if (!released) {
                     // If overlay still active, release it first by jumping to final step and performing one stepDown
                     e.preventDefault();
@@ -233,12 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Wait for overlay release animation to finish before scrolling
                     const scrollHandler = () => {
                         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        overlay.removeEventListener('transitionend', scrollHandler);
-                        overlay.removeEventListener('animationend', scrollHandler);
                     };
                     // Attach both transitionend and animationend for robustness
-                    overlay.addEventListener('transitionend', scrollHandler);
-                    overlay.addEventListener('animationend', scrollHandler);
+                    overlay.addEventListener('transitionend', scrollHandler, { once: true });
+                    overlay.addEventListener('animationend', scrollHandler, { once: true });
                 } else {
                     // Overlay already released
                     e.preventDefault();

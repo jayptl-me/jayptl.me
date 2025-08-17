@@ -14,7 +14,7 @@ class ScrollRevealComponent {
         this.container = document.querySelector('.text-reveal-container');
         this.listElement = document.querySelector('.text-reveal-list');
         this.items = document.querySelectorAll('.text-reveal-item');
-        this.bottomHint = document.querySelector('.text-reveal-bottom-hint');
+        this.bottomHint = document.getElementById('bottomScrollHint');
         this.stepper = null;
         this.stepperDots = [];
         this.stepperLeftFill = null;

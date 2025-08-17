@@ -50,10 +50,10 @@ html[data-theme="dark"] {
    ========================================================================== */
 
 /* Scrollbar width */
-/* Globally hidden scrollbars override */
+/* Globally styled scrollbars (visible by default) */
 ::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-width);
 }
 
 /* Scrollbar track */
@@ -135,6 +135,12 @@ html[data-theme="dark"] {
 html.hide-scrollbars-global {
     scrollbar-width: none;
     scrollbar-color: transparent transparent;
+}
+
+/* Global: opt-in site-wide hide scrollbars for WebKit (Chrome/Safari/Edge) */
+html.hide-scrollbars-global::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }
 
 /* ==========================================================================

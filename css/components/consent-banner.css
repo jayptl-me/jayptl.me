@@ -51,21 +51,12 @@ html[data-theme="dark"] {
     /* Fallback solid background for unsupported browsers */
     background: rgb(var(--theme-bg-rgb, 255, 255, 255));
 
-    /* Only apply blur and gradient if supported */
-    @supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
-        background: linear-gradient(180deg,
-                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
-                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
-        backdrop-filter: blur(12px) saturate(120%);
-        -webkit-backdrop-filter: blur(12px) saturate(120%);
-    }
-
     border-top: 1px solid var(--theme-border);
     padding: var(--space-4) var(--space-4) var(--space-6);
     transform: translateY(100%);
     transition: transform var(--duration-300) var(--ease-out),
-    background-color var(--duration-normal) var(--ease-out),
-    border-color var(--duration-normal) var(--ease-out);
+        background-color var(--duration-normal) var(--ease-out),
+        border-color var(--duration-normal) var(--ease-out);
     box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.12);
 }
 
@@ -785,5 +776,16 @@ html[data-theme="dark"] {
 @media print {
     .consent-banner {
         display: none;
+    }
+}
+
+/* Only apply blur and gradient if supported */
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+    .consent-banner {
+        background: linear-gradient(180deg,
+                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.75) 0%,
+                rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95) 100%);
+        backdrop-filter: blur(12px) saturate(120%);
+        -webkit-backdrop-filter: blur(12px) saturate(120%);
     }
 }

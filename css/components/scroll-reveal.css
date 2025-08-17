@@ -80,8 +80,13 @@
   left: auto;
   width: 100%;
   height: 100svh;
-  height: 100dvh;
   opacity: 1;
+}
+
+@supports (height: 100dvh) {
+  .text-reveal-container.released {
+    height: 100dvh;
+  }
 }
 
 /* Transitional fade state when releasing to native scroll */
@@ -917,7 +922,6 @@
 .reveal-stepper .stepper-dot.active {
   width: 16px !important;
   /* Use design system primary variable; fall back to direct rgba values if variable is not available */
-  background: var(--primary-500, #2196F3) !important;
   background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9) !important;
   border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
   box-shadow:

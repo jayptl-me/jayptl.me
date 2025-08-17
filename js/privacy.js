@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Best-effort cookie clearing
                 document.cookie.split(';').forEach(function (c) {
                     try {
-                        document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+                        if (!c) return;
+                        var eqIdx = c.indexOf('=');
+                        var name = (eqIdx > -1 ? c.slice(0, eqIdx) : c).trim();
+                        var expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+                        // Delete at root path
+                        document.cookie = name + '=;expires=' + expires + ';path=/';
                     } catch (e) { }
                 });
 

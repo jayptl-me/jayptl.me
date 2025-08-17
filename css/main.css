@@ -44,8 +44,9 @@
 @import 'components/custom-cursor.css';
 @import 'components/custom-scrollbar.css';
 @import 'components/hero.css';
-@import 'components/scroll-indicator.css';
 @import 'components/scroll-reveal.css';
+@import 'components/scroll-indicator.css';
+@import 'components/navbar.css';
 @import 'components/theme-toggle.css';
 @import 'components/consent-banner.css';
 
@@ -61,3 +62,4 @@
 @import 'utilities/display.css';
 @import 'utilities/light-dark.css';
 @import 'utilities/cursor.css';
+@import 'utilities/text.css';

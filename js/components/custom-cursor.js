@@ -126,8 +126,10 @@ class CustomCursor {
     }
 
     isInteractiveElement(element) {
-        // Check if element is interactive
-        return element.matches('a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close');
+        // Check if element is interactive, guard against non-Elements and walk up DOM
+        if (!(element instanceof Element)) return false;
+        const selector = 'a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close';
+        return !!element.closest(selector);
     }
 
     setupTextEvents() {
@@ -143,7 +145,9 @@ class CustomCursor {
     }
 
     isTextElement(element) {
-        return element.matches('input[type="text"], input[type="email"], input[type="password"], textarea, [contenteditable]');
+        if (!(element instanceof Element)) return false;
+        const selector = 'input[type="text"], input[type="email"], input[type="password"], textarea, [contenteditable]';
+        return !!element.closest(selector);
     }
 
     handleMouseMove(e) {

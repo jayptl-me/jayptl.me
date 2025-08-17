@@ -1,0 +1,511 @@
+/* Universal Navbar Component Styles */
+
+/* Base glass-nav inherits most styles from scroll-reveal.css. Add mobile and toggle specifics and ensure inline theme toggle placement. */
+
+.glass-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    padding: calc(8px + env(safe-area-inset-top)) 14px 8px;
+    display: grid;
+    /* Equal left and right columns with centered brand */
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    z-index: var(--z-header);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px) scale(0.98);
+    transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out), visibility 220ms var(--ease-out);
+}
+
+.glass-nav.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Ensure the mobile sheet sits above any page overlays when open */
+.glass-nav.open {
+    z-index: var(--z-maximum);
+}
+
+.glass-nav-inner {
+    display: contents;
+}
+
+.glass-nav .nav-left,
+.glass-nav .nav-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.glass-nav .nav-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Allow center to shrink and truly center brand on small screens */
+.glass-nav .nav-center {
+    min-width: 0;
+}
+
+/* Prevent brand text from pushing layout; ellipsize if needed */
+.glass-nav .nav-brand {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* New layout: align edges inside equal-width side columns */
+.glass-nav .nav-left {
+    justify-content: flex-start;
+}
+
+.glass-nav .nav-right {
+    justify-content: flex-end;
+}
+
+.glass-nav .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Dropdown */
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 120%;
+    min-width: 180px;
+    padding: 8px;
+    background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    z-index: var(--z-dropdown);
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.nav-dropdown.open .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Accessibility: Show visible outline and background when dropdown-item is focused via keyboard */
+.dropdown-item:focus-visible {
+    outline: 2px solid var(--theme-accent, #0078d4);
+    outline-offset: 2px;
+    background: rgba(0, 120, 212, 0.10);
+}
+
+.dropdown-item:hover {
+    background: rgba(128, 128, 128, .15);
+}
+
+/* Mobile toggle (hamburger) */
+.nav-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.16);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-direction: column;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Accessibility: Show visible outline when nav-toggle is focused via keyboard */
+.nav-toggle:focus-visible {
+    outline: 2px solid var(--theme-accent, #0078d4);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.15);
+    border-color: var(--theme-accent, #0078d4);
+}
+
+.nav-toggle-bar {
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+}
+
+/* Inline theme toggle adjusted to sit in navbar right cluster */
+.glass-nav .theme-toggle {
+    position: static;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    top: auto;
+    right: auto;
+    box-shadow: none;
+}
+
+/* Mobile overlay menu */
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    /* Use design-system z tokens so layering is predictable across components */
+    z-index: var(--z-overlay, 2000);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mobile-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 180ms var(--ease-out);
+}
+
+.mobile-panel {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%),
+        rgba(var(--theme-bg-rgb, 18, 18, 18), 0.95);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    color: var(--theme-text);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+    transform: scale(0.98);
+    opacity: 0;
+    transition: opacity 240ms var(--ease-out), transform 260ms var(--ease-out);
+}
+
+.mobile-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--theme-text);
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.07));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out), transform 160ms var(--ease-out), box-shadow 200ms var(--ease-out), opacity 200ms var(--ease-out);
+}
+
+.mobile-item:hover {
+    background: rgba(128, 128, 128, 0.18);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateX(2px);
+}
+
+.mobile-item:active {
+    transform: translateX(1px) scale(0.995);
+}
+
+.mobile-item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb, 33, 150, 243), 0.7);
+}
+
+.mobile-sep {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin: 6px 0;
+}
+
+.mobile-actions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.glass-nav.open .mobile-menu {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.glass-nav.open .mobile-overlay {
+    opacity: 1;
+}
+
+.glass-nav.open .mobile-panel {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* When nav is open on mobile, blur the page background subtly */
+@media (max-width: 768px) {
+
+    body.nav-open main,
+    body.nav-open .hero,
+    body.nav-open footer,
+    body.nav-open .text-reveal-container.released {
+        filter: blur(6px) saturate(0.9);
+        transition: filter 180ms var(--ease-out);
+    }
+}
+
+/* Mobile drawer polish */
+.mobile-menu-inner {
+    /* Respect safe areas and enable scroll for long menus */
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    padding-top: calc(8px + env(safe-area-inset-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Staggered reveal for panel children */
+.mobile-panel>* {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 220ms var(--ease-out), transform 260ms var(--ease-out);
+}
+
+.glass-nav.open .mobile-panel>* {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subtle cascade (limits cover common counts) */
+.glass-nav.open .mobile-menu-inner> :nth-child(1) {
+    transition-delay: 60ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(2) {
+    transition-delay: 100ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(3) {
+    transition-delay: 140ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(4) {
+    transition-delay: 180ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(5) {
+    transition-delay: 220ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(6) {
+    transition-delay: 260ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(7) {
+    transition-delay: 300ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(8) {
+    transition-delay: 340ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(9) {
+    transition-delay: 380ms;
+}
+
+.glass-nav.open .mobile-menu-inner> :nth-child(10) {
+    transition-delay: 420ms;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .mobile-menu,
+    .mobile-overlay,
+    .mobile-panel,
+    .mobile-panel>* {
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .mobile-menu {
+        opacity: 1;
+    }
+
+    .mobile-panel>* {
+        opacity: 1;
+    }
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .glass-nav {
+        /* Balanced: hamburger | brand | theme (fixed-width side columns) */
+        --nav-col: 40px;
+        grid-template-columns: var(--nav-col) 1fr var(--nav-col);
+        /* Respect notches and device safe areas */
+        padding-left: calc(10px + env(safe-area-inset-left));
+        padding-right: calc(10px + env(safe-area-inset-right));
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    /* Hide empty left cluster on mobile to avoid extra grid item */
+    .glass-nav .nav-left {
+        display: none;
+    }
+
+    /* collapse right links on small screens; use drawer instead */
+    .glass-nav .nav-links {
+        display: none;
+    }
+
+    /* hide social icon buttons on mobile for a cleaner layout */
+    .glass-nav .icon-btn {
+        display: none;
+    }
+}
+
+/* Ensure nav-link sizing works for touch */
+.glass-nav .nav-link {
+    min-height: 40px;
+}
+
+/* Optional: animate hamburger into an "X" when open */
+.glass-nav.open #navToggle .nav-toggle-bar {
+    transition: transform 180ms var(--ease-out), opacity 120ms var(--ease-out);
+}
+
+.glass-nav.open #navToggle .nav-toggle-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.glass-nav.open #navToggle .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.glass-nav.open #navToggle .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Prevent background scroll when mobile drawer is open */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Optionally lock scroll on html for enhanced scroll locking without blocking touch gestures */
+html.no-scroll {
+    overflow: hidden;
+}
+
+
+
+/* Panel structure */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mobile-brand {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 700;
+}
+
+.mobile-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: rgba(255, 255, 255, .06);
+    color: inherit;
+    display: grid;
+    place-items: center;
+}
+
+.mobile-list {
+    display: grid;
+    gap: 10px;
+    padding: 16px 0;
+}
+
+.mobile-link {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .08));
+    border: 1px solid rgba(255, 255, 255, .18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .20), 0 6px 20px rgba(0, 0, 0, .25);
+}
+
+.mobile-link:hover {
+    background: rgba(128, 128, 128, .18);
+    border-color: rgba(255, 255, 255, .22);
+}
+
+.mobile-link:active {
+    transform: translateY(0) scale(.995);
+}
+
+.mobile-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb, 33, 150, 243), .65);
+}
+
+.mobile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.mobile-actions {
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+.mobile-actions .ghost-btn {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+}
+
+/* Tiny phones */
+@media (max-width: 360px) {
+    .mobile-panel {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}

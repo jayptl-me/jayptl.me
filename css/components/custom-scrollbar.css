@@ -50,12 +50,26 @@ html[data-theme="dark"] {
    ========================================================================== */
 
 /* Scrollbar width */
+/* Globally styled scrollbars (visible by default) */
 ::-webkit-scrollbar {
     width: var(--scrollbar-width);
     height: var(--scrollbar-width);
 }
 
 /* Scrollbar track */
+/* Utility: Hide scrollbar only where needed */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
 ::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
     border-radius: var(--scrollbar-thumb-radius);
@@ -106,14 +120,27 @@ html[data-theme="dark"] {
    ========================================================================== */
 
 /* Firefox scrollbar styling */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+/* Utility: Hide scrollbar only where needed */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    scrollbar-color: transparent transparent;
+    /* Firefox */
 }
 
-html {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+/* Global: opt-in site-wide hide scrollbars for Firefox.
+   Apply by adding the `hide-scrollbars-global` class to the html element.
+   This is intentionally opt-in so element-specific rules can override it. */
+html.hide-scrollbars-global {
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+}
+
+/* Global: opt-in site-wide hide scrollbars for WebKit (Chrome/Safari/Edge) */
+html.hide-scrollbars-global::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }
 
 /* ==========================================================================

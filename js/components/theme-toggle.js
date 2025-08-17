@@ -8,17 +8,15 @@
 
 class ThemeToggle {
     constructor() {
-        this.themeToggle = document.getElementById('themeToggle');
+        this.toggles = Array.from(document.querySelectorAll('.theme-toggle'));
+        this.onClick = this.onClick.bind(this);
         this.init();
     }
-    
+
     init() {
-        if (!this.themeToggle) {
-            return;
-        }
-        
-        this.themeToggle.addEventListener('click', this.toggleTheme.bind(this));
-        
+        // Always register global listeners and sync theme, even if no toggles exist
+        this.toggles.forEach(btn => btn.addEventListener('click', this.onClick));
+
         window.addEventListener('themechange', (e) => {
             this.updateToggleState(e.detail.theme);
         });
@@ -27,17 +25,15 @@ class ThemeToggle {
             this.updateToggleState(window.themeManager.getCurrentTheme());
         }
     }
-    
-    toggleTheme() {
+
+    onClick() {
         if (window.themeManager) {
-            const newTheme = window.themeManager.toggleTheme();
+            window.themeManager.toggleTheme();
         }
     }
 
     updateToggleState(theme) {
-        if (this.themeToggle) {
-            this.themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-        }
+        this.toggles.forEach(btn => btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false'));
     }
 }
 

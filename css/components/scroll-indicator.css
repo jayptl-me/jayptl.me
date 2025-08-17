@@ -10,39 +10,17 @@
    SCROLL PROGRESS INDICATOR
    ========================================================================== */
 
-.progress-indicator {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  z-index: var(--z-above-content);
-  background: var(--theme-border-light);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+
+/* Disabled: scroll indicator removed, scoped to [data-scroll-indicator="off"] */
+[data-scroll-indicator="off"] .progress-indicator,
+[data-scroll-indicator="off"] .progress-bar {
+  display: none;
 }
 
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: var(--theme-gradient-primary);
-  transition: width var(--duration-300) var(--ease-out);
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.3) 50%,
-      transparent 100%);
-  animation: shimmer 2s infinite;
+/* Optionally, scope ::after disabling as well */
+[data-scroll-indicator="off"] .progress-bar::after {
+  display: none;
+  content: none;
 }
 
 @keyframes shimmer {
@@ -61,7 +39,7 @@
 
 @media (max-width: 768px) {
   .progress-indicator {
-    height: 3px;
+    height: 2px;
   }
 }
 

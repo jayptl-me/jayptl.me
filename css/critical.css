@@ -1,0 +1,185 @@
+/* Extracted critical CSS from index.html */
+/* Critical theme variables - only what's needed for initial render */
+:root {
+    --font-display: 'Audiowide', sans-serif;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-5xl: 3rem;
+    --weight-normal: 400;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-4: 1rem;
+    --space-8: 2rem;
+    --leading-relaxed: 1.625;
+    --duration-300: 300ms;
+    --duration-normal: 250ms;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+    /* Essential color palette */
+    --white: #ffffff;
+    --black: #000000;
+    --gray-50: #f9fafb;
+    --gray-100: #f5f5f5;
+    --gray-900: #111827;
+    --primary-500: #2196f3;
+
+    /* Theme-aware background RGB for transparency */
+    --theme-bg-rgb: 255, 255, 255;
+    --primary-500-rgb: 33, 150, 243;
+
+    /* Light theme (default) */
+    --theme-bg: var(--white);
+    --theme-text: var(--gray-900);
+    --theme-primary: var(--primary-500);
+    --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+}
+
+/* Dark theme - system preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-bg: var(--black);
+        --theme-text: var(--white);
+        --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+        --theme-bg-rgb: 0, 0, 0;
+    }
+
+    html {
+        background-color: var(--black);
+        color: var(--white);
+    }
+
+    body {
+        background-color: var(--black);
+        color: var(--white);
+    }
+}
+
+/* Light theme - ensure it applies properly */
+@media (prefers-color-scheme: light) {
+    :root {
+        --theme-bg: var(--white);
+        --theme-text: var(--gray-900);
+        --theme-primary: var(--primary-500);
+        --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+    }
+
+    html {
+        background-color: var(--white);
+        color: var(--gray-900);
+    }
+
+    body {
+        background-color: var(--white);
+        color: var(--gray-900);
+    }
+}
+
+/* Theme specific styles based on data-theme attribute */
+html[data-theme="light"] {
+    --theme-bg: var(--white);
+    --theme-text: var(--gray-900);
+    --theme-primary: var(--primary-500);
+    --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+    background-color: var(--white);
+    color: var(--gray-900);
+}
+
+html[data-theme="dark"] {
+    --theme-bg: var(--black);
+    --theme-text: var(--white);
+    --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+    --theme-bg-rgb: 0, 0, 0;
+    background-color: var(--black);
+    color: var(--white);
+}
+
+/* Force immediate theme application */
+html {
+    color-scheme: light dark;
+}
+
+/* Truly critical above-the-fold styles only */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+body {
+    font-family: var(--font-display);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    line-height: var(--leading-relaxed);
+    transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
+}
+
+/* Hide vertical scrollbar globally while keeping scroll functional */
+html {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0px;
+    /* Chrome/Safari */
+    height: 0px;
+}
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-8);
+    width: 100%
+}
+
+.hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 2
+}
+
+.text-reveal-container {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.text-reveal-item {
+    opacity: 0;
+    transform: translateY(100px);
+    font-size: clamp(var(--text-2xl), 5vw, var(--text-5xl));
+    font-weight: var(--weight-normal);
+    margin: var(--space-4) 0
+}
+
+.gradient-text {
+    background: var(--theme-gradient-text);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
+}
+
+@media (max-width:768px) {
+    .hero-container {
+        padding: 0 var(--space-4)
+    }
+
+    .text-reveal-item {
+        font-size: clamp(var(--text-xl), 4vw, var(--text-3xl));
+        margin: var(--space-2) 0
+    }
+}

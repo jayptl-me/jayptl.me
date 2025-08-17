@@ -3,7 +3,24 @@
 
 /**
  * Consent Banner Component
- * GDPR/Privacy compliant consent management for Google Analytics
+ * GDPR/Privacy complia        const currentStatus = this.consentData && this.consentData.analytics !== undefined 
+            ? (this.consentData.analytics ? 'Enabled' : 'Disabled')
+            : 'Not set';
+
+        const message = `${ConsentBanner.CONSENT_MESSAGES.currentSettingsTitle}
+        
+Analytics Status: ${currentStatus}
+
+What would you like to do?
+
+${ConsentBanner.CONSENT_MESSAGES.enableAnalytics}
+${ConsentBanner.CONSENT_MESSAGES.disableAnalytics}
+${ConsentBanner.CONSENT_MESSAGES.resetBanner}
+
+${ConsentBanner.CONSENT_MESSAGES.analyticsDescription}`;
+
+        // Create a custom dialog
+        this.createSettingsDialog();ent for Google Analytics
  * Integrates with theme system and manages user preferences
  * 
  * @file js/components/consent-banner.js
@@ -11,6 +28,15 @@
  */
 
 class ConsentBanner {
+    // Configuration object for better maintainability
+    static CONSENT_MESSAGES = {
+        currentSettingsTitle: 'Current Privacy Settings:',
+        enableAnalytics: 'Enable Analytics - Help improve this portfolio',
+        disableAnalytics: 'Disable Analytics - Browse privately',
+        resetBanner: 'Reset - Show the consent banner again',
+        analyticsDescription: 'Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.'
+    };
+
     constructor() {
         this.consentKey = 'user-analytics-consent';
         this.consentBannerKey = 'consent-banner-shown';
@@ -66,13 +92,13 @@ class ConsentBanner {
 
         const message = `Current Privacy Settings:
         
-📊 Analytics Status: ${currentStatus}
+Analytics Status: ${currentStatus}
 
 What would you like to do?
 
-✅ Enable Analytics - Help improve this portfolio
-❌ Disable Analytics - Browse privately
-🔄 Reset - Show the consent banner again
+Enable Analytics - Help improve this portfolio
+Disable Analytics - Browse privately
+Reset - Show the consent banner again
 
 Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.`;
 
@@ -86,87 +112,226 @@ Analytics helps me understand which sections are most engaging and improve the u
         if (existingDialog) {
             existingDialog.remove();
         }
-
         const dialog = document.createElement('div');
         dialog.id = 'consent-settings-dialog';
         dialog.className = 'consent-settings-dialog';
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.setAttribute('aria-labelledby', 'consent-dialog-title');
+        dialog.setAttribute('aria-describedby', 'consent-dialog-desc');
 
-        const currentStatus = this.consentData.hasResponded
-            ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled')
-            : 'Not set';
+        // Overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'consent-settings-dialog-overlay';
+        overlay.addEventListener('click', () => this.closeSettingsDialog());
+        dialog.appendChild(overlay);
 
-        dialog.innerHTML = `
-            <div class="consent-settings-dialog-overlay" onclick="window.consentBanner?.closeSettingsDialog()"></div>
-            <div class="consent-settings-dialog-content">
-                <div class="consent-settings-dialog-header">
-                    <h3 id="consent-dialog-title">Privacy Settings</h3>
-                    <button class="consent-settings-dialog-close" onclick="window.consentBanner?.closeSettingsDialog()" aria-label="Close dialog">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                            <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="consent-settings-dialog-body">
-                    <div class="consent-current-status">
-                        <span class="consent-status-label">Current Status:</span>
-                        <span class="consent-status-value ${this.consentData.hasResponded ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set'}">${currentStatus}</span>
-                    </div>
-                    
-                    <div class="consent-settings-info">
-                        <h4>About Analytics</h4>
-                        <p>This portfolio uses Google Analytics to understand how visitors interact with the site, helping me improve the user experience.</p>
-                        
-                        <h4>What we track:</h4>
-                        <ul>
-                            <li>Page views and navigation patterns</li>
-                            <li>Time spent on different sections</li>
-                            <li>Device and browser information (anonymized)</li>
-                            <li>Geographic region (country level only)</li>
-                        </ul>
-                        
-                        <h4>What we DON'T track:</h4>
-                        <ul>
-                            <li>Personal information or identity</li>
-                            <li>Exact location or IP address</li>
-                            <li>Keystrokes or form inputs</li>
-                            <li>Cross-site browsing activity</li>
-                        </ul>
-                        
-                        <p><a href="/privacy.html" target="_blank" rel="noopener">Read our full Privacy Policy</a> for complete details.</p>
-                    </div>
-                </div>
-                <div class="consent-settings-dialog-actions">
-                    <button class="consent-dialog-btn consent-dialog-btn-enable" onclick="window.consentBanner?.enableAnalytics()">
-                        Enable Analytics
-                    </button>
-                    <button class="consent-dialog-btn consent-dialog-btn-disable" onclick="window.consentBanner?.disableAnalytics()">
-                        Disable Analytics
-                    </button>
-                    <button class="consent-dialog-btn consent-dialog-btn-reset" onclick="window.consentBanner?.resetConsentFromDialog()">
-                        Reset Consent
-                    </button>
-                </div>
-            </div>
-        `;
+        // Content wrapper
+        const content = document.createElement('div');
+        content.className = 'consent-settings-dialog-content';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'consent-settings-dialog-header';
+
+        const titlewrap = document.createElement('div');
+        titlewrap.className = 'consent-settings-dialog-titlewrap';
+        const h3 = document.createElement('h3');
+        h3.id = 'consent-dialog-title';
+        h3.textContent = 'Privacy Settings';
+        const pdesc = document.createElement('p');
+        pdesc.id = 'consent-dialog-desc';
+        pdesc.className = 'consent-dialog-subtitle';
+        pdesc.textContent = "You're in control. Adjust analytics preferences for this site.";
+        titlewrap.appendChild(h3);
+        titlewrap.appendChild(pdesc);
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'consent-settings-dialog-close';
+        closeBtn.setAttribute('aria-label', 'Close dialog');
+        // Build close icon SVG via DOM to avoid innerHTML
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('xmlns', svgNS);
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '20');
+        svg.setAttribute('height', '20');
+        const path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('d', 'M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z');
+        svg.appendChild(path);
+        closeBtn.appendChild(svg);
+        closeBtn.addEventListener('click', () => this.closeSettingsDialog());
+
+        header.appendChild(titlewrap);
+        header.appendChild(closeBtn);
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'consent-settings-dialog-body';
+
+        const currentStatusWrap = document.createElement('div');
+        currentStatusWrap.className = 'consent-current-status';
+        const statusLabel = document.createElement('span');
+        statusLabel.className = 'consent-status-label';
+        statusLabel.textContent = 'Current Status:';
+        const statusValue = document.createElement('span');
+        statusValue.className = `consent-status-value ${this.consentData.hasResponded ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set'}`;
+        statusValue.textContent = this.consentData.hasResponded ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled') : 'Not set';
+        currentStatusWrap.appendChild(statusLabel);
+        currentStatusWrap.appendChild(statusValue);
+
+        // Toggle row
+        const toggleRow = document.createElement('div');
+        toggleRow.className = 'consent-toggle-row';
+        toggleRow.setAttribute('role', 'group');
+        toggleRow.setAttribute('aria-labelledby', 'analyticsToggleLabel');
+
+        const toggleText = document.createElement('div');
+        toggleText.className = 'toggle-text';
+        const h4 = document.createElement('h4');
+        h4.id = 'analyticsToggleLabel';
+        h4.textContent = 'Analytics';
+        const toggleP = document.createElement('p');
+        toggleP.className = 'toggle-subtext';
+        toggleP.textContent = 'Help improve this site with anonymous usage insights. No personal data collected.';
+        toggleText.appendChild(h4);
+        toggleText.appendChild(toggleP);
+
+        // Switch - accessible
+        const switchBtn = document.createElement('button');
+        switchBtn.className = 'consent-switch';
+        switchBtn.id = 'analyticsSwitch';
+        const isOn = this.consentData.accepted && this.consentData.hasResponded;
+        switchBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+        switchBtn.setAttribute('aria-label', 'Toggle analytics');
+        switchBtn.tabIndex = 0;
+        // inner structure for switch (build via DOM to avoid innerHTML)
+        const handle = document.createElement('span');
+        handle.className = 'switch-handle';
+        switchBtn.appendChild(handle);
+        // click toggles consent
+        switchBtn.addEventListener('click', () => {
+            const next = !(this.consentData.accepted && this.consentData.hasResponded);
+            this.setConsentInline(next);
+            // update UI
+            const isNowOn = this.consentData.accepted && this.consentData.hasResponded;
+            switchBtn.classList.toggle('is-on', isNowOn);
+            switchBtn.setAttribute('aria-pressed', isNowOn ? 'true' : 'false');
+            statusValue.className = `consent-status-value ${this.consentData.hasResponded ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set'}`;
+            statusValue.textContent = this.consentData.hasResponded ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled') : 'Not set';
+        });
+
+        toggleRow.appendChild(toggleText);
+        toggleRow.appendChild(switchBtn);
+
+        // Info section built with DOM APIs (avoids innerHTML for dynamic content)
+        const info = document.createElement('div');
+        info.className = 'consent-settings-info';
+
+        const aboutH4 = document.createElement('h4');
+        aboutH4.textContent = 'About Analytics';
+        const aboutP = document.createElement('p');
+        aboutP.textContent = 'This portfolio uses Google Analytics to understand how visitors interact with the site, helping me improve the user experience.';
+
+        const whatH4 = document.createElement('h4');
+        whatH4.textContent = 'What we track:';
+        const ulTrack = document.createElement('ul');
+        ulTrack.className = 'consent-feature-list';
+        ['Page views and navigation patterns', 'Time spent on different sections', 'Device and browser information (anonymized)', 'Geographic region (country level only)']
+            .forEach(txt => {
+                const li = document.createElement('li');
+                li.textContent = txt;
+                ulTrack.appendChild(li);
+            });
+
+        const dontH4 = document.createElement('h4');
+        dontH4.textContent = "What we DON'T track:";
+        const ulDont = document.createElement('ul');
+        ulDont.className = 'consent-feature-list';
+        ['Personal information or identity', 'Exact location or IP address', 'Keystrokes or form inputs', 'Cross-site browsing activity']
+            .forEach(txt => {
+                const li = document.createElement('li');
+                li.textContent = txt;
+                ulDont.appendChild(li);
+            });
+
+        const privacyP = document.createElement('p');
+        const privacyLink = document.createElement('a');
+        privacyLink.href = '/privacy.html';
+        privacyLink.target = '_blank';
+        privacyLink.rel = 'noopener';
+        privacyLink.textContent = 'Read our full Privacy Policy';
+        privacyP.appendChild(privacyLink);
+        privacyP.appendChild(document.createTextNode(' for complete details.'));
+
+        info.appendChild(aboutH4);
+        info.appendChild(aboutP);
+        info.appendChild(whatH4);
+        info.appendChild(ulTrack);
+        info.appendChild(dontH4);
+        info.appendChild(ulDont);
+        info.appendChild(privacyP);
+
+        // assemble
+        body.appendChild(currentStatusWrap);
+        body.appendChild(toggleRow);
+        body.appendChild(info);
+
+        content.appendChild(header);
+        content.appendChild(body);
+
+        dialog.appendChild(content);
 
         document.body.appendChild(dialog);
+        // lock body scroll while dialog is open
+        // Always capture the current overflow so we restore the exact value on close
+        this._prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
 
         // Focus the dialog
         setTimeout(() => {
-            dialog.querySelector('.consent-dialog-btn-enable')?.focus();
+            dialog.querySelector('.consent-switch')?.focus();
         }, 100);
 
-        // Add escape key handler
-        const handleEscape = (e) => {
+        // Add handlers: Escape, focus trap, and switch init
+        const handleKeydown = (e) => {
             if (e.key === 'Escape') {
                 this.closeSettingsDialog();
-                document.removeEventListener('keydown', handleEscape);
+                return;
+            }
+            if (e.key === 'Tab') {
+                // Basic focus trap inside dialog content
+                const focusable = dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                const focusables = Array.from(focusable).filter(el => !el.hasAttribute('disabled'));
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    last.focus();
+                    e.preventDefault();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    first.focus();
+                    e.preventDefault();
+                }
             }
         };
-        document.addEventListener('keydown', handleEscape);
+        document.addEventListener('keydown', handleKeydown);
+
+        // Initialize switch visual state
+        const switchEl = document.getElementById('analyticsSwitch');
+        if (switchEl) {
+            this._syncSwitch(switchEl);
+            // keyboard activation
+            switchEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    switchEl.click();
+                }
+            });
+        }
+
+        // store cleanup to remove listeners on close
+        this._dialogKeydownHandler = handleKeydown;
     }
 
     closeSettingsDialog() {
@@ -177,6 +342,15 @@ Analytics helps me understand which sections are most engaging and improve the u
                 window.customCursor.setHoverState(false);
             }
             dialog.remove();
+            // restore body scroll (if we captured a value) and clear stored value
+            if (typeof this._prevOverflow !== 'undefined') {
+                document.body.style.overflow = this._prevOverflow;
+            }
+            this._prevOverflow = undefined;
+            if (this._dialogKeydownHandler) {
+                document.removeEventListener('keydown', this._dialogKeydownHandler);
+                this._dialogKeydownHandler = null;
+            }
         }
     }
 
@@ -308,6 +482,34 @@ For questions about data handling, you can contact me through the portfolio cont
         }, 3000);
     }
 
+    setConsentInline(accepted) {
+        // Save without closing the dialog; update analytics and indicator
+        this.saveConsent(accepted, true);
+        if (accepted) {
+            this.initializeAnalytics();
+        } else {
+            this.disableAnalyticsTracking();
+        }
+        this.updateConsentIndicator();
+        this.showConfirmation(accepted ? 'Analytics enabled.' : 'Analytics disabled.');
+    }
+
+    _syncSwitch(switchEl) {
+        const isOn = this.consentData.accepted && this.consentData.hasResponded;
+        switchEl.classList.toggle('is-on', isOn);
+        switchEl.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    }
+
+    _syncStatusChip(root = document) {
+        const statusEl = root.querySelector('.consent-status-value');
+        if (!statusEl) return;
+        statusEl.classList.remove('accepted', 'declined', 'not-set');
+        const has = this.consentData.hasResponded;
+        const txt = has ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled') : 'Not set';
+        statusEl.textContent = txt;
+        statusEl.classList.add(has ? (this.consentData.accepted ? 'accepted' : 'declined') : 'not-set');
+    }
+
     saveConsent(accepted, hasResponded = true) {
         const consentData = {
             accepted,
@@ -322,7 +524,17 @@ For questions about data handling, you can contact me through the portfolio cont
         // Save to cookie as backup (1 year expiry)
         const expires = new Date();
         expires.setFullYear(expires.getFullYear() + 1);
-        document.cookie = `${this.consentKey}=${JSON.stringify(consentData)};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        // Use encodeURIComponent to avoid breaking cookie format
+        let cookieStr = `${this.consentKey}=${encodeURIComponent(JSON.stringify(consentData))};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        // Add Secure flag when served over HTTPS
+        try {
+            if (window.location && window.location.protocol === 'https:') {
+                cookieStr += ';Secure';
+            }
+        } catch (e) {
+            // silent
+        }
+        document.cookie = cookieStr;
 
         this.consentData = consentData;
     }
@@ -406,7 +618,6 @@ For questions about data handling, you can contact me through the portfolio cont
             allow_ad_personalization_signals: false
         });
 
-        console.log('Google Analytics initialized with consent');
     }
 
     disableAnalyticsTracking() {
@@ -417,20 +628,55 @@ For questions about data handling, you can contact me through the portfolio cont
             });
         }
 
-        // Clear any existing GA cookies
-        const gaCookies = document.cookie.split(';').filter(cookie =>
-            cookie.trim().startsWith('_ga') ||
-            cookie.trim().startsWith('_gid') ||
-            cookie.trim().startsWith('_gat')
-        );
+        // Attempt to clear any existing GA cookies using several permutations.
+        const cookieNames = ['_ga', '_gid', '_gat'];
+        const hostname = window.location.hostname;
+        const parts = hostname.split('.');
+        const baseDomain = parts.length > 2 ? parts.slice(-2).join('.') : hostname;
+        // Unique variants: subdomain, bare, eTLD+1 (with/without dot)
+        const domainVariants = [`.${hostname}`, hostname, `.${baseDomain}`, baseDomain]
+            .filter((v, i, arr) => arr.indexOf(v) === i);
+        const pathVariants = ['/', ''];
+        const secureVariants = ['', ';Secure'];
 
-        gaCookies.forEach(cookie => {
-            const cookieName = cookie.split('=')[0].trim();
-            document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname}`;
-            document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        cookieNames.forEach(name => {
+            // brute-force attempt: try common domain/path/secure combinations
+            domainVariants.forEach(domain => {
+                pathVariants.forEach(path => {
+                    secureVariants.forEach(secureFlag => {
+                        try {
+                            // Expire cookie
+                            const cookieStr = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
+                            document.cookie = cookieStr;
+                        } catch (e) {
+                            // ignore
+                        }
+                    });
+                });
+            });
+
+            // also try without domain attribute
+            try {
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
+            } catch (e) { }
         });
 
-        console.log('Google Analytics disabled and cookies cleared');
+        // Also try to remove the consent cookie we set
+        try {
+            const consentName = this.consentKey;
+            domainVariants.forEach(domain => {
+                pathVariants.forEach(path => {
+                    secureVariants.forEach(secureFlag => {
+                        try {
+                            document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
+                        } catch (e) { }
+                    });
+                });
+            });
+            document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
+        } catch (e) { }
+
+        // Google Analytics disabled and cookie removal attempted (client-side best-effort)
     }
 
     addKeyboardListeners() {

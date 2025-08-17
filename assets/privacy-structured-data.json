@@ -1,0 +1,10 @@
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy",
+    "url": "https://jayptl.me/privacy.html",
+    "about": {
+        "@type": "Person",
+        "name": "Jay Patel"
+    }
+}

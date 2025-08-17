@@ -51,7 +51,7 @@ class AnalyticsManager {
      * Loads the Google Analytics script and initializes gtag.
      */
     loadGoogleAnalytics() {
-        if (this.isLoaded) return;
+        if (this.isLoaded || window.gtag) return;
         const script = document.createElement('script');
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${this.GA_MEASUREMENT_ID}`;
@@ -103,7 +103,6 @@ class AnalyticsManager {
         // Track initial page view
         this.trackPageView();
         this.setupPortfolioTracking();
-        console.log('Google Analytics initialized with privacy-first configuration');
     }
 
 

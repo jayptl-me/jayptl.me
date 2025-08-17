@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 
 <head>
 
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <title>Jay Patel - Portfolio</title>
+    <link rel="canonical" href="https://jayptl.me/" />
 
     <!-- SEO & Social Sharing -->
     <meta name="description"
@@ -27,11 +28,13 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//static.cloudflareinsights.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
 
     <!-- Preconnect hints for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://static.cloudflareinsights.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
 
     <!-- Critical font preload for better performance -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap" as="style"
@@ -163,6 +166,8 @@
             transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
         }
 
+        /* See: css/components/custom-scrollbar.css */
+
         .hero {
             min-height: 100vh;
             display: flex;
@@ -185,7 +190,11 @@
 
         .text-reveal-container {
             overflow: hidden;
-            position: relative
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
         }
 
         .text-reveal-item {
@@ -215,10 +224,11 @@
         }
     </style>
 
-    <!-- Load non-critical CSS asynchronously -->
-    <link rel="stylesheet" href="css/main.css">
+    <!-- Theme color for light and dark -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
 
-    <!-- Theme Detection Script - Prevent FOUC -->
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
     <script>
         // Prevent Flash of Unstyled Content by setting theme immediately
         (function () {
@@ -262,221 +272,39 @@
 
             document.documentElement.setAttribute('data-theme', theme);
             document.documentElement.style.colorScheme = theme;
+            // Mark JS-enabled
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
         })();
     </script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
 
-    <!-- Theme toggle styles -->
-    <style>
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 15;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Jay Patel",
+            "url": "https://jayptl.me/",
+            "jobTitle": "Software Developer, UI/UX Designer, Creative Director"
         }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            background: rgba(0, 150, 136, 0.2);
-        }
-
-        .theme-toggle svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--theme-text);
-            transition: all 0.3s ease;
-        }
-
-        /* Lightsaber styling */
-        .lightsaber-blade {
-            fill: #3b82f6;
-            filter: drop-shadow(0 0 4px #3b82f6);
-            transition: all 0.3s ease;
-        }
-
-        .lightsaber-glow {
-            fill: #60a5fa;
-            opacity: 0.6;
-        }
-
-        /* Theme-based lightsaber colors */
-        html[data-theme="light"] .lightsaber-blade {
-            fill: #3b82f6;
-            filter: drop-shadow(0 0 4px #3b82f6);
-        }
-
-        html[data-theme="light"] .lightsaber-glow {
-            fill: #60a5fa;
-        }
-
-        html[data-theme="dark"] .lightsaber-blade {
-            fill: #ef4444;
-            filter: drop-shadow(0 0 4px #ef4444);
-        }
-
-        html[data-theme="dark"] .lightsaber-glow {
-            fill: #f87171;
-        }
-
-        /* Hover effects */
-        .theme-toggle:hover .lightsaber-blade {
-            filter: drop-shadow(0 0 8px currentColor);
-        }
-
-        /* Remove old sun/moon icon styles */
-
-        /* Consent settings toggle styles */
-        .consent-settings-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 30;
-            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.9);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            border-radius: 50px;
-            padding: 8px 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            font-size: 12px;
-            color: var(--theme-text);
-            opacity: 0.8;
-        }
-
-        .consent-settings-toggle:hover {
-            transform: translateY(-2px);
-            opacity: 1;
-            background: rgba(var(--theme-bg-rgb, 255, 255, 255), 0.95);
-            border-color: var(--primary-500);
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
-        }
-
-        .consent-settings-toggle-icon {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .consent-settings-toggle:hover .consent-settings-toggle-icon {
-            transform: rotate(90deg);
-        }
-
-        .consent-settings-toggle-text {
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .consent-status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #94a3b8;
-            transition: background 0.3s ease;
-        }
-
-        .consent-status-indicator.accepted {
-            background: #10b981;
-            box-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
-        }
-
-        .consent-status-indicator.declined {
-            background: #f59e0b;
-            box-shadow: 0 0 4px rgba(245, 158, 11, 0.3);
-        }
-
-        .consent-settings-sr-text {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-
-        /* Hide consent settings toggle by default */
-        .consent-settings-toggle {
-            display: none;
-        }
-
-        /* Show consent settings toggle when JavaScript is enabled */
-        .js .consent-settings-toggle {
-            display: flex;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .consent-settings-toggle {
-                bottom: 16px;
-                left: 16px;
-                padding: 8px;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                justify-content: center;
-            }
-
-            .consent-settings-toggle-text {
-                display: none;
-            }
-
-            .consent-settings-toggle-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .consent-status-indicator {
-                position: absolute;
-                top: -2px;
-                right: -2px;
-                width: 10px;
-                height: 10px;
-                border: 2px solid var(--theme-bg);
-            }
-        }
-    </style>
+        </script>
 </head>
 
-<body class="js">
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle cursor-magnetic cursor-glow" id="themeToggle" aria-label="Toggle dark/light mode"
-        tabindex="0">
-        <svg class="lightsaber-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
-            focusable="false">
-            <!-- Lightsaber Handle -->
-            <rect x="10.5" y="18" width="3" height="4" rx="1.5" fill="currentColor" opacity="0.8" />
-            <rect x="10" y="16" width="4" height="2" rx="1" fill="currentColor" opacity="0.6" />
-            <rect x="10.2" y="17" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
-            <rect x="10.2" y="18.5" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
-            <rect x="10.2" y="20" width="3.6" height="0.5" fill="currentColor" opacity="0.9" />
+<body>
+    <noscript>
+        <style>
+            .no-js .consent-settings-toggle {
+                display: none !important;
+            }
+        </style>
+    </noscript>
 
-            <!-- Lightsaber Blade -->
-            <rect x="11.2" y="2" width="1.6" height="14" rx="0.8" class="lightsaber-blade" />
-
-            <!-- Blade Glow Effect -->
-            <rect x="11.4" y="2" width="1.2" height="14" rx="0.6" class="lightsaber-glow" />
-        </svg>
-    </button>
 
     <!-- Consent Settings Toggle Button -->
     <button class="consent-settings-toggle cursor-magnetic cursor-pulse" id="consentSettingsToggle"
@@ -492,13 +320,13 @@
     </button>
 
     <!-- Main Content -->
-    <main>
+    <main aria-label="Jay Patel Portfolio">
+        <h1 class="sr-only">Jay Patel — Software Developer, UI/UX Designer & Creative Director</h1>
         <!-- Hero Section -->
         <section id="home" class="hero" aria-labelledby="heroTitle">
+            <h2 id="heroTitle" class="sr-only">Welcome to Jay Patel’s Portfolio</h2>
             <!-- Progress Indicator -->
-            <div class="progress-indicator" aria-hidden="true">
-                <div class="progress-bar"></div>
-            </div>
+
 
             <div class="hero-container">
                 <div class="hero-content">
@@ -643,17 +471,139 @@
                                     </span>
                                 </span>
                             </div>
+                            <!-- Final: Ahhhh, Just Jay! -->
+                            <div class="text-reveal-item final" data-role="JUST JAY">
+                                <span class="text-line">
+                                    <span class="word" data-text="Ahhhh,">
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">h</span>
+                                        <span class="char gradient-text">,</span>
+                                    </span>
+                                    <span class="word" data-text="Just">
+                                        <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">u</span>
+                                        <span class="char gradient-text">s</span>
+                                        <span class="char gradient-text">t</span>
+                                    </span>
+                                    <span class="word word-jay" data-text="Jay!">
+                                        <span class="char gradient-text">J</span>
+                                        <span class="char gradient-text">a</span>
+                                        <span class="char gradient-text">y</span>
+                                        <span class="char gradient-text">!</span>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+
+        </section>
+
+        <!-- Introduction Section (replaces Projects) -->
+        <section id="introduction" class="introduction-section" aria-labelledby="introTitle">
+            <div class="projects-container intro-container">
+                <h2 id="introTitle" class="intro-headline gradient-text"
+                    style="font-family:var(--font-display);font-size:clamp(2.25rem,6vw,3.5rem);font-weight:700;line-height:1.05;">
+                    They told me to stop playing games. So I started building them.</h2>
+
+                <p class="intro-subheadline" style="margin-top:0.75rem;font-size:1.125rem;">My journey as a
+                    developer started when I was told to quit video games—so I decided to build them instead. That
+                    passion evolved into architecting high-performance mobile apps with Flutter, where I obsess over
+                    creating buttery-smooth user experiences that feel intuitive and alive.</p>
+
+                <div class="intro-body"
+                    style="margin-top:1.25rem;max-width:920px;margin-left:auto;margin-right:auto;text-align:left;font-size:1rem;">
+                    <p><strong>Look</strong>, my origin story isn't some lab accident. I used to crush levels in BGMI
+                        and
+                        Valorant until low grades hit like a boss fight I couldn't beat. Dad said "no more games," so I
+                        flipped the script: started learning <strong>3D modeling</strong>, rendering, physics scripting
+                        – all
+                        to build my own damn games. But then it clicked – why stop at pixels when I can code apps,
+                        websites, and rake in the crypto? <strong>Boom.</strong> Coding became my superpower.</p>
+
+                    <p>My first strike? <strong>Huselk</strong> – a full-blown e-commerce clone. Payment gateways?
+                        Integrated.
+                        Web3 coins? Minted. Full-stack glory from scratch. No disasters here; I learn fast, iterate
+                        faster,
+                        and make UIs so smooth they glide like Spidey through the city.</p>
+
+                    <p>By day, I'm wrapping up my <strong>B.Tech at ADIT</strong> in Anand, Gujarat, but my real lab is
+                        the code
+                        editor. Primary weapon: <strong>Flutter & Dart</strong>, backed by Firebase firepower, Razorpay
+                        for
+                        seamless transactions, and databases like MongoDB, NoSQL, or MySQL holding the fort. Cloud? GCP
+                        and
+                        AWS (EC2, S3, Lambda) are my playgrounds. Design? I wireframe in Figma, polish in Adobe
+                        Photoshop
+                        and Illustrator – because ugly apps are for amateurs.</p>
+
+                    <p>I've interned at spots like <strong>NextEdgeLabs, CodeXcelerate,</strong> and
+                        <strong>AGEVOLE</strong>,
+                        leading teams as a Flutter dev. Snagged the win at <strong>Odoo x Charusat Hackathon
+                            '25</strong>.
+                        Freelanced for Dpizza Time, built their mobile app. And at Huselk, I was the associate dev who
+                        led
+                        the e-com charge.
+                    </p>
+
+                    <p>But here's the truth: I'm not just a coder. I'm the guy who turns "what if" into "watch this."
+                        When I'm
+                        not debugging, I'm chilling with friends and family – my real recharge. Or geeking out over
+                        Marvel
+                        movies, esports, or blasting music that swings from peaceful vibes to "devil searching for
+                        redemption" anthems. Talkative? Nah, I save my words for code that speaks volumes. Peace and
+                        silence
+                        are my secret weapons.</p>
+
+                    <p><strong>Dream big?</strong> Forget one app – I'm building an empire called <strong>OPSC</strong>,
+                        a suite of
+                        tools that solve problems you didn't know you had.</p>
+
+                    <p style="margin-top:0.75rem;">Ready to team up? Check my <a href="https://github.com/jayptl-me"
+                            rel="noopener" target="_blank">GitHub blueprints</a> or hit up <a href="/">jayptl.me</a>.
+                        Let's build something
+                        unbreakable.</p>
+                </div>
+
+                <div class="intro-ctas"
+                    style="margin-top:1.5rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+                    <a class="btn btn-primary" href="/projects.html"
+                        style="background:linear-gradient(90deg,#2196f3,#1976d2);color:#fff;padding:0.65rem 1rem;border-radius:8px;text-decoration:none;font-weight:700;box-shadow:0 8px 24px rgba(25,118,210,0.18);">Dive
+                        Into My Portfolio</a>
+                    <a class="btn" href="#contact"
+                        style="background:transparent;border:2px solid rgba(33,150,243,0.12);padding:0.6rem 0.95rem;border-radius:8px;text-decoration:none;color:var(--theme-text);font-weight:700;">Connect
+                        Now</a>
+                </div>
+
+                <!-- Subtle arc-reactor / spidey-web icon for flair -->
+                <div class="intro-flair" aria-hidden="true"
+                    style="margin-top:1.25rem;display:flex;justify-content:center;">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="filter:drop-shadow(0 6px 18px rgba(33,150,243,0.15));">
+                        <circle cx="12" cy="12" r="6" stroke="#1976d2" stroke-width="1.2" opacity="0.95" />
+                        <circle cx="12" cy="12" r="2.6" fill="#2196f3" opacity="0.95" />
+                        <path d="M4 12h16M12 4v16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="#42a5f5" stroke-width="0.7"
+                            stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
+                    </svg>
+                </div>
+            </div>
+            <!-- Bottom scroll hint for reveal flow -->
+            <div id="bottomScrollHint" aria-live="polite" aria-atomic="true">
+                <span style="display:inline-block;padding-bottom:1.5rem">Scroll</span>
             </div>
         </section>
     </main>
 
     <!-- JavaScript - Non-blocking load -->
     <script defer src="js/performance.js"></script>
+    <script defer src="js/components/navbar.js"></script>
     <script defer src="js/components/custom-cursor.js"></script>
-    <script defer src="js/components/scroll-indicator.js"></script>
     <script defer src="js/components/scroll-reveal.js"></script>
     <script defer src="js/components/theme-toggle.js"></script>
     <script defer src="js/components/consent-banner.js"></script>

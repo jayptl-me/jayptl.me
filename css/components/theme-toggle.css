@@ -115,3 +115,68 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
         min-height: 16px;
     }
 }
+
+/* Lightsaber variant (used in navbar) */
+.theme-toggle .lightsaber-blade {
+    /* Default to current text color; overridden per theme below */
+    fill: currentColor;
+    transition: all 0.3s var(--ease-out);
+}
+
+.theme-toggle .lightsaber-glow {
+    fill: #3b82f6;
+    /* Blue glow */
+    opacity: 0;
+    /* Off by default; enabled in dark */
+    transition: opacity 0.3s var(--ease-out), filter 0.3s var(--ease-out);
+}
+
+/* Accessibility: Disable transitions and glow for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .theme-toggle .lightsaber-blade,
+    .theme-toggle .lightsaber-glow {
+        transition: none !important;
+        filter: none !important;
+    }
+
+    /* Ensure the glow is completely hidden in reduced-motion mode */
+    .theme-toggle .lightsaber-glow {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Light: saber off (black), no glow */
+html[data-theme="light"] .theme-toggle .lightsaber-blade {
+    fill: #000;
+    filter: none;
+}
+
+html[data-theme="light"] .theme-toggle .lightsaber-glow {
+    opacity: 0;
+    filter: none;
+}
+
+/* Dark: saber on (blue), with glow */
+html[data-theme="dark"] .theme-toggle .lightsaber-blade {
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 4px #3b82f6) drop-shadow(0 0 8px #3b82f6);
+}
+
+html[data-theme="dark"] .theme-toggle .lightsaber-glow {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px #60a5fa);
+}
+
+/* Intensified blue glow on hover in dark theme */
+html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
+    filter:
+        drop-shadow(0 0 8px #3b82f6) drop-shadow(0 0 16px #3b82f6) drop-shadow(0 0 24px #60a5fa);
+}
+
+/* No glow on hover in light theme to avoid black halo */
+html[data-theme="light"] .theme-toggle:hover .lightsaber-blade {
+    filter: none;
+}

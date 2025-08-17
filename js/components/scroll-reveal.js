@@ -266,7 +266,6 @@ class ScrollRevealComponent {
 
         // If title is below 75% mark, transition back to scroll reveal
         if (titleRect.top > threshold75) {
-            console.log('Scroll up detected - transitioning back to scroll reveal');
             this.transitionToScrollReveal();
         }
     }

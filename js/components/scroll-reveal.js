@@ -891,7 +891,6 @@ class ScrollRevealComponent {
         }, this.isMobile ? 300 : 400);
     }
 
-    // Final message removed
 
     lockBodyScroll() {
         if (this._scrollLocked) return;

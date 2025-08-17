@@ -942,7 +942,7 @@ class ScrollRevealComponent {
         document.body.classList.remove('lock-scroll');
         document.documentElement.style.scrollBehavior = 'smooth';
 
-        console.log('Natural scrolling enabled - overlay released');
+        // Natural scrolling enabled - overlay released
     }
 
     // Smoothly scroll to introduction section at 20% from top

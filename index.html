@@ -54,6 +54,7 @@
         /* Critical theme variables - only what's needed for initial render */
         :root {
             --font-display: 'Audiowide', sans-serif;
+            --text-lg: 1.125rem;
             --text-xl: 1.25rem;
             --text-2xl: 1.5rem;
             --text-3xl: 1.875rem;
@@ -222,6 +223,141 @@
                 margin: var(--space-2) 0
             }
         }
+
+        /* Preloader Styles - Critical CSS */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--theme-bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(var(--theme-bg-rgb), 0.1);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .preloader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--theme-gradient-text);
+            background: linear-gradient(90deg, var(--primary-500), #1976d2, #42a5f5);
+            transition: width 0.3s ease-out;
+            border-radius: 2px;
+        }
+
+        .preloader-percentage {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: var(--weight-normal);
+            color: var(--theme-text);
+            background: rgba(var(--theme-bg-rgb), 0.9);
+            padding: var(--space-2) var(--space-4);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(var(--primary-500-rgb), 0.2);
+        }
+
+        .preloader-logo {
+            font-family: var(--font-display);
+            font-size: var(--text-5xl);
+            font-weight: var(--weight-normal);
+            background: var(--theme-gradient-text);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-8);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hide all content until preloader finishes */
+        body.preloading * {
+            visibility: hidden !important;
+        }
+
+        body.preloading .preloader,
+        body.preloading .preloader * {
+            visibility: visible !important;
+        }
+
+        /* Specifically hide problematic elements during preloading */
+        body.preloading .consent-settings-toggle {
+            display: none !important;
+        }
+
+        body.preloading .hero,
+        body.preloading main,
+        body.preloading .navbar {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* Smooth transitions for content reveal */
+        .hero,
+        main,
+        .navbar,
+        .consent-settings-toggle {
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+
+        /* Ensure content is visible after preloading */
+        body:not(.preloading) .hero,
+        body:not(.preloading) main,
+        body:not(.preloading) .navbar,
+        body:not(.preloading) .consent-settings-toggle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .preloader-logo {
+                font-size: var(--text-3xl);
+            }
+
+            .preloader-percentage {
+                font-size: var(--text-lg);
+                bottom: 15px;
+                right: 15px;
+                padding: var(--space-1) var(--space-2);
+            }
+        }
     </style>
 
     <!-- Theme color for light and dark -->
@@ -278,6 +414,207 @@
         })();
     </script>
 
+    <!-- Preloader Script - Initialize immediately -->
+    <script>
+        // Preloader functionality
+        class PreloaderManager {
+            constructor() {
+                this.progress = 0;
+                this.progressBar = null;
+                this.progressText = null;
+                this.preloader = null;
+                this.resources = [];
+                this.loadedResources = 0;
+                this.init();
+            }
+
+            init() {
+                // Get DOM elements
+                this.preloader = document.getElementById('preloader');
+                this.progressBar = document.getElementById('progressBar');
+                this.progressText = document.getElementById('progressText');
+
+                // Start monitoring resources
+                this.collectResources();
+                this.startProgress();
+            }
+
+            collectResources() {
+                // Collect all resources that need to be loaded
+                const links = document.querySelectorAll('link[rel="stylesheet"], link[rel="preload"]');
+                const scripts = document.querySelectorAll('script[src]');
+                const images = document.querySelectorAll('img[src]');
+
+                // Convert to arrays and combine
+                this.resources = [
+                    ...Array.from(links),
+                    ...Array.from(scripts),
+                    ...Array.from(images)
+                ];
+
+                // Add document ready as a resource
+                this.resources.push(document);
+
+                // Monitor CSS loading specifically
+                this.monitorCSS();
+            }
+
+            startProgress() {
+                // Simulate progressive loading
+                this.simulateProgress();
+
+                // Monitor actual resource loading
+                this.monitorResources();
+
+                // Ensure minimum loading time for better UX
+                setTimeout(() => {
+                    this.finishLoading();
+                }, 1500); // Minimum 1.5 seconds
+            }
+
+            simulateProgress() {
+                let currentProgress = 0;
+                const targetProgress = 85; // Stop at 85% for simulation
+                const duration = 1200; // 1.2 seconds to reach 85%
+                const steps = 60; // 60 FPS
+                const increment = targetProgress / steps;
+                const intervalTime = duration / steps;
+
+                const progressInterval = setInterval(() => {
+                    currentProgress += increment;
+                    if (currentProgress >= targetProgress) {
+                        currentProgress = targetProgress;
+                        clearInterval(progressInterval);
+                    }
+                    this.updateProgress(currentProgress);
+                }, intervalTime);
+            }
+
+            monitorResources() {
+                // Monitor document ready state
+                if (document.readyState === 'complete') {
+                    this.resourceLoaded();
+                } else {
+                    document.addEventListener('readystatechange', () => {
+                        if (document.readyState === 'complete') {
+                            this.resourceLoaded();
+                        }
+                    });
+                }
+
+                // Monitor window load event
+                if (document.readyState === 'complete') {
+                    setTimeout(() => this.resourceLoaded(), 100);
+                } else {
+                    window.addEventListener('load', () => {
+                        this.resourceLoaded();
+                    });
+                }
+            }
+
+            monitorCSS() {
+                // Specifically monitor CSS loading
+                const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
+                let cssLoaded = 0;
+                const totalCSS = cssLinks.length;
+
+                cssLinks.forEach(link => {
+                    if (link.sheet) {
+                        cssLoaded++;
+                    } else {
+                        link.addEventListener('load', () => {
+                            cssLoaded++;
+                            if (cssLoaded === totalCSS) {
+                                this.resourceLoaded();
+                            }
+                        });
+                    }
+                });
+
+                // If all CSS is already loaded
+                if (cssLoaded === totalCSS) {
+                    this.resourceLoaded();
+                }
+            }
+
+            resourceLoaded() {
+                this.loadedResources++;
+                // Calculate real progress based on resources loaded
+                const realProgress = Math.min((this.loadedResources / 2) * 15, 15); // Max 15% from real loading
+                const totalProgress = Math.min(this.progress + realProgress, 100);
+                this.updateProgress(totalProgress);
+            }
+
+            updateProgress(progress) {
+                this.progress = Math.min(progress, 100);
+
+                if (this.progressBar) {
+                    this.progressBar.style.width = this.progress + '%';
+                }
+
+                if (this.progressText) {
+                    this.progressText.textContent = Math.floor(this.progress) + '%';
+                }
+
+                // Auto finish when reaching 100%
+                if (this.progress >= 100) {
+                    setTimeout(() => this.finishLoading(), 300);
+                }
+            }
+
+            finishLoading() {
+                // Complete the progress bar
+                this.updateProgress(100);
+
+                // Wait a moment then hide preloader
+                setTimeout(() => {
+                    this.hidePreloader();
+                }, 500);
+            }
+
+            hidePreloader() {
+                if (this.preloader) {
+                    this.preloader.classList.add('hidden');
+
+                    // Remove preloading class from body to reveal content
+                    document.body.classList.remove('preloading');
+
+                    // Trigger content reveal animations
+                    this.revealContent();
+
+                    // Remove preloader from DOM after transition
+                    setTimeout(() => {
+                        if (this.preloader && this.preloader.parentNode) {
+                            this.preloader.parentNode.removeChild(this.preloader);
+                        }
+                    }, 500);
+                }
+            }
+
+            revealContent() {
+                // Add a slight delay to ensure smooth transitions
+                setTimeout(() => {
+                    const mainElements = document.querySelectorAll('main, .hero, .navbar, .consent-settings-toggle');
+                    mainElements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.style.opacity = '1';
+                            el.style.visibility = 'visible';
+                        }, index * 100); // Stagger the reveals
+                    });
+                }, 100);
+            }
+        }
+
+        // Initialize preloader when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                new PreloaderManager();
+            });
+        } else {
+            new PreloaderManager();
+        }
+    </script>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
@@ -296,7 +633,16 @@
         </script>
 </head>
 
-<body>
+<body class="preloading">
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">Loading...</div>
+        <div class="preloader-progress">
+            <div class="preloader-progress-bar" id="progressBar"></div>
+        </div>
+        <div class="preloader-percentage" id="progressText">0%</div>
+    </div>
+
     <noscript>
         <style>
             .no-js .consent-settings-toggle {

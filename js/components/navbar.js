@@ -11,6 +11,20 @@
  */
 
 (function () {
+  /**
+   * Build and return the complete HTML string for the site navbar.
+   *
+   * The generated markup is a self-contained header with id "glassNav" that includes:
+   * - a responsive mobile drawer, backdrop, and dialog-like panel
+   * - a left "Projects" link, centered brand link, a "More" dropdown, and a theme toggle (also in mobile footer)
+   * - accessible attributes (roles, aria-*, and expected IDs like `mobileMenu`, `navToggle`, `moreMenu`)
+   *
+   * The function resolves a robust base path (supports subdirectory deployments) and chooses the Projects link target
+   * as `#projects` when the current page is the site's home, or as `basePath#projects` otherwise, so all hrefs adapt
+   * to the current location.
+   *
+   * @return {string} HTML for injection into the document containing the fully-formed navigation/header.
+   */
   function buildNavHTML() {
     // Robust base path detection for sub-directory deployments
     // Use current directory as base (e.g., "/jayptl.me/") for subdir deployments
@@ -101,7 +115,18 @@
     `;
   }
 
-  // Accessibility management for navbar visibility
+  /**
+   * Toggle the navbar's accessibility and visibility state.
+   *
+   * When `visible` is true, adds the "visible" class, removes `aria-hidden`, and (if supported) clears `inert`
+   * so the navbar and its controls become available to assistive technology and keyboard focus.
+   * When `visible` is false, removes the "visible" class, sets `aria-hidden="true"`, and (if supported) sets `inert`
+   * to remove the navbar from the accessibility tree. If the document's active element is inside the navbar when hiding,
+   * the function attempts to blur it to avoid leaving focus on an invisible element.
+   *
+   * @param {HTMLElement} nav - The navbar root element (e.g., element with id "glassNav").
+   * @param {boolean} visible - True to make the navbar accessible/visible; false to hide it and remove it from the accessibility tree.
+   */
   function setNavbarAccessibility(nav, visible) {
     if (visible) {
       nav.classList.add('visible');
@@ -119,6 +144,21 @@
     }
   }
 
+  /**
+   * Insert or replace the page navbar and wire up its interactive behavior.
+   *
+   * Generates the navbar markup with buildNavHTML(), inserts it at the top of the document
+   * (or replaces an existing #glassNav), and attaches all runtime behavior:
+   * - Mobile drawer: open/close, Esc key handling, backdrop and close-button handling,
+   *   focus management, inert/aria-hidden toggling, body scroll locking, resize and
+   *   navigation listeners to auto-close.
+   * - "More" dropdown: toggle, outside-click closing, and Escape key handling.
+   * - Visibility integration with an optional `.text-reveal-container` overlay: if the
+   *   overlay is present and not yet released, the navbar starts hidden and a
+   *   MutationObserver will reveal it when the overlay receives the `released` class.
+   *
+   * This function mutates the DOM and registers event listeners; it does not return a value.
+   */
   function insertNav() {
     // If a glassNav already exists, replace it for consistency
     const existing = document.getElementById("glassNav");

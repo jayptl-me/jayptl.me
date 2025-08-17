@@ -3,7 +3,24 @@
 
 /**
  * Consent Banner Component
- * GDPR/Privacy compliant consent management for Google Analytics
+ * GDPR/Privacy complia        const currentStatus = this.consentData && this.consentData.analytics !== undefined 
+            ? (this.consentData.analytics ? 'Enabled' : 'Disabled')
+            : 'Not set';
+
+        const message = `${ConsentBanner.CONSENT_MESSAGES.currentSettingsTitle}
+        
+Analytics Status: ${currentStatus}
+
+What would you like to do?
+
+${ConsentBanner.CONSENT_MESSAGES.enableAnalytics}
+${ConsentBanner.CONSENT_MESSAGES.disableAnalytics}
+${ConsentBanner.CONSENT_MESSAGES.resetBanner}
+
+${ConsentBanner.CONSENT_MESSAGES.analyticsDescription}`;
+
+        // Create a custom dialog
+        this.createSettingsDialog();ent for Google Analytics
  * Integrates with theme system and manages user preferences
  * 
  * @file js/components/consent-banner.js
@@ -11,6 +28,15 @@
  */
 
 class ConsentBanner {
+    // Configuration object for better maintainability
+    static CONSENT_MESSAGES = {
+        currentSettingsTitle: 'Current Privacy Settings:',
+        enableAnalytics: 'Enable Analytics - Help improve this portfolio',
+        disableAnalytics: 'Disable Analytics - Browse privately',
+        resetBanner: 'Reset - Show the consent banner again',
+        analyticsDescription: 'Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.'
+    };
+
     constructor() {
         this.consentKey = 'user-analytics-consent';
         this.consentBannerKey = 'consent-banner-shown';

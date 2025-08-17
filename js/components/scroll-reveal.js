@@ -10,6 +10,14 @@
  */
 
 class ScrollRevealComponent {
+    // Configuration constants for better maintainability
+    static SCROLL_THRESHOLD_DEFAULT = 20;
+    static MOBILE_COOLDOWN_DURATION = 400;
+    static DESKTOP_COOLDOWN_DURATION = 500;
+    static MOBILE_STEP_INTERVAL = 350;
+    static DESKTOP_STEP_INTERVAL = 450;
+    static MOBILE_BREAKPOINT = 768;
+
     constructor() {
         this.container = document.querySelector('.text-reveal-container');
         this.listElement = document.querySelector('.text-reveal-list');
@@ -22,17 +30,17 @@ class ScrollRevealComponent {
 
         // Configuration
         this.currentIndex = 0;
-        this.scrollThreshold = 20; // Decreased minimum scroll distance to trigger step (faster reveal)
+        this.scrollThreshold = ScrollRevealComponent.SCROLL_THRESHOLD_DEFAULT; // Decreased minimum scroll distance to trigger step (faster reveal)
         this.lastScrollY = window.scrollY;
         this.scrollCooldown = false;
-        this.isMobile = window.innerWidth <= 768;
+        this.isMobile = window.innerWidth <= ScrollRevealComponent.MOBILE_BREAKPOINT;
         // Reduced cooldowns for faster stepper response
-        this.cooldownDuration = this.isMobile ? 400 : 500;
+        this.cooldownDuration = this.isMobile ? ScrollRevealComponent.MOBILE_COOLDOWN_DURATION : ScrollRevealComponent.DESKTOP_COOLDOWN_DURATION;
 
         // Ultra-strict scroll control
         this.isProcessingScroll = false;
         this.lastStepTime = 0;
-        this.minStepInterval = this.isMobile ? 350 : 450; // Longer intervals for stricter stepping
+        this.minStepInterval = this.isMobile ? ScrollRevealComponent.MOBILE_STEP_INTERVAL : ScrollRevealComponent.DESKTOP_STEP_INTERVAL; // Longer intervals for stricter stepping
         this.scrollEventLocked = false;
         this.debounceTimer = null;
         this.accumulatedScroll = 0;

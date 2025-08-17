@@ -764,7 +764,7 @@ class ScrollRevealComponent {
                     // Enable natural scrolling without scroll snap constraints
                     this.enableNaturalScrolling();
 
-                    // Smoothly scroll to intro section at 20% from top for better UX
+                    // Smoothly scroll to intro section near the top with a small padding
                     setTimeout(() => {
                         this.scrollToIntroSection();
                     }, 100);
@@ -945,7 +945,7 @@ class ScrollRevealComponent {
         // Natural scrolling enabled - overlay released
     }
 
-    // Smoothly scroll to introduction section at 20% from top
+    // Smoothly scroll to introduction section near the top with a small padding
     scrollToIntroSection() {
         const introSection = document.querySelector('#introduction') || document.querySelector('.introduction-section');
 
@@ -964,17 +964,13 @@ class ScrollRevealComponent {
                 }
             }
 
-            // Calculate position so the section top sits at 20% of viewport height
-            const viewportOffset = window.innerHeight * 0.20;
+            // Use a small fixed padding so the intro is positioned close to the top
+            // Adjust `paddingPx` if you want more/less space (pixels)
+            const paddingPx = 6;
+            const viewportOffset = paddingPx;
             const targetTop = Math.max(0, Math.round(sectionPageY - viewportOffset - navOffset));
 
-            console.log('Scrolling to intro section at 20% from top:', {
-                sectionPageY,
-                viewportOffset,
-                navOffset,
-                targetTop,
-                currentScroll: window.scrollY
-            });
+            // Scrolling to intro section at 20% from top (computed values available for debugging if needed)
 
             // Smooth scroll to the calculated position
             try {
@@ -988,7 +984,7 @@ class ScrollRevealComponent {
             }
         } else {
             // Fallback: scroll down a viewport height
-            const targetTop = window.scrollY + window.innerHeight * 0.8;
+            const targetTop = window.scrollY + window.innerHeight * 0.9;
             try {
                 window.scrollTo({
                     top: targetTop,

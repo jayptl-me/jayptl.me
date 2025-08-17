@@ -592,7 +592,6 @@ For questions about data handling, you can contact me through the portfolio cont
             allow_ad_personalization_signals: false
         });
 
-        console.log('Google Analytics initialized with consent');
     }
 
     disableAnalyticsTracking() {
@@ -647,7 +646,7 @@ For questions about data handling, you can contact me through the portfolio cont
             document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
         } catch (e) { }
 
-        console.log('Google Analytics disabled and cookie removal attempted (client-side best-effort)');
+        // Google Analytics disabled and cookie removal attempted (client-side best-effort)
     }
 
     addKeyboardListeners() {

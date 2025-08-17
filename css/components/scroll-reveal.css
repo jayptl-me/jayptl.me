@@ -916,13 +916,13 @@
 /* Force active stepper dot to be blue regardless of theme */
 .reveal-stepper .stepper-dot.active {
   width: 16px !important;
-  background: #2196F3 !important;
-  /* Solid blue fallback */
-  background: rgba(33, 150, 243, 0.9) !important;
-  border: 1px solid rgba(33, 150, 243, 0.4) !important;
+  /* Use design system primary variable; fall back to direct rgba values if variable is not available */
+  background: var(--primary-500, #2196F3) !important;
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9) !important;
+  border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
   box-shadow:
-    0 0 14px rgba(33, 150, 243, 0.5),
-    0 2px 8px rgba(33, 150, 243, 0.25) !important;
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25) !important;
 }
 
 

@@ -103,7 +103,6 @@ class AnalyticsManager {
         // Track initial page view
         this.trackPageView();
         this.setupPortfolioTracking();
-        console.log('Google Analytics initialized with privacy-first configuration');
     }
 
 

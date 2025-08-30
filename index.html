@@ -168,7 +168,7 @@
         }
 
         body {
-            font-family: var(--font-display);
+            font-family: var(--font-body);
             background-color: var(--theme-bg);
             color: var(--theme-text);
             line-height: var(--leading-relaxed);
@@ -292,6 +292,25 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
+        /* Pulse animation while waiting for real load before simulating progress */
+        .preloader-percentage.pulsing {
+            animation: preloaderPulse 1.1s ease-in-out infinite;
+        }
+
+        @keyframes preloaderPulse {
+
+            0%,
+            100% {
+                opacity: .55;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.08);
+            }
+        }
+
         .preloader-logo {
             font-family: var(--font-display);
             font-size: var(--text-5xl);
@@ -317,43 +336,24 @@
             }
         }
 
-        /* Hide all content until preloader finishes */
-        body.preloading * {
-            visibility: hidden !important;
-        }
-
-        body.preloading .preloader,
-        body.preloading .preloader * {
-            visibility: visible !important;
-        }
-
-        /* Specifically hide problematic elements during preloading */
-        body.preloading .consent-settings-toggle {
-            display: none !important;
-        }
-
-        body.preloading .hero,
+        /* REPLACED: Previously hid all content with visibility:hidden; now only fades real content. */
         body.preloading main,
+        body.preloading .hero,
         body.preloading .navbar {
-            opacity: 0 !important;
-            visibility: hidden !important;
+            opacity: 0;
         }
 
-        /* Smooth transitions for content reveal */
         .hero,
         main,
         .navbar,
         .consent-settings-toggle {
-            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+            transition: opacity 0.6s ease-out;
         }
 
-        /* Ensure content is visible after preloading */
-        body:not(.preloading) .hero,
         body:not(.preloading) main,
-        body:not(.preloading) .navbar,
-        body:not(.preloading) .consent-settings-toggle {
+        body:not(.preloading) .hero,
+        body:not(.preloading) .navbar {
             opacity: 1;
-            visibility: visible;
         }
 
         @media (max-width: 768px) {
@@ -373,6 +373,9 @@
     <!-- Theme color for light and dark -->
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+    <!-- Baseline CSP (tighten by externalizing inline scripts to drop 'unsafe-inline') -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' ws://127.0.0.1:3001 ws://localhost:3001; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests">
 
     <!-- Theme Detection Script - Prevent FOUC and set .js class -->
     <script>
@@ -450,136 +453,77 @@
             }
 
             collectResources() {
-                // Collect all resources that need to be loaded
-                const links = document.querySelectorAll('link[rel="stylesheet"], link[rel="preload"]');
-                const scripts = document.querySelectorAll('script[src]');
+                // Minimal collection retained for potential future metrics; monitorCSS removed for simplicity
+                const links = document.querySelectorAll('link[rel="stylesheet"]');
                 const images = document.querySelectorAll('img[src]');
-
-                // Convert to arrays and combine
-                this.resources = [
-                    ...Array.from(links),
-                    ...Array.from(scripts),
-                    ...Array.from(images)
-                ];
-
-                // Add document ready as a resource
-                this.resources.push(document);
-
-                // Monitor CSS loading specifically
-                this.monitorCSS();
+                this.resources = [...Array.from(links), ...Array.from(images), document];
             }
 
+            // Removed monitorCSS method (not used); progress is now time + load-event driven
+
             startProgress() {
-                // Simulate progressive loading
-                this.simulateProgress();
-
-                // Monitor actual resource loading
+                // Add pulsing state while we wait for window load
+                if (this.progressText) {
+                    this.progressText.classList.add('pulsing');
+                    this.progressText.textContent = '0%';
+                }
                 this.monitorResources();
+                // Safety timeout: if load event delays >4s, start simulation anyway
+                this.safetyTimeout = setTimeout(() => {
+                    if (!this.simulationStarted) this.beginSimulation();
+                }, 4000);
+            }
 
-                // Ensure minimum loading time for better UX
-                setTimeout(() => {
-                    this.finishLoading();
-                }, 1500); // Minimum 1.5 seconds
+            beginSimulation() {
+                if (this.simulationStarted) return;
+                this.simulationStarted = true;
+                if (this.progressText) this.progressText.classList.remove('pulsing');
+                this.simulateProgress();
             }
 
             simulateProgress() {
-                let currentProgress = 0;
-                const targetProgress = 85; // Stop at 85% for simulation
-                const duration = 1200; // 1.2 seconds to reach 85%
-                const steps = 60; // 60 FPS
-                const increment = targetProgress / steps;
-                const intervalTime = duration / steps;
-
-                const progressInterval = setInterval(() => {
-                    currentProgress += increment;
-                    if (currentProgress >= targetProgress) {
-                        currentProgress = targetProgress;
-                        clearInterval(progressInterval);
-                    }
-                    this.updateProgress(currentProgress);
-                }, intervalTime);
-            }
-
-            monitorResources() {
-                // Monitor document ready state
-                if (document.readyState === 'complete') {
-                    this.resourceLoaded();
-                } else {
-                    document.addEventListener('readystatechange', () => {
-                        if (document.readyState === 'complete') {
-                            this.resourceLoaded();
-                        }
-                    });
-                }
-
-                // Monitor window load event
-                if (document.readyState === 'complete') {
-                    setTimeout(() => this.resourceLoaded(), 100);
-                } else {
-                    window.addEventListener('load', () => {
-                        this.resourceLoaded();
-                    });
-                }
-            }
-
-            monitorCSS() {
-                // Specifically monitor CSS loading
-                const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
-                let cssLoaded = 0;
-                const totalCSS = cssLinks.length;
-
-                cssLinks.forEach(link => {
-                    if (link.sheet) {
-                        cssLoaded++;
-                    } else {
-                        link.addEventListener('load', () => {
-                            cssLoaded++;
-                            if (cssLoaded === totalCSS) {
-                                this.resourceLoaded();
-                            }
-                        });
-                    }
-                });
-
-                // If all CSS is already loaded
-                if (cssLoaded === totalCSS) {
-                    this.resourceLoaded();
-                }
-            }
-
-            resourceLoaded() {
-                this.loadedResources++;
-                // Calculate real progress based on resources loaded
-                const realProgress = Math.min((this.loadedResources / 2) * 15, 15); // Max 15% from real loading
-                const totalProgress = Math.min(this.progress + realProgress, 100);
-                this.updateProgress(totalProgress);
+                // Smooth full simulation from 0 (or current) to 100
+                const start = this.progress;
+                const target = 100;
+                const duration = 800; // ms
+                const startTime = performance.now();
+                const step = (now) => {
+                    const elapsed = now - startTime;
+                    const t = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+                    const value = start + (target - start) * eased;
+                    this.updateProgress(value);
+                    if (t < 1) requestAnimationFrame(step); else this.finishLoading();
+                };
+                requestAnimationFrame(step);
             }
 
             updateProgress(progress) {
                 this.progress = Math.min(progress, 100);
-
                 if (this.progressBar) {
                     this.progressBar.style.width = this.progress + '%';
                 }
-
-                if (this.progressText) {
+                // Don't overwrite pulsing text until simulation starts
+                if (this.progressText && !this.progressText.classList.contains('pulsing')) {
                     this.progressText.textContent = Math.floor(this.progress) + '%';
-                }
-
-                // Auto finish when reaching 100%
-                if (this.progress >= 100) {
-                    setTimeout(() => this.finishLoading(), 300);
                 }
             }
 
-            finishLoading() {
-                // Complete the progress bar
-                this.updateProgress(100);
+            monitorResources() {
+                const onLoad = () => {
+                    // Kick off simulated progress once everything is loaded
+                    this.beginSimulation();
+                };
+                if (document.readyState === 'complete') onLoad();
+                else window.addEventListener('load', onLoad, { once: true });
+            }
 
-                // Wait a moment then hide preloader
-                setTimeout(() => {
-                    this.hidePreloader();
-                }, 500);
+            finishLoading() {
+                if (this.finished) return;
+                this.finished = true;
+                clearTimeout(this.safetyTimeout);
+                this.updateProgress(100);
+                setTimeout(() => this.hidePreloader(), 250);
             }
 
             hidePreloader() {
@@ -641,23 +585,9 @@
             "jobTitle": "Software Developer, UI/UX Designer, Creative Director"
         }
         </script>
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "Jay Patel Portfolio",
-            "url": "https://jayptl.me/",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://jayptl.me/?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-            }
-        }
-        </script>
 </head>
 
 <body class="preloading">
-    <a class="skip-link" href="#main-content">Skip to main content</a>
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-logo">Loading...</div>
@@ -729,53 +659,42 @@
                                 </span>
                             </div>
                             <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="SOFTWARE DEVELOPER">
+                            <div class="text-reveal-item" data-role="CROSS PLATFORM DEV">
                                 <span class="text-line">
-                                    <span class="word" data-text="SOFTWARE">
-                                        <span class="char gradient-text">S</span>
-                                        <span class="char gradient-text">O</span>
-                                        <span class="char gradient-text">F</span>
-                                        <span class="char gradient-text">T</span>
-                                        <span class="char gradient-text">W</span>
-                                        <span class="char gradient-text">A</span>
+                                    <span class="word" data-text="CROSS">
+                                        <span class="char gradient-text">C</span>
                                         <span class="char gradient-text">R</span>
-                                        <span class="char gradient-text">E</span>
+                                        <span class="char gradient-text">O</span>
+                                        <span class="char gradient-text">S</span>
+                                        <span class="char gradient-text">S</span>
                                     </span>
-                                    <span class="word" data-text="DEVELOPER">
+                                    <span class="word" data-text="PLATFORM">
+                                        <span class="char gradient-text">P</span>
+                                        <span class="char gradient-text">L</span>
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">T</span>
+                                        <span class="char gradient-text">F</span>
+                                        <span class="char gradient-text">O</span>
+                                        <span class="char gradient-text">R</span>
+                                        <span class="char gradient-text">M</span>
+                                    </span>
+                                    <span class="word" data-text="DEV">
                                         <span class="char gradient-text">D</span>
                                         <span class="char gradient-text">E</span>
                                         <span class="char gradient-text">V</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">L</span>
-                                        <span class="char gradient-text">O</span>
-                                        <span class="char gradient-text">P</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">R</span>
                                     </span>
                                 </span>
                             </div>
                             <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="UI DESIGNER">
+                            <div class="text-reveal-item" data-role="UI & UX DESIGNER">
                                 <span class="text-line">
                                     <span class="word" data-text="UI">
                                         <span class="char gradient-text">U</span>
                                         <span class="char gradient-text">I</span>
                                     </span>
-                                    <span class="word" data-text="DESIGNER">
-                                        <span class="char gradient-text">D</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">S</span>
-                                        <span class="char gradient-text">I</span>
-                                        <span class="char gradient-text">G</span>
-                                        <span class="char gradient-text">N</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">R</span>
+                                    <span class="word" data-text="&amp;">
+                                        <span class="char gradient-text">&amp;</span>
                                     </span>
-                                </span>
-                            </div>
-                            <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="UX DESIGNER">
-                                <span class="text-line">
                                     <span class="word" data-text="UX">
                                         <span class="char gradient-text">U</span>
                                         <span class="char gradient-text">X</span>
@@ -878,95 +797,93 @@
         <!-- Introduction Section (replaces Projects) -->
         <section id="introduction" class="introduction-section" aria-labelledby="introTitle">
             <div class="projects-container intro-container">
-                <h2 id="introTitle" class="intro-headline gradient-text"
-                    style="font-family:var(--font-display);font-size:clamp(2.25rem,6vw,3.5rem);font-weight:700;line-height:1.05;">
-                    They told me to stop playing games. So I started building them.</h2>
-
-                <p class="intro-subheadline" style="margin-top:0.75rem;font-size:1.125rem;">My journey as a
-                    developer started when I was told to quit video games—so I decided to build them instead. That
-                    passion evolved into architecting high-performance mobile apps with Flutter, where I obsess over
-                    creating buttery-smooth user experiences that feel intuitive and alive.</p>
-
-                <div class="intro-body"
-                    style="margin-top:1.25rem;max-width:920px;margin-left:auto;margin-right:auto;text-align:left;font-size:1rem;">
-                    <p><strong>Look</strong>, my origin story isn't some lab accident. I used to crush levels in BGMI
-                        and
-                        Valorant until low grades hit like a boss fight I couldn't beat. Dad said "no more games," so I
-                        flipped the script: started learning <strong>3D modeling</strong>, rendering, physics scripting
-                        – all
-                        to build my own damn games. But then it clicked – why stop at pixels when I can code apps,
-                        websites, and rake in the crypto? <strong>Boom.</strong> Coding became my superpower.</p>
-
-                    <p>My first strike? <strong>Huselk</strong> – a full-blown e-commerce clone. Payment gateways?
-                        Integrated.
-                        Web3 coins? Minted. Full-stack glory from scratch. No disasters here; I learn fast, iterate
-                        faster,
-                        and make UIs so smooth they glide like Spidey through the city.</p>
-
-                    <p>By day, I'm wrapping up my <strong>B.Tech at ADIT</strong> in Anand, Gujarat, but my real lab is
-                        the code
-                        editor. Primary weapon: <strong>Flutter & Dart</strong>, backed by Firebase firepower, Razorpay
-                        for
-                        seamless transactions, and databases like MongoDB, NoSQL, or MySQL holding the fort. Cloud? GCP
-                        and
-                        AWS (EC2, S3, Lambda) are my playgrounds. Design? I wireframe in Figma, polish in Adobe
-                        Photoshop
-                        and Illustrator – because ugly apps are for amateurs.</p>
-
-                    <p>I've interned at spots like <strong>NextEdgeLabs, CodeXcelerate,</strong> and
-                        <strong>AGEVOLE</strong>,
-                        leading teams as a Flutter dev. Snagged the win at <strong>Odoo x Charusat Hackathon
-                            '25</strong>.
-                        Freelanced for Dpizza Time, built their mobile app. And at Huselk, I was the associate dev who
-                        led
-                        the e-com charge.
-                    </p>
-
-                    <p>But here's the truth: I'm not just a coder. I'm the guy who turns "what if" into "watch this."
-                        When I'm
-                        not debugging, I'm chilling with friends and family – my real recharge. Or geeking out over
-                        Marvel
-                        movies, esports, or blasting music that swings from peaceful vibes to "devil searching for
-                        redemption" anthems. Talkative? Nah, I save my words for code that speaks volumes. Peace and
-                        silence
-                        are my secret weapons.</p>
-
-                    <p><strong>Dream big?</strong> Forget one app – I'm building an empire called <strong>OPSC</strong>,
-                        a suite of
-                        tools that solve problems you didn't know you had.</p>
-
-                    <p style="margin-top:0.75rem;">Ready to team up? Check my <a href="https://github.com/jayptl-me"
-                            rel="noopener" target="_blank">GitHub blueprints</a> or hit up <a href="/">jayptl.me</a>.
-                        Let's build something
-                        unbreakable.</p>
-                </div>
-
-                <div class="intro-ctas"
-                    style="margin-top:1.5rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-                    <a class="btn btn-primary" href="/projects.html"
-                        style="background:linear-gradient(90deg,#2196f3,#1976d2);color:#fff;padding:0.65rem 1rem;border-radius:8px;text-decoration:none;font-weight:700;box-shadow:0 8px 24px rgba(25,118,210,0.18);">Dive
-                        Into My Portfolio</a>
-                    <a class="btn" href="#contact"
-                        style="background:transparent;border:2px solid rgba(33,150,243,0.12);padding:0.6rem 0.95rem;border-radius:8px;text-decoration:none;color:var(--theme-text);font-weight:700;">Connect
-                        Now</a>
-                </div>
-
-                <!-- Subtle arc-reactor / spidey-web icon for flair -->
-                <div class="intro-flair" aria-hidden="true"
-                    style="margin-top:1.25rem;display:flex;justify-content:center;">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        style="filter:drop-shadow(0 6px 18px rgba(33,150,243,0.15));">
-                        <circle cx="12" cy="12" r="6" stroke="#1976d2" stroke-width="1.2" opacity="0.95" />
-                        <circle cx="12" cy="12" r="2.6" fill="#2196f3" opacity="0.95" />
-                        <path d="M4 12h16M12 4v16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="#42a5f5" stroke-width="0.7"
-                            stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
-                    </svg>
+                <h2 id="introTitle" class="intro-headline gradient-text">Hi there!!</h2>
+                <!-- Replaced original intro content with image + minimal bio -->
+                <div class="intro-visual"
+                    style="margin-top:2rem;display:flex;flex-direction:column;align-items:center;gap:1.75rem;">
+                    <div class="intro-photo-wrapper" style="position:relative;display:inline-block;">
+                        <img src="assets/jay.webp" alt="Jay Patel" class="intro-photo"
+                            style="display:block;width:clamp(220px,40vw,360px);aspect-ratio:1/1;border-radius:28px;object-fit:cover;opacity:0;animation:introPhotoIn 1.2s cubic-bezier(.4,.8,.2,1) .15s forwards, introFloat 7s ease-in-out 1.4s infinite alternate;box-shadow:0 28px 60px -22px rgba(0,0,0,.55),0 18px 36px -18px rgba(33,150,243,.35);will-change:transform;backface-visibility:hidden;">
+                        <span aria-hidden="true"
+                            style="pointer-events:none;position:absolute;inset:-6%;border-radius:34px;background:linear-gradient(135deg,rgba(33,150,243,.35),rgba(25,118,210,.15) 45%,rgba(66,165,245,.35));filter:blur(22px) saturate(160%);opacity:.55;animation:glowPulse 6.5s ease-in-out 2s infinite alternate;mix-blend-mode:plus-lighter;"></span>
+                    </div>
+                    <div class="intro-mini-bio"
+                        style="max-width:640px;text-align:center;font-size:clamp(.95rem,1.9vw,1.05rem);line-height:1.55;font-family:var(--font-body);">
+                        <p class="intro-greeting"
+                            style="margin:0 0 .75rem 0;font-size:clamp(1.1rem,2.4vw,1.45rem);font-weight:600;letter-spacing:.25px;text-wrap:balance;">
+                            This is <span
+                                style="background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;">Jay</span>.
+                        </p>
+                        <p style="margin:0;color:var(--theme-text);font-weight:400;">Just a normal guy exploring his way
+                            through tech.</p>
+                    </div>
                 </div>
             </div>
-            <!-- Bottom scroll hint for reveal flow -->
-            <div id="bottomScrollHint" aria-live="polite" aria-atomic="true">
-                <span style="display:inline-block;padding-bottom:1.5rem">Scroll</span>
-            </div>
+            <style>
+                @keyframes introPhotoIn {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(60px) scale(.82) rotateX(16deg) rotateY(-8deg);
+                    }
+
+                    55% {
+                        opacity: 1;
+                    }
+
+                    100% {
+                        opacity: 1;
+                        transform: translateY(0) scale(1) rotateX(0) rotateY(0);
+                    }
+                }
+
+                @keyframes introFloat {
+                    from {
+                        transform: translateY(-2px) scale(1);
+                    }
+
+                    to {
+                        transform: translateY(8px) scale(1.015);
+                    }
+                }
+
+                @keyframes glowPulse {
+                    from {
+                        opacity: .35;
+                        filter: blur(18px) saturate(140%);
+                    }
+
+                    to {
+                        opacity: .7;
+                        filter: blur(26px) saturate(170%);
+                    }
+                }
+
+                @media (prefers-reduced-motion:reduce) {
+                    .intro-photo {
+                        animation: introPhotoIn .8s ease-out .05s forwards !important;
+                    }
+
+                    @keyframes introFloat {
+                        from {
+                            transform: none
+                        }
+
+                        to {
+                            transform: none
+                        }
+                    }
+
+                    @keyframes glowPulse {
+                        from {
+                            opacity: .45
+                        }
+
+                        to {
+                            opacity: .45
+                        }
+                    }
+                }
+            </style>
         </section>
     </main>
 

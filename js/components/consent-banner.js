@@ -412,19 +412,19 @@ Analytics helps me understand which sections are most engaging and improve the u
     showSettings() {
         alert(`Analytics Settings:
         
-🎯 What we track:
+What we track:
 • Page views and navigation patterns
 • Time spent on different sections  
 • Device and browser information (anonymized)
 • Geographic region (country level only)
 
-🔒 What we DON'T track:
+What we DON'T track:
 • Personal information or identity
 • Exact location or IP address
 • Keystrokes or form inputs
 • Cross-site browsing activity
 
-📊 Purpose:
+Purpose:
 This data helps me understand which portfolio sections are most engaging and improve the user experience.
 
 You can change your preference anytime by clearing your browser cookies for this site.`);
@@ -435,11 +435,11 @@ You can change your preference anytime by clearing your browser cookies for this
         
 This portfolio is built with privacy in mind:
 
-✅ Analytics Purpose: Only to improve portfolio presentation and user experience
-✅ Data Minimization: Only essential interaction data is collected
-✅ No Personal Data: No names, emails, or personal information stored
-✅ Anonymized: All data is processed anonymously by Google Analytics
-✅ Your Choice: You can opt-out anytime
+Analytics Purpose: Only to improve portfolio presentation and user experience
+Data Minimization: Only essential interaction data is collected
+No Personal Data: No names, emails, or personal information stored
+Anonymized: All data is processed anonymously by Google Analytics
+Your Choice: You can opt-out anytime
 
 For questions about data handling, you can contact me through the portfolio contact section.`);
     }

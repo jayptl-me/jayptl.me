@@ -1,0 +1,18 @@
+/* Placeholder accent-card styles to satisfy @import until component implemented */
+.accent-card {
+    border: 1px solid rgba(33, 150, 243, 0.25);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(145deg, rgba(33, 150, 243, 0.08), rgba(25, 118, 210, 0.05));
+    backdrop-filter: blur(6px);
+}
+
+.accent-card h3 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.accent-card p {
+    margin: 0.25rem 0 0;
+    line-height: 1.5;
+}

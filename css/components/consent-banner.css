@@ -303,6 +303,11 @@ html[data-theme="dark"] {
     display: none;
 }
 
+/* Hide privacy/settings floating button when mobile navigation drawer is open */
+body.nav-open .consent-settings-toggle {
+    display: none !important;
+}
+
 /* ========================================================================== */
 /* STATUS INDICATOR */
 /* ========================================================================== */

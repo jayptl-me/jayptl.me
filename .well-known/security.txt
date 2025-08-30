@@ -1,0 +1,5 @@
+Contact: mailto:contact@jayptl.me
+Expires: 2026-08-30T00:00:00Z
+Preferred-Languages: en
+Canonical: https://jayptl.me/.well-known/security.txt
+Policy: https://jayptl.me/privacy.html

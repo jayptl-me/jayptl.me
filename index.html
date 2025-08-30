@@ -8,6 +8,8 @@
     <meta name="color-scheme" content="light dark">
     <title>Jay Patel - Portfolio</title>
     <link rel="canonical" href="https://jayptl.me/" />
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
     <!-- SEO & Social Sharing -->
     <meta name="description"
@@ -17,12 +19,15 @@
         content="Jay Patel's portfolio showcasing software development, UI/UX, and creative direction.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jayptl.me/">
-    <meta property="og:image" content="https://jayptl.me/assets/og-image.png">
+    <meta property="og:site_name" content="Jay Patel Portfolio">
+    <!-- Using existing apple icon as provisional social image (replace with dedicated 1200x630 image for richer cards) -->
+    <meta property="og:image" content="https://jayptl.me/assets/apple-touch-icon.png">
+    <meta property="og:image:alt" content="Jay Patel Portfolio Logo">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Jay Patel - Portfolio">
     <meta name="twitter:description"
         content="Jay Patel's portfolio showcasing software development, UI/UX, and creative direction.">
-    <meta name="twitter:image" content="https://jayptl.me/assets/og-image.png">
+    <meta name="twitter:image" content="https://jayptl.me/assets/apple-touch-icon.png">
 
     <!-- Resource hints and performance optimizations -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -631,9 +636,23 @@
             "jobTitle": "Software Developer, UI/UX Designer, Creative Director"
         }
         </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Jay Patel Portfolio",
+            "url": "https://jayptl.me/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://jayptl.me/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
 </head>
 
 <body class="preloading">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-logo">Loading...</div>
@@ -666,7 +685,7 @@
     </button>
 
     <!-- Main Content -->
-    <main aria-label="Jay Patel Portfolio">
+    <main id="main-content" aria-label="Jay Patel Portfolio">
         <h1 class="sr-only">Jay Patel — Software Developer, UI/UX Designer & Creative Director</h1>
         <!-- Hero Section -->
         <section id="home" class="hero" aria-labelledby="heroTitle">

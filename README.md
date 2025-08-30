@@ -91,6 +91,64 @@ All colors are defined as CSS custom properties in `css/main.css`. Update the co
 - Minimal JavaScript footprint
 - No external dependencies
 
+## SEO, Crawling & Metadata
+
+- `robots.txt` allows full crawl and references the sitemap.
+- `sitemap.xml` lists core URLs (`/`, `/privacy.html`). Update as you add pages.
+- Canonical tags point to HTTPS.
+- Person JSON-LD structured data in `index.html`.
+- Custom `404.html` improves UX and correct error signaling.
+- `.well-known/security.txt` and `humans.txt` included for transparency.
+
+### Adding a New Page
+1. Create the HTML file.
+2. Add a canonical link tag pointing to its HTTPS URL.
+3. Link it internally (navigation / footer / body links).
+4. Add it to `sitemap.xml`.
+5. Deploy, then optionally request indexing in Search Console.
+
+## Caching & Headers (Render Hosting)
+
+Suggested cache policy (configure via Render or CDN):
+
+```
+/*
+  Cache-Control: max-age=60, public
+/css/*
+  Cache-Control: max-age=86400, public
+/js/*
+  Cache-Control: max-age=86400, public
+/assets/*.png
+  Cache-Control: max-age=31536000, public, immutable
+/assets/*.ico
+  Cache-Control: max-age=31536000, public, immutable
+/robots.txt
+  Cache-Control: max-age=3600, public
+/sitemap.xml
+  Cache-Control: max-age=3600, public
+/.well-known/security.txt
+  Cache-Control: max-age=86400, public
+/humans.txt
+  Cache-Control: max-age=86400, public
+```
+
+If you introduce hashed filenames later, raise those assets to `max-age=31536000, immutable` safely.
+
+## 404 Page
+
+`404.html` returns a proper 404 and sets `noindex,follow` so it is not indexed but can still help discovery of any links on it.
+
+## Security Disclosure
+
+`security.txt` lists a contact email and expiry; update the `Expires` field annually.
+
+## Future Enhancements
+
+- Add social preview images per page.
+- Add a web app manifest for PWA capabilities.
+- Automate sitemap generation via a small script.
+- Introduce build step for asset hashing & minification if complexity grows.
+
 ## License
 
 MIT License - feel free to use this template for your own portfolio!

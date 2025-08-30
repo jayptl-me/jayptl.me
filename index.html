@@ -139,6 +139,8 @@
             --theme-text: var(--gray-900);
             --theme-primary: var(--primary-500);
             --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+            /* Ensure RGB background value resets when switching from dark to light for translucent UI elements (e.g., preloader percentage chip) */
+            --theme-bg-rgb: 255, 255, 255;
             background-color: var(--white);
             color: var(--gray-900);
         }
@@ -148,6 +150,7 @@
             --theme-text: var(--white);
             --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
             --theme-bg-rgb: 0, 0, 0;
+            /* Used for translucent surfaces like preloader percentage background */
             background-color: var(--black);
             color: var(--white);
         }
@@ -280,11 +283,13 @@
             font-size: var(--text-xl);
             font-weight: var(--weight-normal);
             color: var(--theme-text);
-            background: rgba(var(--theme-bg-rgb), 0.9);
+            /* Semi-transparent surface adapts to theme background */
+            background: rgba(var(--theme-bg-rgb), 0.85);
             padding: var(--space-2) var(--space-4);
             border-radius: 8px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(var(--primary-500-rgb), 0.2);
+            border: 1px solid rgba(var(--primary-500-rgb), 0.25);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .preloader-logo {

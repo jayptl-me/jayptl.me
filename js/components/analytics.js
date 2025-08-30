@@ -68,9 +68,10 @@ class AnalyticsManager {
         window.dataLayer = window.dataLayer || [];
         window.gtag = (...args) => window.dataLayer.push(args);
 
-        // Set consent mode defaults
+        // Set conservative consent mode defaults (deny analytics until explicit user consent)
+        // This avoids accidental tracking prior to consent and aligns with Google & GDPR guidance.
         gtag('consent', 'default', {
-            'analytics_storage': 'granted',
+            'analytics_storage': 'denied',
             'ad_storage': 'denied',
             'personalization_storage': 'denied',
             'functionality_storage': 'granted',

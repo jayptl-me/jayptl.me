@@ -604,10 +604,16 @@ For questions about data handling, you can contact me through the portfolio cont
         function gtag() { dataLayer.push(arguments); }
         window.gtag = gtag;
 
-        // Update consent for analytics
-        gtag('consent', 'update', {
-            'analytics_storage': 'granted'
+        // Set default denied; will immediately update to granted only if user consented
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied'
         });
+
+        if (this.consentData.accepted && this.consentData.hasResponded) {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
+        }
 
         gtag('js', new Date());
         gtag('config', GA_MEASUREMENT_ID, {

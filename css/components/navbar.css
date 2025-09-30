@@ -64,6 +64,58 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
+    padding: 6px 14px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.18), rgba(var(--primary-600-rgb, 25, 118, 210), 0.10) 60%), rgba(var(--theme-bg-rgb, 18, 18, 18), 0.35);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid color-mix(in oklab, var(--primary-500, #2196f3) 35%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.20);
+    transition: background 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
+}
+
+.glass-nav .nav-brand:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 6px 18px rgba(var(--primary-500-rgb, 33, 150, 243), 0.28);
+}
+
+.glass-nav .nav-links .nav-link {
+    position: relative;
+    padding: 6px 14px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.12), rgba(var(--primary-600-rgb, 25, 118, 210), 0.08) 60%), rgba(var(--theme-bg-rgb, 18, 18, 18), 0.25);
+    backdrop-filter: blur(8px) saturate(115%);
+    -webkit-backdrop-filter: blur(8px) saturate(115%);
+    border: 1px solid color-mix(in oklab, var(--primary-500, #2196f3) 28%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 2px 10px rgba(var(--primary-500-rgb, 33, 150, 243), 0.18);
+    text-decoration: none;
+    transition: background 200ms var(--ease-out), box-shadow 220ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.glass-nav .nav-links .nav-link:hover {
+    background: linear-gradient(160deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.16), rgba(var(--primary-600-rgb, 25, 118, 210), 0.10) 60%), rgba(var(--theme-bg-rgb, 18, 18, 18), 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 4px 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.24);
+    transform: translateY(-2px);
+}
+
+.glass-nav .nav-links .nav-link:active {
+    transform: translateY(0) scale(.97);
+}
+
+@media (prefers-color-scheme: light) {
+
+    .glass-nav .nav-brand,
+    .glass-nav .nav-links .nav-link {
+        background: linear-gradient(155deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.15), rgba(var(--primary-400-rgb, 66, 165, 245), 0.10) 60%), rgba(255, 255, 255, 0.55);
+        border-color: color-mix(in oklab, var(--primary-500, #2196f3) 45%, transparent);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.70), 0 3px 10px rgba(var(--primary-500-rgb, 33, 150, 243), 0.20);
+        color: var(--primary-800, #0d47a1);
+    }
+
+    .glass-nav .nav-brand:hover,
+    .glass-nav .nav-links .nav-link:hover {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 6px 18px rgba(var(--primary-500-rgb, 33, 150, 243), 0.26);
+    }
 }
 
 /* New layout: align edges inside equal-width side columns */
@@ -439,6 +491,30 @@ html.no-scroll {
     text-decoration: none;
     color: inherit;
     font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: 20px;
+    background: linear-gradient(160deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.18), rgba(var(--primary-600-rgb, 25, 118, 210), 0.10) 60%), rgba(var(--theme-bg-rgb, 18, 18, 18), 0.40);
+    backdrop-filter: blur(12px) saturate(125%);
+    -webkit-backdrop-filter: blur(12px) saturate(125%);
+    border: 1px solid color-mix(in oklab, var(--primary-500, #2196f3) 35%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.22);
+    letter-spacing: 0.5px;
+    transition: background 220ms var(--ease-out), box-shadow 220ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.mobile-brand:active {
+    transform: scale(.97);
+}
+
+@media (prefers-color-scheme: light) {
+    .mobile-brand {
+        background: linear-gradient(155deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.16), rgba(var(--primary-400-rgb, 66, 165, 245), 0.10) 60%), rgba(255, 255, 255, 0.65);
+        border-color: color-mix(in oklab, var(--primary-500, #2196f3) 45%, transparent);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 4px 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.20);
+        color: var(--primary-800, #0d47a1);
+    }
 }
 
 .mobile-close {

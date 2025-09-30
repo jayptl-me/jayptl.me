@@ -215,10 +215,12 @@
         }
 
         .gradient-text {
-            background: var(--theme-gradient-text);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent
+            /* Unified solid brand blue (no gradient) */
+            background: none;
+            color: var(--primary-600, var(--primary-500));
+            -webkit-background-clip: initial;
+            background-clip: initial;
+            -webkit-text-fill-color: currentColor;
         }
 
         @media (max-width:768px) {
@@ -269,8 +271,8 @@
         .preloader-progress-bar {
             height: 100%;
             width: 0%;
-            background: var(--theme-gradient-text);
-            background: linear-gradient(90deg, var(--primary-500), #1976d2, #42a5f5);
+            /* Solid blue bar */
+            background: var(--primary-600, var(--primary-500));
             transition: width 0.3s ease-out;
             border-radius: 2px;
         }
@@ -315,10 +317,12 @@
             font-family: var(--font-display);
             font-size: var(--text-5xl);
             font-weight: var(--weight-normal);
-            background: var(--theme-gradient-text);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            /* Solid blue text instead of gradient */
+            background: none;
+            color: var(--primary-600, var(--primary-500));
+            -webkit-background-clip: initial;
+            background-clip: initial;
+            -webkit-text-fill-color: currentColor;
             margin-bottom: var(--space-8);
             opacity: 0;
             animation: fadeInUp 0.8s ease-out 0.2s forwards;

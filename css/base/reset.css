@@ -88,6 +88,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* Prevent horizontal scroll on mobile */
+  width: 100%;
+  position: relative;
 }
 
 /* A elements that don't have a class get default styles */
@@ -165,4 +168,94 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--theme-primary);
+}
+
+/* ==========================================================================
+   MOBILE OVERFLOW PREVENTION
+   ========================================================================== */
+
+/* Ensure all elements respect viewport width at scale 1.0 */
+html {
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100%;
+}
+
+/* Comprehensive mobile overflow prevention */
+*,
+*::before,
+*::after {
+  /* Prevent any element from exceeding viewport */
+  max-width: 100vw;
+  /* Handle text overflow gracefully */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Ensure images and media are always responsive */
+img,
+picture,
+video,
+canvas,
+svg,
+iframe,
+embed,
+object {
+  max-width: 100% !important;
+  height: auto !important;
+  /* Prevent media overflow on mobile */
+  box-sizing: border-box;
+}
+
+/* Prevent wide elements from causing horizontal scroll */
+pre,
+code,
+table,
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+  /* Allow horizontal scroll within element instead of page */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Handle long URLs and text strings */
+a,
+p,
+div,
+span {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure fixed and absolute positioned elements stay within viewport */
+[style*="position: fixed"],
+[style*="position: absolute"],
+.fixed,
+.absolute {
+  max-width: 100vw !important;
+  box-sizing: border-box;
+}
+
+/* Prevent transforms from causing overflow on mobile */
+@media (max-width: 768px) {
+
+  [style*="transform"],
+  [class*="transform"] {
+    /* Ensure transformed elements don't exceed viewport */
+    contain: layout style;
+  }
+
+  /* Extra mobile overflow protection */
+  body {
+    position: relative;
+    overflow-x: hidden !important;
+  }
+
+  /* Prevent horizontal scroll from any source */
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden !important;
+  }
 }

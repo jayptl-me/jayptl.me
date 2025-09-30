@@ -104,6 +104,9 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
         width: 36px;
         height: 36px;
         padding: 4px;
+        /* Ensure it doesn't extend beyond viewport */
+        max-width: calc(100vw - 24px);
+        box-sizing: border-box;
     }
 
     .theme-toggle svg {
@@ -150,7 +153,7 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 
 /* Light: saber off (black), no glow */
 html[data-theme="light"] .theme-toggle .lightsaber-blade {
-    fill: #000;
+    fill: var(--theme-text);
     filter: none;
 }
 
@@ -161,19 +164,19 @@ html[data-theme="light"] .theme-toggle .lightsaber-glow {
 
 /* Dark: saber on (blue), with glow */
 html[data-theme="dark"] .theme-toggle .lightsaber-blade {
-    fill: #3b82f6;
-    filter: drop-shadow(0 0 4px #3b82f6) drop-shadow(0 0 8px #3b82f6);
+    fill: var(--theme-primary);
+    filter: drop-shadow(0 0 3px var(--theme-primary)) drop-shadow(0 0 6px var(--theme-primary));
 }
 
 html[data-theme="dark"] .theme-toggle .lightsaber-glow {
-    opacity: 0.7;
-    filter: drop-shadow(0 0 10px #60a5fa);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 8px var(--accent-400));
 }
 
 /* Intensified blue glow on hover in dark theme */
 html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
     filter:
-        drop-shadow(0 0 8px #3b82f6) drop-shadow(0 0 16px #3b82f6) drop-shadow(0 0 24px #60a5fa);
+        drop-shadow(0 0 6px var(--theme-primary)) drop-shadow(0 0 12px var(--theme-primary)) drop-shadow(0 0 18px var(--accent-400));
 }
 
 /* No glow on hover in light theme to avoid black halo */

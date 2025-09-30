@@ -11,11 +11,11 @@
    ========================================================================== */
 
 :root {
-    /* Cursor colors */
-    --cursor-primary: rgba(33, 150, 243, 0.8);
-    --cursor-primary-hover: rgba(33, 150, 243, 0.9);
-    --cursor-secondary: rgba(33, 150, 243, 0.3);
-    --cursor-accent: rgba(66, 165, 245, 0.6);
+    /* Cursor colors derived from token palette (subtle by default) */
+    --cursor-primary: rgba(var(--primary-500-rgb, 33, 150, 243), 0.65);
+    --cursor-primary-hover: rgba(var(--primary-600-rgb, 30, 136, 229), 0.8);
+    --cursor-secondary: rgba(var(--accent-500-rgb, 0, 184, 204), 0.28);
+    --cursor-accent: rgba(var(--accent-500-rgb, 0, 184, 204), 0.45);
 
     /* Cursor sizes */
     --cursor-size-small: 8px;
@@ -31,18 +31,18 @@
 /* Dark theme adjustments */
 @media (prefers-color-scheme: dark) {
     :root {
-        --cursor-primary: rgba(100, 181, 246, 0.9);
-        --cursor-primary-hover: rgba(100, 181, 246, 1);
-        --cursor-secondary: rgba(100, 181, 246, 0.4);
-        --cursor-accent: rgba(144, 202, 249, 0.7);
+        --cursor-primary: rgba(var(--primary-400-rgb, 66, 165, 245), 0.75);
+        --cursor-primary-hover: rgba(var(--primary-300-rgb, 100, 181, 246), 0.9);
+        --cursor-secondary: rgba(var(--accent-500-rgb, 0, 184, 204), 0.35);
+        --cursor-accent: rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
     }
 }
 
 html[data-theme="dark"] {
-    --cursor-primary: rgba(100, 181, 246, 0.9);
-    --cursor-primary-hover: rgba(100, 181, 246, 1);
-    --cursor-secondary: rgba(100, 181, 246, 0.4);
-    --cursor-accent: rgba(144, 202, 249, 0.7);
+    --cursor-primary: rgba(var(--primary-400-rgb, 66, 165, 245), 0.75);
+    --cursor-primary-hover: rgba(var(--primary-300-rgb, 100, 181, 246), 0.9);
+    --cursor-secondary: rgba(var(--accent-500-rgb, 0, 184, 204), 0.35);
+    --cursor-accent: rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
 }
 
 /* ==========================================================================
@@ -81,9 +81,9 @@ textarea,
     -webkit-backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.3);
     box-shadow:
-        0 0 20px var(--cursor-secondary),
-        0 0 40px var(--cursor-secondary),
-        inset 0 0 20px rgba(255, 255, 255, 0.1);
+        0 0 14px var(--cursor-secondary),
+        0 0 28px var(--cursor-secondary),
+        inset 0 0 16px rgba(255, 255, 255, 0.06);
 }
 
 .custom-cursor::before {
@@ -127,9 +127,9 @@ textarea,
     height: var(--cursor-size-hover);
     background: var(--cursor-primary-hover);
     box-shadow:
-        0 0 30px var(--cursor-accent),
-        0 0 60px var(--cursor-accent),
-        inset 0 0 30px rgba(255, 255, 255, 0.2);
+        0 0 22px var(--cursor-accent),
+        0 0 44px var(--cursor-accent),
+        inset 0 0 22px rgba(255, 255, 255, 0.15);
 }
 
 .custom-cursor.hover::before {
@@ -150,9 +150,9 @@ textarea,
     height: var(--cursor-size-click);
     background: var(--cursor-accent);
     box-shadow:
-        0 0 40px var(--cursor-primary),
-        0 0 80px var(--cursor-primary),
-        inset 0 0 40px rgba(255, 255, 255, 0.3);
+        0 0 28px var(--cursor-primary),
+        0 0 56px var(--cursor-primary),
+        inset 0 0 28px rgba(255, 255, 255, 0.22);
 }
 
 .cursor-follower.click {
@@ -167,7 +167,7 @@ textarea,
     height: 20px;
     border-radius: 2px;
     background: var(--cursor-primary);
-    box-shadow: 0 0 10px var(--cursor-primary);
+    box-shadow: 0 0 8px var(--cursor-primary);
 }
 
 .custom-cursor.text::before {

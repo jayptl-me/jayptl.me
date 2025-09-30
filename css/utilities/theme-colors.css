@@ -1,0 +1,105 @@
+/* Theme Color Utility Classes - generated to promote token-only usage
+ * These classes provide quick access to primary and accent palettes while
+ * encouraging consistency across components.
+ */
+
+/* Text Colors */
+.text-primary {
+    color: var(--theme-primary) !important;
+}
+
+.text-accent {
+    color: var(--accent-700) !important;
+}
+
+.text-accent-decor {
+    color: var(--theme-accent, var(--accent-500)) !important;
+}
+
+.text-accent-soft {
+    color: var(--accent-400) !important;
+}
+
+.text-muted {
+    color: var(--theme-text-secondary) !important;
+}
+
+.text-inverse {
+    color: var(--theme-text-inverse) !important;
+}
+
+/* Background Colors */
+.bg-primary {
+    background: var(--theme-primary) !important;
+    color: var(--theme-text-inverse) !important;
+}
+
+.bg-accent {
+    background: var(--theme-accent, var(--accent-500)) !important;
+    color: var(--white) !important;
+}
+
+.bg-accent-soft {
+    background: var(--accent-50) !important;
+}
+
+.bg-surface {
+    background: var(--theme-surface) !important;
+}
+
+.bg-surface-alt {
+    background: var(--theme-surface-secondary) !important;
+}
+
+.bg-gradient-primary {
+    background: var(--theme-gradient-primary) !important;
+}
+
+/* Border Colors */
+.border-primary {
+    border-color: var(--theme-primary) !important;
+}
+
+.border-accent {
+    border-color: var(--theme-accent, var(--accent-500)) !important;
+}
+
+.border-muted {
+    border-color: var(--theme-border) !important;
+}
+
+/* State Background Helpers */
+.bg-success-muted {
+    background: var(--success-muted) !important;
+}
+
+.bg-warning-muted {
+    background: var(--warning-muted) !important;
+}
+
+.bg-danger-muted {
+    background: var(--danger-muted) !important;
+}
+
+.bg-info-muted {
+    background: var(--info-muted) !important;
+}
+
+/* Focus Ring Helper */
+.focus-ring {
+    box-shadow: var(--focus-ring);
+    outline: none;
+}
+
+.focus-ring:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+}
+
+/* Gradient Text Helper */
+.text-gradient {
+    background: var(--theme-gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+}

@@ -352,15 +352,15 @@
   }
 
   .print\:text-black {
-    color: #000 !important;
+    color: var(--black) !important;
   }
 
   .print\:text-white {
-    color: #fff !important;
+    color: var(--white) !important;
   }
 
   .print\:bg-white {
-    background-color: #fff !important;
+    background-color: var(--white) !important;
   }
 
   .print\:bg-transparent {
@@ -562,15 +562,15 @@
   }
 
   .high-contrast\:border-black {
-    border-color: #000;
+    border-color: var(--black);
   }
 
   .high-contrast\:text-black {
-    color: #000;
+    color: var(--black);
   }
 
   .high-contrast\:bg-white {
-    background-color: #fff;
+    background-color: var(--white);
   }
 
   .high-contrast\:outline {
@@ -768,5 +768,125 @@
 
   .xl\:grid-cols-6 {
     grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ==========================================================================
+   MOBILE-FIRST OVERFLOW PREVENTION UTILITIES
+   ========================================================================== */
+
+/* Mobile overflow prevention utilities */
+.mobile-safe {
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.text-safe {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+.image-safe {
+  max-width: 100% !important;
+  height: auto !important;
+  box-sizing: border-box;
+}
+
+.container-safe {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  padding-left: clamp(1rem, 4vw, 2rem);
+  padding-right: clamp(1rem, 4vw, 2rem);
+}
+
+/* Mobile-specific overflow prevention */
+@media (max-width: 768px) {
+  .mobile-overflow-hidden {
+    overflow-x: hidden !important;
+  }
+
+  .mobile-full-width {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+
+  .mobile-constrain {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent transforms from causing mobile overflow */
+  .mobile-transform-safe {
+    transform: none !important;
+  }
+}
+
+/* Small mobile devices (phones in portrait, 480px and down) */
+@media (max-width: 480px) {
+  .xs-overflow-hidden {
+    overflow-x: hidden !important;
+  }
+
+  .xs-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .xs-safe-padding {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ==========================================================================
+   CRITICAL MOBILE OVERFLOW PREVENTION (HIGHEST PRIORITY)
+   ========================================================================== */
+
+/* Ultimate mobile overflow protection - applies to ALL elements */
+@media (max-width: 768px) {
+  * {
+    /* Absolute maximum width constraint */
+    max-width: 100vw !important;
+  }
+
+  /* Specific element types that commonly cause overflow */
+  img,
+  video,
+  iframe,
+  canvas,
+  svg,
+  picture,
+  table,
+  pre,
+  code,
+  .container,
+  .hero,
+  .section,
+  [class*="col-"],
+  [class*="grid"],
+  .fixed,
+  .absolute,
+  [style*="position: fixed"],
+  [style*="position: absolute"] {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent ANY horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden !important;
+    position: relative !important;
+  }
+
+  /* Transform safety on mobile */
+  [style*="transform"] {
+    max-width: calc(100vw - 20px) !important;
   }
 }

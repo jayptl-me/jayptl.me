@@ -12,31 +12,32 @@
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: min(1200px, 100vw);
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--space-4);
   padding-right: var(--space-4);
+  box-sizing: border-box;
 }
 
 .container-sm {
-  max-width: 640px;
+  max-width: min(640px, 100vw);
 }
 
 .container-md {
-  max-width: 768px;
+  max-width: min(768px, 100vw);
 }
 
 .container-lg {
-  max-width: 1024px;
+  max-width: min(1024px, 100vw);
 }
 
 .container-xl {
-  max-width: 1280px;
+  max-width: min(1280px, 100vw);
 }
 
 .container-2xl {
-  max-width: 1536px;
+  max-width: min(1536px, 100vw);
 }
 
 .container-full {

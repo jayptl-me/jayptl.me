@@ -90,7 +90,7 @@
             --theme-bg: var(--white);
             --theme-text: var(--gray-900);
             --theme-primary: var(--primary-500);
-            --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+            --theme-gradient-text: linear-gradient(135deg, var(--primary-600, #1e88e5), var(--accent-500, #00b8cc));
         }
 
         /* Dark theme - system preference */
@@ -98,7 +98,7 @@
             :root {
                 --theme-bg: var(--black);
                 --theme-text: var(--white);
-                --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+                --theme-gradient-text: linear-gradient(135deg, var(--primary-300, #64b5f6), var(--accent-400, #26c9d8));
                 --theme-bg-rgb: 0, 0, 0;
             }
 
@@ -119,7 +119,7 @@
                 --theme-bg: var(--white);
                 --theme-text: var(--gray-900);
                 --theme-primary: var(--primary-500);
-                --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+                --theme-gradient-text: linear-gradient(135deg, var(--primary-600, #1e88e5), var(--accent-500, #00b8cc));
             }
 
             html {
@@ -138,7 +138,7 @@
             --theme-bg: var(--white);
             --theme-text: var(--gray-900);
             --theme-primary: var(--primary-500);
-            --theme-gradient-text: linear-gradient(135deg, var(--primary-500), #1976d2);
+            --theme-gradient-text: linear-gradient(135deg, var(--primary-600, #1e88e5), var(--accent-500, #00b8cc));
             /* Ensure RGB background value resets when switching from dark to light for translucent UI elements (e.g., preloader percentage chip) */
             --theme-bg-rgb: 255, 255, 255;
             background-color: var(--white);
@@ -148,7 +148,7 @@
         html[data-theme="dark"] {
             --theme-bg: var(--black);
             --theme-text: var(--white);
-            --theme-gradient-text: linear-gradient(135deg, #1976d2, #42a5f5);
+            --theme-gradient-text: linear-gradient(135deg, var(--primary-300, #64b5f6), var(--accent-400, #26c9d8));
             --theme-bg-rgb: 0, 0, 0;
             /* Used for translucent surfaces like preloader percentage background */
             background-color: var(--black);

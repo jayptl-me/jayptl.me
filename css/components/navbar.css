@@ -19,6 +19,9 @@
     visibility: hidden;
     transform: translateY(-12px) scale(0.98);
     transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out), visibility 220ms var(--ease-out);
+    width: 100vw;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .glass-nav.visible {
@@ -118,9 +121,10 @@
 
 /* Accessibility: Show visible outline and background when dropdown-item is focused via keyboard */
 .dropdown-item:focus-visible {
-    outline: 2px solid var(--theme-accent, #0078d4);
+    outline: 2px solid var(--theme-accent);
     outline-offset: 2px;
-    background: rgba(0, 120, 212, 0.10);
+    background: rgba(var(--accent-500-rgb), 0.10);
+    box-shadow: var(--focus-ring);
 }
 
 .dropdown-item:hover {
@@ -146,10 +150,10 @@
 
 /* Accessibility: Show visible outline when nav-toggle is focused via keyboard */
 .nav-toggle:focus-visible {
-    outline: 2px solid var(--theme-accent, #0078d4);
+    outline: 2px solid var(--theme-accent);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.15);
-    border-color: var(--theme-accent, #0078d4);
+    box-shadow: 0 0 0 4px rgba(var(--accent-500-rgb), 0.25);
+    border-color: var(--theme-accent);
 }
 
 .nav-toggle-bar {
@@ -508,4 +512,17 @@ html.no-scroll {
         padding-left: 12px;
         padding-right: 12px;
     }
+}
+
+/* Small, focused override: make the navbar container transparent on
+   all screen sizes while keeping its items (links, buttons, brand)
+   styling intact. This avoids touching nav-link/icon-btn styles. */
+.glass-nav,
+.glass-nav.visible,
+.glass-nav.open {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }

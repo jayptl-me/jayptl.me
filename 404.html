@@ -14,15 +14,16 @@
     <style>
         :root {
             --font-display: 'Audiowide', sans-serif;
-            --primary: #2196f3;
-            --bg: #0d1117;
-            --text: #e6edf3;
+            /* Use existing theme & primary tokens as fallback if main bundle not yet loaded */
+            --primary: var(--primary-500, #2196f3);
+            --bg: var(--theme-bg, #0d1117);
+            --text: var(--theme-text, #e6edf3);
         }
 
         @media (prefers-color-scheme: light) {
             :root {
-                --bg: #ffffff;
-                --text: #111827;
+                --bg: var(--theme-bg, #ffffff);
+                --text: var(--theme-text, #111827);
             }
         }
 
@@ -50,7 +51,8 @@
         h1 {
             font-size: clamp(2.5rem, 7vw, 4rem);
             margin: 0 0 1rem;
-            background: linear-gradient(135deg, #2196f3, #42a5f5);
+            background: var(--theme-gradient-text, linear-gradient(135deg, var(--primary-600, #1e88e5), var(--accent-500, #00b8cc)));
+            background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
@@ -74,7 +76,7 @@
         a.btn:hover,
         a.btn:focus {
             background: var(--primary);
-            color: #fff;
+            color: var(--white, #ffffff);
         }
 
         .code {
@@ -93,6 +95,8 @@
         <p class="code">If you believe this is an error, feel free to <a href="mailto:hello@jayptl.me">contact me</a>.
         </p>
     </main>
+    <!-- Initialize custom cursor -->
+    <script defer src="js/components/custom-cursor.js"></script>
 </body>
 
 </html>

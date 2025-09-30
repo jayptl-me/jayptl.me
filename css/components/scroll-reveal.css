@@ -297,42 +297,44 @@
   transform: translateY(0);
 }
 
+/* Scroll reveal text: enforce primary brand glow (blue) */
 .gradient-text {
-  color: #69B4FF;
-  /* Remove gradient masking - use solid color for better visibility */
-}
-
-/* Theme-aware gradient */
-@media (prefers-color-scheme: light) {
-  .gradient-text {
-    color: #1e3a8a;
-  }
-}
-
-/* Active item gradient enhancement */
-.text-reveal-item.active .gradient-text {
-  color: #69B4FF;
+  color: var(--primary-500);
   text-shadow:
-    0 0 20px rgba(105, 180, 255, 0.3),
-    0 0 40px rgba(0, 111, 255, 0.2);
+    0 0 12px rgba(var(--primary-500-rgb), 0.35),
+    0 0 28px rgba(var(--primary-600-rgb), 0.25);
 }
 
-/* Theme-aware gradient for active items */
-@media (prefers-color-scheme: light) {
-  .text-reveal-item.active .gradient-text {
-    color: #1e3a8a;
+@media (prefers-color-scheme: dark) {
+  .gradient-text {
+    color: var(--primary-400);
     text-shadow:
-      0 0 20px rgba(30, 58, 138, 0.3),
-      0 0 40px rgba(96, 165, 250, 0.2);
+      0 0 14px rgba(var(--primary-400-rgb, 66, 165, 245), 0.35),
+      0 0 32px rgba(var(--primary-500-rgb), 0.22);
   }
 }
 
-/* Character hover effects */
+.text-reveal-item.active .gradient-text {
+  color: var(--primary-500);
+  text-shadow:
+    0 0 16px rgba(var(--primary-500-rgb), 0.45),
+    0 0 36px rgba(var(--primary-600-rgb), 0.30);
+}
+
+@media (prefers-color-scheme: dark) {
+  .text-reveal-item.active .gradient-text {
+    color: var(--primary-300);
+    text-shadow:
+      0 0 18px rgba(var(--primary-300-rgb, 100, 181, 246), 0.50),
+      0 0 40px rgba(var(--primary-400-rgb, 66, 165, 245), 0.28);
+  }
+}
+
 .text-reveal-item.active .char:hover {
   transform: scale(1.05) translateY(0);
   text-shadow:
-    0 0 30px rgba(105, 180, 255, 0.5),
-    0 0 60px rgba(0, 111, 255, 0.3);
+    0 0 20px rgba(var(--primary-500-rgb), 0.55),
+    0 0 48px rgba(var(--primary-600-rgb), 0.32);
 }
 
 /* ==========================================================================
@@ -1196,11 +1198,6 @@ html[data-theme="dark"] .stepper-dot:hover {
 }
 
 .glass-nav .nav-brand {
-  backdrop-filter: blur(14px) saturate(1.25);
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
-  background: linear-gradient(180deg,
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.28),
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.18));
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
   padding: 8px 16px;

@@ -59,6 +59,7 @@
 /* ==========================================================================
    UTILITIES - Helper Classes and Overrides (Essential Only)
    ========================================================================== */
+@import 'utilities/responsive.css';
 @import 'utilities/display.css';
 @import 'utilities/light-dark.css';
 @import 'utilities/cursor.css';

@@ -326,6 +326,51 @@ code::-webkit-scrollbar {
             var(--scrollbar-thumb),
             var(--scrollbar-thumb-hover));
     border-radius: 0 2px 2px 0;
-    box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+    box-shadow: 0 0 6px rgba(var(--primary-500-rgb, 33, 150, 243), 0.45), 0 0 14px rgba(var(--primary-600-rgb, 30, 136, 229), 0.30);
     transition: width 0.1s ease-out;
+}
+
+/* Constrained glow overlay (80% max width) */
+.custom-scroll-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    height: 180%;
+    width: clamp(240px, 80vw, 1400px);
+    background: radial-gradient(ellipse at center,
+            rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) 0%,
+            rgba(var(--primary-500-rgb, 33, 150, 243), 0.18) 40%,
+            rgba(var(--primary-500-rgb, 33, 150, 243), 0.05) 65%,
+            rgba(var(--primary-500-rgb, 33, 150, 243), 0) 75%);
+    filter: blur(14px);
+    mix-blend-mode: plus-lighter;
+    opacity: 0.85;
+    transition: opacity 300ms var(--ease-out), filter 300ms var(--ease-out);
+}
+
+@media (max-width: 900px) {
+    .custom-scroll-indicator::after {
+        width: clamp(200px, 86vw, 900px);
+        filter: blur(12px);
+        opacity: 0.8;
+    }
+}
+
+@media (max-width: 600px) {
+    .custom-scroll-indicator::after {
+        width: clamp(160px, 92vw, 600px);
+        filter: blur(10px);
+        opacity: 0.75;
+    }
+}
+
+@media (prefers-reduced-motion: reduce),
+(prefers-contrast: more) {
+    .custom-scroll-indicator::after {
+        opacity: 0.55;
+        filter: blur(8px);
+    }
 }

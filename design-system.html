@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Design System - Jay Patel Portfolio</title>
+    <link rel="canonical" href="https://jayptl.me/design-system" />
+    <meta name="description"
+        content="Design system showcase for Jay Patel's portfolio - colors, typography, components, and UI elements.">
+
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="css/critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="css/critical.css">
+    </noscript>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico" sizes="any">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <style>
+        /* Design System Specific Styles */
+        .design-system-page {
+            padding: calc(64px + var(--space-8)) 0 var(--space-8) 0;
+            min-height: 100vh;
+        }
+
+        .design-section {
+            margin-bottom: var(--space-16);
+            padding: var(--space-8);
+            background: var(--theme-surface);
+            border-radius: var(--rounded-lg);
+            border: 1px solid var(--theme-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .design-section h2 {
+            margin-bottom: var(--space-6);
+            padding-bottom: var(--space-4);
+            border-bottom: 2px solid var(--theme-primary);
+            color: var(--theme-primary);
+        }
+
+        .color-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            justify-content: flex-start;
+        }
+
+        .color-swatch {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            padding: var(--space-4);
+            border-radius: var(--rounded-md);
+            border: 1px solid var(--theme-border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-4) * 3) / 4);
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--rounded);
+            margin-bottom: var(--space-3);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .color-name {
+            font-weight: var(--weight-semibold);
+            font-size: var(--text-sm);
+            color: var(--theme-text);
+        }
+
+        .color-value {
+            font-family: var(--font-mono);
+            font-size: var(--text-xs);
+            color: var(--theme-text-secondary);
+            margin-top: var(--space-1);
+        }
+
+        .typography-showcase {
+            margin: var(--space-6) 0;
+        }
+
+        .typography-example {
+            margin-bottom: var(--space-6);
+            padding: var(--space-4);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--rounded);
+            background: var(--theme-bg-secondary);
+        }
+
+        .spacing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .spacing-example {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            text-align: center;
+            padding: var(--space-2);
+            overflow: hidden;
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-3) * 2) / 3);
+        }
+
+        .spacing-bar {
+            background: var(--theme-primary);
+            height: 20px;
+            margin: var(--space-2) auto;
+            border-radius: var(--rounded-sm);
+            max-width: 100%;
+            min-width: 20px;
+            transition: width var(--duration-normal) var(--ease-out);
+            box-sizing: border-box;
+            /* Relative width based on container */
+            width: clamp(30px, 80%, 120px);
+        }
+
+        /* Progressive spacing visualization on mobile */
+        @media (max-width: 768px) {
+            .spacing-example {
+                width: calc((100% - var(--space-3) * 1) / 2);
+                min-width: 140px;
+            }
+
+            .spacing-bar {
+                width: clamp(25px, 70%, 100px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .spacing-grid {
+                gap: var(--space-2);
+            }
+
+            .spacing-example {
+                width: 100%;
+                min-width: 0;
+                margin-bottom: var(--space-2);
+            }
+
+            .spacing-bar {
+                width: clamp(30px, 60%, 200px);
+            }
+        }
+
+        .component-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-6) 0;
+        }
+
+        .component-example {
+            padding: var(--space-6);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--rounded-lg);
+            background: var(--theme-bg);
+        }
+
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            justify-content: flex-start;
+        }
+
+        .button-grid .btn {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-3) * 3) / 4);
+            min-width: 120px;
+        }
+
+        .btn {
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--rounded-md);
+            border: none;
+            font-weight: var(--weight-medium);
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-out);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--theme-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--theme-surface);
+            color: var(--theme-text);
+            border: 1px solid var(--theme-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--theme-bg-secondary);
+            border-color: var(--theme-border-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--theme-primary);
+            border: 2px solid var(--theme-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .shadow-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            justify-content: flex-start;
+        }
+
+        .shadow-box {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            height: 100px;
+            background: var(--theme-surface);
+            border-radius: var(--rounded-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--weight-medium);
+            color: var(--theme-text-secondary);
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-4) * 2) / 3);
+            min-width: 150px;
+        }
+
+        .radius-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            justify-content: flex-start;
+        }
+
+        .radius-box {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            height: 80px;
+            background: var(--theme-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--weight-medium);
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-4) * 3) / 4);
+            min-width: 120px;
+        }
+
+        .theme-toggle-demo {
+            display: none;
+            /* Hide manual theme toggle, navbar will handle it */
+        }
+
+        .gradient-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            justify-content: flex-start;
+        }
+
+        .gradient-box {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: 100%;
+            height: 100px;
+            border-radius: var(--rounded-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--weight-semibold);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            /* Flexible width that prevents overflow */
+            width: calc((100% - var(--space-4) * 1) / 2);
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .design-system-page {
+                padding: calc(64px + var(--space-4)) 0 var(--space-4) 0;
+            }
+
+            .design-section {
+                margin-bottom: var(--space-8);
+                padding: var(--space-4);
+            }
+
+            .color-grid {
+                gap: var(--space-3);
+            }
+
+            .color-swatch {
+                width: calc((100% - var(--space-3) * 1) / 2);
+                min-width: 140px;
+            }
+
+            .spacing-example {
+                width: calc((100% - var(--space-3) * 1) / 2);
+                min-width: 140px;
+            }
+
+            .component-showcase {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+
+            .button-grid .btn {
+                width: calc((100% - var(--space-3) * 1) / 2);
+                min-width: 100px;
+            }
+
+            .shadow-box {
+                width: calc((100% - var(--space-4) * 1) / 2);
+                min-width: 120px;
+            }
+
+            .radius-box {
+                width: calc((100% - var(--space-4) * 1) / 2);
+                min-width: 80px;
+            }
+
+            .gradient-box {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .color-swatch {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .button-grid .btn {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .shadow-box {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .radius-box {
+                width: calc((100% - var(--space-4) * 1) / 2);
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <main class="design-system-page">
+        <div class="container">
+            <!-- Header -->
+            <header class="text-center" style="margin-bottom: var(--space-12);">
+                <h1 class="heading-1" style="margin-bottom: var(--space-4);">
+                    Design System
+                </h1>
+                <p class="lead" style="max-width: 600px; margin: 0 auto;">
+                    A comprehensive showcase of the design tokens, components, and patterns that power Jay Patel's
+                    portfolio.
+                </p>
+            </header>
+
+            <!-- Color System -->
+            <section class="design-section">
+                <h2>Color Palette</h2>
+
+                <h3 style="margin: var(--space-6) 0 var(--space-4) 0;">Primary Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-50);"></div>
+                        <div class="color-name">Primary 50</div>
+                        <div class="color-value">#e3f2fd</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-100);"></div>
+                        <div class="color-name">Primary 100</div>
+                        <div class="color-value">#bbdefb</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-200);"></div>
+                        <div class="color-name">Primary 200</div>
+                        <div class="color-value">#90caf9</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-300);"></div>
+                        <div class="color-name">Primary 300</div>
+                        <div class="color-value">#64b5f6</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-400);"></div>
+                        <div class="color-name">Primary 400</div>
+                        <div class="color-value">#42a5f5</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-500);"></div>
+                        <div class="color-name">Primary 500</div>
+                        <div class="color-value">#2196f3</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-600);"></div>
+                        <div class="color-name">Primary 600</div>
+                        <div class="color-value">#1e88e5</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--primary-700);"></div>
+                        <div class="color-name">Primary 700</div>
+                        <div class="color-value">#1976d2</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Accent (Turquoise) Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-50);"></div>
+                        <div class="color-name">Accent 50</div>
+                        <div class="color-value">#e0f7f9</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-100);"></div>
+                        <div class="color-name">Accent 100</div>
+                        <div class="color-value">#b3edf2</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-200);"></div>
+                        <div class="color-name">Accent 200</div>
+                        <div class="color-value">#80e2ea</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-300);"></div>
+                        <div class="color-name">Accent 300</div>
+                        <div class="color-value">#4dd6e2</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-400);"></div>
+                        <div class="color-name">Accent 400</div>
+                        <div class="color-value">#26c9d8</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-500);"></div>
+                        <div class="color-name">Accent 500</div>
+                        <div class="color-value">#00b8cc</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-600);"></div>
+                        <div class="color-name">Accent 600</div>
+                        <div class="color-value">#009fb3</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--accent-700);"></div>
+                        <div class="color-name">Accent 700</div>
+                        <div class="color-value">#008190</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Neutral (Muted) Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-50);"></div>
+                        <div class="color-name">Neutral 50</div>
+                        <div class="color-value">#f8f9fa</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-100);"></div>
+                        <div class="color-name">Neutral 100</div>
+                        <div class="color-value">#f1f3f5</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-200);"></div>
+                        <div class="color-name">Neutral 200</div>
+                        <div class="color-value">#e9ecef</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-300);"></div>
+                        <div class="color-name">Neutral 300</div>
+                        <div class="color-value">#dee2e6</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-400);"></div>
+                        <div class="color-name">Neutral 400</div>
+                        <div class="color-value">#ced4da</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-500);"></div>
+                        <div class="color-name">Neutral 500</div>
+                        <div class="color-value">#adb5bd</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-600);"></div>
+                        <div class="color-name">Neutral 600</div>
+                        <div class="color-value">#868e96</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--neutral-700);"></div>
+                        <div class="color-name">Neutral 700</div>
+                        <div class="color-value">#495057</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Semantic Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--success);"></div>
+                        <div class="color-name">Success</div>
+                        <div class="color-value">#4caf50</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--warning);"></div>
+                        <div class="color-name">Warning</div>
+                        <div class="color-value">#ff9800</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--error);"></div>
+                        <div class="color-name">Error</div>
+                        <div class="color-value">#f44336</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--info);"></div>
+                        <div class="color-name">Info</div>
+                        <div class="color-value">#2196f3</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Theme Colors</h3>
+                <div class="color-grid">
+                    <div class="color-swatch">
+                        <div class="color-preview"
+                            style="background: var(--theme-bg); border: 2px solid var(--theme-border);"></div>
+                        <div class="color-name">Background</div>
+                        <div class="color-value">var(--theme-bg)</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview"
+                            style="background: var(--theme-surface); border: 2px solid var(--theme-border);"></div>
+                        <div class="color-name">Surface</div>
+                        <div class="color-value">var(--theme-surface)</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--theme-primary);"></div>
+                        <div class="color-name">Primary</div>
+                        <div class="color-value">var(--theme-primary)</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview" style="background: var(--theme-accent);"></div>
+                        <div class="color-name">Accent</div>
+                        <div class="color-value">var(--theme-accent)</div>
+                    </div>
+                    <div class="color-swatch">
+                        <div class="color-preview"
+                            style="background: var(--theme-text); border: 2px solid var(--theme-border);"></div>
+                        <div class="color-name">Text</div>
+                        <div class="color-value">var(--theme-text)</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-8); line-height: var(--leading-relaxed);">
+                    <p class="small" style="color: var(--theme-text-secondary);"><strong>Guidelines:</strong> Primary
+                        blues drive brand identity and CTAs. Turquoise accent is used for highlights, gradients, focus
+                        rings, data viz, and subtle interactive affordances. Neutral palette is muted to let
+                        primary/accent stand out while improving light/dark theme parity. Use
+                        <code>--success-muted</code>, <code>--warning-muted</code>, <code>--danger-muted</code>, and
+                        <code>--info-muted</code> for soft background states instead of low opacity borders.
+                    </p>
+                    <p class="small" style="color: var(--theme-text-secondary); margin-top: var(--space-3);">
+                        <strong>Accessibility:</strong> Primary 600 / Accent 600 on light backgrounds and Primary 300 /
+                        Accent 300 on dark backgrounds exceed 4.5:1 contrast vs body text surfaces. Avoid using Accent
+                        400 or lighter for standalone text; reserve them for backgrounds, indicators, or gradient
+                        midpoints. Focus ring uses a semi-transparent accent glow (<code>--focus-ring</code>) to remain
+                        visible in both themes.
+                    </p>
+                    <p class="small" style="color: var(--theme-text-secondary); margin-top: var(--space-3);">
+                        <strong>Token Policy:</strong> All production styles must reference design tokens. Raw hex
+                        values are confined to token declarations only. For ad-hoc usage leverage utility classes in
+                        <code>css/utilities/theme-colors.css</code> (e.g. <code>.text-accent</code>,
+                        <code>.bg-accent-soft</code>, <code>.text-gradient</code>).</p>
+                </div>
+            </section>
+
+            <!-- Typography -->
+            <section class="design-section">
+                <h2>Typography</h2>
+
+                <div class="typography-showcase">
+                    <div class="typography-example">
+                        <h1 class="heading-1">Heading 1 - Display</h1>
+                        <p class="small">Font: var(--font-display) • Size: var(--text-5xl) • Weight: var(--weight-bold)
+                        </p>
+                    </div>
+
+                    <div class="typography-example">
+                        <h2 class="heading-2">Heading 2 - Display</h2>
+                        <p class="small">Font: var(--font-display) • Size: var(--text-4xl) • Weight: var(--weight-bold)
+                        </p>
+                    </div>
+
+                    <div class="typography-example">
+                        <h3 class="heading-3">Heading 3 - Regular</h3>
+                        <p class="small">Font: var(--font-sans) • Size: var(--text-3xl) • Weight: var(--weight-semibold)
+                        </p>
+                    </div>
+
+                    <div class="typography-example">
+                        <h4 class="heading-4">Heading 4 - Regular</h4>
+                        <p class="small">Font: var(--font-sans) • Size: var(--text-2xl) • Weight: var(--weight-semibold)
+                        </p>
+                    </div>
+
+                    <div class="typography-example">
+                        <p class="lead">Lead paragraph text with increased size and lighter weight for better
+                            readability and emphasis.</p>
+                        <p class="small">Font: var(--font-sans) • Size: var(--text-xl) • Weight: var(--weight-light)</p>
+                    </div>
+
+                    <div class="typography-example">
+                        <p>Regular paragraph text that provides good readability and comfortable line spacing for body
+                            content. This is the standard text used throughout the website.</p>
+                        <p class="small">Font: var(--font-sans) • Size: var(--text-base) • Weight: var(--weight-normal)
+                        </p>
+                    </div>
+
+                    <div class="typography-example">
+                        <p class="small">Small text used for captions, metadata, and secondary information.</p>
+                        <p class="small">Font: var(--font-sans) • Size: var(--text-sm) • Weight: var(--weight-normal)
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Spacing System -->
+            <section class="design-section">
+                <h2>Spacing Scale</h2>
+                <div class="spacing-grid">
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(20px, 25%, 40px);"></div>
+                        <div class="small">space-1: 4px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(25px, 35%, 50px);"></div>
+                        <div class="small">space-2: 8px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(30px, 45%, 60px);"></div>
+                        <div class="small">space-3: 12px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(35px, 55%, 70px);"></div>
+                        <div class="small">space-4: 16px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(40px, 65%, 80px);"></div>
+                        <div class="small">space-6: 24px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(45px, 75%, 90px);"></div>
+                        <div class="small">space-8: 32px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(50px, 85%, 100px);"></div>
+                        <div class="small">space-12: 48px</div>
+                    </div>
+                    <div class="spacing-example">
+                        <div class="spacing-bar" style="width: clamp(55px, 95%, 110px);"></div>
+                        <div class="small">space-16: 64px</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Button Components -->
+            <section class="design-section">
+                <h2>Button Components</h2>
+                <div class="button-grid">
+                    <button class="btn btn-primary">Primary</button>
+                    <button class="btn btn-secondary">Secondary</button>
+                    <button class="btn btn-outline">Outline</button>
+                    <a href="#" class="btn btn-primary">Link Button</a>
+                </div>
+            </section>
+
+            <!-- Shadows -->
+            <section class="design-section">
+                <h2>Shadow System</h2>
+                <div class="shadow-examples">
+                    <div class="shadow-box" style="box-shadow: var(--shadow-sm);">
+                        shadow-sm
+                    </div>
+                    <div class="shadow-box" style="box-shadow: var(--shadow);">
+                        shadow
+                    </div>
+                    <div class="shadow-box" style="box-shadow: var(--shadow-md);">
+                        shadow-md
+                    </div>
+                    <div class="shadow-box" style="box-shadow: var(--shadow-lg);">
+                        shadow-lg
+                    </div>
+                    <div class="shadow-box" style="box-shadow: var(--shadow-xl);">
+                        shadow-xl
+                    </div>
+                    <div class="shadow-box" style="box-shadow: var(--shadow-2xl);">
+                        shadow-2xl
+                    </div>
+                </div>
+            </section>
+
+            <!-- Border Radius -->
+            <section class="design-section">
+                <h2>Border Radius</h2>
+                <div class="radius-examples">
+                    <div class="radius-box" style="border-radius: var(--rounded-none);">
+                        none
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-sm);">
+                        sm
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded);">
+                        default
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-md);">
+                        md
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-lg);">
+                        lg
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-xl);">
+                        xl
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-2xl);">
+                        2xl
+                    </div>
+                    <div class="radius-box" style="border-radius: var(--rounded-full);">
+                        full
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gradients -->
+            <section class="design-section">
+                <h2>Gradient System</h2>
+                <div class="gradient-examples">
+                    <div class="gradient-box" style="background: var(--theme-gradient-primary);">
+                        Primary Gradient
+                    </div>
+                    <div class="gradient-box" style="background: var(--theme-gradient-text);">
+                        Text Gradient
+                    </div>
+                    <div class="gradient-box"
+                        style="background: linear-gradient(135deg, var(--success), var(--success-300));">
+                        Success Gradient
+                    </div>
+                    <div class="gradient-box"
+                        style="background: linear-gradient(135deg, var(--warning), var(--warning-300));">
+                        Warning Gradient
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component Examples -->
+            <section class="design-section">
+                <h2>Component Patterns</h2>
+                <div class="component-showcase">
+                    <!-- Card Component -->
+                    <div class="component-example">
+                        <h3 style="margin-bottom: var(--space-4);">Card Component</h3>
+                        <div
+                            style="padding: var(--space-6); background: var(--theme-surface); border-radius: var(--rounded-lg); box-shadow: var(--shadow-md); border: 1px solid var(--theme-border);">
+                            <h4 style="margin-bottom: var(--space-3);">Card Title</h4>
+                            <p style="color: var(--theme-text-secondary); margin-bottom: var(--space-4);">Card
+                                description with some example content to show typography hierarchy.</p>
+                            <button class="btn btn-primary">Action</button>
+                        </div>
+                    </div>
+
+                    <!-- Form Elements -->
+                    <div class="component-example">
+                        <h3 style="margin-bottom: var(--space-4);">Form Elements</h3>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                            <input type="text" placeholder="Input field"
+                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface);">
+                            <select
+                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface);">
+                                <option>Select option</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                            </select>
+                            <textarea placeholder="Textarea" rows="3"
+                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface); resize: vertical;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Alert Component -->
+                    <div class="component-example">
+                        <h3 style="margin-bottom: var(--space-4);">Alert States</h3>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                            <div
+                                style="padding: var(--space-3); background: rgba(var(--success-rgb), 0.1); border: 1px solid var(--success); border-radius: var(--rounded); color: var(--success-800);">
+                                Success alert message
+                            </div>
+                            <div
+                                style="padding: var(--space-3); background: rgba(var(--warning-rgb), 0.1); border: 1px solid var(--warning); border-radius: var(--rounded); color: var(--warning-800);">
+                                Warning alert message
+                            </div>
+                            <div
+                                style="padding: var(--space-3); background: rgba(var(--danger-rgb), 0.1); border: 1px solid var(--error); border-radius: var(--rounded); color: var(--danger-800);">
+                                Error alert message
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badge Component -->
+                    <div class="component-example">
+                        <h3 style="margin-bottom: var(--space-4);">Badges</h3>
+                        <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                            <span
+                                style="padding: var(--space-1) var(--space-3); background: var(--theme-primary); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Primary</span>
+                            <span
+                                style="padding: var(--space-1) var(--space-3); background: var(--success); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Success</span>
+                            <span
+                                style="padding: var(--space-1) var(--space-3); background: var(--warning); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Warning</span>
+                            <span
+                                style="padding: var(--space-1) var(--space-3); background: var(--theme-border); color: var(--theme-text); border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Neutral</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="text-center"
+                style="margin-top: var(--space-16); padding: var(--space-8); border-top: 1px solid var(--theme-border);">
+                <p class="small" style="color: var(--theme-text-secondary);">
+                    Design System • Jay Patel Portfolio • Built with semantic design tokens
+                </p>
+                <p style="margin-top: var(--space-2);">
+                    <a href="index.html" class="btn btn-outline">← Back to Portfolio</a>
+                </p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script defer src="js/components/navbar.js"></script>
+    <script defer src="js/components/theme-toggle.js"></script>
+    <script defer src="js/components/custom-cursor.js"></script>
+    <script>
+        // Ensure navbar is visible immediately on design system page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Wait for navbar to be injected, then make it visible
+            setTimeout(() => {
+                const navbar = document.getElementById('glassNav');
+                if (navbar) {
+                    navbar.classList.add('visible');
+                }
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

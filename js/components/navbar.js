@@ -19,6 +19,7 @@
     const homeHref = basePath; // directory path (always ends with "/")
     const projectsHref = onHome ? "#projects" : `${basePath}#projects`;
     const privacyHref = `${basePath}privacy.html`;
+    const designSystemHref = `${basePath}design-system.html`;
 
     return `
       <header id="glassNav" class="glass-nav" aria-label="Primary Navigation" role="banner">
@@ -50,6 +51,7 @@
                   <span class="nav-text">More</span>
                 </button>
                 <div class="dropdown-menu" id="moreMenu" role="menu">
+                  <a role="menuitem" href="${designSystemHref}" class="dropdown-item">Design System</a>
                   <a role="menuitem" href="${privacyHref}" class="dropdown-item">Privacy Policy</a>
                   <a role="menuitem" href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="dropdown-item">GitHub</a>
                   <a role="menuitem" href="https://www.linkedin.com/in/jayptl/" target="_blank" rel="noopener" class="dropdown-item">LinkedIn</a>
@@ -82,6 +84,7 @@
             <nav class="mobile-list" aria-label="Primary">
               <a href="${projectsHref}" class="mobile-link"><span>Projects</span></a>
               <a href="${homeHref}" class="mobile-link"><span>Home</span></a>
+              <a href="${designSystemHref}" class="mobile-link"><span>Design System</span></a>
               <a href="${privacyHref}" class="mobile-link"><span>Privacy</span></a>
               <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="mobile-link"><span>GitHub</span></a>
               <a href="https://www.linkedin.com/in/jayptl/" target="_blank" rel="noopener" class="mobile-link"><span>LinkedIn</span></a>

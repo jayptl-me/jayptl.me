@@ -435,8 +435,17 @@ body.nav-open .consent-settings-toggle {
     outline: none;
 }
 
-.consent-settings-dialog-close svg {
+.consent-settings-dialog-close svg,
+.consent-settings-dialog-close img {
     fill: currentColor;
+    width: 20px;
+    height: 20px;
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.consent-settings-dialog-close:hover img,
+.consent-settings-dialog-close:hover svg {
+    transform: rotate(90deg) scale(1.1);
 }
 
 .consent-settings-dialog-body {

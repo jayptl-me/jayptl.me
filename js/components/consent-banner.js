@@ -149,17 +149,25 @@ Analytics helps me understand which sections are most engaging and improve the u
         const closeBtn = document.createElement('button');
         closeBtn.className = 'consent-settings-dialog-close';
         closeBtn.setAttribute('aria-label', 'Close dialog');
-        // Build close icon SVG via DOM to avoid innerHTML
-        const svgNS = 'http://www.w3.org/2000/svg';
-        const svg = document.createElementNS(svgNS, 'svg');
-        svg.setAttribute('xmlns', svgNS);
-        svg.setAttribute('viewBox', '0 0 24 24');
-        svg.setAttribute('width', '20');
-        svg.setAttribute('height', '20');
-        const path = document.createElementNS(svgNS, 'path');
-        path.setAttribute('d', 'M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z');
-        svg.appendChild(path);
-        closeBtn.appendChild(svg);
+        // Use inline SVG icon
+        const closeIcon = document.createElement('div');
+        closeIcon.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon" width="20" height="20" aria-hidden="true">
+            <defs>
+              <linearGradient id="closeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+                <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <g class="icon-gradient">
+              <path d="M18 6L6 18M6 6l12 12" stroke="url(#closeGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <g class="icon-mono" style="display:none;">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        `;
+        closeBtn.appendChild(closeIcon.firstElementChild);
         closeBtn.addEventListener('click', () => this.closeSettingsDialog());
 
         header.appendChild(titlewrap);

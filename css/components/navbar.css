@@ -602,3 +602,39 @@ html.no-scroll {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
+
+/* ==========================================================================
+   ICON STYLES - Adaptive Gradient SVG Support
+   ========================================================================== */
+
+/* Navigation link icons - use adaptive icon system */
+.nav-link img.icon,
+.nav-dropdown-toggle img.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.nav-link:hover img.icon,
+.nav-dropdown-toggle:hover img.icon {
+    transform: scale(1.1);
+}
+
+/* Mobile menu icons */
+.mobile-link img.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.mobile-link:hover img.icon {
+    transform: translateX(4px) scale(1.05);
+}
+
+/* Remove old filter/opacity rules - icons now use adaptive CSS variables */

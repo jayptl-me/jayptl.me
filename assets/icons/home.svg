@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="homeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Gradient version (visible by default) -->
+  <g class="icon-gradient">
+    <path class="icon-bg" d="M12 3L4 9v11a2 2 0 002 2h12a2 2 0 002-2V9l-8-6z" fill="url(#homeGrad)" opacity="0.2"/>
+    <path class="icon-fg" d="M12 3L4 9v11a2 2 0 002 2h3v-8a2 2 0 012-2h2a2 2 0 012 2v8h3a2 2 0 002-2V9l-8-6z" fill="url(#homeGrad)" stroke="url(#homeGrad)" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Monochrome version (hidden, currentColor fallback) -->
+  <g class="icon-mono" style="display:none;">
+    <path d="M12 3L4 9v11a2 2 0 002 2h12a2 2 0 002-2V9l-8-6z" fill="currentColor" opacity="0.15"/>
+    <path d="M12 3L4 9v11a2 2 0 002 2h3v-8a2 2 0 012-2h2a2 2 0 012 2v8h3a2 2 0 002-2V9l-8-6z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

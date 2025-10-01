@@ -33,7 +33,26 @@
           <div class="nav-left">
             <div class="nav-links">
               <a href="${projectsHref}" class="nav-link" aria-label="Projects">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon" width="24" height="24" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="projectsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+                      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <g class="icon-gradient">
+                    <rect x="3" y="3" width="8" height="8" rx="1.5" fill="url(#projectsGrad)" opacity="0.3"/>
+                    <rect x="3" y="13" width="8" height="8" rx="1.5" fill="url(#projectsGrad)" opacity="0.5"/>
+                    <rect x="13" y="3" width="8" height="8" rx="1.5" fill="url(#projectsGrad)" opacity="0.7"/>
+                    <rect x="13" y="13" width="8" height="8" rx="1.5" fill="url(#projectsGrad)"/>
+                  </g>
+                  <g class="icon-mono" style="display:none;">
+                    <rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.3"/>
+                    <rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.5"/>
+                    <rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.7"/>
+                    <rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor"/>
+                  </g>
+                </svg>
                 <span class="nav-text">Projects</span>
               </a>
             </div>
@@ -47,7 +66,24 @@
             <div class="nav-links">
               <div class="nav-dropdown" id="moreDropdown">
                 <button class="nav-link nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 7a2 2 0 110-4 2 2 0 010 4zm0 7a2 2 0 110-4 2 2 0 010 4zm0 7a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon" width="24" height="24" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="moreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+                        <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+                      </linearGradient>
+                    </defs>
+                    <g class="icon-gradient">
+                      <circle cx="12" cy="5" r="2" fill="url(#moreGrad)"/>
+                      <circle cx="12" cy="12" r="2" fill="url(#moreGrad)" opacity="0.7"/>
+                      <circle cx="12" cy="19" r="2" fill="url(#moreGrad)" opacity="0.5"/>
+                    </g>
+                    <g class="icon-mono" style="display:none;">
+                      <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                      <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7"/>
+                      <circle cx="12" cy="19" r="2" fill="currentColor" opacity="0.5"/>
+                    </g>
+                  </svg>
                   <span class="nav-text">More</span>
                 </button>
                 <div class="dropdown-menu" id="moreMenu" role="menu">

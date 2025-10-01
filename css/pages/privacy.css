@@ -295,9 +295,15 @@
     transform: translateY(0);
 }
 
-.privacy-action-btn svg {
-    fill: currentColor;
+.privacy-action-btn svg,
+.privacy-action-btn img {
     flex-shrink: 0;
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.privacy-action-btn:hover img,
+.privacy-action-btn:hover svg {
+    transform: scale(1.1);
 }
 
 /* Footer */

@@ -1,0 +1,472 @@
+/**
+ * Adaptive Icon System
+ * Theme-aware icons that work on any surface (buttons, cards, backgrounds)
+ * Supports both gradient and monochrome modes for light/dark themes
+ * 
+ * @file utilities/icons.css
+ * @author Jay Patel Portfolio
+ */
+
+/* ==========================================================================
+   ICON BASE STYLES
+   ========================================================================== */
+
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    transition: transform var(--duration-normal) var(--ease-out),
+        opacity var(--duration-normal) var(--ease-out);
+}
+
+/* ==========================================================================
+   GRADIENT COLORS - CSS VARIABLES
+   ========================================================================== */
+
+/* Light mode (default) - darker icons for contrast on white */
+:root {
+    /* Primary gradient - darker for light backgrounds */
+    --icon-gradient-start: #1976d2;
+    /* Primary 700 - darker blue */
+    --icon-gradient-end: #00838f;
+    /* Darker turquoise */
+}
+
+/* Success icons */
+.icon-success {
+    --icon-gradient-start: #0f766e;
+    /* Teal 700 - darker */
+    --icon-gradient-end: #0d9488;
+    /* Teal 600 */
+}
+
+/* Warning/Danger icons */
+.icon-warning {
+    --icon-gradient-start: #d97706;
+    /* Amber 600 - darker */
+    --icon-gradient-end: #dc2626;
+    /* Red 600 - darker */
+}
+
+/* Info icons */
+.icon-info {
+    --icon-gradient-start: #7c3aed;
+    /* Purple 600 - darker */
+    --icon-gradient-end: #1976d2;
+    /* Blue 700 - darker */
+}
+
+/* Dark mode - lighter icons for contrast on black */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Primary gradient - lighter for dark backgrounds */
+        --icon-gradient-start: #64b5f6;
+        /* Primary 300 - lighter blue */
+        --icon-gradient-end: #4dd0e1;
+        /* Lighter turquoise */
+    }
+
+    .icon-success {
+        --icon-gradient-start: #5eead4;
+        /* Teal 300 - lighter */
+        --icon-gradient-end: #2dd4bf;
+        /* Teal 400 */
+    }
+
+    .icon-warning {
+        --icon-gradient-start: #fbbf24;
+        /* Amber 400 - lighter */
+        --icon-gradient-end: #f87171;
+        /* Red 400 - lighter */
+    }
+
+    .icon-info {
+        --icon-gradient-start: #a78bfa;
+        /* Purple 400 - lighter */
+        --icon-gradient-end: #60a5fa;
+        /* Blue 400 - lighter */
+    }
+}
+
+/* Force light theme - darker icons */
+html[data-theme="light"] {
+    --icon-gradient-start: #1976d2;
+    --icon-gradient-end: #00838f;
+}
+
+html[data-theme="light"] .icon-success {
+    --icon-gradient-start: #0f766e;
+    --icon-gradient-end: #0d9488;
+}
+
+html[data-theme="light"] .icon-warning {
+    --icon-gradient-start: #d97706;
+    --icon-gradient-end: #dc2626;
+}
+
+html[data-theme="light"] .icon-info {
+    --icon-gradient-start: #7c3aed;
+    --icon-gradient-end: #1976d2;
+}
+
+/* Force dark theme - lighter icons */
+html[data-theme="dark"] {
+    --icon-gradient-start: #64b5f6;
+    --icon-gradient-end: #4dd0e1;
+}
+
+html[data-theme="dark"] .icon-success {
+    --icon-gradient-start: #5eead4;
+    --icon-gradient-end: #2dd4bf;
+}
+
+html[data-theme="dark"] .icon-warning {
+    --icon-gradient-start: #fbbf24;
+    --icon-gradient-end: #f87171;
+}
+
+html[data-theme="dark"] .icon-info {
+    --icon-gradient-start: #a78bfa;
+    --icon-gradient-end: #60a5fa;
+}
+
+/* ==========================================================================
+   ICON MODES - GRADIENT VS MONOCHROME
+   ========================================================================== */
+
+/* Default: Show gradient version, hide monochrome */
+.icon-gradient {
+    display: block;
+}
+
+.icon-mono {
+    display: none;
+}
+
+/* Monochrome mode - activated via class */
+.icon-monochrome .icon-gradient,
+.icon.icon-monochrome .icon-gradient {
+    display: none;
+}
+
+.icon-monochrome .icon-mono,
+.icon.icon-monochrome .icon-mono {
+    display: block;
+}
+
+/* Standalone icons use gradients by default */
+img.icon .icon-gradient,
+img.icon>.icon-gradient {
+    display: block;
+}
+
+img.icon .icon-mono,
+img.icon>.icon-mono {
+    display: none;
+}
+
+/* ==========================================================================
+   CONTEXT-SPECIFIC STYLING
+   ========================================================================== */
+
+/* Icons on buttons */
+.btn .icon,
+button .icon,
+.icon-on-button {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+}
+
+/* Icons on surfaces/cards */
+.icon-on-surface {
+    width: 32px;
+    height: 32px;
+}
+
+/* Large icons */
+.icon-lg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Small icons */
+.icon-sm {
+    width: 16px;
+    height: 16px;
+}
+
+/* Extra small icons */
+.icon-xs {
+    width: 14px;
+    height: 14px;
+}
+
+/* ==========================================================================
+   BUTTON-SPECIFIC ICON STYLES
+   ========================================================================== */
+
+/* Colored buttons - use white monochrome icons */
+.btn-primary img.icon,
+.btn-success img.icon,
+.btn-warning img.icon,
+.btn-danger img.icon,
+.btn-info img.icon,
+button.privacy-action-btn img.icon,
+a.privacy-action-btn img.icon,
+.consent-btn-accept img.icon {
+    color: white;
+}
+
+/* Hide gradients on colored buttons, show monochrome */
+.btn-primary .icon-gradient,
+.btn-success .icon-gradient,
+.btn-warning .icon-gradient,
+.btn-danger .icon-gradient,
+.btn-info .icon-gradient,
+button.privacy-action-btn .icon-gradient,
+a.privacy-action-btn .icon-gradient,
+.consent-btn-accept .icon-gradient {
+    display: none !important;
+}
+
+.btn-primary .icon-mono,
+.btn-success .icon-mono,
+.btn-warning .icon-mono,
+.btn-danger .icon-mono,
+.btn-info .icon-mono,
+button.privacy-action-btn .icon-mono,
+a.privacy-action-btn .icon-mono,
+.consent-btn-accept .icon-mono {
+    display: block !important;
+}
+
+/* Ghost/Outline buttons - use gradients (default behavior) */
+
+/* ==========================================================================
+   THEME ADAPTATIONS
+   ========================================================================== */
+
+/* Icons should have full opacity in both modes since we're using theme-adaptive colors */
+.icon {
+    opacity: 1;
+}
+
+.icon:hover {
+    opacity: 1;
+}
+
+/* Gradient visibility is controlled by display, not opacity */
+.icon-gradient,
+.icon-mono {
+    opacity: 1;
+}
+
+/* On buttons, ensure white icons on colored backgrounds */
+button .icon-mono,
+a.privacy-action-btn .icon-mono,
+.btn-primary .icon-mono,
+.btn-success .icon-mono,
+.btn-warning .icon-mono,
+.btn-danger .icon-mono,
+.btn-info .icon-mono,
+.consent-btn-accept .icon-mono {
+    color: white;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   SURFACE-SPECIFIC ADAPTATIONS
+   ========================================================================== */
+
+/* Icons on neutral surfaces use gradients (default) */
+.bg-light .icon-gradient,
+.surface-light .icon-gradient,
+[data-surface="light"] .icon-gradient {
+    display: block;
+}
+
+.bg-light .icon-mono,
+.surface-light .icon-mono,
+[data-surface="light"] .icon-mono {
+    display: none;
+}
+
+/* Icons on colored surfaces - force white monochrome */
+.bg-primary .icon-gradient,
+.bg-success .icon-gradient,
+.bg-warning .icon-gradient,
+.bg-danger .icon-gradient,
+.bg-info .icon-gradient {
+    display: none !important;
+}
+
+.bg-primary .icon-mono,
+.bg-success .icon-mono,
+.bg-warning .icon-mono,
+.bg-danger .icon-mono,
+.bg-info .icon-mono {
+    display: block !important;
+    color: white;
+}
+
+.bg-primary img.icon,
+.bg-success img.icon,
+.bg-warning img.icon,
+.bg-danger img.icon,
+.bg-info img.icon {
+    color: white;
+}
+
+/* ==========================================================================
+   HOVER EFFECTS
+   ========================================================================== */
+
+/* Base hover */
+.icon:hover,
+*:hover>.icon {
+    transform: scale(1.1);
+}
+
+/* Button icon hover */
+.btn:hover .icon,
+button:hover .icon {
+    transform: scale(1.05);
+}
+
+/* Link icon hover */
+a:hover .icon {
+    transform: scale(1.1) translateX(2px);
+}
+
+/* Nav link icon hover */
+.nav-link:hover .icon {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   ANIMATION VARIANTS
+   ========================================================================== */
+
+/* Rotate animation (for settings, loading, etc.) */
+.icon-rotate:hover,
+*:hover>.icon-rotate {
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Pulse animation */
+@keyframes iconPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+.icon-pulse {
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* Bounce animation */
+@keyframes iconBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.icon-bounce:hover {
+    animation: iconBounce 0.6s ease-in-out;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+    .icon,
+    .icon:hover,
+    *:hover>.icon {
+        transform: none;
+        animation: none;
+        transition: opacity 150ms ease-out;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .icon .icon-gradient {
+        display: none;
+    }
+
+    .icon .icon-mono {
+        display: block;
+    }
+
+    .icon {
+        opacity: 1 !important;
+    }
+}
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
+/* Force gradient mode */
+.icon-force-gradient .icon-gradient {
+    display: block !important;
+}
+
+.icon-force-gradient .icon-mono {
+    display: none !important;
+}
+
+/* Force monochrome mode */
+.icon-force-mono .icon-gradient {
+    display: none !important;
+}
+
+.icon-force-mono .icon-mono {
+    display: block !important;
+}
+
+/* Icon alignment */
+.icon-align-top {
+    vertical-align: top;
+}
+
+.icon-align-bottom {
+    vertical-align: bottom;
+}
+
+.icon-align-middle {
+    vertical-align: middle;
+}
+
+/* Icon spacing */
+.icon-space-right {
+    margin-right: var(--space-2);
+}
+
+.icon-space-left {
+    margin-left: var(--space-2);
+}
+
+/* No transition */
+.icon-no-transition {
+    transition: none;
+}

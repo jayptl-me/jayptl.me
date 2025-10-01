@@ -85,6 +85,22 @@ class CustomCursor {
         // Text input events
         this.setupTextEvents();
 
+        // Focus events for keyboard navigation (toggle text mode when inputs gain/lose focus)
+        this._focusInHandler = (e) => {
+            if (this.isTextElement(e.target)) {
+                this.setTextState(true);
+            }
+        };
+
+        this._focusOutHandler = (e) => {
+            if (this.isTextElement(e.target)) {
+                this.setTextState(false);
+            }
+        };
+
+        document.addEventListener('focusin', this._focusInHandler);
+        document.addEventListener('focusout', this._focusOutHandler);
+
         // DOM mutation observer for cleanup
         this.setupMutationObserver();
 
@@ -358,6 +374,8 @@ class CustomCursor {
         document.removeEventListener('mousedown', this.handleMouseDown);
         document.removeEventListener('mouseup', this.handleMouseUp);
         document.removeEventListener('click', this.handleClick);
+        document.removeEventListener('focusin', this._focusInHandler);
+        document.removeEventListener('focusout', this._focusOutHandler);
 
         // Disconnect mutation observer
         if (this.mutationObserver) {

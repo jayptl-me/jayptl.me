@@ -53,11 +53,14 @@ html[data-theme="dark"] {
     cursor: none !important;
 }
 
-/* Override for inputs and textareas */
+/* Override for inputs and textareas: hide native cursor so custom cursor is shown everywhere */
 input,
 textarea,
 [contenteditable] {
-    cursor: text !important;
+    /* we intentionally hide the native caret/cursor here so our custom cursor handles text fields.
+       note: the visible caret for text input is still provided by the browser when the field is focused;
+       we're only hiding the mouse cursor. */
+    cursor: none !important;
 }
 
 /* ==========================================================================
@@ -355,7 +358,7 @@ button:hover::before,
     cursor: none !important;
 }
 
-/* Ensure text inputs in dialogs show text cursor */
+/* Ensure dialog and banner inputs still allow interaction but keep native mouse cursor hidden */
 .consent-settings-dialog input[type="text"],
 .consent-settings-dialog input[type="email"],
 .consent-settings-dialog textarea,
@@ -372,7 +375,9 @@ button:hover::before,
 [role="modal"] input[type="email"],
 [role="modal"] textarea,
 [role="modal"] [contenteditable] {
-    cursor: text !important;
+    /* Keep pointer hidden; browser will still show text caret when the field is focused.
+       This avoids native pointer clashes with the custom cursor in modals and dialogs. */
+    cursor: none !important;
 }
 
 /* ==========================================================================

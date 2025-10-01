@@ -28,7 +28,10 @@
 
 /* Text selection cursor */
 .cursor-text {
-    cursor: text;
+    /* Keep native text cursor hidden so the custom cursor is used consistently.
+       Components that truly require the native caret for typing will still show the
+       text insertion caret when focused; this only affects the mouse pointer. */
+    cursor: none;
 }
 
 /* Disabled cursor */

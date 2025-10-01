@@ -127,7 +127,7 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 }
 
 .theme-toggle .lightsaber-glow {
-    fill: #3b82f6;
+    fill: var(--primary-400);
     /* Blue glow */
     opacity: 0;
     /* Off by default; enabled in dark */

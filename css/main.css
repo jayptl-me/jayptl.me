@@ -49,6 +49,7 @@
 @import 'components/navbar.css';
 @import 'components/theme-toggle.css';
 @import 'components/consent-banner.css';
+@import 'components/bento-grid.css';
 
 /* ==========================================================================
    PAGES - Page Specific Styles (Only Home)

@@ -776,96 +776,138 @@
 
         </section>
 
-        <!-- Introduction Section (replaces Projects) -->
+        <!-- Introduction Section -->
         <section id="introduction" class="introduction-section" aria-labelledby="introTitle">
             <div class="projects-container intro-container">
                 <h2 id="introTitle" class="intro-headline gradient-text">Hi there!!</h2>
-                <!-- Replaced original intro content with image + minimal bio -->
-                <div class="intro-visual"
-                    style="margin-top:2rem;display:flex;flex-direction:column;align-items:center;gap:1.75rem;">
-                    <div class="intro-photo-wrapper" style="position:relative;display:inline-block;">
-                        <img src="assets/jay.webp" alt="Jay Patel" class="intro-photo"
-                            style="display:block;width:clamp(220px,40vw,360px);aspect-ratio:1/1;border-radius:28px;object-fit:cover;opacity:0;animation:introPhotoIn 1.2s cubic-bezier(.4,.8,.2,1) .15s forwards, introFloat 7s ease-in-out 1.4s infinite alternate;box-shadow:0 28px 60px -22px rgba(0,0,0,.55),0 18px 36px -18px rgba(33,150,243,.35);will-change:transform;backface-visibility:hidden;">
-                        <span aria-hidden="true"
-                            style="pointer-events:none;position:absolute;inset:-6%;border-radius:34px;background:linear-gradient(135deg,rgba(33,150,243,.35),rgba(25,118,210,.15) 45%,rgba(66,165,245,.35));filter:blur(22px) saturate(160%);opacity:.55;animation:glowPulse 6.5s ease-in-out 2s infinite alternate;mix-blend-mode:plus-lighter;"></span>
-                    </div>
-                    <div class="intro-mini-bio"
-                        style="max-width:640px;text-align:center;font-size:clamp(.95rem,1.9vw,1.05rem);line-height:1.55;font-family:var(--font-body);">
-                        <p class="intro-greeting"
-                            style="margin:0 0 .75rem 0;font-size:clamp(1.1rem,2.4vw,1.45rem);font-weight:600;letter-spacing:.25px;text-wrap:balance;">
-                            This is <span
-                                style="background:var(--theme-gradient-text);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;">Jay</span>.
-                        </p>
-                        <p style="margin:0;color:var(--theme-text);font-weight:400;">Just a normal guy exploring his way
-                            through tech.</p>
+            </div>
+        </section>
+
+        <!-- Bento Grid Section -->
+        <section id="bento-showcase" class="bento-grid-section" aria-labelledby="bentoTitle">
+            <h2 id="bentoTitle" class="sr-only">Skills and Expertise Showcase</h2>
+            <div class="bento-grid-wrapper">
+                <div class="bento-grid-scroll-container">
+                    <div class="bento-grid">
+                        <!-- Row 1 -->
+                        <div class="bento-item large">
+                            <div class="bento-content">
+                                <div class="bento-icon">💻</div>
+                                <h3 class="bento-title">Cross-Platform Development</h3>
+                                <p class="bento-description">Building seamless applications across web, mobile, and desktop platforms</p>
+                                <span class="bento-tag">React • Flutter • Electron</span>
+                            </div>
+                        </div>
+                        <div class="bento-item small">
+                            <div class="bento-content">
+                                <div class="bento-icon">🎨</div>
+                                <h3 class="bento-title">UI/UX Design</h3>
+                                <p class="bento-description">Crafting beautiful, intuitive user experiences</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="bento-item medium accent">
+                            <div class="bento-content">
+                                <div class="bento-icon">⚡</div>
+                                <h3 class="bento-title">Performance</h3>
+                                <p class="bento-description">Optimizing for speed and efficiency in every line of code</p>
+                                <span class="bento-tag">Lighthouse 100</span>
+                            </div>
+                        </div>
+                        <div class="bento-item medium">
+                            <div class="bento-content">
+                                <div class="bento-icon">🚀</div>
+                                <h3 class="bento-title">DevOps & CI/CD</h3>
+                                <p class="bento-description">Streamlining deployment pipelines and infrastructure</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="bento-item small">
+                            <div class="bento-content">
+                                <div class="bento-icon">📱</div>
+                                <h3 class="bento-title">Mobile First</h3>
+                                <p class="bento-description">Responsive design that works everywhere</p>
+                            </div>
+                        </div>
+                        <div class="bento-item large accent">
+                            <div class="bento-content">
+                                <div class="bento-icon">🧠</div>
+                                <h3 class="bento-title">AI & Machine Learning</h3>
+                                <p class="bento-description">Integrating intelligent solutions into modern applications</p>
+                                <span class="bento-tag">TensorFlow • OpenAI</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="bento-item wide">
+                            <div class="bento-content">
+                                <div class="bento-icon">🎯</div>
+                                <h3 class="bento-title">Creative Direction</h3>
+                                <p class="bento-description">Leading design vision from concept to execution with a focus on brand identity and user engagement</p>
+                                <span class="bento-tag">Strategy • Branding • Leadership</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="bento-item medium">
+                            <div class="bento-content">
+                                <div class="bento-icon">🔒</div>
+                                <h3 class="bento-title">Security</h3>
+                                <p class="bento-description">Building secure, privacy-focused applications</p>
+                            </div>
+                        </div>
+                        <div class="bento-item medium accent">
+                            <div class="bento-content">
+                                <div class="bento-icon">☁️</div>
+                                <h3 class="bento-title">Cloud Architecture</h3>
+                                <p class="bento-description">Scalable solutions on AWS, Azure, and GCP</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 6 (Extra content for scrolling) -->
+                        <div class="bento-item large">
+                            <div class="bento-content">
+                                <div class="bento-icon">🛠️</div>
+                                <h3 class="bento-title">Full-Stack Engineering</h3>
+                                <p class="bento-description">End-to-end development from database to user interface</p>
+                                <span class="bento-tag">Node.js • Python • PostgreSQL</span>
+                            </div>
+                        </div>
+                        <div class="bento-item small">
+                            <div class="bento-content">
+                                <div class="bento-icon">📊</div>
+                                <h3 class="bento-title">Analytics</h3>
+                                <p class="bento-description">Data-driven decision making</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 7 -->
+                        <div class="bento-item small accent">
+                            <div class="bento-content">
+                                <div class="bento-icon">🎭</div>
+                                <h3 class="bento-title">Animation</h3>
+                                <p class="bento-description">Bringing interfaces to life</p>
+                            </div>
+                        </div>
+                        <div class="bento-item medium">
+                            <div class="bento-content">
+                                <div class="bento-icon">🌐</div>
+                                <h3 class="bento-title">API Development</h3>
+                                <p class="bento-description">RESTful and GraphQL API architecture</p>
+                            </div>
+                        </div>
+                        <div class="bento-item small">
+                            <div class="bento-content">
+                                <div class="bento-icon">🧪</div>
+                                <h3 class="bento-title">Testing</h3>
+                                <p class="bento-description">Quality assurance at every level</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <style>
-                @keyframes introPhotoIn {
-                    0% {
-                        opacity: 0;
-                        transform: translateY(60px) scale(.82) rotateX(16deg) rotateY(-8deg);
-                    }
-
-                    55% {
-                        opacity: 1;
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateY(0) scale(1) rotateX(0) rotateY(0);
-                    }
-                }
-
-                @keyframes introFloat {
-                    from {
-                        transform: translateY(-2px) scale(1);
-                    }
-
-                    to {
-                        transform: translateY(8px) scale(1.015);
-                    }
-                }
-
-                @keyframes glowPulse {
-                    from {
-                        opacity: .35;
-                        filter: blur(18px) saturate(140%);
-                    }
-
-                    to {
-                        opacity: .7;
-                        filter: blur(26px) saturate(170%);
-                    }
-                }
-
-                @media (prefers-reduced-motion:reduce) {
-                    .intro-photo {
-                        animation: introPhotoIn .8s ease-out .05s forwards !important;
-                    }
-
-                    @keyframes introFloat {
-                        from {
-                            transform: none
-                        }
-
-                        to {
-                            transform: none
-                        }
-                    }
-
-                    @keyframes glowPulse {
-                        from {
-                            opacity: .45
-                        }
-
-                        to {
-                            opacity: .45
-                        }
-                    }
-                }
-            </style>
         </section>
     </main>
 
@@ -877,6 +919,7 @@
     <script defer src="js/components/theme-toggle.js"></script>
     <script defer src="js/components/consent-banner.js"></script>
     <script defer src="js/components/analytics.js"></script>
+    <script defer src="js/components/bento-grid.js"></script>
     <script defer src="js/main.js"></script>
 </body>
 

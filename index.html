@@ -776,133 +776,563 @@
 
         </section>
 
-        <!-- Introduction Section -->
-        <section id="introduction" class="introduction-section" aria-labelledby="introTitle">
-            <div class="projects-container intro-container">
-                <h2 id="introTitle" class="intro-headline gradient-text">Hi there!!</h2>
-            </div>
-        </section>
-
-        <!-- Bento Grid Section -->
+        <!-- Bento Grid Section with Overlay -->
         <section id="bento-showcase" class="bento-grid-section" aria-labelledby="bentoTitle">
             <h2 id="bentoTitle" class="sr-only">Skills and Expertise Showcase</h2>
+            
+            <!-- Sticky Overlay with "HI there!!" -->
+            <div class="bento-overlay" id="bentoOverlay">
+                <h2 class="bento-overlay-text gradient-text">HI there!!</h2>
+            </div>
+            
             <div class="bento-grid-wrapper">
                 <div class="bento-grid-scroll-container">
                     <div class="bento-grid">
                         <!-- Row 1 -->
-                        <div class="bento-item large">
-                            <div class="bento-content">
-                                <div class="bento-icon">💻</div>
-                                <h3 class="bento-title">Cross-Platform Development</h3>
-                                <p class="bento-description">Building seamless applications across web, mobile, and desktop platforms</p>
-                                <span class="bento-tag">React • Flutter • Electron</span>
+                        <div class="bento-row">
+                            <div class="bento-item large">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="2" y="3" width="20" height="14" rx="2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M8 21h8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M12 17v4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M7 10l3 3-3 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M13 13h3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Cross-Platform Development</h3>
+                                    <p class="bento-description">Building seamless applications across web, mobile, and desktop platforms</p>
+                                    <span class="bento-tag">React • Flutter • Electron</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item small">
-                            <div class="bento-content">
-                                <div class="bento-icon">🎨</div>
-                                <h3 class="bento-title">UI/UX Design</h3>
-                                <p class="bento-description">Crafting beautiful, intuitive user experiences</p>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                                            <path d="M12 2v4" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">UI/UX Design</h3>
+                                    <p class="bento-description">Crafting beautiful, intuitive user experiences</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Performance</h3>
+                                    <p class="bento-description">Optimizing for speed and efficiency in every line of code</p>
+                                    <span class="bento-tag">Lighthouse 100</span>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+                                            <path d="M12 18h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Mobile First</h3>
+                                    <p class="bento-description">Responsive design that works everywhere</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Security</h3>
+                                    <p class="bento-description">Building secure, privacy-focused applications</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                                            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Animation</h3>
+                                    <p class="bento-description">Bringing interfaces to life</p>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Row 2 -->
-                        <div class="bento-item medium accent">
-                            <div class="bento-content">
-                                <div class="bento-icon">⚡</div>
-                                <h3 class="bento-title">Performance</h3>
-                                <p class="bento-description">Optimizing for speed and efficiency in every line of code</p>
-                                <span class="bento-tag">Lighthouse 100</span>
+                        <div class="bento-row">
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">DevOps & CI/CD</h3>
+                                    <p class="bento-description">Streamlining deployment pipelines and infrastructure</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item medium">
-                            <div class="bento-content">
-                                <div class="bento-icon">🚀</div>
-                                <h3 class="bento-title">DevOps & CI/CD</h3>
-                                <p class="bento-description">Streamlining deployment pipelines and infrastructure</p>
+                            <div class="bento-item large accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2a10 10 0 0 1 7.38 16.75" stroke-width="2" stroke-linecap="round"/>
+                                            <path d="M3.5 9a9 9 0 0 1 3.96-3.96" stroke-width="2" stroke-linecap="round"/>
+                                            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                                            <path d="M12 12l7-7M12 12l7 7M12 12l-7 7M12 12l-7-7" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">AI & Machine Learning</h3>
+                                    <p class="bento-description">Integrating intelligent solutions into modern applications</p>
+                                    <span class="bento-tag">TensorFlow • OpenAI</span>
+                                </div>
+                            </div>
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Cloud Architecture</h3>
+                                    <p class="bento-description">Scalable solutions on AWS, Azure, and GCP</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 20V10M12 20V4M6 20v-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Analytics</h3>
+                                    <p class="bento-description">Data-driven decision making</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">API Development</h3>
+                                    <p class="bento-description">RESTful and GraphQL API architecture</p>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Row 3 -->
-                        <div class="bento-item small">
-                            <div class="bento-content">
-                                <div class="bento-icon">📱</div>
-                                <h3 class="bento-title">Mobile First</h3>
-                                <p class="bento-description">Responsive design that works everywhere</p>
+                        <div class="bento-row">
+                            <div class="bento-item wide">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                            <circle cx="12" cy="12" r="6" stroke-width="2"/>
+                                            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Creative Direction</h3>
+                                    <p class="bento-description">Leading design vision from concept to execution with a focus on brand identity and user engagement</p>
+                                    <span class="bento-tag">Strategy • Branding • Leadership</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item large accent">
-                            <div class="bento-content">
-                                <div class="bento-icon">🧠</div>
-                                <h3 class="bento-title">AI & Machine Learning</h3>
-                                <p class="bento-description">Integrating intelligent solutions into modern applications</p>
-                                <span class="bento-tag">TensorFlow • OpenAI</span>
+                            <div class="bento-item large">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Full-Stack Engineering</h3>
+                                    <p class="bento-description">End-to-end development from database to user interface</p>
+                                    <span class="bento-tag">Node.js • Python • PostgreSQL</span>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 11l3 3 8-8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Testing</h3>
+                                    <p class="bento-description">Quality assurance at every level</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="5" r="2" stroke-width="2"/>
+                                            <path d="M9 11h6M12 11v10M9 16l-1 5M15 16l1 5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Accessibility</h3>
+                                    <p class="bento-description">Building inclusive experiences for everyone</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M23 6l-9.5 9.5-5-5L1 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M17 6h6v6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Agile</h3>
+                                    <p class="bento-description">Flexible development</p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Row 4 -->
-                        <div class="bento-item wide">
-                            <div class="bento-content">
-                                <div class="bento-icon">🎯</div>
-                                <h3 class="bento-title">Creative Direction</h3>
-                                <p class="bento-description">Leading design vision from concept to execution with a focus on brand identity and user engagement</p>
-                                <span class="bento-tag">Strategy • Branding • Leadership</span>
+                        <!-- Row 4 - Additional items for larger screens -->
+                        <div class="bento-row">
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="3" y="3" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="14" y="3" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="14" y="14" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="3" y="14" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">System Design</h3>
+                                    <p class="bento-description">Architecting scalable, maintainable systems</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 18h6M10 22h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Innovation</h3>
+                                    <p class="bento-description">Creative problem solving</p>
+                                </div>
+                            </div>
+                            <div class="bento-item large">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="2" y="7" width="20" height="12" rx="2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M6 11h.01M10 11h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="17" cy="14" r="1" fill="currentColor"/>
+                                            <circle cx="15" cy="11" r="1" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Interactive Experiences</h3>
+                                    <p class="bento-description">Engaging users through dynamic, immersive interfaces</p>
+                                    <span class="bento-tag">WebGL • Canvas • GSAP</span>
+                                </div>
+                            </div>
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Design Systems</h3>
+                                    <p class="bento-description">Creating consistent, reusable component libraries</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+                                            <path d="M12 18h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M9 6h6" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">PWA</h3>
+                                    <p class="bento-description">Progressive web apps</p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Row 5 -->
-                        <div class="bento-item medium">
-                            <div class="bento-content">
-                                <div class="bento-icon">🔒</div>
-                                <h3 class="bento-title">Security</h3>
-                                <p class="bento-description">Building secure, privacy-focused applications</p>
+                        <!-- Row 5 - More variety -->
+                        <div class="bento-row">
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                                            <path d="m21 21-4.35-4.35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M11 8v6M8 11h6" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">SEO</h3>
+                                    <p class="bento-description">Optimized visibility</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item medium accent">
-                            <div class="bento-content">
-                                <div class="bento-icon">☁️</div>
-                                <h3 class="bento-title">Cloud Architecture</h3>
-                                <p class="bento-description">Scalable solutions on AWS, Azure, and GCP</p>
+                            <div class="bento-item large accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Performance Optimization</h3>
+                                    <p class="bento-description">Code splitting, lazy loading, and advanced caching strategies for lightning-fast experiences</p>
+                                    <span class="bento-tag">Webpack • Vite • Service Workers</span>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Real-time Systems</h3>
+                                    <p class="bento-description">WebSockets and live data synchronization</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="12" r="5" stroke-width="2"/>
+                                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Theming</h3>
+                                    <p class="bento-description">Dynamic themes</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Quality First</h3>
+                                    <p class="bento-description">Code excellence</p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Row 6 (Extra content for scrolling) -->
-                        <div class="bento-item large">
-                            <div class="bento-content">
-                                <div class="bento-icon">🛠️</div>
-                                <h3 class="bento-title">Full-Stack Engineering</h3>
-                                <p class="bento-description">End-to-end development from database to user interface</p>
-                                <span class="bento-tag">Node.js • Python • PostgreSQL</span>
+                        <!-- Row 6 - Additional content for mobile -->
+                        <div class="bento-row">
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Documentation</h3>
+                                    <p class="bento-description">Clear, comprehensive technical writing</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item small">
-                            <div class="bento-content">
-                                <div class="bento-icon">📊</div>
-                                <h3 class="bento-title">Analytics</h3>
-                                <p class="bento-description">Data-driven decision making</p>
+                            <div class="bento-item large">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="9" cy="7" r="4" stroke-width="2"/>
+                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Collaboration</h3>
+                                    <p class="bento-description">Team-oriented development and communication</p>
+                                    <span class="bento-tag">Git • Slack • Jira</span>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Monitoring</h3>
+                                    <p class="bento-description">Real-time performance tracking</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <polyline points="14 2 14 8 20 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="16" y1="13" x2="8" y2="13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="16" y1="17" x2="8" y2="17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="10" y1="9" x2="8" y2="9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Content Strategy</h3>
+                                    <p class="bento-description">Strategic content planning and management</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Branding</h3>
+                                    <p class="bento-description">Visual identity</p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Row 7 -->
-                        <div class="bento-item small accent">
-                            <div class="bento-content">
-                                <div class="bento-icon">🎭</div>
-                                <h3 class="bento-title">Animation</h3>
-                                <p class="bento-description">Bringing interfaces to life</p>
+                        <!-- Row 7 - Extended mobile experience -->
+                        <div class="bento-row">
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Microservices</h3>
+                                    <p class="bento-description">Scalable architecture</p>
+                                </div>
+                            </div>
+                            <div class="bento-item large accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Containerization & Orchestration</h3>
+                                    <p class="bento-description">Docker and Kubernetes expertise for modern deployment workflows</p>
+                                    <span class="bento-tag">Docker • Kubernetes • Helm</span>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="4" cy="4" r="2" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Mentorship</h3>
+                                    <p class="bento-description">Guiding and developing junior developers</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </div>
+                                    <h3 class="bento-title">Problem Solving</h3>
+                                    <p class="bento-description">Creative solutions to complex challenges</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="5" y="2" width="14" height="20" rx="2" stroke-width="2"/>
+                                            <path d="M12 18h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M9 6h6" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">PWA</h3>
+                                    <p class="bento-description">Progressive web apps</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="bento-item medium">
-                            <div class="bento-content">
-                                <div class="bento-icon">🌐</div>
-                                <h3 class="bento-title">API Development</h3>
-                                <p class="bento-description">RESTful and GraphQL API architecture</p>
+
+                        <!-- Row 8 - Final mobile additions -->
+                        <div class="bento-row">
+                            <div class="bento-item large">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Responsive Design</h3>
+                                    <p class="bento-description">Creating fluid, adaptive interfaces for every screen size</p>
+                                    <span class="bento-tag">Mobile • Tablet • Desktop</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bento-item small">
-                            <div class="bento-content">
-                                <div class="bento-icon">🧪</div>
-                                <h3 class="bento-title">Testing</h3>
-                                <p class="bento-description">Quality assurance at every level</p>
+                            <div class="bento-item small accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 18h6M10 22h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Innovation</h3>
+                                    <p class="bento-description">Creative problem solving</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="3" y="3" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="14" y="3" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="14" y="14" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <rect x="3" y="14" width="7" height="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">System Design</h3>
+                                    <p class="bento-description">Architecting scalable, maintainable systems</p>
+                                </div>
+                            </div>
+                            <div class="bento-item medium accent">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Prototyping</h3>
+                                    <p class="bento-description">Rapid iteration and user validation</p>
+                                </div>
+                            </div>
+                            <div class="bento-item small">
+                                <div class="bento-content">
+                                    <div class="bento-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M23 6l-9.5 9.5-5-5L1 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M17 6h6v6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="bento-title">Agile</h3>
+                                    <p class="bento-description">Flexible development</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -143,12 +143,75 @@ class Utils {
 // Initialize enhanced theme manager and make it globally available
 window.themeManager = new ThemeManager();
 
+// Auto-scroll from introduction to bento grid
+class IntroAutoScroll {
+    constructor() {
+        this.introSection = document.getElementById('introduction');
+        this.bentoSection = document.getElementById('bento-showcase');
+        this.autoScrollDelay = 5000; // 5 seconds
+        this.hasScrolled = false;
+        
+        if (this.introSection && this.bentoSection) {
+            this.init();
+        }
+    }
+
+    init() {
+        // Check if user is on introduction section
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !this.hasScrolled) {
+                        this.startAutoScrollTimer();
+                    }
+                });
+            },
+            {
+                threshold: 0.5,
+            }
+        );
+
+        observer.observe(this.introSection);
+
+        // Cancel auto-scroll if user manually scrolls
+        let scrollTimeout;
+        window.addEventListener('wheel', () => {
+            this.hasScrolled = true;
+            clearTimeout(this.autoScrollTimer);
+        }, { once: true, passive: true });
+
+        window.addEventListener('touchmove', () => {
+            this.hasScrolled = true;
+            clearTimeout(this.autoScrollTimer);
+        }, { once: true, passive: true });
+    }
+
+    startAutoScrollTimer() {
+        this.autoScrollTimer = setTimeout(() => {
+            if (!this.hasScrolled) {
+                this.scrollToBento();
+            }
+        }, this.autoScrollDelay);
+    }
+
+    scrollToBento() {
+        this.hasScrolled = true;
+        const rect = this.bentoGrid.getBoundingClientRect();
+        const currentScrollY = window.pageYOffset;
+        const targetScrollY = currentScrollY + rect.top - 20;
+        window.scrollTo({ top: targetScrollY, behavior: 'auto' });
+    }
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize scroll indicator (components handles auto-init; this is a safety check)
     if (typeof ScrollIndicator !== 'undefined') {
         if (!window.scrollIndicator) window.scrollIndicator = new ScrollIndicator();
     }
+
+    // Initialize auto-scroll from introduction to bento grid
+    new IntroAutoScroll();
 
     // Hide/Show glass navbar based on scroll direction after reveal is released
     const glassNav = document.getElementById('glassNav');

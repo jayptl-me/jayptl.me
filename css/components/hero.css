@@ -666,19 +666,23 @@
    ========================================================================== */
 
 .introduction-section {
-  padding: var(--space-20) var(--space-6);
+  padding: 0;
   background: var(--theme-bg);
-  /* Fallback for older browsers, then prefer dynamic viewport height to avoid mobile address-bar jumps */
-  min-height: 100vh;
-  min-height: 100dvh;
+  /* Account for fixed navbar height (64px) for true centering */
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  min-height: calc(100dvh - 64px);
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .intro-container {
   max-width: 1100px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  width: 100%;
 }
 
 .intro-headline {
@@ -686,7 +690,7 @@
   font-size: clamp(2.25rem, 6vw, 3.5rem);
   font-weight: 700;
   line-height: 1.05;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-8);
   text-wrap: balance;
 }
 
@@ -736,8 +740,10 @@
 /* Mobile responsive styles for introduction section */
 @media (max-width: 480px) {
   .introduction-section {
-    padding: var(--space-12) var(--space-4);
-    min-height: auto;
+    padding: 0 var(--space-4);
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
   }
 
   .intro-container {
@@ -747,7 +753,7 @@
   .intro-headline {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
     line-height: 1.1;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-6);
   }
 
   .intro-subheadline {
@@ -794,8 +800,10 @@
 /* Tablet responsive styles for introduction section */
 @media (min-width: 481px) and (max-width: 768px) {
   .introduction-section {
-    padding: var(--space-16) var(--space-5);
-    min-height: auto;
+    padding: 0 var(--space-5);
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
   }
 
   .intro-container {
@@ -832,7 +840,9 @@
 /* Large tablet to small desktop */
 @media (min-width: 769px) and (max-width: 1024px) {
   .introduction-section {
-    padding: var(--space-18) var(--space-6);
+    padding: 0 var(--space-6);
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
   }
 
   .intro-container {

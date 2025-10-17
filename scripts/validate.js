@@ -58,23 +58,47 @@ async function validateRequiredFiles() {
   log.info('Validating required files...');
   
   const requiredFiles = [
-    'index.html',
-    '404.html',
-    'robots.txt',
-    'sitemap.xml',
-    'site.webmanifest',
-    '.htaccess'
+    { path: 'index.html', name: 'index.html' },
+    { path: 'pages/404.html', name: '404.html' },
+    { path: 'pages/500.html', name: '500.html' },
+    { path: 'robots.txt', name: 'robots.txt' },
+    { path: 'sitemap.xml', name: 'sitemap.xml' },
+    { path: 'site.webmanifest', name: 'site.webmanifest' },
+    { path: '.htaccess', name: '.htaccess' }
   ];
   
   for (const file of requiredFiles) {
-    const filePath = path.join(config.distDir, file);
+    const filePath = path.join(config.distDir, file.path);
     const exists = await fileExists(filePath);
     
     if (exists) {
-      log.success(`Found ${file}`);
+      log.success(`Found ${file.name}`);
     } else {
-      config.errors.push(`Missing required file: ${file}`);
-      log.error(`Missing ${file}`);
+      config.errors.push(`Missing required file: ${file.name}`);
+      log.error(`Missing ${file.name}`);
+    }
+  }
+  
+  // Check optional but recommended files
+  log.info('Checking optional files...');
+  
+  const optionalFiles = [
+    { path: 'humans.txt', name: 'humans.txt' },
+    { path: 'security.txt', name: 'security.txt' },
+    { path: '_headers', name: '_headers' },
+    { path: '_redirects', name: '_redirects' },
+    { path: '.nojekyll', name: '.nojekyll' },
+    { path: 'build-info.json', name: 'build-info.json' }
+  ];
+  
+  for (const file of optionalFiles) {
+    const filePath = path.join(config.distDir, file.path);
+    const exists = await fileExists(filePath);
+    
+    if (exists) {
+      log.success(`Found ${file.name}`);
+    } else {
+      log.warn(`Optional file not found: ${file.name}`);
     }
   }
 }
@@ -85,10 +109,17 @@ async function validateRequiredFiles() {
 async function validateHTML() {
   log.info('Validating HTML files...');
   
-  const htmlFiles = ['index.html', 'about.html', 'privacy.html', '404.html'];
+  const htmlFiles = [
+    { path: 'index.html', name: 'index.html' },
+    { path: 'pages/about.html', name: 'about.html' },
+    { path: 'pages/privacy.html', name: 'privacy.html' },
+    { path: 'pages/design-system.html', name: 'design-system.html' },
+    { path: 'pages/404.html', name: '404.html' },
+    { path: 'pages/500.html', name: '500.html' }
+  ];
   
   for (const file of htmlFiles) {
-    const filePath = path.join(config.distDir, file);
+    const filePath = path.join(config.distDir, file.path);
     
     if (await fileExists(filePath)) {
       try {
@@ -96,51 +127,51 @@ async function validateHTML() {
         
         // Basic HTML validation
         if (!content.includes('<!DOCTYPE html>')) {
-          config.warnings.push(`${file}: Missing DOCTYPE declaration`);
-          log.warn(`${file}: Missing DOCTYPE`);
+          config.warnings.push(`${file.name}: Missing DOCTYPE declaration`);
+          log.warn(`${file.name}: Missing DOCTYPE`);
         }
         
         if (!content.includes('<html')) {
-          config.errors.push(`${file}: Missing <html> tag`);
-          log.error(`${file}: Missing <html> tag`);
+          config.errors.push(`${file.name}: Missing <html> tag`);
+          log.error(`${file.name}: Missing <html> tag`);
         }
         
         if (!content.includes('<head>')) {
-          config.errors.push(`${file}: Missing <head> tag`);
-          log.error(`${file}: Missing <head> tag`);
+          config.errors.push(`${file.name}: Missing <head> tag`);
+          log.error(`${file.name}: Missing <head> tag`);
         }
         
         if (!content.includes('<body')) {
-          config.errors.push(`${file}: Missing <body> tag`);
-          log.error(`${file}: Missing <body> tag`);
+          config.errors.push(`${file.name}: Missing <body> tag`);
+          log.error(`${file.name}: Missing <body> tag`);
         }
         
         // SEO validation
         if (!content.includes('<title>')) {
-          config.warnings.push(`${file}: Missing <title> tag`);
-          log.warn(`${file}: Missing <title> tag`);
+          config.warnings.push(`${file.name}: Missing <title> tag`);
+          log.warn(`${file.name}: Missing <title> tag`);
         }
         
         if (!content.includes('name="description"')) {
-          config.warnings.push(`${file}: Missing meta description`);
-          log.warn(`${file}: Missing meta description`);
+          config.warnings.push(`${file.name}: Missing meta description`);
+          log.warn(`${file.name}: Missing meta description`);
         }
         
         if (!content.includes('og:')) {
-          config.warnings.push(`${file}: Missing Open Graph tags`);
-          log.warn(`${file}: Missing Open Graph tags`);
+          config.warnings.push(`${file.name}: Missing Open Graph tags`);
+          log.warn(`${file.name}: Missing Open Graph tags`);
         }
         
         if (content.includes('<html') && !content.includes('lang=')) {
-          config.warnings.push(`${file}: Missing lang attribute on <html>`);
-          log.warn(`${file}: Missing lang attribute`);
+          config.warnings.push(`${file.name}: Missing lang attribute on <html>`);
+          log.warn(`${file.name}: Missing lang attribute`);
         }
         
-        log.success(`Validated ${file}`);
+        log.success(`Validated ${file.name}`);
         
       } catch (error) {
-        config.errors.push(`${file}: Failed to read file`);
-        log.error(`Failed to read ${file}`);
+        config.errors.push(`${file.name}: Failed to read file`);
+        log.error(`Failed to read ${file.name}`);
       }
     }
   }

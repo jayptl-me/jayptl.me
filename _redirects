@@ -1,0 +1,10 @@
+# Render redirects and rewrites configuration
+
+# Clean URLs - rewrite to pages folder (200 = rewrite, not redirect)
+/about           /pages/about.html           200
+/privacy         /pages/privacy.html         200
+/design-system   /pages/design-system.html   200
+
+# Legacy redirects - redirect old paths to new structure (301 = permanent redirect)
+/about.html      /pages/about.html           301!
+/privacy.html    /pages/privacy.html         301!

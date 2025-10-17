@@ -103,14 +103,15 @@ async function copyFiles() {
   
   const filesToCopy = [
     { src: 'index.html', dest: 'dist/index.html' },
-    { src: 'about.html', dest: 'dist/about.html' },
-    { src: 'privacy.html', dest: 'dist/privacy.html' },
-    { src: '404.html', dest: 'dist/404.html' },
-    { src: 'design-system.html', dest: 'dist/design-system.html' },
     { src: 'robots.txt', dest: 'dist/robots.txt' },
     { src: 'humans.txt', dest: 'dist/humans.txt' },
     { src: 'sitemap.xml', dest: 'dist/sitemap.xml' },
-    { src: 'site.webmanifest', dest: 'dist/site.webmanifest' }
+    { src: 'site.webmanifest', dest: 'dist/site.webmanifest' },
+    { src: 'security.txt', dest: 'dist/security.txt' },
+    { src: 'CNAME', dest: 'dist/CNAME' },
+    { src: '.nojekyll', dest: 'dist/.nojekyll' },
+    { src: '_headers', dest: 'dist/_headers' },
+    { src: '_redirects', dest: 'dist/_redirects' }
   ];
   
   // Copy individual files
@@ -129,7 +130,9 @@ async function copyFiles() {
   const dirsToCopy = [
     { src: 'css', dest: 'dist/css' },
     { src: 'js', dest: 'dist/js' },
-    { src: 'assets', dest: 'dist/assets' }
+    { src: 'assets', dest: 'dist/assets' },
+    { src: 'pages', dest: 'dist/pages' },
+    { src: '.well-known', dest: 'dist/.well-known' }
   ];
   
   for (const { src, dest } of dirsToCopy) {
@@ -147,6 +150,24 @@ async function copyFiles() {
  */
 async function createHtaccess() {
   const htaccessContent = `# Apache Configuration for Production
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  
+  # Clean URLs - Rewrite to pages folder
+  RewriteRule ^about$ /pages/about.html [L]
+  RewriteRule ^privacy$ /pages/privacy.html [L]
+  RewriteRule ^design-system$ /pages/design-system.html [L]
+  
+  # Legacy redirects
+  RewriteRule ^about\\.html$ /pages/about.html [R=301,L]
+  RewriteRule ^privacy\\.html$ /pages/privacy.html [R=301,L]
+</IfModule>
 
 # Enable GZIP Compression
 <IfModule mod_deflate.c>
@@ -213,17 +234,11 @@ async function createHtaccess() {
 </IfModule>
 
 # Error Pages
-ErrorDocument 404 /404.html
+ErrorDocument 404 /pages/404.html
+ErrorDocument 500 /pages/500.html
 
 # Disable Directory Browsing
 Options -Indexes
-
-# Force HTTPS
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{HTTPS} off
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</IfModule>
 `;
 
   await fs.writeFile(path.join(config.distDir, '.htaccess'), htaccessContent);

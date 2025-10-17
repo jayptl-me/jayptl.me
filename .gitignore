@@ -110,6 +110,9 @@ dist
 # Serverless directories
 .serverless/
 
+# Build output directory (for Render deployment)
+dist/
+
 # FuseBox cache
 .fusebox/
 

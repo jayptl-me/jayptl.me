@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: jayptl-portfolio
+    env: static
+    buildCommand: bun install && bun run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: true
+    
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: geolocation=(), microphone=(), camera=()
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains; preload
+      
+      # Cache control for static assets
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=2592000
+    
+    routes:
+      - type: rewrite
+        source: /about
+        destination: /pages/about.html
+      - type: rewrite
+        source: /privacy
+        destination: /pages/privacy.html
+      - type: rewrite
+        source: /design-system
+        destination: /pages/design-system.html
+      - type: redirect
+        source: /about.html
+        destination: /pages/about.html
+      - type: redirect
+        source: /privacy.html
+        destination: /pages/privacy.html
+    
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: BUN_VERSION
+        value: 1.0.0

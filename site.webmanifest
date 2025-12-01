@@ -34,14 +34,10 @@
             "purpose": "any"
         },
         {
-            "src": "/assets/favicon-32x32.png",
-            "sizes": "32x32",
-            "type": "image/png"
-        },
-        {
-            "src": "/assets/favicon-16x16.png",
-            "sizes": "16x16",
-            "type": "image/png"
+            "src": "/assets/logo-1024.png",
+            "sizes": "1024x1024",
+            "type": "image/png",
+            "purpose": "any"
         }
     ],
     "shortcuts": [

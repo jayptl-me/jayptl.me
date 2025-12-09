@@ -42,17 +42,46 @@
     <style>
         /* Design System Specific Styles */
         .design-system-page {
-            padding: calc(64px + var(--space-8)) 0 var(--space-8) 0;
+            padding: calc(var(--space-16) + var(--space-8)) 0 var(--space-8) 0;
             min-height: 100vh;
+            background-image: radial-gradient(circle at 20% 20%, rgba(var(--primary-500-rgb), 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(var(--accent-500-rgb), 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
         }
 
         .design-section {
             margin-bottom: var(--space-16);
             padding: var(--space-8);
-            background: var(--theme-surface);
-            border-radius: var(--rounded-lg);
-            border: 1px solid var(--theme-border);
-            box-shadow: var(--shadow-sm);
+            border-radius: var(--rounded-xl);
+            transition: box-shadow var(--duration-normal) var(--ease-out),
+                background-color var(--duration-normal) var(--ease-out);
+        }
+
+        /* Light Mode - Skeuomorphic Section */
+        html[data-theme="light"] .design-section {
+            background: var(--skeu-bg-elevated);
+            box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight);
+            border: 1px solid var(--skeu-border);
+        }
+
+        /* Dark Mode - Glass Section */
+        html[data-theme="dark"] .design-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+        }
+
+        /* System preference fallback */
+        @media (prefers-color-scheme: dark) {
+            .design-section:not([data-theme]) {
+                background: var(--glass-bg);
+                backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+                -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+                border: 1px solid var(--glass-border);
+                box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+            }
         }
 
         .design-section h2 {
@@ -74,14 +103,42 @@
             min-width: 0;
             max-width: 100%;
             padding: var(--space-4);
-            border-radius: var(--rounded-md);
-            border: 1px solid var(--theme-border);
+            border-radius: var(--rounded-lg);
             text-align: center;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
             /* Flexible width that prevents overflow */
             width: calc((100% - var(--space-4) * 3) / 4);
+            transition: box-shadow var(--duration-200) var(--ease-out),
+                transform var(--duration-200) var(--ease-out);
+        }
+
+        /* Light Mode - Skeuomorphic */
+        html[data-theme="light"] .color-swatch {
+            background: var(--skeu-bg-elevated);
+            box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
+            border: 1px solid var(--skeu-border);
+        }
+
+        html[data-theme="light"] .color-swatch:hover {
+            box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight);
+            transform: translateY(-2px);
+        }
+
+        /* Dark Mode - Glass */
+        html[data-theme="dark"] .color-swatch {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur-sm));
+            -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+        }
+
+        html[data-theme="dark"] .color-swatch:hover {
+            box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
+            border-color: var(--glass-border-accent);
+            transform: translateY(-2px);
         }
 
         .color-preview {
@@ -95,14 +152,28 @@
         .color-name {
             font-weight: var(--weight-semibold);
             font-size: var(--text-sm);
-            color: var(--theme-text);
+        }
+
+        html[data-theme="light"] .color-name {
+            color: var(--neutral-900);
+        }
+
+        html[data-theme="dark"] .color-name {
+            color: var(--neutral-100);
         }
 
         .color-value {
             font-family: var(--font-mono);
             font-size: var(--text-xs);
-            color: var(--theme-text-secondary);
             margin-top: var(--space-1);
+        }
+
+        html[data-theme="light"] .color-value {
+            color: var(--neutral-600);
+        }
+
+        html[data-theme="dark"] .color-value {
+            color: var(--neutral-400);
         }
 
         .typography-showcase {
@@ -111,10 +182,65 @@
 
         .typography-example {
             margin-bottom: var(--space-6);
-            padding: var(--space-4);
-            border: 1px solid var(--theme-border);
-            border-radius: var(--rounded);
-            background: var(--theme-bg-secondary);
+            padding: var(--space-5);
+            border-radius: var(--rounded-lg);
+            transition: box-shadow var(--duration-200) var(--ease-out),
+                transform var(--duration-200) var(--ease-out);
+        }
+
+        /* Typography example - Light Mode Skeu */
+        html[data-theme="light"] .typography-example {
+            background: var(--skeu-bg-elevated);
+            box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
+            border: 1px solid var(--skeu-border);
+        }
+
+        html[data-theme="light"] .typography-example:hover {
+            box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight);
+        }
+
+        html[data-theme="light"] .typography-example h1,
+        html[data-theme="light"] .typography-example h2,
+        html[data-theme="light"] .typography-example h3,
+        html[data-theme="light"] .typography-example h4 {
+            color: var(--neutral-900);
+        }
+
+        html[data-theme="light"] .typography-example p {
+            color: var(--neutral-700);
+        }
+
+        html[data-theme="light"] .typography-example p.small {
+            color: var(--neutral-500);
+        }
+
+        /* Typography example - Dark Mode Glass */
+        html[data-theme="dark"] .typography-example {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur-sm));
+            -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+        }
+
+        html[data-theme="dark"] .typography-example:hover {
+            box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow);
+            border-color: var(--glass-border-hover);
+        }
+
+        html[data-theme="dark"] .typography-example h1,
+        html[data-theme="dark"] .typography-example h2,
+        html[data-theme="dark"] .typography-example h3,
+        html[data-theme="dark"] .typography-example h4 {
+            color: var(--neutral-100);
+        }
+
+        html[data-theme="dark"] .typography-example p {
+            color: var(--neutral-300);
+        }
+
+        html[data-theme="dark"] .typography-example p.small {
+            color: var(--neutral-400);
         }
 
         .spacing-grid {
@@ -130,11 +256,27 @@
             min-width: 0;
             max-width: 100%;
             text-align: center;
-            padding: var(--space-2);
+            padding: var(--space-3);
+            border-radius: var(--rounded-lg);
             overflow: hidden;
             box-sizing: border-box;
             /* Flexible width that prevents overflow */
             width: calc((100% - var(--space-3) * 2) / 3);
+            transition: box-shadow var(--duration-200) var(--ease-out);
+        }
+
+        html[data-theme="light"] .spacing-example {
+            background: var(--skeu-bg-elevated);
+            box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
+            border: 1px solid var(--skeu-border);
+        }
+
+        html[data-theme="dark"] .spacing-example {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur-sm));
+            -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
         }
 
         .spacing-bar {
@@ -209,49 +351,7 @@
             min-width: 120px;
         }
 
-        .btn {
-            padding: var(--space-3) var(--space-6);
-            border-radius: var(--rounded-md);
-            border: none;
-            font-weight: var(--weight-medium);
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-out);
-            display: inline-block;
-        }
 
-        .btn-primary {
-            background: var(--theme-primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--theme-primary-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--theme-surface);
-            color: var(--theme-text);
-            border: 1px solid var(--theme-border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--theme-bg-secondary);
-            border-color: var(--theme-border-hover);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--theme-primary);
-            border: 2px solid var(--theme-primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--theme-primary);
-            color: white;
-        }
 
         .shadow-examples {
             display: flex;
@@ -265,17 +365,30 @@
             min-width: 0;
             max-width: 100%;
             height: 100px;
-            background: var(--theme-surface);
             border-radius: var(--rounded-lg);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: var(--weight-medium);
-            color: var(--theme-text-secondary);
             box-sizing: border-box;
             /* Flexible width that prevents overflow */
             width: calc((100% - var(--space-4) * 2) / 3);
             min-width: 150px;
+            transition: box-shadow var(--duration-200) var(--ease-out);
+        }
+
+        html[data-theme="light"] .shadow-box {
+            background: var(--skeu-bg-elevated);
+            border: 1px solid var(--skeu-border);
+            color: var(--neutral-600);
+        }
+
+        html[data-theme="dark"] .shadow-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur-sm));
+            -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+            border: 1px solid var(--glass-border);
+            color: var(--neutral-400);
         }
 
         .radius-examples {
@@ -730,12 +843,33 @@
             <!-- Button Components -->
             <section class="design-section">
                 <h2>Button Components</h2>
+
+                <h3 style="margin: var(--space-6) 0 var(--space-4) 0;">Button Variants</h3>
                 <div class="button-grid">
                     <button class="btn btn-primary">Primary</button>
                     <button class="btn btn-secondary">Secondary</button>
                     <button class="btn btn-outline">Outline</button>
-                    <a href="#" class="btn btn-primary">Link Button</a>
+                    <button class="btn btn-ghost">Ghost</button>
+                    <button class="btn btn-glass">Glass</button>
                 </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Button Sizes</h3>
+                <div class="button-grid" style="align-items: center;">
+                    <button class="btn btn-primary btn-sm">Small</button>
+                    <button class="btn btn-primary">Default</button>
+                    <button class="btn btn-primary btn-lg">Large</button>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Button States</h3>
+                <div class="button-grid">
+                    <button class="btn btn-primary" disabled>Disabled</button>
+                    <a href="#" class="btn btn-primary">Link Button</a>
+                    <button class="btn btn-outline btn-block" style="width: auto; min-width: 200px;">Block
+                        Button</button>
+                </div>
+
+                <h3 style="margin: var(--space-8) 0 var(--space-4) 0;">Gradient Text Link</h3>
+                <a href="#" class="btn-text-gradient">← Back to Portfolio</a>
             </section>
 
             <!-- Shadows -->
@@ -815,70 +949,321 @@
                 </div>
             </section>
 
-            <!-- Component Examples -->
+            <!-- Card Components -->
             <section class="design-section">
-                <h2>Component Patterns</h2>
+                <h2>Card Components</h2>
                 <div class="component-showcase">
-                    <!-- Card Component -->
-                    <div class="component-example">
-                        <h3 style="margin-bottom: var(--space-4);">Card Component</h3>
+                    <!-- Default Card -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Default Card</h4>
+                        <p class="card-subtitle">Basic card with subtle styling</p>
+                        <div class="card-body" style="margin-top: var(--space-4);">
+                            <p style="color: var(--theme-text-secondary);">Card content with some example text to
+                                demonstrate typography and spacing.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary btn-sm">Action</button>
+                            <button class="btn btn-ghost btn-sm">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Elevated Card -->
+                    <div class="card card-elevated">
+                        <h4 class="card-title">Elevated Card</h4>
+                        <p class="card-subtitle">Card with prominent shadow</p>
+                        <div class="card-body" style="margin-top: var(--space-4);">
+                            <p style="color: var(--theme-text-secondary);">Higher elevation for important content that
+                                needs to stand out.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline btn-sm">Learn More</button>
+                        </div>
+                    </div>
+
+                    <!-- Glass Card -->
+                    <div class="card card-glass">
+                        <h4 class="card-title">Glass Card</h4>
+                        <p class="card-subtitle">Glassmorphism effect</p>
+                        <div class="card-body" style="margin-top: var(--space-4);">
+                            <p style="color: var(--theme-text-secondary);">Frosted glass effect with backdrop blur for
+                                modern UI.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-glass btn-sm">Glass Button</button>
+                        </div>
+                    </div>
+
+                    <!-- Accent Card -->
+                    <div class="card card-accent">
+                        <h4 class="card-title">Accent Card</h4>
+                        <p class="card-subtitle">Gradient border accent</p>
+                        <div class="card-body" style="margin-top: var(--space-4);">
+                            <p style="color: var(--theme-text-secondary);">Highlighted with a gradient border for
+                                emphasis.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Form Components -->
+            <section class="design-section">
+                <h2>Form Components</h2>
+                <div class="component-showcase">
+                    <!-- Input Fields -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Input Fields</h4>
+                        <div style="margin-top: var(--space-4);">
+                            <div class="form-group">
+                                <label class="form-label">Default Input</label>
+                                <input type="text" class="form-input" placeholder="Enter your name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label form-label-required">Required Field</label>
+                                <input type="email" class="form-input" placeholder="your@email.com">
+                                <span class="form-hint">We'll never share your email.</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Glass Input</label>
+                                <input type="text" class="form-input form-input-glass" placeholder="Glass style input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Select & Textarea -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Select & Textarea</h4>
+                        <div style="margin-top: var(--space-4);">
+                            <div class="form-group">
+                                <label class="form-label">Select Input</label>
+                                <div class="form-select-wrapper">
+                                    <select class="form-select">
+                                        <option value="" disabled selected>Choose an option</option>
+                                        <option value="1">Option 1</option>
+                                        <option value="2">Option 2</option>
+                                        <option value="3">Option 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Textarea</label>
+                                <textarea class="form-textarea" placeholder="Enter your message..." rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validation States -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Validation States</h4>
+                        <div style="margin-top: var(--space-4);">
+                            <div class="form-group">
+                                <label class="form-label">Error State</label>
+                                <input type="text" class="form-input form-input-error" value="Invalid input">
+                                <span class="form-error-message">Please enter a valid value.</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Success State</label>
+                                <input type="text" class="form-input form-input-success" value="Valid input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Disabled</label>
+                                <input type="text" class="form-input" value="Cannot edit" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Checkboxes -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Custom Checkboxes</h4>
                         <div
-                            style="padding: var(--space-6); background: var(--theme-surface); border-radius: var(--rounded-lg); box-shadow: var(--shadow-md); border: 1px solid var(--theme-border);">
-                            <h4 style="margin-bottom: var(--space-3);">Card Title</h4>
-                            <p style="color: var(--theme-text-secondary); margin-bottom: var(--space-4);">Card
-                                description with some example content to show typography hierarchy.</p>
-                            <button class="btn btn-primary">Action</button>
+                            style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3);">
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                <span class="checkbox-mark"></span>
+                                <span class="checkbox-label">Accept terms and conditions</span>
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" checked>
+                                <span class="checkbox-mark"></span>
+                                <span class="checkbox-label">Subscribe to newsletter</span>
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" disabled>
+                                <span class="checkbox-mark"></span>
+                                <span class="checkbox-label">Disabled option</span>
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Form Elements -->
-                    <div class="component-example">
-                        <h3 style="margin-bottom: var(--space-4);">Form Elements</h3>
-                        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
-                            <input type="text" placeholder="Input field"
-                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface);">
-                            <select
-                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface);">
-                                <option>Select option</option>
-                                <option>Option 1</option>
-                                <option>Option 2</option>
-                            </select>
-                            <textarea placeholder="Textarea" rows="3"
-                                style="padding: var(--space-3); border: 1px solid var(--theme-border); border-radius: var(--rounded); background: var(--theme-surface); resize: vertical;"></textarea>
+                    <!-- Custom Radio Buttons -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Custom Radio Buttons</h4>
+                        <div
+                            style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3);">
+                            <label class="radio">
+                                <input type="radio" name="custom-radio">
+                                <span class="radio-mark"></span>
+                                <span class="radio-label">Option A</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="custom-radio" checked>
+                                <span class="radio-mark"></span>
+                                <span class="radio-label">Option B (selected)</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="custom-radio">
+                                <span class="radio-mark"></span>
+                                <span class="radio-label">Option C</span>
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Alert Component -->
-                    <div class="component-example">
-                        <h3 style="margin-bottom: var(--space-4);">Alert States</h3>
-                        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
-                            <div
-                                style="padding: var(--space-3); background: rgba(var(--success-rgb), 0.1); border: 1px solid var(--success); border-radius: var(--rounded); color: var(--success-800);">
-                                Success alert message
+                    <!-- Toggle Switches -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Toggle Switches</h4>
+                        <div
+                            style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4);">
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="toggle-track">
+                                    <span class="toggle-thumb"></span>
+                                </span>
+                                <span class="toggle-label">Enable notifications</span>
+                            </label>
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-track">
+                                    <span class="toggle-thumb"></span>
+                                </span>
+                                <span class="toggle-label">Dark mode (enabled)</span>
+                            </label>
+                            <label class="toggle">
+                                <input type="checkbox">
+                                <span class="toggle-track">
+                                    <span class="toggle-thumb"></span>
+                                </span>
+                                <span class="toggle-label">Auto-sync data</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts & Badges -->
+            <section class="design-section">
+                <h2>Alerts & Badges</h2>
+                <div class="component-showcase">
+                    <!-- Alerts -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Alert Messages</h4>
+                        <div
+                            style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3);">
+                            <div class="alert alert-success">
+                                ✓ Success! Your changes have been saved.
                             </div>
-                            <div
-                                style="padding: var(--space-3); background: rgba(var(--warning-rgb), 0.1); border: 1px solid var(--warning); border-radius: var(--rounded); color: var(--warning-800);">
-                                Warning alert message
+                            <div class="alert alert-warning">
+                                ⚠ Warning! Please review before continuing.
                             </div>
-                            <div
-                                style="padding: var(--space-3); background: rgba(var(--danger-rgb), 0.1); border: 1px solid var(--error); border-radius: var(--rounded); color: var(--danger-800);">
-                                Error alert message
+                            <div class="alert alert-error">
+                                ✕ Error! Something went wrong.
+                            </div>
+                            <div class="alert alert-info">
+                                ℹ Info: Here's some helpful information.
                             </div>
                         </div>
                     </div>
 
-                    <!-- Badge Component -->
-                    <div class="component-example">
-                        <h3 style="margin-bottom: var(--space-4);">Badges</h3>
-                        <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
-                            <span
-                                style="padding: var(--space-1) var(--space-3); background: var(--theme-primary); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Primary</span>
-                            <span
-                                style="padding: var(--space-1) var(--space-3); background: var(--success); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Success</span>
-                            <span
-                                style="padding: var(--space-1) var(--space-3); background: var(--warning); color: white; border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Warning</span>
-                            <span
-                                style="padding: var(--space-1) var(--space-3); background: var(--theme-border); color: var(--theme-text); border-radius: var(--rounded-full); font-size: var(--text-sm); font-weight: var(--weight-medium);">Neutral</span>
+                    <!-- Badges -->
+                    <div class="card card-default">
+                        <h4 class="card-title">Badges</h4>
+                        <div style="margin-top: var(--space-4); display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                            <span class="badge badge-primary">Primary</span>
+                            <span class="badge badge-accent">Accent</span>
+                            <span class="badge badge-success">Success</span>
+                            <span class="badge badge-warning">Warning</span>
+                            <span class="badge badge-error">Error</span>
+                            <span class="badge badge-neutral">Neutral</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grid Component -->
+            <section class="design-section">
+                <h2>Grid System</h2>
+                <div class="grid grid-cols-3 grid-gap-md">
+                    <div class="grid-item">
+                        <div class="grid-item-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <h4 class="grid-item-title">Grid Item 1</h4>
+                        <p class="grid-item-description">Responsive grid with glass/skeu theming.</p>
+                        <span class="grid-item-tag">Feature</span>
+                    </div>
+                    <div class="grid-item">
+                        <div class="grid-item-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                        </div>
+                        <h4 class="grid-item-title">Grid Item 2</h4>
+                        <p class="grid-item-description">Hover effects with lift and glow.</p>
+                        <span class="grid-item-tag">Design</span>
+                    </div>
+                    <div class="grid-item">
+                        <div class="grid-item-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <h4 class="grid-item-title">Grid Item 3</h4>
+                        <p class="grid-item-description">Auto-responsive layout system.</p>
+                        <span class="grid-item-tag">Layout</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stepper Component -->
+            <section class="design-section">
+                <h2>Stepper</h2>
+                <div class="component-showcase">
+                    <div class="card card-default">
+                        <h4 class="card-title">Dot Stepper</h4>
+                        <div style="margin-top: var(--space-4);">
+                            <div class="stepper stepper-inline">
+                                <div class="stepper-dots">
+                                    <button class="stepper-dot active"></button>
+                                    <button class="stepper-dot"></button>
+                                    <button class="stepper-dot"></button>
+                                    <button class="stepper-dot"></button>
+                                    <button class="stepper-dot"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-default">
+                        <h4 class="card-title">Progress Stepper</h4>
+                        <div style="margin-top: var(--space-4);">
+                            <div class="stepper">
+                                <div class="stepper-dots">
+                                    <button class="stepper-dot active"></button>
+                                    <button class="stepper-dot"></button>
+                                    <button class="stepper-dot"></button>
+                                </div>
+                                <div class="stepper-bar">
+                                    <div class="stepper-bar-fill" style="width: 33%;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -891,7 +1276,7 @@
                     Design System • Jay Patel Portfolio • Built with semantic design tokens
                 </p>
                 <p style="margin-top: var(--space-2);">
-                    <a href="index.html" class="btn btn-outline">← Back to Portfolio</a>
+                    <a href="/" class="btn btn-outline">← Back to Portfolio</a>
                 </p>
             </footer>
         </div>

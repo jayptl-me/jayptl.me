@@ -13,8 +13,8 @@
 /* Theme toggle button */
 .theme-toggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: var(--space-5);
+    right: var(--space-5);
     z-index: var(--z-header);
     background: rgba(128, 128, 128, 0.1);
     border: 1px solid rgba(128, 128, 128, 0.2);
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s var(--ease-out);
+    transition: all var(--duration-300) var(--ease-out);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,8 @@
 .theme-toggle:hover,
 .theme-toggle:focus {
     transform: scale(1.1);
-    background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.15);
+    /* Default fallback */
+    background: rgba(var(--primary-500-rgb), 0.15);
     outline: none;
 }
 
@@ -54,7 +55,7 @@
     min-width: 20px;
     min-height: 20px;
     fill: var(--theme-text);
-    transition: all 0.3s var(--ease-out);
+    transition: all var(--duration-300) var(--ease-out);
 }
 
 /* Light mode - show moon (default) */
@@ -86,8 +87,8 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 /* Animations for icon transitions */
 @media (prefers-reduced-motion: no-preference) {
     .theme-toggle svg {
-        transition: opacity 0.3s var(--ease-out),
-            transform 0.5s var(--ease-out);
+        transition: opacity var(--duration-300) var(--ease-out),
+            transform var(--duration-500) var(--ease-out);
     }
 
     .theme-toggle .sun-icon,
@@ -114,8 +115,8 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
         height: 100%;
         max-width: 24px;
         max-height: 24px;
-        min-width: 16px;
-        min-height: 16px;
+        min-width: var(--space-4);
+        min-height: var(--space-4);
     }
 }
 
@@ -123,7 +124,7 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 .theme-toggle .lightsaber-blade {
     /* Default to current text color; overridden per theme below */
     fill: currentColor;
-    transition: all 0.3s var(--ease-out);
+    transition: all var(--duration-300) var(--ease-out);
 }
 
 .theme-toggle .lightsaber-glow {
@@ -131,7 +132,7 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
     /* Blue glow */
     opacity: 0;
     /* Off by default; enabled in dark */
-    transition: opacity 0.3s var(--ease-out), filter 0.3s var(--ease-out);
+    transition: opacity var(--duration-300) var(--ease-out), filter var(--duration-300) var(--ease-out);
 }
 
 /* Accessibility: Disable transitions and glow for users who prefer reduced motion */
@@ -163,9 +164,10 @@ html[data-theme="light"] .theme-toggle .lightsaber-glow {
 }
 
 /* Dark: saber on (blue), with glow */
+/* Dark: saber on (turquoise), with glow */
 html[data-theme="dark"] .theme-toggle .lightsaber-blade {
-    fill: var(--theme-primary);
-    filter: drop-shadow(0 0 3px var(--theme-primary)) drop-shadow(0 0 6px var(--theme-primary));
+    fill: var(--accent-400);
+    filter: drop-shadow(0 0 3px var(--accent-400)) drop-shadow(0 0 6px var(--accent-400));
 }
 
 html[data-theme="dark"] .theme-toggle .lightsaber-glow {
@@ -173,10 +175,10 @@ html[data-theme="dark"] .theme-toggle .lightsaber-glow {
     filter: drop-shadow(0 0 8px var(--accent-400));
 }
 
-/* Intensified blue glow on hover in dark theme */
+/* Intensified turquoise glow on hover in dark theme */
 html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
     filter:
-        drop-shadow(0 0 6px var(--theme-primary)) drop-shadow(0 0 12px var(--theme-primary)) drop-shadow(0 0 18px var(--accent-400));
+        drop-shadow(0 0 6px var(--accent-400)) drop-shadow(0 0 12px var(--accent-400)) drop-shadow(0 0 18px var(--accent-400));
 }
 
 /* No glow on hover in light theme to avoid black halo */

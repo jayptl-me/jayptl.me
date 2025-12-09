@@ -60,7 +60,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 1rem;
+  padding: 0 var(--space-4);
 }
 
 .hero-title {
@@ -296,31 +296,31 @@
 .hero-animated .hero-title {
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 1s var(--ease-out) 0.2s forwards;
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.2s forwards;
 }
 
 .hero-animated .hero-subtitle {
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 1s var(--ease-out) 0.4s forwards;
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.4s forwards;
 }
 
 .hero-animated .hero-description {
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 1s var(--ease-out) 0.6s forwards;
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.6s forwards;
 }
 
 .hero-animated .hero-actions {
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 1s var(--ease-out) 0.8s forwards;
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.8s forwards;
 }
 
 .hero-animated .hero-image {
   opacity: 0;
   transform: scale(0.9);
-  animation: fadeInScale 1s var(--ease-out) 1s forwards;
+  animation: fadeInScale var(--duration-1000) var(--ease-out) 1s forwards;
 }
 
 @keyframes fadeInUp {
@@ -527,18 +527,31 @@
 }
 
 .project-card {
-  border: 1px solid var(--theme-border);
+  /* Glassmorphism base */
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
   border-radius: var(--rounded-lg);
   padding: var(--space-5);
-  background: var(--theme-surface);
-  box-shadow: var(--theme-shadow);
   transition: transform var(--duration-300) var(--ease-out), box-shadow var(--duration-300) var(--ease-out);
+}
+
+/* Light Mode Glass Card */
+html[data-theme="light"] .project-card {
+  background: var(--glass-bg-light);
+  border: var(--glass-border-light);
+}
+
+/* Dark Mode Glass Card */
+html[data-theme="dark"] .project-card {
+  background: var(--glass-bg-dark);
+  border: var(--glass-border-dark);
 }
 
 
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--theme-shadow-elevated);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
 }
 
 .project-card:focus-visible {
@@ -669,9 +682,9 @@
   padding: 0;
   background: var(--theme-bg);
   /* Account for fixed navbar height (64px) for true centering */
-  margin-top: 64px;
-  min-height: calc(100vh - 64px);
-  min-height: calc(100dvh - 64px);
+  margin-top: var(--space-16);
+  min-height: calc(100vh - var(--space-16));
+  min-height: calc(100dvh - var(--space-16));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -741,9 +754,9 @@
 @media (max-width: 480px) {
   .introduction-section {
     padding: 0 var(--space-4);
-    margin-top: 64px;
-    min-height: calc(100vh - 64px);
-    min-height: calc(100dvh - 64px);
+    margin-top: var(--space-16);
+    min-height: calc(100vh - var(--space-16));
+    min-height: calc(100dvh - var(--space-16));
   }
 
   .intro-container {

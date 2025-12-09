@@ -5,6 +5,15 @@
 /privacy         /pages/privacy.html         200
 /design-system   /pages/design-system.html   200
 
-# Legacy redirects - redirect old paths to new structure (301 = permanent redirect)
-/about.html      /pages/about.html           301!
-/privacy.html    /pages/privacy.html         301!
+# Legacy redirects - redirect old paths to new Clean URLs (301 = permanent redirect)
+/about.html      /about                      301!
+/privacy.html    /privacy                    301!
+/design-system.html /design-system           301!
+
+# Direct file access redirects (prevent duplicate content)
+/pages/about.html /about                     301!
+/pages/privacy.html /privacy                 301!
+/pages/design-system.html /design-system     301!
+
+# Error page fallback - catch all unmatched routes
+/*                   /pages/404.html         404

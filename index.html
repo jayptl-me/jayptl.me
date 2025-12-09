@@ -62,15 +62,18 @@
             --text-xl: 1.25rem;
             --text-2xl: 1.5rem;
             --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
             --text-5xl: 3rem;
             --weight-normal: 400;
             --space-1: 0.25rem;
             --space-2: 0.5rem;
             --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
             --space-8: 2rem;
             --leading-relaxed: 1.625;
-            --duration-300: 300ms;
             --duration-normal: 250ms;
+            --duration-300: 300ms;
             --ease-out: cubic-bezier(0, 0, 0.2, 1);
 
             /* Essential color palette */
@@ -103,12 +106,12 @@
 
             html {
                 background-color: var(--black);
-                color: var(--white);
+                color: var(--theme-text);
             }
 
             body {
                 background-color: var(--black);
-                color: var(--white);
+                color: var(--theme-text);
             }
         }
 
@@ -123,12 +126,12 @@
 
             html {
                 background-color: var(--white);
-                color: var(--gray-900);
+                color: var(--theme-text);
             }
 
             body {
                 background-color: var(--white);
-                color: var(--gray-900);
+                color: var(--theme-text);
             }
         }
 
@@ -141,7 +144,7 @@
             /* Ensure RGB background value resets when switching from dark to light for translucent UI elements (e.g., preloader percentage chip) */
             --theme-bg-rgb: 255, 255, 255;
             background-color: var(--white);
-            color: var(--gray-900);
+            color: var(--theme-text);
         }
 
         html[data-theme="dark"] {
@@ -151,7 +154,7 @@
             --theme-bg-rgb: 0, 0, 0;
             /* Used for translucent surfaces like preloader percentage background */
             background-color: var(--black);
-            color: var(--white);
+            color: var(--theme-text);
         }
 
         /* Force immediate theme application */
@@ -369,6 +372,42 @@
                 bottom: 15px;
                 right: 15px;
                 padding: var(--space-1) var(--space-2);
+            }
+        }
+
+        /* Light mode explicit overrides - Blue/Primary */
+        html[data-theme="light"] .preloader-logo {
+            color: var(--primary-600, #1e88e5);
+        }
+
+        html[data-theme="light"] .preloader-progress-bar {
+            background: var(--primary-600, #1e88e5);
+        }
+
+        html[data-theme="light"] .gradient-text {
+            color: var(--primary-600, #1e88e5);
+        }
+
+        /* Dark mode overrides - use turquoise/accent colors */
+        html[data-theme="dark"] .preloader-logo {
+            color: var(--accent-400, #26c9d8);
+        }
+
+        html[data-theme="dark"] .preloader-progress-bar {
+            background: var(--accent-400, #26c9d8);
+        }
+
+        html[data-theme="dark"] .gradient-text {
+            color: var(--accent-400, #26c9d8);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .preloader-logo {
+                color: var(--accent-400, #26c9d8);
+            }
+
+            .preloader-progress-bar {
+                background: var(--accent-400, #26c9d8);
             }
         }
     </style>

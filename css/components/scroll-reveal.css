@@ -24,7 +24,7 @@
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
-  z-index: var(--z-content, 10);
+  z-index: var(--z-content);
   background: transparent;
   pointer-events: none;
   /* Scoped scroll control for the overlay */
@@ -34,14 +34,81 @@
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
 }
 
+/* Static backdrop grid - stays fixed while text scrolls */
+.text-reveal-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Perspective grid pattern - HIGH VISIBILITY & ANIMATED */
+  background:
+    /* Vertical lines */
+    repeating-linear-gradient(90deg,
+      rgba(var(--primary-500-rgb), 0.15) 0px,
+      rgba(var(--primary-500-rgb), 0.15) 1px,
+      transparent 1px,
+      transparent 50px),
+    /* Horizontal lines */
+    repeating-linear-gradient(0deg,
+      rgba(var(--primary-500-rgb), 0.15) 0px,
+      rgba(var(--primary-500-rgb), 0.15) 1px,
+      transparent 1px,
+      transparent 50px);
 
+  background-size: 50px 50px;
+  animation: gridPan 20s linear infinite;
+
+  /* Grid visible to 75% of bottom-left, minimal fade from top-right */
+  mask-image:
+    linear-gradient(-45deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+
+  -webkit-mask-image: linear-gradient(-45deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gridPan {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Light beam effect from top-right - layered gradients for realism */
+.text-reveal-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* Core light source - bright spot at top-right */
+    radial-gradient(circle at 100% 0%,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(var(--primary-300-rgb), 0.2) 25%,
+      transparent 60%),
+    /* Light beam spreading diagonally */
+    linear-gradient(225deg,
+      rgba(var(--primary-400-rgb), 0.15) 0%,
+      rgba(var(--accent-500-rgb), 0.05) 50%,
+      transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+  /* Above grid, below text */
+}
 
 .text-reveal-container.in-view {
   pointer-events: auto;
   /* Avoid forcing vendor-specific overflow scrolling globally */
-  z-index: var(--z-overlay, 1000);
+  z-index: var(--z-overlay);
   /* Opaque theme background to fully mask underlying content while active */
-  background: var(--bg-primary, var(--theme-bg, #000));
+  background: var(--bg-primary, var(--theme-bg));
 }
 
 .text-reveal-container.reveal-hidden {
@@ -127,6 +194,8 @@
   align-items: center;
   justify-content: center;
   min-height: clamp(80px, 15vh, 140px);
+  /* Ensure text sits above grid and light */
+  z-index: 2;
 }
 
 .text-reveal-item {
@@ -141,7 +210,7 @@
   max-width: none;
   padding: clamp(1rem, 4vw, 2rem);
   opacity: 0;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease-out;
+  transition: transform var(--duration-700) cubic-bezier(0.22, 1, 0.36, 1), opacity var(--duration-700) ease-out;
   pointer-events: none;
   text-align: center;
   will-change: transform, opacity;
@@ -160,7 +229,7 @@
 
 /* Subtle jelly bounce for the last item */
 .text-reveal-item.bounce-in {
-  animation: jellyIn 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 50ms both;
+  animation: jellyIn var(--duration-700) cubic-bezier(0.2, 0.8, 0.2, 1) 50ms both;
 }
 
 @keyframes jellyIn {
@@ -195,7 +264,7 @@
   gap: 8px;
   color: var(--theme-text-secondary);
   font-size: var(--text-sm);
-  z-index: var(--z-above-content, 2000);
+  z-index: var(--z-above-content);
   opacity: 1;
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
   pointer-events: none;
@@ -287,7 +356,7 @@
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 700;
   line-height: 1.1;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-700) cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateY(20px);
 }
@@ -297,10 +366,10 @@
   transform: translateY(0);
 }
 
-/* Scroll reveal text: single consistent brand blue across light & dark (no gradient, no alternate shade) */
+/* Scroll reveal text: theme-aware color (blue in light, turquoise in dark) */
 .gradient-text,
 .text-reveal-item.active .gradient-text {
-  color: var(--primary-600, var(--primary-500));
+  color: var(--theme-icon);
   text-shadow: none;
 }
 
@@ -357,102 +426,364 @@
   transition-delay: 0.55s;
 }
 
+/* ==========================================================================
+   PARTICLE ASSEMBLE TEXT ANIMATION
+   Characters form from scattered particles that converge together
+   ========================================================================== */
+
 .char.animate-in {
-  animation: charReveal 0.6s ease-out forwards;
+  animation: charParticleAssemble 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Enhanced animation for initial page load */
+/* Enhanced particle animation for initial page load */
 .char.animate-in.initial-load {
-  animation: charRevealInitial 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: charParticleAssembleInitial 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes charReveal {
+/* Standard particle assemble - dots converge into character */
+@keyframes charParticleAssemble {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.8);
-  }
-
-  50% {
-    transform: translateY(-5px) scale(1.05);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes charRevealInitial {
-  0% {
-    opacity: 0;
-    transform: translateY(50px) scale(0.6) rotateX(90deg);
     filter: blur(4px);
+    text-shadow:
+      /* Scattered particles in different directions */
+      -12px -8px 2px currentColor,
+      10px -10px 2px currentColor,
+      -8px 12px 2px currentColor,
+      14px 6px 2px currentColor,
+      -6px -14px 2px currentColor,
+      8px 10px 2px currentColor,
+      /* Glow core */
+      0 0 15px rgba(var(--primary-400-rgb), 0.5);
+    transform: scale(0.9);
   }
 
   30% {
-    opacity: 0.7;
-    transform: translateY(-10px) scale(1.1) rotateX(0deg);
-    filter: blur(2px);
+    opacity: 0.5;
+    filter: blur(2.5px);
+    text-shadow:
+      -6px -4px 1.5px currentColor,
+      5px -5px 1.5px currentColor,
+      -4px 6px 1.5px currentColor,
+      7px 3px 1.5px currentColor,
+      -3px -7px 1.5px currentColor,
+      4px 5px 1.5px currentColor,
+      0 0 10px rgba(var(--primary-400-rgb), 0.4);
+    transform: scale(0.95);
   }
 
   60% {
-    transform: translateY(5px) scale(0.95);
-    filter: blur(0px);
+    opacity: 0.8;
+    filter: blur(1px);
+    text-shadow:
+      -2px -2px 1px currentColor,
+      2px -2px 1px currentColor,
+      -1px 2px 1px currentColor,
+      2px 1px 1px currentColor,
+      0 0 5px rgba(var(--primary-400-rgb), 0.3);
+    transform: scale(0.98);
+  }
+
+  85% {
+    opacity: 0.95;
+    filter: blur(0.3px);
+    text-shadow:
+      -0.5px -0.5px 0.5px currentColor,
+      0.5px 0.5px 0.5px currentColor,
+      0 0 3px rgba(var(--primary-400-rgb), 0.2);
+    transform: scale(1);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0px);
+    filter: blur(0);
+    text-shadow: none;
+    transform: scale(1);
   }
 }
 
-/* Responsive adjustments for initial load animation */
-@media (max-width: 768px) {
-  .char.animate-in.initial-load {
-    animation: charRevealInitialMobile 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+/* Initial load - more dramatic particle explosion assembly */
+@keyframes charParticleAssembleInitial {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    text-shadow:
+      /* Widely scattered particles */
+      -20px -15px 3px currentColor,
+      18px -18px 3px currentColor,
+      -15px 20px 3px currentColor,
+      22px 12px 3px currentColor,
+      -10px -22px 3px currentColor,
+      16px 18px 3px currentColor,
+      -18px 8px 3px currentColor,
+      12px -16px 3px currentColor,
+      /* Glow aura */
+      0 0 25px rgba(var(--primary-400-rgb), 0.6),
+      0 0 50px rgba(var(--accent-400-rgb), 0.3);
+    transform: scale(0.8);
   }
 
-  @keyframes charRevealInitialMobile {
+  20% {
+    opacity: 0.3;
+    filter: blur(4.5px);
+    text-shadow:
+      -14px -10px 2.5px currentColor,
+      12px -12px 2.5px currentColor,
+      -10px 14px 2.5px currentColor,
+      15px 8px 2.5px currentColor,
+      -7px -15px 2.5px currentColor,
+      11px 12px 2.5px currentColor,
+      -12px 5px 2.5px currentColor,
+      8px -11px 2.5px currentColor,
+      0 0 20px rgba(var(--primary-400-rgb), 0.5),
+      0 0 40px rgba(var(--accent-400-rgb), 0.25);
+    transform: scale(0.85);
+  }
+
+  40% {
+    opacity: 0.55;
+    filter: blur(3px);
+    text-shadow:
+      -8px -6px 2px currentColor,
+      7px -7px 2px currentColor,
+      -6px 8px 2px currentColor,
+      9px 5px 2px currentColor,
+      -4px -9px 2px currentColor,
+      6px 7px 2px currentColor,
+      -7px 3px 2px currentColor,
+      5px -6px 2px currentColor,
+      0 0 15px rgba(var(--primary-400-rgb), 0.4);
+    transform: scale(0.9);
+  }
+
+  60% {
+    opacity: 0.75;
+    filter: blur(1.5px);
+    text-shadow:
+      -4px -3px 1.2px currentColor,
+      3px -4px 1.2px currentColor,
+      -3px 4px 1.2px currentColor,
+      5px 2px 1.2px currentColor,
+      -2px -5px 1.2px currentColor,
+      3px 4px 1.2px currentColor,
+      0 0 10px rgba(var(--primary-400-rgb), 0.3);
+    transform: scale(0.95);
+  }
+
+  80% {
+    opacity: 0.9;
+    filter: blur(0.6px);
+    text-shadow:
+      -1.5px -1px 0.8px currentColor,
+      1px -1.5px 0.8px currentColor,
+      -1px 1.5px 0.8px currentColor,
+      2px 1px 0.8px currentColor,
+      0 0 5px rgba(var(--primary-400-rgb), 0.2);
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    text-shadow: none;
+    transform: scale(1);
+  }
+}
+
+/* Particle scatter on hover */
+.text-reveal-item.active .char:hover {
+  animation: charParticleHover 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes charParticleHover {
+
+  0%,
+  100% {
+    text-shadow: none;
+    filter: blur(0);
+  }
+
+  50% {
+    text-shadow:
+      -3px -2px 1px rgba(var(--primary-400-rgb), 0.4),
+      2px -3px 1px rgba(var(--accent-400-rgb), 0.35),
+      -2px 3px 1px rgba(var(--primary-500-rgb), 0.3),
+      3px 2px 1px rgba(var(--accent-500-rgb), 0.25),
+      0 0 8px currentColor;
+    filter: blur(0.3px);
+  }
+}
+
+/* ========================================================================== 
+   RESPONSIVE PARTICLE ANIMATIONS
+   ========================================================================== */
+
+/* Tablet adjustments */
+@media (max-width: 768px) {
+  .char.animate-in {
+    animation: charParticleMobile 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .char.animate-in.initial-load {
+    animation: charParticleInitialMobile 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes charParticleMobile {
     0% {
       opacity: 0;
-      transform: translateY(30px) scale(0.7);
-      filter: blur(2px);
+      filter: blur(3px);
+      text-shadow:
+        -8px -6px 2px currentColor,
+        7px -7px 2px currentColor,
+        -5px 8px 2px currentColor,
+        9px 4px 2px currentColor,
+        0 0 12px rgba(var(--primary-400-rgb), 0.4);
+      transform: scale(0.92);
+    }
+
+    50% {
+      opacity: 0.7;
+      filter: blur(1.2px);
+      text-shadow:
+        -3px -2px 1px currentColor,
+        2px -3px 1px currentColor,
+        -2px 3px 1px currentColor,
+        3px 1px 1px currentColor,
+        0 0 6px rgba(var(--primary-400-rgb), 0.3);
+      transform: scale(0.97);
+    }
+
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      text-shadow: none;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes charParticleInitialMobile {
+    0% {
+      opacity: 0;
+      filter: blur(5px);
+      text-shadow:
+        -15px -12px 2.5px currentColor,
+        13px -14px 2.5px currentColor,
+        -11px 15px 2.5px currentColor,
+        16px 10px 2.5px currentColor,
+        -8px -16px 2.5px currentColor,
+        12px 13px 2.5px currentColor,
+        0 0 20px rgba(var(--primary-400-rgb), 0.5);
+      transform: scale(0.82);
     }
 
     40% {
-      opacity: 0.8;
-      transform: translateY(-5px) scale(1.05);
-      filter: blur(1px);
+      opacity: 0.5;
+      filter: blur(2.5px);
+      text-shadow:
+        -6px -5px 1.5px currentColor,
+        5px -6px 1.5px currentColor,
+        -4px 6px 1.5px currentColor,
+        7px 4px 1.5px currentColor,
+        0 0 12px rgba(var(--primary-400-rgb), 0.35);
+      transform: scale(0.92);
+    }
+
+    70% {
+      opacity: 0.85;
+      filter: blur(0.8px);
+      text-shadow:
+        -2px -2px 0.8px currentColor,
+        2px 2px 0.8px currentColor,
+        0 0 5px rgba(var(--primary-400-rgb), 0.2);
+      transform: scale(0.98);
     }
 
     100% {
       opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0px);
+      filter: blur(0);
+      text-shadow: none;
+      transform: scale(1);
     }
   }
 }
 
+/* Phone adjustments - simplified for performance */
 @media (max-width: 480px) {
-  .char.animate-in.initial-load {
-    animation: charRevealInitialSmall 0.6s ease-out forwards;
+  .char.animate-in {
+    animation: charParticleSmall 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
-  @keyframes charRevealInitialSmall {
+  .char.animate-in.initial-load {
+    animation: charParticleInitialSmall 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes charParticleSmall {
     0% {
       opacity: 0;
-      transform: translateY(20px) scale(0.8);
+      filter: blur(2px);
+      text-shadow:
+        -5px -4px 1.5px currentColor,
+        4px -5px 1.5px currentColor,
+        -3px 5px 1.5px currentColor,
+        5px 3px 1.5px currentColor,
+        0 0 8px rgba(var(--primary-400-rgb), 0.35);
+      transform: scale(0.94);
     }
 
     60% {
-      transform: translateY(-3px) scale(1.02);
+      opacity: 0.8;
+      filter: blur(0.6px);
+      text-shadow:
+        -1.5px -1px 0.6px currentColor,
+        1px -1.5px 0.6px currentColor,
+        0 0 4px rgba(var(--primary-400-rgb), 0.2);
+      transform: scale(0.99);
     }
 
     100% {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      filter: blur(0);
+      text-shadow: none;
+      transform: scale(1);
     }
+  }
+
+  @keyframes charParticleInitialSmall {
+    0% {
+      opacity: 0;
+      filter: blur(3.5px);
+      text-shadow:
+        -10px -8px 2px currentColor,
+        9px -9px 2px currentColor,
+        -7px 10px 2px currentColor,
+        11px 6px 2px currentColor,
+        0 0 15px rgba(var(--primary-400-rgb), 0.4);
+      transform: scale(0.88);
+    }
+
+    45% {
+      opacity: 0.6;
+      filter: blur(1.5px);
+      text-shadow:
+        -4px -3px 1px currentColor,
+        3px -4px 1px currentColor,
+        -3px 4px 1px currentColor,
+        4px 2px 1px currentColor,
+        0 0 8px rgba(var(--primary-400-rgb), 0.25);
+      transform: scale(0.95);
+    }
+
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      text-shadow: none;
+      transform: scale(1);
+    }
+  }
+
+  /* Disable hover effect on touch devices */
+  .text-reveal-item.active .char:hover {
+    animation: none;
   }
 }
 
@@ -655,6 +986,31 @@
         rgba(18, 18, 18, 0.3) 80%,
         transparent 100%);
   }
+
+  /* Dark mode grid - more visible lines with accent glow */
+  .text-reveal-container::before {
+    background:
+      /* Vertical lines */
+      repeating-linear-gradient(90deg,
+        rgba(var(--accent-500-rgb), 0.1) 0px,
+        rgba(var(--accent-500-rgb), 0.1) 1px,
+        transparent 1px,
+        transparent 50px),
+      /* Horizontal lines */
+      repeating-linear-gradient(0deg,
+        rgba(var(--accent-500-rgb), 0.1) 0px,
+        rgba(var(--accent-500-rgb), 0.1) 1px,
+        transparent 1px,
+        transparent 50px);
+  }
+
+  /* Dark mode light beam - intensified turquoise glow */
+  .text-reveal-container::after {
+    background: radial-gradient(circle at 100% 0%,
+        rgba(var(--accent-400-rgb), 0.25) 0%,
+        rgba(var(--primary-400-rgb), 0.12) 25%,
+        transparent 60%);
+  }
 }
 
 /* ==========================================================================
@@ -691,29 +1047,36 @@
   gap: 12px;
   align-items: center;
   justify-content: center;
-  /* Constrain width for better legibility on ultra-wide screens */
+  /* Constrain width */
   max-width: 80vw;
   width: max-content;
-  background: linear-gradient(135deg,
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.75),
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.55),
-      rgba(var(--primary-500-rgb, 33, 150, 243), 0.15),
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.65));
+
+  /* Reverted to clean glass look */
+  background: linear-gradient(135deg, rgba(var(--theme-bg-rgb), 0.75), rgba(var(--theme-bg-rgb), 0.85));
+
   backdrop-filter: blur(12px) saturate(120%);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
+
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 10px 14px;
-  z-index: var(--z-overlay, 2200);
+  z-index: var(--z-overlay);
+
+  /* Simple shadow */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.05);
+
   transition:
     background 220ms var(--ease-out),
     border-color 220ms var(--ease-out),
     box-shadow 220ms var(--ease-out),
-    backdrop-filter 220ms var(--ease-out);
+    backdrop-filter 220ms var(--ease-out),
+    transform 220ms var(--ease-out);
 }
 
 /* ========================================================================== */
-/* TERMINAL OVERRIDE: enforce solid brand blue for scroll text (light + dark) */
+/* TERMINAL OVERRIDE: enforce solid colors for scroll text (light + dark) */
 /* ========================================================================== */
 .gradient-text,
 .text-reveal-item.active .gradient-text {
@@ -726,13 +1089,25 @@
   filter: none !important;
 }
 
+/* Dark mode: use turquoise/accent for consistency with bento icons */
 @media (prefers-color-scheme: dark) {
 
   .gradient-text,
   .text-reveal-item.active .gradient-text {
-    /* Lighter brand blue in dark mode for softer glow */
-    color: var(--primary-400, var(--primary-300)) !important;
+    color: var(--accent-400, var(--accent-300)) !important;
   }
+}
+
+/* Explicit light mode override */
+html[data-theme="light"] .gradient-text,
+html[data-theme="light"] .text-reveal-item.active .gradient-text {
+  color: var(--primary-600, var(--primary-500)) !important;
+}
+
+/* Explicit dark mode override */
+html[data-theme="dark"] .gradient-text,
+html[data-theme="dark"] .text-reveal-item.active .gradient-text {
+  color: var(--accent-400, var(--accent-300)) !important;
 }
 
 /* Animated progress bars on sides of stepper - grow equally from both ends */
@@ -1055,6 +1430,35 @@ html[data-theme="dark"] .reveal-stepper.progress-100::after {
       0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
       0 3px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25);
   }
+
+  /* Light Theme Grid Visibility */
+  .text-reveal-container::before {
+    background:
+      /* Vertical lines - Darker for visibility on light bg */
+      repeating-linear-gradient(90deg,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+        transparent 1px,
+        transparent 50px),
+      /* Horizontal lines */
+      repeating-linear-gradient(0deg,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+        transparent 1px,
+        transparent 50px);
+  }
+
+  /* Light Theme Top-Right Light Source */
+  .text-reveal-container::after {
+    background:
+      radial-gradient(circle at 100% 0%,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.15) 30%,
+        transparent 60%),
+      linear-gradient(225deg,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.05) 0%,
+        transparent 50%);
+  }
 }
 
 /* Dark theme adaptations */
@@ -1159,6 +1563,35 @@ html[data-theme="light"] .stepper-dot {
 
 html[data-theme="light"] .stepper-dot:hover {
   background: rgba(0, 0, 0, 0.35);
+}
+
+/* Light Theme Grid Visibility (Manual Override) */
+html[data-theme="light"] .text-reveal-container::before {
+  background:
+    /* Vertical lines - Darker for visibility on light bg */
+    repeating-linear-gradient(90deg,
+      rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+      rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+      transparent 1px,
+      transparent 50px),
+    /* Horizontal lines */
+    repeating-linear-gradient(0deg,
+      rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+      rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+      transparent 1px,
+      transparent 50px);
+}
+
+/* Light Theme Top-Right Light Source (Manual Override) */
+html[data-theme="light"] .text-reveal-container::after {
+  background:
+    radial-gradient(circle at 100% 0%,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.15) 30%,
+      transparent 60%),
+    linear-gradient(225deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.05) 0%,
+      transparent 50%);
 }
 
 html[data-theme="dark"] .reveal-stepper {
@@ -1450,4 +1883,60 @@ body.lock-scroll {
     touch-action: pan-y;
     overscroll-behavior: none;
   }
+}
+
+/* ==========================================================================
+   DARK MODE EXPLICIT OVERRIDES - Turquoise accent for consistency
+   ========================================================================== */
+
+html[data-theme="dark"] .reveal-stepper::before,
+html[data-theme="dark"] .reveal-stepper::after {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9);
+  box-shadow:
+    0 0 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 0 24px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+}
+
+html[data-theme="dark"] .reveal-stepper::before {
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9));
+}
+
+html[data-theme="dark"] .reveal-stepper::after {
+  background: linear-gradient(90deg, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9), transparent);
+}
+
+html[data-theme="dark"] .stepper-dot.active {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9) !important;
+  border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 2px 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25) !important;
+}
+
+html[data-theme="dark"] .stepper-dot.active:hover {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 1) !important;
+  box-shadow:
+    0 0 18px rgba(var(--accent-400-rgb, 38, 201, 216), 0.6),
+    0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.3) !important;
+}
+
+html[data-theme="dark"] .stepper-dot:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4),
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.3);
+}
+
+html[data-theme="dark"] .stepper-dot.active:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 0 20px rgba(var(--accent-400-rgb, 38, 201, 216), 0.6),
+    0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35) !important;
+}
+
+html[data-theme="dark"] .reveal-stepper .stepper-dot.active {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9) !important;
+  border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 2px 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25) !important;
 }

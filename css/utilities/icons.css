@@ -213,8 +213,6 @@ button .icon,
 .btn-warning img.icon,
 .btn-danger img.icon,
 .btn-info img.icon,
-button.privacy-action-btn img.icon,
-a.privacy-action-btn img.icon,
 .consent-btn-accept img.icon {
     color: white;
 }
@@ -225,8 +223,6 @@ a.privacy-action-btn img.icon,
 .btn-warning .icon-gradient,
 .btn-danger .icon-gradient,
 .btn-info .icon-gradient,
-button.privacy-action-btn .icon-gradient,
-a.privacy-action-btn .icon-gradient,
 .consent-btn-accept .icon-gradient {
     display: none !important;
 }
@@ -236,8 +232,6 @@ a.privacy-action-btn .icon-gradient,
 .btn-warning .icon-mono,
 .btn-danger .icon-mono,
 .btn-info .icon-mono,
-button.privacy-action-btn .icon-mono,
-a.privacy-action-btn .icon-mono,
 .consent-btn-accept .icon-mono {
     display: block !important;
 }
@@ -265,7 +259,6 @@ a.privacy-action-btn .icon-mono,
 
 /* On buttons, ensure white icons on colored backgrounds */
 button .icon-mono,
-a.privacy-action-btn .icon-mono,
 .btn-primary .icon-mono,
 .btn-success .icon-mono,
 .btn-warning .icon-mono,

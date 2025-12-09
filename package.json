@@ -12,9 +12,7 @@
     "deploy:prepare": "bun run build && bun run optimize && bun run validate",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
     "deploy": "bun run deploy:prepare && bun scripts/deploy.js",
-    "lighthouse": "bun scripts/lighthouse.js",
-    "serve:dist": "node scripts/server.js",
-    "dev": "bun run serve"
+    "serve:dist": "node scripts/server.js"
   },
   "devDependencies": {
     "terser": "^5.36.0",

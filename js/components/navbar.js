@@ -11,15 +11,18 @@
  */
 
 (function () {
+  const GRADIENT_START = '#2196f3';
+  const GRADIENT_END = '#00b8cc';
+
   function buildNavHTML() {
-    // Robust base path detection for sub-directory deployments
-    // Use current directory as base (e.g., "/jayptl.me/") for subdir deployments
-    const basePath = new URL(".", location).pathname;
-    const onHome = location.pathname === basePath || /(?:^|\/)index\.html?$/i.test(location.pathname);
-    const homeHref = basePath; // directory path (always ends with "/")
-    const projectsHref = onHome ? "#projects" : `${basePath}#projects`;
-    const privacyHref = `${basePath}privacy.html`;
-    const designSystemHref = `${basePath}design-system.html`;
+    // Use absolute paths from root for consistent behavior across dev/production
+    const pathname = location.pathname;
+    const onHome = pathname === '/' || pathname === '/index.html' || pathname.endsWith('/index.html');
+    const homeHref = '/';
+    const projectsHref = onHome ? '#bento-showcase' : '/#bento-showcase';
+    const privacyHref = '/pages/privacy.html';
+    const designSystemHref = '/pages/design-system.html';
+
 
     return `
       <header id="glassNav" class="glass-nav" aria-label="Primary Navigation" role="banner">
@@ -36,8 +39,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon" width="24" height="24" aria-hidden="true">
                   <defs>
                     <linearGradient id="projectsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
-                      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+                      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, ${GRADIENT_START});stop-opacity:1" />
+                      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, ${GRADIENT_END});stop-opacity:1" />
                     </linearGradient>
                   </defs>
                   <g class="icon-gradient">
@@ -69,8 +72,8 @@
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon" width="24" height="24" aria-hidden="true">
                     <defs>
                       <linearGradient id="moreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
-                        <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+                        <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, ${GRADIENT_START});stop-opacity:1" />
+                        <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, ${GRADIENT_END});stop-opacity:1" />
                       </linearGradient>
                     </defs>
                     <g class="icon-gradient">

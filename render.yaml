@@ -6,6 +6,10 @@ services:
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: true
     
+    # Error page configuration
+    errorDocument: /pages/404.html
+    serverErrorDocument: /pages/500.html
+    
     headers:
       - path: /*
         name: X-Frame-Options
@@ -49,10 +53,23 @@ services:
         destination: /pages/design-system.html
       - type: redirect
         source: /about.html
-        destination: /pages/about.html
+        destination: /about
       - type: redirect
         source: /privacy.html
-        destination: /pages/privacy.html
+        destination: /privacy
+      - type: redirect
+        source: /design-system.html
+        destination: /design-system
+      # Prevent direct access to /pages/* paths
+      - type: redirect
+        source: /pages/about.html
+        destination: /about
+      - type: redirect
+        source: /pages/privacy.html
+        destination: /privacy
+      - type: redirect
+        source: /pages/design-system.html
+        destination: /design-system
     
     envVars:
       - key: NODE_VERSION

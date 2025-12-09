@@ -1,0 +1,753 @@
+/**
+ * Form Components
+ * Skeuomorphic (light) / Glassmorphic (dark) form system
+ * 
+ * @file components/forms.css
+ */
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+@keyframes check-bounce {
+    0% {
+        transform: rotate(45deg) scale(0);
+    }
+
+    50% {
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(45deg) scale(1);
+    }
+}
+
+@keyframes radio-pop {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* ==========================================================================
+   FORM GROUP
+   ========================================================================== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.form-row {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+/* ==========================================================================
+   LABELS
+   ========================================================================== */
+.form-label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--theme-text);
+    transition: color var(--duration-200) var(--ease-out);
+}
+
+.form-label-required::after {
+    content: ' *';
+    color: var(--error);
+}
+
+.form-hint {
+    font-size: var(--text-xs);
+    color: var(--theme-text-secondary);
+    margin-top: var(--space-1);
+}
+
+/* ==========================================================================
+   BASE INPUT STYLES
+   Light: Skeuomorphic pressed/inset appearance
+   Dark: Glass surface
+   ========================================================================== */
+.form-input,
+.form-textarea,
+.form-select {
+    /* Layout */
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    min-height: 44px;
+
+    /* Typography */
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--theme-text);
+
+    /* Visual */
+    border-radius: var(--rounded-lg);
+
+    /* Animation */
+    transition: all var(--duration-200) var(--ease-smooth);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--theme-text-tertiary);
+    opacity: 1;
+}
+
+/* Light Mode - Skeuomorphic Inset */
+html[data-theme="light"] .form-input,
+html[data-theme="light"] .form-textarea,
+html[data-theme="light"] .form-select {
+    background: var(--skeu-bg);
+    border: 1px solid var(--skeu-border);
+    box-shadow: var(--skeu-shadow-pressed-sm);
+}
+
+html[data-theme="light"] .form-input:hover:not(:focus):not(:disabled),
+html[data-theme="light"] .form-textarea:hover:not(:focus):not(:disabled),
+html[data-theme="light"] .form-select:hover:not(:focus):not(:disabled) {
+    border-color: var(--skeu-border-strong);
+    box-shadow: var(--skeu-shadow-pressed);
+}
+
+html[data-theme="light"] .form-input:focus,
+html[data-theme="light"] .form-textarea:focus,
+html[data-theme="light"] .form-select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: var(--skeu-shadow-pressed), 0 0 0 3px rgba(var(--primary-500-rgb), 0.15);
+}
+
+/* Dark Mode - Glass */
+html[data-theme="dark"] .form-input,
+html[data-theme="dark"] .form-textarea,
+html[data-theme="dark"] .form-select {
+    background: var(--glass-bg-surface);
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .form-input:hover:not(:focus):not(:disabled),
+html[data-theme="dark"] .form-textarea:hover:not(:focus):not(:disabled),
+html[data-theme="dark"] .form-select:hover:not(:focus):not(:disabled) {
+    border-color: var(--glass-border-hover);
+}
+
+html[data-theme="dark"] .form-input:focus,
+html[data-theme="dark"] .form-textarea:focus,
+html[data-theme="dark"] .form-select:focus {
+    outline: none;
+    border-color: var(--accent-400);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(var(--accent-400-rgb), 0.15);
+}
+
+/* Disabled State */
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+html[data-theme="light"] .form-input:disabled,
+html[data-theme="light"] .form-textarea:disabled,
+html[data-theme="light"] .form-select:disabled {
+    background: var(--neutral-100);
+}
+
+html[data-theme="dark"] .form-input:disabled,
+html[data-theme="dark"] .form-textarea:disabled,
+html[data-theme="dark"] .form-select:disabled {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   GLASS INPUT VARIANT
+   ========================================================================== */
+.form-input-glass,
+.form-textarea-glass,
+.form-select-glass {
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+}
+
+html[data-theme="light"] .form-input-glass,
+html[data-theme="light"] .form-textarea-glass,
+html[data-theme="light"] .form-select-glass {
+    background: var(--skeu-bg-elevated);
+    box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
+    border: 1px solid var(--skeu-border);
+}
+
+html[data-theme="light"] .form-input-glass:focus,
+html[data-theme="light"] .form-textarea-glass:focus,
+html[data-theme="light"] .form-select-glass:focus {
+    box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight), 0 0 0 3px rgba(var(--primary-500-rgb), 0.15);
+}
+
+html[data-theme="dark"] .form-input-glass,
+html[data-theme="dark"] .form-textarea-glass,
+html[data-theme="dark"] .form-select-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+}
+
+html[data-theme="dark"] .form-input-glass:focus,
+html[data-theme="dark"] .form-textarea-glass:focus,
+html[data-theme="dark"] .form-select-glass:focus {
+    border-color: var(--accent-400);
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow), 0 0 0 3px rgba(var(--accent-400-rgb), 0.15);
+}
+
+/* ==========================================================================
+   TEXTAREA
+   ========================================================================== */
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: var(--leading-relaxed);
+}
+
+/* ==========================================================================
+   SELECT
+   ========================================================================== */
+
+/* Select Wrapper - required for custom arrow */
+.form-select-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* Arrow icon via pseudo-element */
+.form-select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--neutral-500);
+    pointer-events: none;
+    transition: border-color var(--duration-200) var(--ease-out);
+}
+
+html[data-theme="light"] .form-select-wrapper::after {
+    border-top-color: var(--neutral-500);
+}
+
+html[data-theme="light"] .form-select-wrapper:hover::after {
+    border-top-color: var(--primary-600);
+}
+
+html[data-theme="dark"] .form-select-wrapper::after {
+    border-top-color: var(--neutral-400);
+}
+
+html[data-theme="dark"] .form-select-wrapper:hover::after {
+    border-top-color: var(--accent-400);
+}
+
+/* The select itself */
+.form-select {
+    /* Remove ALL native styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none !important;
+    background: var(--theme-surface);
+
+    /* Spacing for arrow */
+    padding-right: 40px;
+    cursor: pointer;
+
+    /* Full width inside wrapper */
+    width: 100%;
+}
+
+/* Remove IE/Edge native arrow */
+.form-select::-ms-expand {
+    display: none;
+}
+
+/* Select Option Styling */
+.form-select option {
+    padding: var(--space-3);
+    font-size: var(--text-base);
+}
+
+html[data-theme="light"] .form-select option {
+    background: var(--white);
+    color: var(--neutral-900);
+}
+
+html[data-theme="dark"] .form-select option {
+    background: var(--neutral-900);
+    color: var(--neutral-100);
+}
+
+/* Placeholder option styling */
+.form-select option[value=""],
+.form-select option:disabled {
+    color: var(--neutral-400);
+}
+
+/* ==========================================================================
+   CUSTOM CHECKBOX
+   ========================================================================== */
+.checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-mark {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--rounded-md);
+    transition: all var(--duration-200) var(--ease-spring);
+    flex-shrink: 0;
+}
+
+/* Light Mode - Skeuomorphic Checkbox */
+html[data-theme="light"] .checkbox-mark {
+    background: var(--skeu-bg);
+    border: 2px solid var(--skeu-border-strong);
+    box-shadow: var(--skeu-shadow-pressed-sm);
+}
+
+html[data-theme="light"] .checkbox:hover .checkbox-mark {
+    border-color: var(--primary-400);
+    box-shadow: var(--skeu-shadow-pressed-sm), 0 0 0 3px rgba(var(--primary-500-rgb), 0.1);
+}
+
+html[data-theme="light"] .checkbox input:checked~.checkbox-mark {
+    background: var(--theme-gradient-primary);
+    border-color: transparent;
+    box-shadow: var(--skeu-shadow-raised-sm);
+}
+
+/* Dark Mode - Glass Checkbox */
+html[data-theme="dark"] .checkbox-mark {
+    background: var(--glass-bg-surface);
+    border: 2px solid var(--glass-border);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .checkbox:hover .checkbox-mark {
+    border-color: var(--accent-400);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), var(--glass-glow-accent);
+}
+
+html[data-theme="dark"] .checkbox input:checked~.checkbox-mark {
+    background: var(--theme-gradient-primary);
+    border-color: transparent;
+    box-shadow: var(--glass-shadow), var(--glass-glow-accent);
+}
+
+.checkbox-mark::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform var(--duration-200) var(--ease-spring);
+}
+
+.checkbox input:checked~.checkbox-mark::after {
+    animation: check-bounce var(--duration-300) var(--ease-spring) forwards;
+}
+
+.checkbox input:focus-visible~.checkbox-mark {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
+}
+
+.checkbox-label {
+    font-size: var(--text-sm);
+    color: var(--theme-text);
+}
+
+/* ==========================================================================
+   CUSTOM RADIO
+   ========================================================================== */
+.radio {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    user-select: none;
+}
+
+.radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.radio-mark {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--rounded-full);
+    transition: all var(--duration-200) var(--ease-spring);
+    flex-shrink: 0;
+}
+
+/* Light Mode - Skeuomorphic Radio */
+html[data-theme="light"] .radio-mark {
+    background: var(--skeu-bg);
+    border: 2px solid var(--skeu-border-strong);
+    box-shadow: var(--skeu-shadow-pressed-sm);
+}
+
+html[data-theme="light"] .radio:hover .radio-mark {
+    border-color: var(--primary-400);
+    box-shadow: var(--skeu-shadow-pressed-sm), 0 0 0 3px rgba(var(--primary-500-rgb), 0.1);
+}
+
+html[data-theme="light"] .radio input:checked~.radio-mark {
+    border-color: var(--primary-500);
+    box-shadow: var(--skeu-shadow-raised-sm);
+}
+
+/* Dark Mode - Glass Radio */
+html[data-theme="dark"] .radio-mark {
+    background: var(--glass-bg-surface);
+    border: 2px solid var(--glass-border);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .radio:hover .radio-mark {
+    border-color: var(--accent-400);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), var(--glass-glow-accent);
+}
+
+html[data-theme="dark"] .radio input:checked~.radio-mark {
+    border-color: var(--accent-400);
+    box-shadow: var(--glass-shadow), var(--glass-glow-accent);
+}
+
+.radio-mark::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--theme-gradient-primary);
+    border-radius: var(--rounded-full);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--duration-200) var(--ease-spring);
+}
+
+.radio input:checked~.radio-mark::after {
+    animation: radio-pop var(--duration-300) var(--ease-spring) forwards;
+}
+
+.radio input:focus-visible~.radio-mark {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
+}
+
+.radio-label {
+    font-size: var(--text-sm);
+    color: var(--theme-text);
+}
+
+/* ==========================================================================
+   TOGGLE SWITCH
+   ========================================================================== */
+.toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.toggle-track {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    border-radius: var(--rounded-full);
+    transition: all var(--duration-300) var(--ease-spring);
+    flex-shrink: 0;
+}
+
+/* Light Mode - Skeuomorphic Toggle */
+html[data-theme="light"] .toggle-track {
+    background: var(--skeu-bg);
+    box-shadow: var(--skeu-shadow-pressed);
+    border: 1px solid var(--skeu-border);
+}
+
+html[data-theme="light"] .toggle:hover .toggle-track {
+    box-shadow: var(--skeu-shadow-pressed), 0 0 0 3px rgba(var(--primary-500-rgb), 0.1);
+}
+
+html[data-theme="light"] .toggle input:checked~.toggle-track {
+    background: var(--theme-gradient-primary);
+    box-shadow: var(--skeu-shadow-raised-sm);
+    border-color: transparent;
+}
+
+/* Dark Mode - Glass Toggle */
+html[data-theme="dark"] .toggle-track {
+    background: var(--glass-bg-surface);
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+}
+
+html[data-theme="dark"] .toggle:hover .toggle-track {
+    border-color: var(--glass-border-hover);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), var(--glass-glow-accent);
+}
+
+html[data-theme="dark"] .toggle input:checked~.toggle-track {
+    background: var(--theme-gradient-primary);
+    box-shadow: var(--glass-shadow), var(--glass-glow-accent);
+    border-color: transparent;
+}
+
+.toggle-thumb {
+    position: absolute;
+    left: 3px;
+    top: 1.5px;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--rounded-full);
+    transition: all var(--duration-300) var(--ease-spring);
+}
+
+/* Light Mode Toggle Thumb */
+html[data-theme="light"] .toggle-thumb {
+    background: white;
+    box-shadow: var(--skeu-shadow-raised-sm);
+}
+
+/* Dark Mode Toggle Thumb */
+html[data-theme="dark"] .toggle-thumb {
+    background: var(--neutral-200);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.toggle input:checked~.toggle-track .toggle-thumb {
+    left: 27px;
+}
+
+.toggle input:focus-visible~.toggle-track {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
+}
+
+.toggle-label {
+    font-size: var(--text-sm);
+    color: var(--theme-text);
+}
+
+/* ==========================================================================
+   INPUT SIZES
+   ========================================================================== */
+.form-input-sm,
+.form-select-sm {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    min-height: 36px;
+}
+
+.form-input-lg,
+.form-select-lg {
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-lg);
+    min-height: 52px;
+}
+
+/* ==========================================================================
+   VALIDATION STATES
+   ========================================================================== */
+.form-input-error,
+.form-textarea-error,
+.form-select-error {
+    border-color: var(--error);
+}
+
+html[data-theme="light"] .form-input-error,
+html[data-theme="light"] .form-textarea-error,
+html[data-theme="light"] .form-select-error {
+    box-shadow: var(--skeu-shadow-pressed-sm), 0 0 0 1px rgba(var(--danger-rgb), 0.2);
+}
+
+html[data-theme="dark"] .form-input-error,
+html[data-theme="dark"] .form-textarea-error,
+html[data-theme="dark"] .form-select-error {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(var(--danger-rgb), 0.3);
+}
+
+.form-input-error:focus,
+.form-textarea-error:focus,
+.form-select-error:focus {
+    box-shadow: 0 0 0 3px rgba(var(--danger-rgb), 0.2);
+}
+
+.form-error-message {
+    font-size: var(--text-xs);
+    color: var(--error);
+    margin-top: var(--space-1);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.form-input-success,
+.form-textarea-success,
+.form-select-success {
+    border-color: var(--success);
+}
+
+html[data-theme="light"] .form-input-success,
+html[data-theme="light"] .form-textarea-success,
+html[data-theme="light"] .form-select-success {
+    box-shadow: var(--skeu-shadow-pressed-sm), 0 0 0 1px rgba(var(--success-rgb), 0.2);
+}
+
+html[data-theme="dark"] .form-input-success,
+html[data-theme="dark"] .form-textarea-success,
+html[data-theme="dark"] .form-select-success {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(var(--success-rgb), 0.3);
+}
+
+.form-input-success:focus,
+.form-textarea-success:focus,
+.form-select-success:focus {
+    box-shadow: 0 0 0 3px rgba(var(--success-rgb), 0.2);
+}
+
+/* ==========================================================================
+   INPUT WITH ICON
+   ========================================================================== */
+.form-input-wrapper {
+    position: relative;
+}
+
+.form-input-icon {
+    position: absolute;
+    left: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--theme-text-tertiary);
+    pointer-events: none;
+    transition: color var(--duration-200) var(--ease-out);
+}
+
+.form-input-wrapper .form-input {
+    padding-left: var(--space-10);
+}
+
+.form-input-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.form-input-wrapper:focus-within .form-input-icon {
+    color: var(--theme-primary);
+}
+
+/* ==========================================================================
+   FORM CHECK (Native enhanced)
+   ========================================================================== */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--theme-primary);
+    cursor: pointer;
+}
+
+.form-check-label {
+    font-size: var(--text-sm);
+    color: var(--theme-text);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    .form-input,
+    .form-textarea,
+    .form-select,
+    .checkbox-mark,
+    .checkbox-mark::after,
+    .radio-mark,
+    .radio-mark::after,
+    .toggle-track,
+    .toggle-thumb {
+        transition: none;
+        animation: none !important;
+    }
+}

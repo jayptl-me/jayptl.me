@@ -1,18 +1,175 @@
-/* Placeholder accent-card styles to satisfy @import until component implemented */
+/**
+ * Accent Card Component
+ * Skeuomorphic (light) / Glassmorphic (dark) accent card
+ * 
+ * @file components/accent-card.css
+ */
+
+/* ==========================================================================
+   ACCENT CARD BASE
+   ========================================================================== */
 .accent-card {
-    border: 1px solid rgba(33, 150, 243, 0.25);
-    border-radius: 16px;
-    padding: 1.25rem 1.5rem;
-    background: linear-gradient(145deg, rgba(33, 150, 243, 0.08), rgba(25, 118, 210, 0.05));
-    backdrop-filter: blur(6px);
+    position: relative;
+    border-radius: var(--rounded-xl);
+    padding: var(--space-5) var(--space-6);
+    z-index: 1;
+    overflow: hidden;
+    transition: box-shadow var(--duration-200) var(--ease-out),
+        background-color var(--duration-200) var(--ease-out);
 }
 
-.accent-card h3 {
-    margin-top: 0;
-    font-weight: 600;
+/* Gradient Border */
+.accent-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.4;
+    transition: opacity var(--duration-200) var(--ease-out);
+    pointer-events: none;
 }
 
-.accent-card p {
-    margin: 0.25rem 0 0;
-    line-height: 1.5;
+/* ==========================================================================
+   LIGHT MODE - Skeuomorphic
+   ========================================================================== */
+html[data-theme="light"] .accent-card {
+    background: var(--skeu-bg-elevated);
+    box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight);
+    color: var(--neutral-900);
+}
+
+html[data-theme="light"] .accent-card::before {
+    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+}
+
+html[data-theme="light"] .accent-card h3,
+html[data-theme="light"] .accent-card-title {
+    color: var(--neutral-900);
+}
+
+html[data-theme="light"] .accent-card:hover h3,
+html[data-theme="light"] .accent-card:hover .accent-card-title {
+    color: var(--primary-600);
+}
+
+html[data-theme="light"] .accent-card p,
+html[data-theme="light"] .accent-card-description {
+    color: var(--neutral-600);
+}
+
+html[data-theme="light"] .accent-card a {
+    color: var(--primary-600);
+}
+
+html[data-theme="light"] .accent-card a:hover {
+    color: var(--primary-700);
+}
+
+html[data-theme="light"] .accent-card:hover {
+    box-shadow: var(--skeu-shadow-raised-lg), var(--skeu-highlight);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   DARK MODE - Glassmorphism
+   ========================================================================== */
+html[data-theme="dark"] .accent-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
+    color: var(--neutral-100);
+}
+
+html[data-theme="dark"] .accent-card::before {
+    background: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+}
+
+html[data-theme="dark"] .accent-card h3,
+html[data-theme="dark"] .accent-card-title {
+    color: var(--neutral-100);
+}
+
+html[data-theme="dark"] .accent-card:hover h3,
+html[data-theme="dark"] .accent-card:hover .accent-card-title {
+    color: var(--accent-400);
+}
+
+html[data-theme="dark"] .accent-card p,
+html[data-theme="dark"] .accent-card-description {
+    color: var(--neutral-400);
+}
+
+html[data-theme="dark"] .accent-card a {
+    color: var(--accent-400);
+}
+
+html[data-theme="dark"] .accent-card a:hover {
+    color: var(--accent-300);
+}
+
+html[data-theme="dark"] .accent-card:hover {
+    box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   HOVER STATES
+   ========================================================================== */
+.accent-card:hover::before {
+    opacity: 0.85;
+}
+
+/* ==========================================================================
+   ACCENT CARD CONTENT
+   ========================================================================== */
+.accent-card h3,
+.accent-card-title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    transition: color var(--duration-200) var(--ease-out);
+}
+
+.accent-card p,
+.accent-card-description {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+}
+
+/* ==========================================================================
+   FOCUS STATE
+   ========================================================================== */
+html[data-theme="light"] .accent-card:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+html[data-theme="dark"] .accent-card:focus-visible {
+    outline: 2px solid var(--accent-400);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    .accent-card,
+    .accent-card::before,
+    .accent-card h3,
+    .accent-card-title {
+        transition: none;
+    }
 }

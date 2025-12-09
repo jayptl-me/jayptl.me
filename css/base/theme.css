@@ -65,6 +65,40 @@ html {
   --theme-error: var(--error);
   --theme-warning: var(--warning);
   --theme-info: var(--info);
+
+  /* Icon Colors - Light Mode: Blue primary */
+  --theme-icon: var(--primary-500);
+  --theme-icon-hover: var(--primary-600);
+  --theme-icon-glow-rgb: var(--primary-500-rgb);
+
+  /* Interactive Glow States - Light Mode */
+  --theme-glow: var(--glow-primary);
+  --theme-glow-sm: var(--glow-primary-sm);
+  --theme-glow-lg: var(--glow-primary-lg);
+  --theme-glow-intense: var(--glow-primary-intense);
+
+  /* Surface Elevation - Light Mode */
+  --theme-elevation-1: var(--elevation-1);
+  --theme-elevation-2: var(--elevation-2);
+  --theme-elevation-3: var(--elevation-3);
+  --theme-elevation-4: var(--elevation-4);
+  --theme-elevation-5: var(--elevation-5);
+
+  /* Enhanced Gradients - Light Mode */
+  --theme-gradient-glow: linear-gradient(135deg, rgba(var(--primary-500-rgb), 0.1), rgba(var(--accent-500-rgb), 0.08));
+  --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  --theme-gradient-border: var(--border-gradient-primary);
+
+  /* Theme Surface Style - Light Mode (Skeuomorphic) */
+  --theme-surface-bg: var(--skeu-bg);
+  --theme-surface-shadow: var(--skeu-shadow-raised);
+  --theme-surface-shadow-sm: var(--skeu-shadow-raised-sm);
+  --theme-surface-shadow-lg: var(--skeu-shadow-raised-lg);
+  --theme-surface-shadow-hover: var(--skeu-shadow-raised-lg);
+  --theme-surface-pressed: var(--skeu-shadow-pressed);
+  --theme-surface-border: 1px solid var(--skeu-border);
+  --theme-surface-highlight: var(--skeu-highlight);
+  --theme-surface-blur: 0px;
 }
 
 /* ==========================================================================
@@ -114,8 +148,24 @@ html[data-theme="light"] {
   --theme-warning: var(--warning);
   --theme-info: var(--info);
 
+  /* Icon Colors - Light Mode: Blue primary */
+  --theme-icon: var(--primary-500);
+  --theme-icon-hover: var(--primary-600);
+  --theme-icon-glow-rgb: var(--primary-500-rgb);
+
+  /* Theme Surface Style - Light Mode (Skeuomorphic) */
+  --theme-surface-bg: var(--skeu-bg);
+  --theme-surface-shadow: var(--skeu-shadow-raised);
+  --theme-surface-shadow-sm: var(--skeu-shadow-raised-sm);
+  --theme-surface-shadow-lg: var(--skeu-shadow-raised-lg);
+  --theme-surface-shadow-hover: var(--skeu-shadow-raised-lg);
+  --theme-surface-pressed: var(--skeu-shadow-pressed);
+  --theme-surface-border: 1px solid var(--skeu-border);
+  --theme-surface-highlight: var(--skeu-highlight);
+  --theme-surface-blur: 0px;
+
   background-color: var(--white);
-  color: var(--gray-900);
+  color: var(--theme-text);
 }
 
 html[data-theme="dark"] {
@@ -162,8 +212,42 @@ html[data-theme="dark"] {
   --theme-warning: var(--warning);
   --theme-info: var(--info);
 
+  /* Icon Colors - Dark Mode: Turquoise accent */
+  --theme-icon: var(--accent-400);
+  --theme-icon-hover: var(--accent-300);
+  --theme-icon-glow-rgb: var(--accent-400-rgb);
+
+  /* Interactive Glow States - Dark Mode (Turquoise) */
+  --theme-glow: var(--glow-accent);
+  --theme-glow-sm: var(--glow-accent-sm);
+  --theme-glow-lg: var(--glow-accent-lg);
+  --theme-glow-intense: var(--glow-accent-intense);
+
+  /* Surface Elevation - Dark Mode (Stronger shadows) */
+  --theme-elevation-1: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --theme-elevation-2: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --theme-elevation-3: 0 10px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  --theme-elevation-4: 0 20px 40px rgba(0, 0, 0, 0.45), 0 8px 16px rgba(0, 0, 0, 0.35);
+  --theme-elevation-5: 0 32px 56px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.4);
+
+  /* Enhanced Gradients - Dark Mode */
+  --theme-gradient-glow: linear-gradient(135deg, rgba(var(--accent-400-rgb), 0.12), rgba(var(--primary-400-rgb), 0.1));
+  --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+  --theme-gradient-border: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+
+  /* Theme Surface Style - Dark Mode (Glassmorphism) */
+  --theme-surface-bg: var(--glass-bg);
+  --theme-surface-shadow: var(--glass-shadow);
+  --theme-surface-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --theme-surface-shadow-lg: var(--glass-shadow-elevated);
+  --theme-surface-shadow-hover: var(--glass-shadow-elevated);
+  --theme-surface-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  --theme-surface-border: 1px solid var(--glass-border);
+  --theme-surface-highlight: var(--glass-inner-glow);
+  --theme-surface-blur: var(--glass-blur);
+
   background-color: var(--black);
-  color: var(--gray-100);
+  color: var(--theme-text);
 }
 
 /* ==========================================================================
@@ -208,6 +292,40 @@ html[data-theme="dark"] {
     --theme-gradient-primary: linear-gradient(135deg, var(--primary-400), var(--accent-400));
     --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
     --theme-gradient-text: linear-gradient(135deg, var(--primary-300), var(--accent-300));
+
+    /* Icon Colors - Dark Mode: Turquoise accent */
+    --theme-icon: var(--accent-400);
+    --theme-icon-hover: var(--accent-300);
+    --theme-icon-glow-rgb: var(--accent-400-rgb);
+
+    /* Interactive Glow States - Dark Mode (Turquoise) */
+    --theme-glow: var(--glow-accent);
+    --theme-glow-sm: var(--glow-accent-sm);
+    --theme-glow-lg: var(--glow-accent-lg);
+    --theme-glow-intense: var(--glow-accent-intense);
+
+    /* Surface Elevation - Dark Mode */
+    --theme-elevation-1: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --theme-elevation-2: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+    --theme-elevation-3: 0 10px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+    --theme-elevation-4: 0 20px 40px rgba(0, 0, 0, 0.45), 0 8px 16px rgba(0, 0, 0, 0.35);
+    --theme-elevation-5: 0 32px 56px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.4);
+
+    /* Enhanced Gradients - Dark Mode */
+    --theme-gradient-glow: linear-gradient(135deg, rgba(var(--accent-400-rgb), 0.12), rgba(var(--primary-400-rgb), 0.1));
+    --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    --theme-gradient-border: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+
+    /* Theme Surface Style - Dark Mode (Glassmorphism) */
+    --theme-surface-bg: var(--glass-bg);
+    --theme-surface-shadow: var(--glass-shadow);
+    --theme-surface-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --theme-surface-shadow-lg: var(--glass-shadow-elevated);
+    --theme-surface-shadow-hover: var(--glass-shadow-elevated);
+    --theme-surface-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    --theme-surface-border: 1px solid var(--glass-border);
+    --theme-surface-highlight: var(--glass-inner-glow);
+    --theme-surface-blur: var(--glass-blur);
   }
 }
 

@@ -11,12 +11,23 @@ class BentoGrid {
     this.container = document.querySelector('.bento-grid-scroll-container');
     this.overlay = document.getElementById('bentoOverlay');
     this.section = document.querySelector('.bento-grid-section');
-    this.scrollSpeed = 1.2; // pixels per frame for horizontal scroll
+
+    // Premium scroll settings
+    this.baseScrollSpeed = 0.9; // Base pixels per frame
+    this.scrollSpeed = this.baseScrollSpeed;
     this.isPaused = false;
     this.scrollDirection = 1; // 1 for right, -1 for left
     this.animationFrameId = null;
     this.hasRevealed = false;
-    
+
+    // Sine wave motion parameters for organic feel
+    this.scrollTime = 0;
+    this.sineAmplitude = 0.35; // Speed variation amplitude (0.35 = 35%)
+    this.sineFrequency = 0.008; // Oscillation frequency
+
+    // Boundary easing
+    this.boundaryEaseDistance = 200;
+
     if (this.container && this.overlay && this.section) {
       this.init();
     }
@@ -25,7 +36,7 @@ class BentoGrid {
   init() {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+
     if (prefersReducedMotion) {
       console.log('Reduced motion preferred, auto-scroll disabled');
       this.revealGrid();
@@ -68,7 +79,7 @@ class BentoGrid {
 
     const handleScroll = () => {
       const sectionRect = this.section.getBoundingClientRect();
-      
+
       // Reveal when scrolling down into section
       if (sectionRect.top < revealThreshold && !this.hasRevealed) {
         this.revealGrid();
@@ -84,12 +95,12 @@ class BentoGrid {
 
   revealGrid() {
     this.hasRevealed = true;
-    
+
     // Ensure overlay is visible first
     if (this.overlay) {
       this.overlay.style.display = 'flex';
       this.overlay.classList.remove('hidden');
-      
+
       // Animate overlay out
       requestAnimationFrame(() => {
         this.overlay.classList.add('revealing');
@@ -99,7 +110,7 @@ class BentoGrid {
     // Reveal grid
     if (this.container) {
       this.container.classList.add('revealed');
-      
+
       // Start auto-scroll after reveal
       setTimeout(() => {
         this.startAutoScroll();
@@ -110,13 +121,13 @@ class BentoGrid {
   hideGrid() {
     this.hasRevealed = false;
     this.stopAutoScroll();
-    
+
     // Bring overlay back
     if (this.overlay) {
       this.overlay.style.display = 'flex';
       this.overlay.classList.remove('revealing');
       this.overlay.classList.add('hidden');
-      
+
       // Remove hidden class to reset for next reveal
       setTimeout(() => {
         this.overlay.classList.remove('hidden');
@@ -156,13 +167,32 @@ class BentoGrid {
         const maxScroll = this.container.scrollWidth - this.container.clientWidth;
         const currentScroll = this.container.scrollLeft;
 
-        // Smooth horizontal scroll
-        this.container.scrollLeft += this.scrollSpeed * this.scrollDirection;
+        // Increment time for sine wave calculation
+        this.scrollTime += 1;
+
+        // Sine wave modulation for organic, breathing motion
+        const sineModifier = 1 + Math.sin(this.scrollTime * this.sineFrequency) * this.sineAmplitude;
+
+        // Calculate boundary easing (slow down near edges)
+        let boundaryEase = 1;
+        if (this.scrollDirection === 1 && currentScroll > maxScroll - this.boundaryEaseDistance) {
+          // Approaching right edge
+          boundaryEase = (maxScroll - currentScroll) / this.boundaryEaseDistance;
+          boundaryEase = Math.max(0.1, Math.pow(boundaryEase, 0.5)); // Smooth ease curve
+        } else if (this.scrollDirection === -1 && currentScroll < this.boundaryEaseDistance) {
+          // Approaching left edge
+          boundaryEase = currentScroll / this.boundaryEaseDistance;
+          boundaryEase = Math.max(0.1, Math.pow(boundaryEase, 0.5));
+        }
+
+        // Apply combined speed modifiers
+        const finalSpeed = this.baseScrollSpeed * sineModifier * boundaryEase;
+        this.container.scrollLeft += finalSpeed * this.scrollDirection;
 
         // Reverse direction at boundaries with smooth transition
-        if (currentScroll >= maxScroll - 10 && this.scrollDirection === 1) {
+        if (currentScroll >= maxScroll - 2 && this.scrollDirection === 1) {
           this.scrollDirection = -1; // Scroll left
-        } else if (currentScroll <= 10 && this.scrollDirection === -1) {
+        } else if (currentScroll <= 2 && this.scrollDirection === -1) {
           this.scrollDirection = 1; // Scroll right
         }
       }

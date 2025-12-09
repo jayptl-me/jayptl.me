@@ -35,7 +35,7 @@ const log = {
 const config = {
   sourceDir: process.cwd(),
   distDir: path.join(process.cwd(), 'dist'),
-  
+
   // Files and directories to copy
   include: [
     '*.html',
@@ -48,7 +48,7 @@ const config = {
     'site.webmanifest',
     '.htaccess'
   ],
-  
+
   // Files and directories to exclude
   exclude: [
     'node_modules',
@@ -78,15 +78,15 @@ function shouldExclude(filePath) {
 async function copyDir(src, dest) {
   await fs.mkdir(dest, { recursive: true });
   const entries = await fs.readdir(src, { withFileTypes: true });
-  
+
   for (const entry of entries) {
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
-    
+
     if (shouldExclude(srcPath)) {
       continue;
     }
-    
+
     if (entry.isDirectory()) {
       await copyDir(srcPath, destPath);
     } else {
@@ -100,7 +100,7 @@ async function copyDir(src, dest) {
  */
 async function copyFiles() {
   log.info('Copying files to dist directory...');
-  
+
   const filesToCopy = [
     { src: 'index.html', dest: 'dist/index.html' },
     { src: 'robots.txt', dest: 'dist/robots.txt' },
@@ -113,7 +113,7 @@ async function copyFiles() {
     { src: '_headers', dest: 'dist/_headers' },
     { src: '_redirects', dest: 'dist/_redirects' }
   ];
-  
+
   // Copy individual files
   for (const { src, dest } of filesToCopy) {
     try {
@@ -125,7 +125,7 @@ async function copyFiles() {
       }
     }
   }
-  
+
   // Copy directories
   const dirsToCopy = [
     { src: 'css', dest: 'dist/css' },
@@ -134,13 +134,36 @@ async function copyFiles() {
     { src: 'pages', dest: 'dist/pages' },
     { src: '.well-known', dest: 'dist/.well-known' }
   ];
-  
+
   for (const { src, dest } of dirsToCopy) {
     try {
       await copyDir(src, dest);
       log.success(`Copied ${src}/ directory`);
     } catch (error) {
       log.warn(`Could not copy ${src}: ${error.message}`);
+    }
+  }
+}
+
+/**
+ * Copy error pages to root for direct access
+ */
+async function copyErrorPages() {
+  log.info('Copying error pages to root...');
+
+  const errorPages = [
+    { source: 'pages/404.html', dest: '404.html' },
+    { source: 'pages/500.html', dest: '500.html' }
+  ];
+
+  for (const { source, dest } of errorPages) {
+    try {
+      const sourceFile = path.join(config.distDir, source);
+      const destFile = path.join(config.distDir, dest);
+      await fs.copyFile(sourceFile, destFile);
+      log.success(`Copied ${source} to /${dest}`);
+    } catch (error) {
+      log.warn(`Could not copy error page ${dest}: ${error.message}`);
     }
   }
 }
@@ -255,12 +278,12 @@ async function createBuildInfo() {
     nodeVersion: process.version,
     platform: process.platform
   };
-  
+
   await fs.writeFile(
     path.join(config.distDir, 'build-info.json'),
     JSON.stringify(buildInfo, null, 2)
   );
-  
+
   log.success('Created build-info.json');
 }
 
@@ -269,27 +292,33 @@ async function createBuildInfo() {
  */
 async function build() {
   const startTime = Date.now();
-  
+
   console.log(`\n${colors.bright}Starting Production Build${colors.reset}\n`);
-  
+
   try {
     // Create dist directory
     log.info('Creating dist directory...');
     await fs.mkdir(config.distDir, { recursive: true });
     log.success('Created dist directory');
-    
+
     // Copy files
     await copyFiles();
-    
+
+    // Note: Clean URL structure handled by server rewrites (_redirects, .htaccess)
+    // This avoids duplicate content in /pages/ and /about/ directories
+
+    // Copy error pages to root for direct access
+    await copyErrorPages();
+
     // Create .htaccess
     await createHtaccess();
-    
+
     // Create build info
     await createBuildInfo();
-    
+
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
     console.log(`\n${colors.green}${colors.bright}Build completed successfully in ${duration}s${colors.reset}\n`);
-    
+
   } catch (error) {
     log.error(`Build failed: ${error.message}`);
     console.error(error);

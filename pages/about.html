@@ -29,37 +29,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
     <link rel="stylesheet" href="/css/main.css" />
-    <style>
-        body {
-            font-family: var(--font-body, 'Nunito Sans');
-            padding: clamp(1.25rem, 4vw, 3rem);
-            max-width: 960px;
-            margin: 0 auto;
-            line-height: 1.6;
-            background: var(--theme-bg);
-            color: var(--theme-text);
-        }
-
-        h1 {
-            font-family: var(--font-display, 'Audiowide');
-            font-size: clamp(2.1rem, 5vw, 3.25rem);
-            line-height: 1.05;
-            background: var(--theme-gradient-text);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0 0 1.25rem 0;
-        }
-
-        p {
-            margin: .85rem 0;
-            font-size: 1.02rem;
-        }
-
-        .lead {
-            font-size: 1.15rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/pages/about.css" />
 </head>
 
 <body>
@@ -68,13 +38,14 @@
         <p class="lead">My journey as a developer started when I was told to quit video games—so I decided to build them
             instead. That passion evolved into architecting high-performance mobile apps with Flutter, where I obsess
             over creating buttery-smooth user experiences that feel intuitive and alive.</p>
-        <p style="margin-top:1.75rem;font-size:.9rem;opacity:.7;">(This about page intentionally trimmed — original
+        <p class="note-trimmed">(This about page intentionally trimmed — original
             extended bio has been refactored.)</p>
-        <p style="margin-top:2.25rem;"><a href="/"
-                style="text-decoration:none;font-weight:600;background:var(--theme-gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">←
+        <p class="back-link-container"><a href="/" class="btn-text-gradient">←
                 Back home</a></p>
     </main>
-    <!-- Initialize custom cursor -->
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
 </body>
 

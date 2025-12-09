@@ -265,7 +265,7 @@ Analytics helps me understand which sections are most engaging and improve the u
 
         const privacyP = document.createElement('p');
         const privacyLink = document.createElement('a');
-        privacyLink.href = '/privacy.html';
+        privacyLink.href = '/privacy';
         privacyLink.target = '_blank';
         privacyLink.rel = 'noopener';
         privacyLink.textContent = 'Read our full Privacy Policy';

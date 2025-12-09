@@ -195,40 +195,15 @@ textarea,
    INTERACTIVE ELEMENTS
    ========================================================================== */
 
-/* Links and buttons */
+/* Links and buttons - clean styling without spill effect */
 a,
 button,
 [role="button"],
 .clickable {
     position: relative;
-    overflow: hidden;
 }
 
-a::before,
-button::before,
-[role="button"]::before,
-.clickable::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, var(--cursor-secondary) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.3s var(--cursor-ease);
-    pointer-events: none;
-    z-index: 0;
-}
-
-a:hover::before,
-button:hover::before,
-[role="button"]:hover::before,
-.clickable:hover::before {
-    width: 200%;
-    height: 200%;
-}
+/* Remove the old spill hover effect - buttons handle their own hover states */
 
 /* ==========================================================================
    SPECIAL CURSOR ANIMATIONS

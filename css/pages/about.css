@@ -1,0 +1,41 @@
+/* About Page Specific Styles */
+
+body {
+    font-family: var(--font-body, 'Nunito Sans');
+    padding: clamp(1.25rem, 4vw, 3rem);
+    max-width: 960px;
+    margin: 0 auto;
+    line-height: 1.6;
+    background: var(--theme-bg);
+    color: var(--theme-text);
+}
+
+h1 {
+    font-family: var(--font-display, 'Audiowide');
+    font-size: clamp(2.1rem, 5vw, 3.25rem);
+    line-height: 1.05;
+    background: var(--theme-gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 1.25rem 0;
+}
+
+p {
+    margin: .85rem 0;
+    font-size: 1.02rem;
+}
+
+.lead {
+    font-size: 1.15rem;
+}
+
+.note-trimmed {
+    margin-top: 1.75rem;
+    font-size: .9rem;
+    opacity: .7;
+}
+
+.back-link-container {
+    margin-top: 2.25rem;
+}

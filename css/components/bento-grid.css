@@ -394,6 +394,7 @@
   color: var(--theme-text);
   opacity: 0.75;
   line-height: 1.5;
+  font-weight: var(--weight-medium);
   max-width: 95%;
   margin: 0 auto;
 }
@@ -405,7 +406,7 @@
   border: 1px solid rgba(var(--primary-500-rgb), 0.15);
   border-radius: var(--rounded-full);
   font-size: 0.75rem;
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
   color: var(--primary-600);
   margin-top: var(--space-3);
   position: relative;

@@ -10,8 +10,8 @@
    GOOGLE FONTS IMPORT
    ========================================================================== */
 
-/* Audiowide font import with display optimization */
-@import url('https://fonts.googleapis.com/css2?family=Audiowide:wght@400&display=swap');
+/* Audiowide (Primary), Exo 2 (Secondary), and Open Sans (Tertiary) font import */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 /* ==========================================================================
    FONT FEATURE SETTINGS

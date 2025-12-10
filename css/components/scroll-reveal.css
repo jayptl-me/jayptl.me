@@ -431,359 +431,100 @@
    Characters form from scattered particles that converge together
    ========================================================================== */
 
+/* ==========================================================================
+   PARTICLE ASSEMBLE TEXT ANIMATION
+   Characters form from scattered particles that converge together
+   OPTIMIZED: Uses transform/opacity only (GPU accelerated) to avoid reflows
+   ========================================================================== */
+
 .char.animate-in {
-  animation: charParticleAssemble 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* Using 3D transform for hardware acceleration */
+  animation: charFlyIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
 }
 
-/* Enhanced particle animation for initial page load */
+/* Enhanced animation for initial page load */
 .char.animate-in.initial-load {
-  animation: charParticleAssembleInitial 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: charFlyInInitial 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
 }
 
-/* Standard particle assemble - dots converge into character */
-@keyframes charParticleAssemble {
+/* 
+ * Optimized Fly-In Animation
+ * Moves from scattered/scaled/transparent state to final state
+ * No filters or shadows used during animation
+ */
+@keyframes charFlyIn {
   0% {
     opacity: 0;
-    filter: blur(4px);
-    text-shadow:
-      /* Scattered particles in different directions */
-      -12px -8px 2px currentColor,
-      10px -10px 2px currentColor,
-      -8px 12px 2px currentColor,
-      14px 6px 2px currentColor,
-      -6px -14px 2px currentColor,
-      8px 10px 2px currentColor,
-      /* Glow core */
-      0 0 15px rgba(var(--primary-400-rgb), 0.5);
-    transform: scale(0.9);
-  }
-
-  30% {
-    opacity: 0.5;
-    filter: blur(2.5px);
-    text-shadow:
-      -6px -4px 1.5px currentColor,
-      5px -5px 1.5px currentColor,
-      -4px 6px 1.5px currentColor,
-      7px 3px 1.5px currentColor,
-      -3px -7px 1.5px currentColor,
-      4px 5px 1.5px currentColor,
-      0 0 10px rgba(var(--primary-400-rgb), 0.4);
-    transform: scale(0.95);
-  }
-
-  60% {
-    opacity: 0.8;
-    filter: blur(1px);
-    text-shadow:
-      -2px -2px 1px currentColor,
-      2px -2px 1px currentColor,
-      -1px 2px 1px currentColor,
-      2px 1px 1px currentColor,
-      0 0 5px rgba(var(--primary-400-rgb), 0.3);
-    transform: scale(0.98);
-  }
-
-  85% {
-    opacity: 0.95;
-    filter: blur(0.3px);
-    text-shadow:
-      -0.5px -0.5px 0.5px currentColor,
-      0.5px 0.5px 0.5px currentColor,
-      0 0 3px rgba(var(--primary-400-rgb), 0.2);
-    transform: scale(1);
-  }
-
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    text-shadow: none;
-    transform: scale(1);
-  }
-}
-
-/* Initial load - more dramatic particle explosion assembly */
-@keyframes charParticleAssembleInitial {
-  0% {
-    opacity: 0;
-    filter: blur(6px);
-    text-shadow:
-      /* Widely scattered particles */
-      -20px -15px 3px currentColor,
-      18px -18px 3px currentColor,
-      -15px 20px 3px currentColor,
-      22px 12px 3px currentColor,
-      -10px -22px 3px currentColor,
-      16px 18px 3px currentColor,
-      -18px 8px 3px currentColor,
-      12px -16px 3px currentColor,
-      /* Glow aura */
-      0 0 25px rgba(var(--primary-400-rgb), 0.6),
-      0 0 50px rgba(var(--accent-400-rgb), 0.3);
-    transform: scale(0.8);
-  }
-
-  20% {
-    opacity: 0.3;
-    filter: blur(4.5px);
-    text-shadow:
-      -14px -10px 2.5px currentColor,
-      12px -12px 2.5px currentColor,
-      -10px 14px 2.5px currentColor,
-      15px 8px 2.5px currentColor,
-      -7px -15px 2.5px currentColor,
-      11px 12px 2.5px currentColor,
-      -12px 5px 2.5px currentColor,
-      8px -11px 2.5px currentColor,
-      0 0 20px rgba(var(--primary-400-rgb), 0.5),
-      0 0 40px rgba(var(--accent-400-rgb), 0.25);
-    transform: scale(0.85);
-  }
-
-  40% {
-    opacity: 0.55;
-    filter: blur(3px);
-    text-shadow:
-      -8px -6px 2px currentColor,
-      7px -7px 2px currentColor,
-      -6px 8px 2px currentColor,
-      9px 5px 2px currentColor,
-      -4px -9px 2px currentColor,
-      6px 7px 2px currentColor,
-      -7px 3px 2px currentColor,
-      5px -6px 2px currentColor,
-      0 0 15px rgba(var(--primary-400-rgb), 0.4);
-    transform: scale(0.9);
-  }
-
-  60% {
-    opacity: 0.75;
-    filter: blur(1.5px);
-    text-shadow:
-      -4px -3px 1.2px currentColor,
-      3px -4px 1.2px currentColor,
-      -3px 4px 1.2px currentColor,
-      5px 2px 1.2px currentColor,
-      -2px -5px 1.2px currentColor,
-      3px 4px 1.2px currentColor,
-      0 0 10px rgba(var(--primary-400-rgb), 0.3);
-    transform: scale(0.95);
-  }
-
-  80% {
-    opacity: 0.9;
-    filter: blur(0.6px);
-    text-shadow:
-      -1.5px -1px 0.8px currentColor,
-      1px -1.5px 0.8px currentColor,
-      -1px 1.5px 0.8px currentColor,
-      2px 1px 0.8px currentColor,
-      0 0 5px rgba(var(--primary-400-rgb), 0.2);
-    transform: scale(0.98);
-  }
-
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    text-shadow: none;
-    transform: scale(1);
-  }
-}
-
-/* Particle scatter on hover */
-.text-reveal-item.active .char:hover {
-  animation: charParticleHover 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes charParticleHover {
-
-  0%,
-  100% {
-    text-shadow: none;
-    filter: blur(0);
+    transform: translate3d(0, 40px, 0) scale(0.6);
   }
 
   50% {
-    text-shadow:
-      -3px -2px 1px rgba(var(--primary-400-rgb), 0.4),
-      2px -3px 1px rgba(var(--accent-400-rgb), 0.35),
-      -2px 3px 1px rgba(var(--primary-500-rgb), 0.3),
-      3px 2px 1px rgba(var(--accent-500-rgb), 0.25),
-      0 0 8px currentColor;
-    filter: blur(0.3px);
+    opacity: 0.8;
+    transform: translate3d(0, -10px, 0) scale(1.1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
+
+/* Initial load - more dramatic start position */
+@keyframes charFlyInInitial {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) scale(0.4) rotate(10deg);
+  }
+
+  40% {
+    opacity: 0.7;
+    transform: translate3d(0, -15px, 0) scale(1.1) rotate(-5deg);
+  }
+
+  70% {
+    opacity: 0.9;
+    transform: translate3d(0, 5px, 0) scale(0.98) rotate(2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+}
+
+/* Simple scale pulse on hover - no expensive filters */
+.text-reveal-item.active .char:hover {
+  transform: scale(1.15);
+  color: var(--theme-primary, #2196f3);
+  transition: transform 0.2s ease-out, color 0.2s ease-out;
+  animation: none;
+  /* Disable the old hover animation */
+}
+
 
 /* ========================================================================== 
    RESPONSIVE PARTICLE ANIMATIONS
    ========================================================================== */
 
+/* ========================================================================== 
+   RESPONSIVE ANIMATIONS
+   (Fly-in animations automatically adapt to screen size via transform)
+   ========================================================================== */
+
 /* Tablet adjustments */
 @media (max-width: 768px) {
-  .char.animate-in {
-    animation: charParticleMobile 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .char.animate-in.initial-load {
-    animation: charParticleInitialMobile 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  @keyframes charParticleMobile {
-    0% {
-      opacity: 0;
-      filter: blur(3px);
-      text-shadow:
-        -8px -6px 2px currentColor,
-        7px -7px 2px currentColor,
-        -5px 8px 2px currentColor,
-        9px 4px 2px currentColor,
-        0 0 12px rgba(var(--primary-400-rgb), 0.4);
-      transform: scale(0.92);
-    }
-
-    50% {
-      opacity: 0.7;
-      filter: blur(1.2px);
-      text-shadow:
-        -3px -2px 1px currentColor,
-        2px -3px 1px currentColor,
-        -2px 3px 1px currentColor,
-        3px 1px 1px currentColor,
-        0 0 6px rgba(var(--primary-400-rgb), 0.3);
-      transform: scale(0.97);
-    }
-
-    100% {
-      opacity: 1;
-      filter: blur(0);
-      text-shadow: none;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes charParticleInitialMobile {
-    0% {
-      opacity: 0;
-      filter: blur(5px);
-      text-shadow:
-        -15px -12px 2.5px currentColor,
-        13px -14px 2.5px currentColor,
-        -11px 15px 2.5px currentColor,
-        16px 10px 2.5px currentColor,
-        -8px -16px 2.5px currentColor,
-        12px 13px 2.5px currentColor,
-        0 0 20px rgba(var(--primary-400-rgb), 0.5);
-      transform: scale(0.82);
-    }
-
-    40% {
-      opacity: 0.5;
-      filter: blur(2.5px);
-      text-shadow:
-        -6px -5px 1.5px currentColor,
-        5px -6px 1.5px currentColor,
-        -4px 6px 1.5px currentColor,
-        7px 4px 1.5px currentColor,
-        0 0 12px rgba(var(--primary-400-rgb), 0.35);
-      transform: scale(0.92);
-    }
-
-    70% {
-      opacity: 0.85;
-      filter: blur(0.8px);
-      text-shadow:
-        -2px -2px 0.8px currentColor,
-        2px 2px 0.8px currentColor,
-        0 0 5px rgba(var(--primary-400-rgb), 0.2);
-      transform: scale(0.98);
-    }
-
-    100% {
-      opacity: 1;
-      filter: blur(0);
-      text-shadow: none;
-      transform: scale(1);
-    }
-  }
+  /* No specific overrides needed for simplified fly-ins */
 }
 
-/* Phone adjustments - simplified for performance */
+/* Phone adjustments */
 @media (max-width: 480px) {
-  .char.animate-in {
-    animation: charParticleSmall 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .char.animate-in.initial-load {
-    animation: charParticleInitialSmall 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  @keyframes charParticleSmall {
-    0% {
-      opacity: 0;
-      filter: blur(2px);
-      text-shadow:
-        -5px -4px 1.5px currentColor,
-        4px -5px 1.5px currentColor,
-        -3px 5px 1.5px currentColor,
-        5px 3px 1.5px currentColor,
-        0 0 8px rgba(var(--primary-400-rgb), 0.35);
-      transform: scale(0.94);
-    }
-
-    60% {
-      opacity: 0.8;
-      filter: blur(0.6px);
-      text-shadow:
-        -1.5px -1px 0.6px currentColor,
-        1px -1.5px 0.6px currentColor,
-        0 0 4px rgba(var(--primary-400-rgb), 0.2);
-      transform: scale(0.99);
-    }
-
-    100% {
-      opacity: 1;
-      filter: blur(0);
-      text-shadow: none;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes charParticleInitialSmall {
-    0% {
-      opacity: 0;
-      filter: blur(3.5px);
-      text-shadow:
-        -10px -8px 2px currentColor,
-        9px -9px 2px currentColor,
-        -7px 10px 2px currentColor,
-        11px 6px 2px currentColor,
-        0 0 15px rgba(var(--primary-400-rgb), 0.4);
-      transform: scale(0.88);
-    }
-
-    45% {
-      opacity: 0.6;
-      filter: blur(1.5px);
-      text-shadow:
-        -4px -3px 1px currentColor,
-        3px -4px 1px currentColor,
-        -3px 4px 1px currentColor,
-        4px 2px 1px currentColor,
-        0 0 8px rgba(var(--primary-400-rgb), 0.25);
-      transform: scale(0.95);
-    }
-
-    100% {
-      opacity: 1;
-      filter: blur(0);
-      text-shadow: none;
-      transform: scale(1);
-    }
-  }
 
   /* Disable hover effect on touch devices */
   .text-reveal-item.active .char:hover {
-    animation: none;
+    transform: none;
+    color: inherit;
   }
 }
 

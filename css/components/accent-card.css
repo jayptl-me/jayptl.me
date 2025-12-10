@@ -14,8 +14,8 @@
     padding: var(--space-5) var(--space-6);
     z-index: 1;
     overflow: hidden;
-    transition: box-shadow var(--duration-200) var(--ease-out),
-        background-color var(--duration-200) var(--ease-out);
+    transition: box-shadow var(--duration-200) var(--ease-smooth),
+        background-color var(--duration-200) var(--ease-smooth);
 }
 
 /* Gradient Border */
@@ -34,7 +34,7 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0.4;
-    transition: opacity var(--duration-200) var(--ease-out);
+    transition: opacity var(--duration-200) var(--ease-smooth);
     pointer-events: none;
 }
 
@@ -138,7 +138,7 @@ html[data-theme="dark"] .accent-card:hover {
     font-family: var(--font-display);
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
-    transition: color var(--duration-200) var(--ease-out);
+    transition: color var(--duration-200) var(--ease-smooth);
 }
 
 .accent-card p,

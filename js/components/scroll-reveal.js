@@ -226,26 +226,41 @@ class ScrollRevealComponent {
         let lastScrollY = window.scrollY;
         let scrollDirection = 0;
         let isScrolling = false;
+        let rafId = null;
 
-        const scrollTriggerHandler = () => {
+        // Cache viewport height to avoid layout thrashing
+        let viewportHeight = window.innerHeight;
+        window.addEventListener('resize', () => {
+            viewportHeight = window.innerHeight;
+        }, { passive: true });
+
+        const onScroll = () => {
             const currentScrollY = window.scrollY;
-            const newDirection = currentScrollY > lastScrollY ? 1 : -1;
-
-            // Only update direction if movement is significant (avoid noise)
+            
+            // Minimal direction check
             if (Math.abs(currentScrollY - lastScrollY) > 5) {
-                scrollDirection = newDirection;
+                scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
             }
-
             lastScrollY = currentScrollY;
 
-            // Check if we should transition back to scroll reveal
-            this.checkScrollUpTransition(scrollDirection);
+            // Check transitions (throttled via RAF is implied by nature of scroll, 
+            // but we add a logic gate to avoid expensive DOM checks on every frame)
+            this.checkScrollUpTransition(scrollDirection, viewportHeight);
 
-            // Clear scrolling flag after a delay
+            // Clear scrolling flag
             clearTimeout(isScrolling);
             isScrolling = setTimeout(() => {
                 scrollDirection = 0;
             }, 150);
+        };
+
+        // Throttled scroll listener using requestAnimationFrame
+        const scrollTriggerHandler = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                onScroll();
+                rafId = null;
+            });
         };
 
         // Global scroll listener for transitions (separate from stepper control)
@@ -256,14 +271,20 @@ class ScrollRevealComponent {
     }
 
     // Check if we should transition back to scroll reveal when scrolling up
-    checkScrollUpTransition(scrollDirection) {
+    checkScrollUpTransition(scrollDirection, cachedViewportHeight) {
         // Only check if overlay is released and user is scrolling up
         if (!this.container.classList.contains('released') || scrollDirection >= 0) {
             return;
         }
 
+        // Optimization: Quick fail if we are nowhere near the top
+        // (Assuming intro is at the top, if we are far down, no need to query DOM)
+        if (window.scrollY > (cachedViewportHeight || window.innerHeight) * 2) {
+            return;
+        }
+
         // Find the introduction section
-        const introSection = document.querySelector('#introduction') || document.querySelector('.introduction-section');
+        const introSection = document.getElementById('introduction') || document.querySelector('.introduction-section');
         if (!introSection) return;
 
         // Get the introduction title element
@@ -272,8 +293,8 @@ class ScrollRevealComponent {
 
         // Check if intro title is below 75% of viewport
         const titleRect = introTitle.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const threshold75 = viewportHeight * 0.75;
+        const vh = cachedViewportHeight || window.innerHeight;
+        const threshold75 = vh * 0.75;
 
         // If title is below 75% mark, transition back to scroll reveal
         if (titleRect.top > threshold75) {

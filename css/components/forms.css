@@ -66,9 +66,10 @@
    ========================================================================== */
 .form-label {
     font-size: var(--text-sm);
-    font-weight: var(--weight-medium);
+    margin-bottom: var(--space-2);
+    font-weight: var(--weight-semibold);
     color: var(--theme-text);
-    transition: color var(--duration-200) var(--ease-out);
+    transition: color var(--duration-200) var(--ease-smooth);
 }
 
 .form-label-required::after {
@@ -105,6 +106,9 @@
 
     /* Animation */
     transition: all var(--duration-200) var(--ease-smooth);
+
+    /* Typography */
+    font-weight: var(--weight-medium);
 }
 
 .form-input::placeholder,
@@ -541,7 +545,7 @@ html[data-theme="light"] .toggle:hover .toggle-track {
 
 html[data-theme="light"] .toggle input:checked~.toggle-track {
     background: var(--theme-gradient-primary);
-    box-shadow: var(--skeu-shadow-raised-sm);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     border-color: transparent;
 }
 
@@ -568,7 +572,7 @@ html[data-theme="dark"] .toggle input:checked~.toggle-track {
 .toggle-thumb {
     position: absolute;
     left: 3px;
-    top: 1.5px;
+    top: 2px;
     width: 22px;
     height: 22px;
     border-radius: var(--rounded-full);
@@ -578,7 +582,8 @@ html[data-theme="dark"] .toggle input:checked~.toggle-track {
 /* Light Mode Toggle Thumb */
 html[data-theme="light"] .toggle-thumb {
     background: white;
-    box-shadow: var(--skeu-shadow-raised-sm);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--neutral-200);
 }
 
 /* Dark Mode Toggle Thumb */

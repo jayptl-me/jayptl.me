@@ -59,6 +59,11 @@
                 const clone = slide.cloneNode(true);
                 clone.setAttribute('aria-hidden', 'true');
                 clone.removeAttribute('data-index');
+                // Remove preview from clones to avoid duplicate popups
+                const clonePreview = clone.querySelector('.slide-preview');
+                if (clonePreview) {
+                    clonePreview.remove();
+                }
                 this.track.appendChild(clone);
             });
         }

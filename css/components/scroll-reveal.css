@@ -350,22 +350,6 @@
   white-space: nowrap;
 }
 
-.text-reveal-item .char {
-  display: inline-block;
-  font-family: 'Audiowide', sans-serif;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 700;
-  line-height: 1.1;
-  transition: all var(--duration-700) cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.text-reveal-item.revealed .char {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* Scroll reveal text: theme-aware color (blue in light, turquoise in dark) */
 .gradient-text,
 .text-reveal-item.active .gradient-text {
@@ -373,158 +357,136 @@
   text-shadow: none;
 }
 
-.text-reveal-item.active .char:hover {
-  transform: scale(1.05) translateY(0);
-  text-shadow: none;
-}
-
 /* ==========================================================================
-   CHARACTER ANIMATIONS WITH STAGGERED REVEAL
+   SAND PARTICLE MERGE ANIMATION
+   Fine particles coalesce upward to form each character
+   Clean, GPU-accelerated with smooth blur transition
    ========================================================================== */
 
+/* Character base styles + hidden state before animation */
 .text-reveal-item .char {
-  transition-delay: 0s;
+  display: inline-block;
+  font-family: 'Audiowide', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  /* Hidden state - blurred and below */
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(24px) scaleY(0.7);
+  will-change: opacity, filter, transform;
 }
 
-.text-reveal-item.revealed .char:nth-child(1) {
-  transition-delay: 0.1s;
-}
-
-.text-reveal-item.revealed .char:nth-child(2) {
-  transition-delay: 0.15s;
-}
-
-.text-reveal-item.revealed .char:nth-child(3) {
-  transition-delay: 0.2s;
-}
-
-.text-reveal-item.revealed .char:nth-child(4) {
-  transition-delay: 0.25s;
-}
-
-.text-reveal-item.revealed .char:nth-child(5) {
-  transition-delay: 0.3s;
-}
-
-.text-reveal-item.revealed .char:nth-child(6) {
-  transition-delay: 0.35s;
-}
-
-.text-reveal-item.revealed .char:nth-child(7) {
-  transition-delay: 0.4s;
-}
-
-.text-reveal-item.revealed .char:nth-child(8) {
-  transition-delay: 0.45s;
-}
-
-.text-reveal-item.revealed .char:nth-child(9) {
-  transition-delay: 0.5s;
-}
-
-.text-reveal-item.revealed .char:nth-child(10) {
-  transition-delay: 0.55s;
-}
-
-/* ==========================================================================
-   PARTICLE ASSEMBLE TEXT ANIMATION
-   Characters form from scattered particles that converge together
-   ========================================================================== */
-
-/* ==========================================================================
-   PARTICLE ASSEMBLE TEXT ANIMATION
-   Characters form from scattered particles that converge together
-   OPTIMIZED: Uses transform/opacity only (GPU accelerated) to avoid reflows
-   ========================================================================== */
-
+/* Main sand particle animation */
 .char.animate-in {
-  /* Using 3D transform for hardware acceleration */
-  animation: charFlyIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  will-change: transform, opacity;
+  animation: sandMerge 0.5s ease-out forwards;
 }
 
-/* Enhanced animation for initial page load */
+/* Initial page load - slower, more dramatic */
 .char.animate-in.initial-load {
-  animation: charFlyInInitial 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  will-change: transform, opacity;
+  animation: sandMergeInitial 0.7s ease-out forwards;
 }
 
 /* 
- * Optimized Fly-In Animation
- * Moves from scattered/scaled/transparent state to final state
- * No filters or shadows used during animation
+ * Sand Merge Keyframes
+ * Particles rise and blur clears as letter solidifies
+ * Simple 3-step for smooth 60fps performance
  */
-@keyframes charFlyIn {
+@keyframes sandMerge {
   0% {
     opacity: 0;
-    transform: translate3d(0, 40px, 0) scale(0.6);
+    filter: blur(12px);
+    transform: translateY(24px) scaleY(0.7);
   }
+  60% {
+    opacity: 0.85;
+    filter: blur(3px);
+    transform: translateY(-2px) scaleY(1.02);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scaleY(1);
+  }
+}
 
+/* Initial load - more dramatic entrance */
+@keyframes sandMergeInitial {
+  0% {
+    opacity: 0;
+    filter: blur(16px);
+    transform: translateY(32px) scaleY(0.6);
+  }
   50% {
-    opacity: 0.8;
-    transform: translate3d(0, -10px, 0) scale(1.1);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-/* Initial load - more dramatic start position */
-@keyframes charFlyInInitial {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 80px, 0) scale(0.4) rotate(10deg);
-  }
-
-  40% {
     opacity: 0.7;
-    transform: translate3d(0, -15px, 0) scale(1.1) rotate(-5deg);
+    filter: blur(5px);
+    transform: translateY(4px) scaleY(0.95);
   }
-
-  70% {
-    opacity: 0.9;
-    transform: translate3d(0, 5px, 0) scale(0.98) rotate(2deg);
+  80% {
+    opacity: 0.95;
+    filter: blur(1px);
+    transform: translateY(-3px) scaleY(1.02);
   }
-
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+    filter: blur(0);
+    transform: translateY(0) scaleY(1);
   }
 }
 
-/* Simple scale pulse on hover - no expensive filters */
+/* Hover - subtle lift */
+.text-reveal-item.active .char {
+  transition: transform 0.15s ease-out;
+}
+
 .text-reveal-item.active .char:hover {
-  transform: scale(1.15);
-  color: var(--theme-primary, #2196f3);
-  transition: transform 0.2s ease-out, color 0.2s ease-out;
-  animation: none;
-  /* Disable the old hover animation */
+  transform: translateY(-2px) scale(1.05);
 }
 
-
-/* ========================================================================== 
-   RESPONSIVE PARTICLE ANIMATIONS
+/* ==========================================================================
+   RESPONSIVE - Faster on mobile for snappier feel
    ========================================================================== */
 
-/* ========================================================================== 
-   RESPONSIVE ANIMATIONS
-   (Fly-in animations automatically adapt to screen size via transform)
-   ========================================================================== */
-
-/* Tablet adjustments */
 @media (max-width: 768px) {
-  /* No specific overrides needed for simplified fly-ins */
+  .text-reveal-item .char {
+    filter: blur(8px);
+    transform: translateY(18px) scaleY(0.75);
+  }
+  
+  .char.animate-in {
+    animation-duration: 0.4s;
+  }
+  
+  .char.animate-in.initial-load {
+    animation-duration: 0.55s;
+  }
+  
+  @keyframes sandMerge {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(18px) scaleY(0.75);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0) scaleY(1);
+    }
+  }
 }
 
-/* Phone adjustments */
 @media (max-width: 480px) {
-
-  /* Disable hover effect on touch devices */
+  .char.animate-in {
+    animation-duration: 0.35s;
+  }
+  
+  .char.animate-in.initial-load {
+    animation-duration: 0.45s;
+  }
+  
+  /* No hover on touch */
   .text-reveal-item.active .char:hover {
     transform: none;
-    color: inherit;
   }
 }
 
@@ -683,20 +645,30 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-
-
   .text-reveal-item,
   .char,
+  .char.animate-in,
+  .char.animate-in.initial-load,
   .gradient-text,
   .stepper-button,
   .progress-fill,
   .text-reveal-container {
     animation: none !important;
-    transition: opacity 0.2s ease !important;
+    transition: opacity 0.15s ease !important;
+    filter: none !important;
+  }
+
+  .text-reveal-item .char {
+    opacity: 0;
+    transform: none;
+    filter: none;
   }
 
   .text-reveal-item.revealed .char {
     transition-delay: 0s !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 
   /* Maintain same brand blue in reduced motion */

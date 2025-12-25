@@ -486,6 +486,32 @@
             min-width: 200px;
         }
 
+        /* Guidelines layout - use full horizontal space */
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-8);
+            width: 100%;
+        }
+
+        .guideline {
+            padding: var(--space-4);
+            border-radius: var(--rounded-lg);
+            line-height: var(--leading-relaxed);
+            border: 1px solid var(--theme-border);
+            background: var(--theme-surface);
+        }
+
+        .guideline strong {
+            color: var(--theme-text);
+        }
+
+        .guideline p {
+            margin: 0;
+            color: var(--theme-text-secondary);
+        }
+
         @media (max-width: 768px) {
             .design-system-page {
                 padding: calc(64px + var(--space-4)) 0 var(--space-4) 0;
@@ -778,27 +804,31 @@
                     </div>
                 </div>
 
-                <div style="margin-top: var(--space-8); line-height: var(--leading-relaxed);">
-                    <p class="small" style="color: var(--theme-text-secondary);"><strong>Guidelines:</strong> Primary
-                        blues drive brand identity and CTAs. Turquoise accent is used for highlights, gradients, focus
-                        rings, data viz, and subtle interactive affordances. Neutral palette is muted to let
-                        primary/accent stand out while improving light/dark theme parity. Use
-                        <code>--success-muted</code>, <code>--warning-muted</code>, <code>--danger-muted</code>, and
-                        <code>--info-muted</code> for soft background states instead of low opacity borders.
-                    </p>
-                    <p class="small" style="color: var(--theme-text-secondary); margin-top: var(--space-3);">
-                        <strong>Accessibility:</strong> Primary 600 / Accent 600 on light backgrounds and Primary 300 /
-                        Accent 300 on dark backgrounds exceed 4.5:1 contrast vs body text surfaces. Avoid using Accent
-                        400 or lighter for standalone text; reserve them for backgrounds, indicators, or gradient
-                        midpoints. Focus ring uses a semi-transparent accent glow (<code>--focus-ring</code>) to remain
-                        visible in both themes.
-                    </p>
-                    <p class="small" style="color: var(--theme-text-secondary); margin-top: var(--space-3);">
-                        <strong>Token Policy:</strong> All production styles must reference design tokens. Raw hex
-                        values are confined to token declarations only. For ad-hoc usage leverage utility classes in
-                        <code>css/utilities/theme-colors.css</code> (e.g. <code>.text-accent</code>,
-                        <code>.bg-accent-soft</code>, <code>.text-gradient</code>).
-                    </p>
+                <div class="guidelines-grid">
+                    <div class="guideline">
+                        <p class="small"><strong>Guidelines:</strong> Primary blues drive brand identity and CTAs.
+                            Turquoise accent is used for highlights, gradients, focus rings, data viz, and subtle
+                            interactive affordances. Neutral palette is muted to let primary/accent stand out while
+                            improving light/dark theme parity. Use <code>--success-muted</code>,
+                            <code>--warning-muted</code>, <code>--danger-muted</code>, and <code>--info-muted</code> for
+                            soft background states instead of low opacity borders.
+                        </p>
+                    </div>
+                    <div class="guideline">
+                        <p class="small"><strong>Accessibility:</strong> Primary 600 / Accent 600 on light backgrounds
+                            and Primary 300 / Accent 300 on dark backgrounds exceed 4.5:1 contrast vs body text
+                            surfaces. Avoid using Accent 400 or lighter for standalone text; reserve them for
+                            backgrounds, indicators, or gradient midpoints. Focus ring uses a semi-transparent accent
+                            glow (<code>--focus-ring</code>) to remain visible in both themes.
+                        </p>
+                    </div>
+                    <div class="guideline">
+                        <p class="small"><strong>Token Policy:</strong> All production styles must reference design
+                            tokens. Raw hex values are confined to token declarations only. For ad-hoc usage leverage
+                            utility classes in <code>css/utilities/theme-colors.css</code> (e.g. <code>.text-accent</code>,
+                            <code>.bg-accent-soft</code>, <code>.text-gradient</code>).
+                        </p>
+                    </div>
                 </div>
             </section>
 

@@ -149,32 +149,24 @@ class ScrollRevealComponent {
         });
     }
 
-    // New method for initial load animation
+    // Initial load animation - more dramatic timing
     animateInitialLoad(item) {
         item.classList.add('revealed', 'active');
-
-        // Animate characters with staggered delay for initial reveal
-        const chars = item.querySelectorAll('.char');
-        const charDelay = this.isMobile ? 50 : 80; // Slightly slower for initial impact
-
-        // Start with a more dramatic initial position
-        item.style.opacity = '0';
-        item.style.transform = 'translate(-50%, -50%) translateY(40px) scale(0.95)';
+        item.style.opacity = '1';
+        item.style.transform = 'translate(-50%, -50%)';
         item.style.pointerEvents = 'auto';
 
-        // Animate container first
-        requestAnimationFrame(() => {
-            const duration = this.isMobile ? '0.8s' : '1s'; // Longer duration for initial reveal
-            item.style.transition = `transform ${duration} cubic-bezier(0.34, 1.56, 0.64, 1), opacity ${duration} ease-out`;
-            item.style.transform = 'translate(-50%, -50%) scale(1)';
-            item.style.opacity = '1';
-        });
+        const chars = item.querySelectorAll('.char');
+        const stagger = this.isMobile ? 50 : 70; // Slower stagger for dramatic effect
 
-        // Then animate characters with staggered delay and special initial class
-        chars.forEach((char, index) => {
-            setTimeout(() => {
-                char.classList.add('animate-in', 'initial-load');
-            }, 300 + (index * charDelay)); // Add 300ms delay after container starts animating
+        // Animate each character with staggered delay
+        chars.forEach((char, i) => {
+            char.classList.remove('animate-in', 'initial-load');
+            char.style.animationDelay = '';
+            void char.offsetWidth;
+            
+            char.style.animationDelay = `${i * stagger}ms`;
+            char.classList.add('animate-in', 'initial-load');
         });
     }
 
@@ -842,27 +834,26 @@ class ScrollRevealComponent {
         });
 
         item.classList.add('revealed', 'active');
-
-        // Animate characters with staggered delay - responsive timing
-        const chars = item.querySelectorAll('.char');
-        const charDelay = this.isMobile ? 30 : 50;
-
-        chars.forEach((char, index) => {
-            setTimeout(() => {
-                char.classList.add('animate-in');
-            }, index * charDelay);
-        });
-
-        // Set initial position and animate in
-        item.style.opacity = '0';
-        item.style.transform = 'translate(-50%, -50%) translateY(20px)';
+        item.style.opacity = '1';
+        item.style.transform = 'translate(-50%, -50%)';
         item.style.pointerEvents = 'auto';
 
-        requestAnimationFrame(() => {
-            const duration = this.isMobile ? '0.4s' : '0.6s';
-            item.style.transition = `transform ${duration} cubic-bezier(0.22, 1, 0.36, 1), opacity ${duration} ease-out`;
-            item.style.transform = 'translate(-50%, -50%)';
-            item.style.opacity = '1';
+        // Get all characters for sequential left-to-right animation
+        const chars = item.querySelectorAll('.char');
+        const stagger = this.isMobile ? 40 : 55; // ms between each character
+
+        // Animate characters with staggered delay
+        chars.forEach((char, i) => {
+            // Reset state
+            char.classList.remove('animate-in', 'initial-load');
+            char.style.animationDelay = '';
+            
+            // Trigger reflow for animation restart
+            void char.offsetWidth;
+            
+            // Apply staggered delay and start animation
+            char.style.animationDelay = `${i * stagger}ms`;
+            char.classList.add('animate-in');
         });
 
         // Toggle bottom hint and lock based on position

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="joystickGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <circle cx="12" cy="5" r="3" fill="url(#joystickGrad)" opacity="0.3"/>
+    <circle cx="12" cy="5" r="3" stroke="url(#joystickGrad)" stroke-width="2" fill="none"/>
+    <path d="M12 8v8" stroke="url(#joystickGrad)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" fill="url(#joystickGrad)" opacity="0.2"/>
+    <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" stroke="url(#joystickGrad)" stroke-width="2" fill="none"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <circle cx="12" cy="5" r="3" fill="currentColor" opacity="0.3"/>
+    <circle cx="12" cy="5" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" fill="currentColor" opacity="0.2"/>
+    <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </g>
+</svg>

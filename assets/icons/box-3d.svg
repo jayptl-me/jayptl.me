@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="box3dGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <!-- 3D box with perspective -->
+    <path d="M12 3L3 8v8l9 5 9-5V8l-9-5z" fill="url(#box3dGrad)" opacity="0.15"/>
+    <!-- Front face -->
+    <path d="M12 3L3 8l9 5 9-5-9-5z" stroke="url(#box3dGrad)" stroke-width="2" stroke-linejoin="round" fill="none"/>
+    <!-- Left edge -->
+    <path d="M3 8v8l9 5" stroke="url(#box3dGrad)" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Right edge -->
+    <path d="M21 8v8l-9 5" stroke="url(#box3dGrad)" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Center line -->
+    <path d="M12 13v8" stroke="url(#box3dGrad)" stroke-width="2" stroke-linecap="round"/>
+    <!-- 3D text indicator -->
+    <text x="9" y="11" fill="url(#box3dGrad)" font-size="5" font-weight="bold" font-family="system-ui">3D</text>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <path d="M12 3L3 8v8l9 5 9-5V8l-9-5z" fill="currentColor" opacity="0.15"/>
+    <path d="M12 3L3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+    <path d="M3 8v8l9 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M21 8v8l-9 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M12 13v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <text x="9" y="11" fill="currentColor" font-size="5" font-weight="bold" font-family="system-ui">3D</text>
+  </g>
+</svg>

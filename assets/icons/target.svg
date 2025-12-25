@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="targetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <circle cx="12" cy="12" r="10" fill="url(#targetGrad)" opacity="0.1"/>
+    <circle cx="12" cy="12" r="10" stroke="url(#targetGrad)" stroke-width="2" fill="none"/>
+    <circle cx="12" cy="12" r="6" stroke="url(#targetGrad)" stroke-width="2" fill="none"/>
+    <circle cx="12" cy="12" r="2" fill="url(#targetGrad)"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle cx="12" cy="12" r="2" fill="currentColor"/>
+  </g>
+</svg>

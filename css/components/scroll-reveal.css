@@ -726,6 +726,30 @@
   }
 }
 
+/* Manual dark theme toggle - matching grid colors */
+html[data-theme="dark"] .text-reveal-container::before {
+  background:
+    /* Vertical lines */
+    repeating-linear-gradient(90deg,
+      rgba(var(--accent-500-rgb), 0.1) 0px,
+      rgba(var(--accent-500-rgb), 0.1) 1px,
+      transparent 1px,
+      transparent 50px),
+    /* Horizontal lines */
+    repeating-linear-gradient(0deg,
+      rgba(var(--accent-500-rgb), 0.1) 0px,
+      rgba(var(--accent-500-rgb), 0.1) 1px,
+      transparent 1px,
+      transparent 50px);
+}
+
+html[data-theme="dark"] .text-reveal-container::after {
+  background: radial-gradient(circle at 100% 0%,
+      rgba(var(--accent-400-rgb), 0.25) 0%,
+      rgba(var(--primary-400-rgb), 0.12) 25%,
+      transparent 60%);
+}
+
 /* ==========================================================================
    PERFORMANCE OPTIMIZATIONS
    ========================================================================== */

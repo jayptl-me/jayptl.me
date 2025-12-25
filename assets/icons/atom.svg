@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="atomGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <!-- Center nucleus -->
+    <circle cx="12" cy="12" r="2.5" fill="url(#atomGrad)"/>
+    <!-- Electron orbits -->
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#atomGrad)" stroke-width="1.5" fill="none" transform="rotate(0 12 12)"/>
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#atomGrad)" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/>
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#atomGrad)" stroke-width="1.5" fill="none" transform="rotate(-60 12 12)"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(0 12 12)"/>
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/>
+    <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(-60 12 12)"/>
+  </g>
+</svg>

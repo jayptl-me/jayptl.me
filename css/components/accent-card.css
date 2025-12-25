@@ -48,7 +48,7 @@ html[data-theme="light"] .accent-card {
 }
 
 html[data-theme="light"] .accent-card::before {
-    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
 }
 
 html[data-theme="light"] .accent-card h3,
@@ -91,7 +91,7 @@ html[data-theme="dark"] .accent-card {
 }
 
 html[data-theme="dark"] .accent-card::before {
-    background: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+    background: linear-gradient(135deg, var(--accent-400), var(--accent-300));
 }
 
 html[data-theme="dark"] .accent-card h3,

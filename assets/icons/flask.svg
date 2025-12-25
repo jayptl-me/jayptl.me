@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon">
+  <defs>
+    <linearGradient id="flaskGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" fill="url(#flaskGrad)" opacity="0.2"/>
+    <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" stroke="url(#flaskGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M7 3h10" stroke="url(#flaskGrad)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M6 15h12" stroke="url(#flaskGrad)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" fill="currentColor" opacity="0.2"/>
+    <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M7 3h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M6 15h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

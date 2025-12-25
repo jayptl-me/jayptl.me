@@ -1,0 +1,1362 @@
+/**
+ * Project Showcase Component
+ * Animated "Project Showcase" section with project showcase and work carousel
+ * 
+ * @file components/project-showcase.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   PROJECT SHOWCASE SECTION
+   ========================================================================== */
+
+.project-showcase-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--theme-bg);
+    position: relative;
+    /* Allow background extension to be visible above */
+    overflow: visible;
+    overflow-x: clip;
+    padding: var(--space-6) 0 var(--space-8);
+}
+
+/* Background extension to eliminate white space gap when scrolling */
+.project-showcase-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: var(--theme-bg);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Grid animation - matches stepper's gridPan for seamless visual sync */
+@keyframes gridPan {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
+}
+
+/* Light beam continuation from top-right */
+.project-showcase-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    z-index: 1;
+    pointer-events: none;
+    
+    /* Continuing the light beam effect from stepper */
+    background:
+        /* Subtle light source continuation */
+        radial-gradient(ellipse at 100% -20%,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(var(--primary-300-rgb), 0.08) 30%,
+            transparent 70%),
+        /* Soft ambient glow */
+        linear-gradient(180deg,
+            rgba(var(--primary-400-rgb), 0.03) 0%,
+            transparent 50%);
+    
+    /* Fade out smoothly */
+    mask-image: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0) 100%);
+}
+
+/* ==========================================================================
+   PROJECT SHOWCASE DISPLAY
+   Large display area above carousel that shows active project content
+   ========================================================================== */
+
+.project-showcase {
+    width: 100%;
+    max-width: 1400px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6) var(--space-8);
+    position: relative;
+    min-height: 60vh;
+    z-index: 2; /* Above backdrop grid */
+    
+    /* Subtle entrance animation */
+    opacity: 0;
+    transform: translateY(40px);
+    animation: showcaseEnter 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+@keyframes showcaseEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.showcase-panel {
+    position: absolute;
+    inset: 0;
+    padding: var(--space-6) var(--space-8);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.98);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showcase-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    position: relative;
+}
+
+/* Staggered entrance for mini-cards */
+.showcase-panel.active .mini-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: miniCardEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.showcase-panel.active .mini-card:nth-child(1) { animation-delay: 0.1s; }
+.showcase-panel.active .mini-card:nth-child(2) { animation-delay: 0.15s; }
+.showcase-panel.active .mini-card:nth-child(3) { animation-delay: 0.2s; }
+.showcase-panel.active .mini-card:nth-child(4) { animation-delay: 0.25s; }
+
+@keyframes miniCardEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered entrance for showcase info */
+.showcase-panel.active .showcase-info {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: infoEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@keyframes infoEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.showcase-content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-8);
+    width: 100%;
+    max-width: 1200px;
+    align-items: stretch;
+}
+
+/* ==========================================================================
+   SHOWCASE MAIN (Hero Image Area)
+   ========================================================================== */
+
+.showcase-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.showcase-hero {
+    flex: 1;
+    min-height: 400px;
+    border-radius: var(--rounded-2xl);
+    overflow: hidden;
+    position: relative;
+}
+
+.showcase-image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rounded-2xl);
+    border: 2px dashed rgba(var(--primary-500-rgb), 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.showcase-image-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg,
+        rgba(var(--primary-500-rgb), 0.03) 0%,
+        rgba(var(--primary-400-rgb), 0.02) 100%);
+}
+
+.showcase-image-placeholder::after {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--primary-500-rgb), 0.05),
+        transparent);
+    animation: showcaseShimmer 3s ease-in-out infinite;
+}
+
+@keyframes showcaseShimmer {
+    0% {
+        transform: translateX(-100%) rotate(12deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(12deg);
+    }
+}
+
+.showcase-placeholder-label {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--theme-text);
+    opacity: 0.4;
+    z-index: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SHOWCASE SIDEBAR
+   ========================================================================== */
+
+.showcase-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* Mini Cards Grid */
+.showcase-mini-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+}
+
+.mini-card {
+    padding: var(--space-4);
+    border-radius: var(--rounded-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    transition: all var(--duration-300) var(--ease-out);
+    cursor: pointer;
+    border: 1px solid rgba(var(--primary-500-rgb), 0.15);
+    background: rgba(var(--primary-500-rgb), 0.03);
+}
+
+.mini-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--primary-500-rgb), 0.35);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.mini-card-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+    object-fit: contain;
+    /* Blue tint for light mode using CSS filter */
+    filter: sepia(1) saturate(5) hue-rotate(185deg) brightness(0.9);
+    transition: filter var(--duration-300) var(--ease-out);
+}
+
+.mini-card-label {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--theme-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+}
+
+/* Showcase Info */
+.showcase-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-radius: var(--rounded-xl);
+    border: 1px solid rgba(var(--primary-500-rgb), 0.15);
+    background: rgba(var(--primary-500-rgb), 0.03);
+}
+
+.showcase-number {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg,
+        var(--primary-500),
+        var(--primary-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.6;
+}
+
+.showcase-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.showcase-description {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--theme-text);
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* ==========================================================================
+   WORK CAROUSEL
+   ========================================================================== */
+
+.work-carousel-wrapper {
+    width: 100%;
+    position: relative;
+    padding: var(--space-8) 0;
+    margin-top: auto;
+    z-index: 2; /* Above backdrop grid */
+    
+    /* Elegant entrance animation */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: carouselWrapperEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+
+@keyframes carouselWrapperEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.work-carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.work-carousel-track {
+    display: flex;
+    gap: var(--space-6);
+    padding: var(--space-4);
+    animation: carouselScroll 25s linear infinite;
+    width: max-content;
+}
+
+.work-carousel-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes carouselScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - var(--space-3)));
+    }
+}
+
+.work-slide {
+    flex-shrink: 0;
+    width: 320px;
+    height: 200px;
+    border-radius: var(--rounded-2xl);
+    overflow: hidden;
+    background: rgba(var(--primary-500-rgb), 0.04);
+    border: 1px solid rgba(var(--primary-500-rgb), 0.15);
+    transition: all var(--duration-300) var(--ease-out);
+    cursor: pointer;
+}
+
+.work-slide:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(var(--primary-500-rgb), 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.work-slide-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6);
+    gap: var(--space-3);
+}
+
+.work-slide-number {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, 
+        rgba(var(--primary-500-rgb), 0.3),
+        rgba(var(--accent-500-rgb), 0.2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.work-slide-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--theme-text);
+}
+
+.work-slide-description {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--theme-text);
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   CAROUSEL NAVIGATION
+   ========================================================================== */
+
+.work-carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+}
+
+.carousel-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--primary-500-rgb), 0.2);
+    background: rgba(var(--primary-500-rgb), 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-300) var(--ease-out);
+    color: var(--theme-text);
+}
+
+.carousel-btn:hover {
+    background: rgba(var(--primary-500-rgb), 0.15);
+    border-color: rgba(var(--primary-500-rgb), 0.4);
+    transform: scale(1.05);
+}
+
+.carousel-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.carousel-dots {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(var(--primary-500-rgb), 0.2);
+    cursor: pointer;
+    transition: all var(--duration-300) var(--ease-out);
+}
+
+.carousel-dot:hover,
+.carousel-dot.active {
+    background: var(--primary-500);
+    transform: scale(1.2);
+}
+
+/* ==========================================================================
+   RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+    .project-showcase {
+        padding: var(--space-4) var(--space-6);
+    }
+    
+    .showcase-content {
+        grid-template-columns: 1fr 320px;
+        gap: var(--space-6);
+    }
+    
+    .showcase-hero {
+        min-height: 350px;
+    }
+    
+    .showcase-image-placeholder {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .project-showcase {
+        min-height: 50vh;
+    }
+    
+    .showcase-content {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+    }
+    
+    .showcase-hero {
+        min-height: 280px;
+    }
+    
+    .showcase-image-placeholder {
+        min-height: 280px;
+    }
+    
+    .showcase-sidebar {
+        flex-direction: row;
+        gap: var(--space-4);
+    }
+    
+    .showcase-mini-cards {
+        flex: 1;
+    }
+    
+    .showcase-info {
+        flex: 1;
+    }
+    
+    .showcase-number {
+        font-size: 2.5rem;
+    }
+    
+    .showcase-title {
+        font-size: 1.5rem;
+    }
+    
+    .work-slide {
+        width: 280px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 767px) {
+    .project-showcase-section {
+        padding: var(--space-4) 0;
+    }
+    
+    .project-showcase {
+        padding: var(--space-4);
+        min-height: 45vh;
+    }
+    
+    .showcase-panel {
+        padding: var(--space-4);
+    }
+    
+    .showcase-content {
+        gap: var(--space-4);
+    }
+    
+    .showcase-hero {
+        min-height: 200px;
+    }
+    
+    .showcase-image-placeholder {
+        min-height: 200px;
+    }
+    
+    .showcase-sidebar {
+        flex-direction: column;
+    }
+    
+    .showcase-mini-cards {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-2);
+    }
+    
+    .mini-card {
+        padding: var(--space-3);
+    }
+    
+    .mini-card-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    
+    /* Light mode icon colors (blue) */
+    .mini-card-icon {
+        --icon-gradient-start: var(--primary-500);
+        --icon-gradient-end: var(--primary-400);
+    }
+    
+    .mini-card-label {
+        font-size: 0.625rem;
+    }
+    
+    .showcase-info {
+        padding: var(--space-4);
+    }
+    
+    .showcase-number {
+        font-size: 2rem;
+    }
+    
+    .showcase-title {
+        font-size: 1.25rem;
+    }
+    
+    .showcase-description {
+        font-size: 0.875rem;
+    }
+    
+    .work-slide {
+        width: 240px;
+        height: 160px;
+    }
+    
+    .work-slide-number {
+        font-size: 2rem;
+    }
+    
+    .work-slide-title {
+        font-size: 1rem;
+    }
+    
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .carousel-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 479px) {
+    .project-showcase {
+        min-height: 40vh;
+    }
+    
+    .showcase-hero {
+        min-height: 160px;
+    }
+    
+    .showcase-image-placeholder {
+        min-height: 160px;
+    }
+    
+    .showcase-mini-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .showcase-number {
+        font-size: 1.75rem;
+    }
+    
+    .showcase-title {
+        font-size: 1.125rem;
+    }
+    
+    .work-slide {
+        width: 200px;
+        height: 140px;
+    }
+    
+    .work-slide-number {
+        font-size: 1.75rem;
+    }
+    
+    .work-slide-title {
+        font-size: 0.875rem;
+    }
+    
+    .work-slide-description {
+        font-size: 0.75rem;
+    }
+}
+
+/* ==========================================================================
+   LIGHT MODE - Blue (Primary) Colors
+   ========================================================================== */
+
+@media (prefers-color-scheme: light) {
+    /* Backdrop grid - blue tint for light mode */
+    .project-showcase-section::before {
+        background:
+            /* Vertical lines */
+            repeating-linear-gradient(90deg,
+                rgba(var(--primary-600-rgb), 0.1) 0px,
+                rgba(var(--primary-600-rgb), 0.1) 1px,
+                transparent 1px,
+                transparent 50px),
+            /* Horizontal lines */
+            repeating-linear-gradient(0deg,
+                rgba(var(--primary-600-rgb), 0.1) 0px,
+                rgba(var(--primary-600-rgb), 0.1) 1px,
+                transparent 1px,
+                transparent 50px);
+    }
+    
+    /* Light beam - subtle blue glow for light mode */
+    .project-showcase-section::after {
+        background:
+            radial-gradient(ellipse at 100% -20%,
+                rgba(255, 255, 255, 0.5) 0%,
+                rgba(var(--primary-500-rgb), 0.1) 30%,
+                transparent 70%),
+            linear-gradient(180deg,
+                rgba(var(--primary-500-rgb), 0.03) 0%,
+                transparent 50%);
+    }
+    
+    /* Showcase Display */
+    .showcase-image-placeholder {
+        border-color: rgba(var(--primary-500-rgb), 0.25);
+    }
+    
+    .showcase-image-placeholder::before {
+        background: linear-gradient(145deg,
+            rgba(var(--primary-500-rgb), 0.03) 0%,
+            rgba(var(--primary-400-rgb), 0.02) 100%);
+    }
+    
+    .showcase-image-placeholder::after {
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(var(--primary-500-rgb), 0.05),
+            transparent);
+    }
+    
+    .mini-card {
+        border-color: rgba(var(--primary-500-rgb), 0.15);
+        background: rgba(var(--primary-500-rgb), 0.03);
+    }
+    
+    .mini-card:hover {
+        border-color: rgba(var(--primary-500-rgb), 0.35);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .showcase-info {
+        border-color: rgba(var(--primary-500-rgb), 0.15);
+        background: rgba(var(--primary-500-rgb), 0.03);
+    }
+    
+    .showcase-number {
+        background: linear-gradient(135deg,
+            var(--primary-500),
+            var(--primary-400));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    /* Work Carousel */
+    .work-slide {
+        background: rgba(var(--primary-500-rgb), 0.04);
+        border-color: rgba(var(--primary-500-rgb), 0.15);
+    }
+    
+    .work-slide:hover {
+        border-color: rgba(var(--primary-500-rgb), 0.4);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .work-slide-number {
+        background: linear-gradient(135deg,
+            var(--primary-500),
+            var(--primary-400));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .carousel-btn {
+        border-color: rgba(var(--primary-500-rgb), 0.2);
+        background: rgba(var(--primary-500-rgb), 0.05);
+    }
+    
+    .carousel-btn:hover {
+        background: rgba(var(--primary-500-rgb), 0.15);
+        border-color: rgba(var(--primary-500-rgb), 0.4);
+    }
+    
+    .carousel-dot {
+        background: rgba(var(--primary-500-rgb), 0.2);
+    }
+    
+    .carousel-dot:hover,
+    .carousel-dot.active {
+        background: var(--primary-500);
+    }
+    
+    /* Text - solid blue */
+    .project-showcase-section .gradient-text {
+        background: none !important;
+        -webkit-background-clip: border-box !important;
+        background-clip: border-box !important;
+        -webkit-text-fill-color: currentColor !important;
+        color: var(--primary-600) !important;
+    }
+}
+
+/* ==========================================================================
+   DARK MODE - Turquoise (Accent) Colors
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Backdrop grid - turquoise tint for dark mode */
+    .project-showcase-section::before {
+        background:
+            /* Vertical lines */
+            repeating-linear-gradient(90deg,
+                rgba(var(--accent-500-rgb), 0.1) 0px,
+                rgba(var(--accent-500-rgb), 0.1) 1px,
+                transparent 1px,
+                transparent 50px),
+            /* Horizontal lines */
+            repeating-linear-gradient(0deg,
+                rgba(var(--accent-500-rgb), 0.1) 0px,
+                rgba(var(--accent-500-rgb), 0.1) 1px,
+                transparent 1px,
+                transparent 50px);
+    }
+    
+    /* Light beam - turquoise glow for dark mode */
+    .project-showcase-section::after {
+        background:
+            radial-gradient(ellipse at 100% -20%,
+                rgba(var(--accent-400-rgb), 0.12) 0%,
+                rgba(var(--accent-300-rgb), 0.06) 30%,
+                transparent 70%),
+            linear-gradient(180deg,
+                rgba(var(--accent-400-rgb), 0.04) 0%,
+                transparent 50%);
+    }
+    
+    /* Showcase Display */
+    .showcase-image-placeholder {
+        border-color: rgba(var(--accent-400-rgb), 0.25);
+    }
+    
+    .showcase-image-placeholder::before {
+        background: linear-gradient(145deg,
+            rgba(var(--accent-500-rgb), 0.05) 0%,
+            rgba(var(--accent-400-rgb), 0.03) 100%);
+    }
+    
+    .showcase-image-placeholder::after {
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(var(--accent-400-rgb), 0.08),
+            transparent);
+    }
+    
+    .mini-card {
+        border-color: rgba(var(--accent-400-rgb), 0.15);
+        background: rgba(var(--accent-500-rgb), 0.05);
+    }
+    
+    /* Dark mode icon colors (turquoise) - CSS filter for img elements */
+    .mini-card-icon {
+        filter: sepia(1) saturate(5) hue-rotate(140deg) brightness(1.1);
+    }
+    
+    .mini-card:hover {
+        border-color: rgba(var(--accent-400-rgb), 0.4);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+    
+    .showcase-info {
+        border-color: rgba(var(--accent-400-rgb), 0.15);
+        background: rgba(var(--accent-500-rgb), 0.05);
+    }
+    
+    .showcase-number {
+        background: linear-gradient(135deg,
+            var(--accent-400),
+            var(--accent-300));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    /* Work Carousel */
+    .work-slide {
+        background: linear-gradient(145deg,
+            rgba(var(--accent-500-rgb), 0.08) 0%,
+            rgba(var(--accent-400-rgb), 0.05) 100%);
+        border-color: rgba(var(--accent-400-rgb), 0.2);
+    }
+    
+    .work-slide:hover {
+        border-color: rgba(var(--accent-400-rgb), 0.5);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .work-slide-number {
+        background: linear-gradient(135deg,
+            var(--accent-400),
+            var(--accent-300));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .carousel-btn {
+        border-color: rgba(var(--accent-400-rgb), 0.2);
+        background: rgba(var(--accent-500-rgb), 0.05);
+    }
+    
+    .carousel-btn:hover {
+        background: rgba(var(--accent-400-rgb), 0.15);
+        border-color: rgba(var(--accent-400-rgb), 0.4);
+    }
+    
+    .carousel-dot {
+        background: rgba(var(--accent-400-rgb), 0.2);
+    }
+    
+    .carousel-dot:hover,
+    .carousel-dot.active {
+        background: var(--accent-400);
+    }
+    
+    /* Text - solid turquoise */
+    .project-showcase-section .gradient-text {
+        background: none !important;
+        -webkit-background-clip: border-box !important;
+        background-clip: border-box !important;
+        -webkit-text-fill-color: currentColor !important;
+        color: var(--accent-400) !important;
+    }
+}
+
+/* ==========================================================================
+   EXPLICIT LIGHT MODE OVERRIDES (Manual Theme Toggle)
+   ========================================================================== */
+
+/* Backdrop grid - blue tint for light mode */
+html[data-theme="light"] .project-showcase-section::before {
+    background:
+        /* Vertical lines */
+        repeating-linear-gradient(90deg,
+            rgba(var(--primary-600-rgb), 0.1) 0px,
+            rgba(var(--primary-600-rgb), 0.1) 1px,
+            transparent 1px,
+            transparent 50px),
+        /* Horizontal lines */
+        repeating-linear-gradient(0deg,
+            rgba(var(--primary-600-rgb), 0.1) 0px,
+            rgba(var(--primary-600-rgb), 0.1) 1px,
+            transparent 1px,
+            transparent 50px);
+}
+
+/* Light beam - blue glow for light mode */
+html[data-theme="light"] .project-showcase-section::after {
+    background:
+        radial-gradient(ellipse at 100% -20%,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(var(--primary-500-rgb), 0.1) 30%,
+            transparent 70%),
+        linear-gradient(180deg,
+            rgba(var(--primary-500-rgb), 0.03) 0%,
+            transparent 50%);
+}
+
+/* Showcase Display */
+html[data-theme="light"] .showcase-image-placeholder {
+    border-color: rgba(var(--primary-500-rgb), 0.25);
+}
+
+html[data-theme="light"] .showcase-image-placeholder::before {
+    background: linear-gradient(145deg,
+        rgba(var(--primary-500-rgb), 0.03) 0%,
+        rgba(var(--primary-400-rgb), 0.02) 100%);
+}
+
+html[data-theme="light"] .showcase-image-placeholder::after {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--primary-500-rgb), 0.05),
+        transparent);
+}
+
+html[data-theme="light"] .mini-card {
+    border-color: rgba(var(--primary-500-rgb), 0.15);
+    background: rgba(var(--primary-500-rgb), 0.03);
+}
+
+/* Light mode icon colors (blue) - CSS filter for img elements */
+html[data-theme="light"] .mini-card-icon {
+    filter: sepia(1) saturate(5) hue-rotate(185deg) brightness(0.9);
+}
+
+html[data-theme="light"] .mini-card:hover {
+    border-color: rgba(var(--primary-500-rgb), 0.35);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .showcase-info {
+    border-color: rgba(var(--primary-500-rgb), 0.15);
+    background: rgba(var(--primary-500-rgb), 0.03);
+}
+
+html[data-theme="light"] .showcase-number {
+    background: linear-gradient(135deg,
+        var(--primary-500),
+        var(--primary-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Carousel */
+html[data-theme="light"] .work-slide {
+    background: rgba(var(--primary-500-rgb), 0.04);
+    border-color: rgba(var(--primary-500-rgb), 0.15);
+}
+
+html[data-theme="light"] .work-slide:hover {
+    border-color: rgba(var(--primary-500-rgb), 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .work-slide-number {
+    background: linear-gradient(135deg,
+        var(--primary-500),
+        var(--primary-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+html[data-theme="light"] .carousel-btn {
+    border-color: rgba(var(--primary-500-rgb), 0.2);
+    background: rgba(var(--primary-500-rgb), 0.05);
+}
+
+html[data-theme="light"] .carousel-btn:hover {
+    background: rgba(var(--primary-500-rgb), 0.15);
+    border-color: rgba(var(--primary-500-rgb), 0.4);
+}
+
+html[data-theme="light"] .carousel-dot {
+    background: rgba(var(--primary-500-rgb), 0.2);
+}
+
+html[data-theme="light"] .carousel-dot:hover,
+html[data-theme="light"] .carousel-dot.active {
+    background: var(--primary-500);
+}
+
+html[data-theme="light"] .project-showcase-section .gradient-text {
+    background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    -webkit-text-fill-color: currentColor !important;
+    color: var(--primary-600) !important;
+}
+
+/* ==========================================================================
+   EXPLICIT DARK MODE OVERRIDES (Manual Theme Toggle)
+   ========================================================================== */
+
+/* Backdrop grid - turquoise tint for dark mode */
+html[data-theme="dark"] .project-showcase-section::before {
+    background:
+        /* Vertical lines */
+        repeating-linear-gradient(90deg,
+            rgba(var(--accent-500-rgb), 0.1) 0px,
+            rgba(var(--accent-500-rgb), 0.1) 1px,
+            transparent 1px,
+            transparent 50px),
+        /* Horizontal lines */
+        repeating-linear-gradient(0deg,
+            rgba(var(--accent-500-rgb), 0.1) 0px,
+            rgba(var(--accent-500-rgb), 0.1) 1px,
+            transparent 1px,
+            transparent 50px);
+}
+
+/* Light beam - turquoise glow for dark mode */
+html[data-theme="dark"] .project-showcase-section::after {
+    background:
+        radial-gradient(ellipse at 100% -20%,
+            rgba(var(--accent-400-rgb), 0.12) 0%,
+            rgba(var(--accent-300-rgb), 0.06) 30%,
+            transparent 70%),
+        linear-gradient(180deg,
+            rgba(var(--accent-400-rgb), 0.04) 0%,
+            transparent 50%);
+}
+
+/* Showcase Display */
+html[data-theme="dark"] .showcase-image-placeholder {
+    border-color: rgba(var(--accent-400-rgb), 0.25);
+}
+
+html[data-theme="dark"] .showcase-image-placeholder::before {
+    background: linear-gradient(145deg,
+        rgba(var(--accent-500-rgb), 0.05) 0%,
+        rgba(var(--accent-400-rgb), 0.03) 100%);
+}
+
+html[data-theme="dark"] .showcase-image-placeholder::after {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--accent-400-rgb), 0.08),
+        transparent);
+}
+
+html[data-theme="dark"] .mini-card {
+    border-color: rgba(var(--accent-400-rgb), 0.15);
+    background: rgba(var(--accent-500-rgb), 0.05);
+}
+
+/* Dark mode icon colors (turquoise) - CSS filter for img elements */
+html[data-theme="dark"] .mini-card-icon {
+    filter: sepia(1) saturate(5) hue-rotate(140deg) brightness(1.1);
+}
+
+html[data-theme="dark"] .mini-card:hover {
+    border-color: rgba(var(--accent-400-rgb), 0.4);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .showcase-info {
+    border-color: rgba(var(--accent-400-rgb), 0.15);
+    background: rgba(var(--accent-500-rgb), 0.05);
+}
+
+html[data-theme="dark"] .showcase-number {
+    background: linear-gradient(135deg,
+        var(--accent-400),
+        var(--accent-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Carousel */
+html[data-theme="dark"] .work-slide {
+    background: linear-gradient(145deg,
+        rgba(var(--accent-500-rgb), 0.08) 0%,
+        rgba(var(--accent-400-rgb), 0.05) 100%);
+    border-color: rgba(var(--accent-400-rgb), 0.2);
+}
+
+html[data-theme="dark"] .work-slide:hover {
+    border-color: rgba(var(--accent-400-rgb), 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .work-slide-number {
+    background: linear-gradient(135deg,
+        var(--accent-400),
+        var(--accent-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+html[data-theme="dark"] .carousel-btn {
+    border-color: rgba(var(--accent-400-rgb), 0.2);
+    background: rgba(var(--accent-500-rgb), 0.05);
+}
+
+html[data-theme="dark"] .carousel-btn:hover {
+    background: rgba(var(--accent-400-rgb), 0.15);
+    border-color: rgba(var(--accent-400-rgb), 0.4);
+}
+
+html[data-theme="dark"] .carousel-dot {
+    background: rgba(var(--accent-400-rgb), 0.2);
+}
+
+html[data-theme="dark"] .carousel-dot:hover,
+html[data-theme="dark"] .carousel-dot.active {
+    background: var(--accent-400);
+}
+
+html[data-theme="dark"] .project-showcase-section .gradient-text {
+    background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    -webkit-text-fill-color: currentColor !important;
+    color: var(--accent-400) !important;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    /* Disable backdrop grid animation */
+    .project-showcase-section::before {
+        animation: none;
+    }
+    
+    /* Disable entrance animations */
+    .project-showcase {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .work-carousel-wrapper {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .showcase-panel.active .mini-card {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .showcase-panel.active .showcase-info {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    
+    .placeholder-icon {
+        animation: none;
+    }
+    
+    .showcase-word .char {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .showcase-subtitle {
+        animation: none;
+        opacity: 0.7;
+    }
+    
+    .work-carousel-track {
+        animation: none;
+    }
+    
+    .work-slide:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ========================================================================== */
+
+/* Touch devices - use active states instead of hover */
+@media (hover: none) and (pointer: coarse) {
+    /* Disable hover transforms on touch */
+    .mini-card:hover {
+        transform: none;
+    }
+    
+    .work-slide:hover {
+        transform: none;
+    }
+    
+    /* Add active states for touch feedback */
+    .mini-card:active {
+        transform: scale(0.97);
+        opacity: 0.9;
+    }
+    
+    .work-slide:active {
+        transform: scale(0.98);
+        opacity: 0.95;
+    }
+    
+    .carousel-btn:active {
+        transform: scale(0.95);
+        opacity: 0.9;
+    }
+    
+    .carousel-dot:active {
+        transform: scale(1.2);
+    }
+    
+    /* Ensure touch-friendly tap targets (min 44px) */
+    .mini-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .carousel-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .carousel-dot {
+        min-width: 44px;
+        min-height: 44px;
+        /* Visual size stays small but tap area is larger */
+        padding: 12px;
+        margin: -12px;
+        background-clip: content-box;
+    }
+    
+    /* Stop auto-scroll on touch devices for better UX */
+    .work-carousel-track {
+        animation-play-state: paused;
+    }
+}
+
+/* ==========================================================================
+   SAFE AREA INSETS (for notched devices)
+   ========================================================================== */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+    .project-showcase-section {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+    }
+}

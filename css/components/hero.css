@@ -233,9 +233,6 @@
    ========================================================================== */
 
 .hero-gradient {
-  background: linear-gradient(135deg,
-      var(--primary-500) 0%,
-      var(--accent-500) 100%);
   color: white;
 }
 
@@ -877,12 +874,55 @@ html[data-theme="dark"] .project-card {
    DARK MODE ADJUSTMENTS
    ========================================================================== */
 
+@media (prefers-color-scheme: light) {
+  .hero-gradient {
+    background: linear-gradient(135deg,
+        var(--primary-500) 0%,
+        var(--primary-400) 100%);
+  }
+  
+  .particle {
+    background-color: var(--primary-300);
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .hero {
-    background: linear-gradient(135deg, var(--primary-900), var(--accent-900));
+    background: var(--theme-bg);
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(135deg,
+        var(--accent-600) 0%,
+        var(--accent-500) 100%);
+  }
+  
+  .particle {
+    background-color: var(--accent-400);
   }
 
   .floating-element {
     opacity: 0.05;
   }
+}
+
+/* Explicit theme overrides */
+html[data-theme="light"] .hero-gradient {
+  background: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      var(--primary-400) 100%);
+}
+
+html[data-theme="light"] .particle {
+  background-color: var(--primary-300);
+}
+
+html[data-theme="dark"] .hero-gradient {
+  background: linear-gradient(135deg,
+      var(--accent-600) 0%,
+      var(--accent-500) 100%);
+}
+
+html[data-theme="dark"] .particle {
+  background-color: var(--accent-400);
 }

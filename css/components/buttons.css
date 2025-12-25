@@ -73,18 +73,18 @@
    Dark: Glass gradient with glow
    ========================================================================== */
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
     color: white;
     position: relative;
 }
 
 /* Light Mode - Skeuomorphic */
 html[data-theme="light"] .btn-primary {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
     box-shadow: var(--skeu-shadow-raised-sm);
 }
 
 html[data-theme="light"] .btn-primary:hover {
-    background: linear-gradient(135deg, var(--primary-600), var(--accent-600));
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
     box-shadow: var(--skeu-shadow-raised);
     color: white;
 }
@@ -98,11 +98,12 @@ html[data-theme="light"] .btn-primary:active {
 
 /* Dark Mode - Glass with Glow */
 html[data-theme="dark"] .btn-primary {
+    background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
     box-shadow: var(--glass-shadow);
 }
 
 html[data-theme="dark"] .btn-primary:hover {
-    background: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+    background: linear-gradient(135deg, var(--accent-400), var(--accent-300));
     box-shadow: var(--glass-shadow-elevated), var(--glass-glow-accent);
     color: white;
 }
@@ -380,11 +381,12 @@ html[data-theme="dark"] .btn-glass:active {
    ========================================================================== */
 @media (prefers-color-scheme: light) {
     .btn-primary:not([data-theme]) {
+        background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
         box-shadow: var(--skeu-shadow-raised-sm);
     }
 
     .btn-primary:not([data-theme]):hover {
-        background: linear-gradient(135deg, var(--primary-600), var(--accent-600));
+        background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
         box-shadow: var(--skeu-shadow-raised);
         color: white;
     }
@@ -421,11 +423,12 @@ html[data-theme="dark"] .btn-glass:active {
 
 @media (prefers-color-scheme: dark) {
     .btn-primary:not([data-theme]) {
+        background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
         box-shadow: var(--glass-shadow);
     }
 
     .btn-primary:not([data-theme]):hover {
-        background: linear-gradient(135deg, var(--accent-400), var(--primary-400));
+        background: linear-gradient(135deg, var(--accent-400), var(--accent-300));
         box-shadow: var(--glass-shadow-elevated), var(--glass-glow-accent);
         color: white;
     }

@@ -27,6 +27,35 @@ This directory contains custom SVG icons with **dual-render adaptive architectur
 - **info-circle.svg** (`.icon-info`) - Information icon
 - **cookie.svg** (`.icon-warning`) - Cookie/consent icon
 
+### Project Showcase Icons
+
+- **chart.svg** - Analytics/data visualization
+- **atom.svg** - React (atomic component structure)
+- **rocket.svg** - Launch/live status
+- **palette.svg** - UI/UX design
+- **smartphone.svg** - Mobile device
+- **layers.svg** - Flutter (widget layers)
+- **target.svg** - Beta/target goal
+- **app-window.svg** - Application window
+- **globe.svg** - Web3/global
+- **ethereum.svg** - Solidity/Ethereum blockchain
+- **link-chain.svg** - Blockchain/chain links
+- **hammer.svg** - Work in progress (WIP)
+- **gem.svg** - Diamond/DApp
+- **cpu.svg** - AI/processor
+- **snake.svg** - Python programming
+- **code.svg** - Code brackets
+- **flask.svg** - Alpha/experimental
+- **brain.svg** - Machine learning
+- **gamepad.svg** - Gaming controller
+- **cube.svg** - Unity game engine
+- **sparkle.svg** - New/fresh
+- **box-3d.svg** - 3D graphics
+- **bolt.svg** - Lightning/speed
+- **wrench.svg** - Tools/settings
+- **dice.svg** - Randomization/games
+- **joystick.svg** - Gaming/interactive
+
 ## Adaptive Architecture
 
 ### Dual-Render System

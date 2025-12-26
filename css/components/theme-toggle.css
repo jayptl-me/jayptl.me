@@ -128,11 +128,10 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 }
 
 .theme-toggle .lightsaber-glow {
-    fill: var(--primary-400);
-    /* Blue glow */
+    fill: transparent;
     opacity: 0;
-    /* Off by default; enabled in dark */
-    transition: opacity var(--duration-300) var(--ease-out), filter var(--duration-300) var(--ease-out);
+    visibility: hidden;
+    pointer-events: none;
 }
 
 /* Accessibility: Disable transitions and glow for users who prefer reduced motion */
@@ -163,25 +162,23 @@ html[data-theme="light"] .theme-toggle .lightsaber-glow {
     filter: none;
 }
 
-/* Dark: saber on (blue), with glow */
-/* Dark: saber on (turquoise), with glow */
+/* Dark: saber on (turquoise), no glow/spill */
 html[data-theme="dark"] .theme-toggle .lightsaber-blade {
     fill: var(--accent-400);
-    filter: drop-shadow(0 0 3px var(--accent-400)) drop-shadow(0 0 6px var(--accent-400));
+    filter: none;
 }
 
 html[data-theme="dark"] .theme-toggle .lightsaber-glow {
-    opacity: 0.55;
-    filter: drop-shadow(0 0 8px var(--accent-400));
+    opacity: 0;
+    filter: none;
 }
 
-/* Intensified turquoise glow on hover in dark theme */
+/* No glow on hover in dark theme */
 html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
-    filter:
-        drop-shadow(0 0 6px var(--accent-400)) drop-shadow(0 0 12px var(--accent-400)) drop-shadow(0 0 18px var(--accent-400));
+    filter: none;
 }
 
-/* No glow on hover in light theme to avoid black halo */
+/* No glow on hover in light theme */
 html[data-theme="light"] .theme-toggle:hover .lightsaber-blade {
     filter: none;
 }

@@ -23,6 +23,14 @@
             this.currentIndex = 0;
             this.autoScrollPaused = false;
             this.isAnimating = false;
+            
+            // Sound manager reference
+            this.soundManager = window.SoundManager || null;
+            this.soundEnabled = true;
+            
+            // Hover sound throttle
+            this.lastHoverSoundTime = 0;
+            this.hoverSoundThrottle = 150; // ms between hover sounds
 
             if (this.showcase && this.carousel && this.track) {
                 this.init();
@@ -75,7 +83,10 @@
                 const dot = document.createElement('button');
                 dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
                 dot.setAttribute('aria-label', `View project ${index + 1}`);
-                dot.addEventListener('click', () => this.goToSlide(index));
+                dot.addEventListener('click', () => {
+                    this.playSelectSound();
+                    this.goToSlide(index);
+                });
                 this.dotsContainer.appendChild(dot);
             });
         }
@@ -83,10 +94,16 @@
         setupEventListeners() {
             // Navigation buttons
             if (this.prevBtn) {
-                this.prevBtn.addEventListener('click', () => this.navigate(-1));
+                this.prevBtn.addEventListener('click', () => {
+                    this.playSelectSound();
+                    this.navigate(-1);
+                });
             }
             if (this.nextBtn) {
-                this.nextBtn.addEventListener('click', () => this.navigate(1));
+                this.nextBtn.addEventListener('click', () => {
+                    this.playSelectSound();
+                    this.navigate(1);
+                });
             }
 
             // Click on slides to select
@@ -94,7 +111,13 @@
             allSlides.forEach((slide, index) => {
                 slide.addEventListener('click', () => {
                     const realIndex = index % this.slides.length;
+                    this.playSelectSound();
                     this.goToSlide(realIndex);
+                });
+                
+                // Hover sound on slides
+                slide.addEventListener('mouseenter', () => {
+                    this.playHoverSound();
                 });
             });
 
@@ -151,6 +174,26 @@
             );
 
             observer.observe(this.carousel);
+        }
+        
+        /**
+         * Play selection/click sound
+         */
+        playSelectSound() {
+            if (this.soundManager && this.soundEnabled) {
+                this.soundManager.playSelectSound();
+            }
+        }
+        
+        /**
+         * Play hover sound (throttled)
+         */
+        playHoverSound() {
+            const now = Date.now();
+            if (this.soundManager && this.soundEnabled && (now - this.lastHoverSoundTime) > this.hoverSoundThrottle) {
+                this.soundManager.playHoverSound();
+                this.lastHoverSoundTime = now;
+            }
         }
 
         navigate(direction) {
@@ -262,6 +305,9 @@
     class MiniCardInteractions {
         constructor() {
             this.miniCards = document.querySelectorAll('.mini-card');
+            this.soundManager = window.SoundManager || null;
+            this.lastHoverSoundTime = 0;
+            this.hoverSoundThrottle = 150;
             
             if (this.miniCards.length > 0) {
                 this.init();
@@ -270,9 +316,15 @@
 
         init() {
             this.miniCards.forEach(card => {
-                // Add subtle hover sound/haptic feedback placeholder
+                // Add click sound
                 card.addEventListener('click', () => {
+                    this.playSelectSound();
                     this.handleCardClick(card);
+                });
+                
+                // Add hover sound
+                card.addEventListener('mouseenter', () => {
+                    this.playHoverSound();
                 });
                 
                 // Keyboard accessibility
@@ -281,10 +333,25 @@
                 card.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
+                        this.playSelectSound();
                         this.handleCardClick(card);
                     }
                 });
             });
+        }
+        
+        playSelectSound() {
+            if (this.soundManager) {
+                this.soundManager.playSelectSound();
+            }
+        }
+        
+        playHoverSound() {
+            const now = Date.now();
+            if (this.soundManager && (now - this.lastHoverSoundTime) > this.hoverSoundThrottle) {
+                this.soundManager.playHoverSound();
+                this.lastHoverSoundTime = now;
+            }
         }
 
         handleCardClick(card) {

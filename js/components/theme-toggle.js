@@ -35,7 +35,21 @@ class ThemeToggle {
         const btn = e.target.closest && e.target.closest('.theme-toggle');
         if (!btn) return;
         e.preventDefault();
-        window.themeManager.toggleTheme();
+        
+        // Get current theme before toggle to determine which sound to play
+        const currentTheme = window.themeManager.getCurrentTheme();
+        const newTheme = window.themeManager.toggleTheme();
+        
+        // Play lightsaber sound effect
+        if (window.SoundManager) {
+            if (newTheme === 'dark') {
+                // Switching to dark mode - ignite the saber
+                window.SoundManager.playLightsaberIgnite();
+            } else {
+                // Switching to light mode - retract the saber
+                window.SoundManager.playLightsaberRetract();
+            }
+        }
     }
 
     onThemeChange(e) {

@@ -30,6 +30,8 @@
   /* Scoped scroll control for the overlay */
   scroll-behavior: auto;
   overscroll-behavior: none;
+  /* Capture vertical swipes and prevent pull-to-refresh */
+  touch-action: none;
   opacity: 1;
   transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
 }

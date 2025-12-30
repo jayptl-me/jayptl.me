@@ -164,7 +164,7 @@ class ScrollRevealComponent {
             char.classList.remove('animate-in', 'initial-load');
             char.style.animationDelay = '';
             void char.offsetWidth;
-            
+
             char.style.animationDelay = `${i * stagger}ms`;
             char.classList.add('animate-in', 'initial-load');
         });
@@ -228,7 +228,7 @@ class ScrollRevealComponent {
 
         const onScroll = () => {
             const currentScrollY = window.scrollY;
-            
+
             // Minimal direction check
             if (Math.abs(currentScrollY - lastScrollY) > 5) {
                 scrollDirection = currentScrollY > lastScrollY ? 1 : -1;
@@ -438,13 +438,38 @@ class ScrollRevealComponent {
     setupTouchEvents() {
         let startY = 0;
         let startX = 0;
+        let isVerticalSwipe = false;
 
-        this.container.addEventListener('touchstart', (e) => {
+        // Touch start - capture initial position
+        // Use passive: false to allow preventDefault in touchmove
+        this._touchStartHandler = (e) => {
             startY = e.touches[0].clientY;
             startX = e.touches[0].clientX;
-        }, { passive: true });
+            isVerticalSwipe = false;
+        };
+        this.container.addEventListener('touchstart', this._touchStartHandler, { passive: false });
 
-        this.container.addEventListener('touchend', (e) => {
+        // Touch move - prevent pull-to-refresh on vertical swipes within the stepper
+        this._touchMoveHandler = (e) => {
+            if (!this.container.classList.contains('in-view') ||
+                this.container.classList.contains('released')) return;
+
+            const currentY = e.touches[0].clientY;
+            const currentX = e.touches[0].clientX;
+            const deltaY = Math.abs(startY - currentY);
+            const deltaX = Math.abs(startX - currentX);
+
+            // Detect vertical swipe (more vertical than horizontal movement)
+            if (deltaY > 10 && deltaY > deltaX) {
+                isVerticalSwipe = true;
+                // Prevent browser pull-to-refresh and native scroll
+                e.preventDefault();
+            }
+        };
+        this.container.addEventListener('touchmove', this._touchMoveHandler, { passive: false });
+
+        // Touch end - execute the swipe action
+        this._touchEndHandler = (e) => {
             if (!this.container.classList.contains('in-view') ||
                 this.scrollCooldown ||
                 this.isProcessingScroll ||
@@ -461,8 +486,8 @@ class ScrollRevealComponent {
                 return;
             }
 
-            // Ultra-strict single swipe trigger with higher threshold
-            if (Math.abs(deltaY) > 60 && deltaX < 80) {
+            // Swipe threshold - lowered for snappier response (was 60, now 40)
+            if (Math.abs(deltaY) > 40 && deltaX < 80) {
                 const direction = deltaY > 0 ? 1 : -1;
                 const atLast = this.currentIndex >= this.items.length - 1;
 
@@ -500,7 +525,8 @@ class ScrollRevealComponent {
                     this.executeStep(direction);
                 }
             }
-        }, { passive: true });
+        };
+        this.container.addEventListener('touchend', this._touchEndHandler, { passive: true });
     }
 
     handleResize() {
@@ -847,10 +873,10 @@ class ScrollRevealComponent {
             // Reset state
             char.classList.remove('animate-in', 'initial-load');
             char.style.animationDelay = '';
-            
+
             // Trigger reflow for animation restart
             void char.offsetWidth;
-            
+
             // Apply staggered delay and start animation
             char.style.animationDelay = `${i * stagger}ms`;
             char.classList.add('animate-in');
@@ -1043,6 +1069,21 @@ class ScrollRevealComponent {
             if (this._resizeHandler) {
                 window.removeEventListener('resize', this._resizeHandler);
                 this._resizeHandler = null;
+            }
+            // Clean up touch event handlers
+            if (this.container) {
+                if (this._touchStartHandler) {
+                    this.container.removeEventListener('touchstart', this._touchStartHandler);
+                    this._touchStartHandler = null;
+                }
+                if (this._touchMoveHandler) {
+                    this.container.removeEventListener('touchmove', this._touchMoveHandler);
+                    this._touchMoveHandler = null;
+                }
+                if (this._touchEndHandler) {
+                    this.container.removeEventListener('touchend', this._touchEndHandler);
+                    this._touchEndHandler = null;
+                }
             }
         } catch (err) {
             // defensive: ignore errors during cleanup

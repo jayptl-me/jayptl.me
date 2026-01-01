@@ -90,6 +90,8 @@ class ScrollRevealComponent {
                         if (this.stepper) {
                             this.stepper.style.display = '';
                         }
+                        // Play enter sound on re-engagement
+                        if (window.SoundManager) window.SoundManager.playStepperEnter();
                         // We are re-engaging; allow stepper to handle input again
                         this.hasReleased = false;
                         // allow one frame for CSS to pick up the reengaging state
@@ -307,6 +309,8 @@ class ScrollRevealComponent {
         this.container.classList.remove('released');
         this.container.classList.add('reengaging', 'liquid-enter');
         this.container.style.display = '';
+        // Play enter sound
+        if (window.SoundManager) window.SoundManager.playStepperEnter();
 
         if (this.stepper) {
             this.stepper.style.display = '';
@@ -533,6 +537,7 @@ class ScrollRevealComponent {
         this.isMobile = window.innerWidth <= 768;
     }
 
+
     setupIntersectionObserver() {
         const options = {
             root: null,
@@ -707,7 +712,6 @@ class ScrollRevealComponent {
                 if (this.currentIndex < this.items.length - 1) {
                     this.executeStep(1);
                 } else {
-                    // On last item, arm first, then release on second press
                     if (!this.releaseArmed) {
                         this.releaseArmed = true;
                         this.container.classList.add('release-armed');
@@ -770,6 +774,8 @@ class ScrollRevealComponent {
             this.currentIndex--;
             this.revealItem(this.items[this.currentIndex]);
             this.updateStepper();
+            // Play step up sound
+            if (window.SoundManager) window.SoundManager.playStepUp();
         }
     }
 
@@ -780,6 +786,8 @@ class ScrollRevealComponent {
             this.currentIndex++;
             this.revealItem(this.items[this.currentIndex]);
             this.updateStepper();
+            // Play step down sound
+            if (window.SoundManager) window.SoundManager.playStepDown();
         } else {
             // On last item: fade out the current item, reveal the navbar, and release to native scroll
             try {
@@ -801,6 +809,8 @@ class ScrollRevealComponent {
                 // Release native scroll with fluid fade of overlay (stay fixed during fade)
                 this.unlockBodyScroll();
                 this.container.classList.add('releasing');
+                // Play exit sound
+                if (window.SoundManager) window.SoundManager.playStepperExit();
                 // clear any armed state
                 this.releaseArmed = false;
                 this.container.classList.remove('release-armed');

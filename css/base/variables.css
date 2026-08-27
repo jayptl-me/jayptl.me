@@ -476,8 +476,76 @@
    /* Skeu Highlight (top edge shine) */
    --skeu-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.5);
    --skeu-highlight-strong: inset 0 2px 0 rgba(255, 255, 255, 0.7);
+}
 
-   /* ==========================================================================
-     BREAKPOINTS (removed - using direct media queries for better performance)
-     ========================================================================== */
+/* ==========================================================================
+   DARK MODE PRIMARY REMAP — kills blue bleeding into dark theme
+   --------------------------------------------------------------------------
+   The site contract: light = skeuomorphic + BLUE primary, dark = glass +
+   TURQUOISE accent. Dozens of component rules reference --primary-* directly
+   with no dark-mode counterpart, so raw Material blue leaked into dark mode.
+   Fix at the source: inside dark contexts, remap the whole primary ramp onto
+   the accent (turquoise) ramp. Light mode untouched. Component rules now
+   resolve to turquoise in dark without touching 188 call sites.
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Pale tints become translucent teal washes — they are used as
+       backgrounds/borders and must stay DARK-friendly */
+    --primary-50: rgba(38, 201, 216, 0.07);
+    --primary-100: rgba(38, 201, 216, 0.13);
+    --primary-200: rgba(38, 201, 216, 0.22);
+    /* Mid/dark stops map onto the turquoise ramp */
+    --primary-300: var(--accent-300);
+    --primary-400: var(--accent-400);
+    --primary-500: var(--accent-500);
+    --primary-600: var(--accent-600);
+    --primary-700: var(--accent-700);
+    --primary-800: var(--accent-800);
+    --primary-900: var(--accent-900);
+    --primary-500-rgb: var(--accent-500-rgb);
+    --primary-400-rgb: var(--accent-400-rgb);
+    --primary-300-rgb: var(--accent-300-rgb);
+    --primary-600-rgb: var(--accent-600-rgb);
+  }
+}
+
+html[data-theme="dark"] {
+  --primary-50: rgba(38, 201, 216, 0.07);
+  --primary-100: rgba(38, 201, 216, 0.13);
+  --primary-200: rgba(38, 201, 216, 0.22);
+  --primary-300: var(--accent-300);
+  --primary-400: var(--accent-400);
+  --primary-500: var(--accent-500);
+  --primary-600: var(--accent-600);
+  --primary-700: var(--accent-700);
+  --primary-800: var(--accent-800);
+  --primary-900: var(--accent-900);
+  --primary-500-rgb: var(--accent-500-rgb);
+  --primary-400-rgb: var(--accent-400-rgb);
+  --primary-300-rgb: var(--accent-300-rgb);
+  --primary-600-rgb: var(--accent-600-rgb);
+
+  /* ==========================================================================
+    BREAKPOINTS (removed - using direct media queries for better performance)
+    ========================================================================== */
+}
+
+/* Manual LIGHT override on a dark-OS device: restore the true brand-blue ramp,
+   cancelling the prefers-color-scheme remap above (higher specificity). */
+html[data-theme="light"] {
+  --primary-50: #e3f2fd;
+  --primary-100: #bbdefb;
+  --primary-200: #90caf9;
+  --primary-300: #64b5f6;
+  --primary-400: #42a5f5;
+  --primary-500: #2196f3;
+  --primary-600: #1976d2;
+  --primary-700: #1976d2;
+  --primary-800: #1565c0;
+  --primary-900: #0d47a1;
+  --primary-500-rgb: 33, 150, 243;
+  --primary-400-rgb: 66, 165, 245;
+  --primary-300-rgb: 100, 181, 246;
+  --primary-600-rgb: 25, 118, 210;
 }

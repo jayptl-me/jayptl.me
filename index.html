@@ -6,15 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>Jay Patel - Portfolio</title>
+    <title>Jay Patel — Software Developer & Designer | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/" />
     <link rel="manifest" href="/site.webmanifest">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Markdown version of the homepage">
 
     <!-- SEO & Social Sharing -->
     <meta name="description"
-        content="Jay Patel's portfolio showcasing software development, UI/UX, and creative direction.">
-    <meta property="og:title" content="Jay Patel - Portfolio">
+        content="Jay Patel's portfolio (jayptl.me) showcasing software development, UI/UX, product management, and creative direction — 30+ shipped products across mobile, web, and backend.">
+    <meta property="og:title" content="Jay Patel — Portfolio | jayptl.me">
     <meta property="og:description"
         content="Jay Patel's portfolio showcasing software development, UI/UX, and creative direction.">
     <meta property="og:type" content="website">
@@ -23,7 +24,7 @@
     <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png">
     <meta property="og:image:alt" content="Jay Patel Portfolio Logo">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Jay Patel - Portfolio">
+    <meta name="twitter:title" content="Jay Patel — Portfolio | jayptl.me">
     <meta name="twitter:description"
         content="Jay Patel's portfolio showcasing software development, UI/UX, and creative direction.">
     <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png">
@@ -100,9 +101,25 @@
         /* Dark theme - system preference */
         @media (prefers-color-scheme: dark) {
             :root {
+                /* Dark-mode primary remap: turquoise, never blue (site contract) */
+                --primary-50: rgba(38, 201, 216, 0.07);
+                --primary-100: rgba(38, 201, 216, 0.13);
+                --primary-200: rgba(38, 201, 216, 0.22);
+                --primary-300: var(--accent-300, #4dd6e2);
+                --primary-400: var(--accent-400, #26c9d8);
+                --primary-500: var(--accent-500, #00b8cc);
+                --primary-600: var(--accent-600, #009fb3);
+                --primary-700: var(--accent-600, #009fb3);
+                --primary-800: var(--accent-600, #009fb3);
+                --primary-900: var(--accent-600, #009fb3);
+                --primary-500-rgb: 0, 184, 204;
+                --primary-400-rgb: 38, 201, 216;
+                --primary-300-rgb: 77, 214, 226;
+                --primary-600-rgb: 0, 159, 179;
+
                 --theme-bg: var(--black);
                 --theme-text: var(--white);
-                --theme-gradient-text: linear-gradient(135deg, var(--primary-300, #64b5f6), var(--accent-400, #26c9d8));
+                --theme-gradient-text: linear-gradient(135deg, var(--accent-300, #4dd6e2), var(--accent-400, #26c9d8));
                 --theme-bg-rgb: 0, 0, 0;
             }
 
@@ -115,6 +132,13 @@
                 background-color: var(--black);
                 color: var(--theme-text);
             }
+        }
+
+        /* Manual LIGHT override on a dark-OS device: cancel system-dark body paint */
+        html[data-theme="light"],
+        html[data-theme="light"] body {
+            background-color: var(--white) !important;
+            color: var(--gray-900) !important;
         }
 
         /* Light theme - ensure it applies properly */
@@ -150,13 +174,45 @@
         }
 
         html[data-theme="dark"] {
+            --primary-50: rgba(38, 201, 216, 0.07);
+            --primary-100: rgba(38, 201, 216, 0.13);
+            --primary-200: rgba(38, 201, 216, 0.22);
+            --primary-300: var(--accent-300, #4dd6e2);
+            --primary-400: var(--accent-400, #26c9d8);
+            --primary-500: var(--accent-500, #00b8cc);
+            --primary-600: var(--accent-600, #009fb3);
+            --primary-700: var(--accent-600, #009fb3);
+            --primary-800: var(--accent-600, #009fb3);
+            --primary-900: var(--accent-600, #009fb3);
+            --primary-500-rgb: 0, 184, 204;
+            --primary-400-rgb: 38, 201, 216;
+            --primary-300-rgb: 77, 214, 226;
+            --primary-600-rgb: 0, 159, 179;
             --theme-bg: var(--black);
             --theme-text: var(--white);
-            --theme-gradient-text: linear-gradient(135deg, var(--primary-300, #64b5f6), var(--accent-400, #26c9d8));
+            --theme-gradient-text: linear-gradient(135deg, var(--accent-300, #4dd6e2), var(--accent-400, #26c9d8));
             --theme-bg-rgb: 0, 0, 0;
             /* Used for translucent surfaces like preloader percentage background */
             background-color: var(--black);
             color: var(--theme-text);
+        }
+
+        /* Manual LIGHT override on a dark-OS device: restore true brand blue */
+        html[data-theme="light"] {
+            --primary-50: #e3f2fd;
+            --primary-100: #bbdefb;
+            --primary-200: #90caf9;
+            --primary-300: #64b5f6;
+            --primary-400: #42a5f5;
+            --primary-500: #2196f3;
+            --primary-600: #1976d2;
+            --primary-700: #1976d2;
+            --primary-800: #1565c0;
+            --primary-900: #0d47a1;
+            --primary-500-rgb: 33, 150, 243;
+            --primary-400-rgb: 66, 165, 245;
+            --primary-300-rgb: 100, 181, 246;
+            --primary-600-rgb: 25, 118, 210;
         }
 
         /* Force immediate theme application */
@@ -623,12 +679,57 @@
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Jay Patel",
-            "url": "https://jayptl.me/",
-            "jobTitle": "Software Developer, UI/UX Designer, Creative Director"
+            "@graph": [
+                {
+                    "@type": "Person",
+                    "@id": "https://jayptl.me/#person",
+                    "name": "Jay Patel",
+                    "url": "https://jayptl.me/",
+                    "description": "Founding-engineer-grade full-stack developer from Anand, Gujarat, India with 4+ years across TypeScript, Dart/Flutter, Python, and Solidity. 30+ shipped products spanning mobile, web, backend, and self-hosted infrastructure. Also a UI/UX designer, product manager, creative director, and video editor.",
+                    "email": "mailto:hello@jayptl.me",
+                    "jobTitle": [
+                        "Software Developer",
+                        "UI/UX Designer",
+                        "Product Manager",
+                        "Creative Director",
+                        "Video Editor"
+                    ],
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "Anand",
+                        "addressRegion": "Gujarat",
+                        "addressCountry": "IN"
+                    },
+                    "sameAs": [
+                        "https://github.com/jayptl-me",
+                        "https://huggingface.co/jayptl-rq"
+                    ],
+                    "knowsAbout": [
+                        "Flutter",
+                        "Next.js",
+                        "TypeScript",
+                        "Bun",
+                        "Hono",
+                        "Node.js",
+                        "Python",
+                        "PyTorch",
+                        "Docker",
+                        "Self-hosting",
+                        "UI/UX design"
+                    ]
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://jayptl.me/#website",
+                    "url": "https://jayptl.me/",
+                    "name": "Jay Patel Portfolio (jayptl.me)",
+                    "description": "Jay Patel's portfolio showcasing software development, UI/UX, product management, and creative direction.",
+                    "inLanguage": "en",
+                    "publisher": { "@id": "https://jayptl.me/#person" }
+                }
+            ]
         }
-        </script>
+    </script>
 </head>
 
 <body class="preloading">
@@ -643,7 +744,7 @@
 
     <!-- Main Content -->
     <main id="main-content" aria-label="Jay Patel Portfolio">
-        <h1 class="sr-only">Jay Patel — Software Developer, UI/UX Designer & Creative Director</h1>
+        <h1 class="sr-only">Jay Patel — Software Developer, UI/UX Designer, Product Manager, Creative Director & Video Editor</h1>
         <!-- Hero Section -->
         <section id="home" class="hero" aria-labelledby="heroTitle">
             <h2 id="heroTitle" class="sr-only">Welcome to Jay Patel’s Portfolio</h2>
@@ -734,24 +835,23 @@
                                 </span>
                             </div>
                             <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="MOBILE DEVELOPER">
+                            <div class="text-reveal-item" data-role="PRODUCT MANAGER">
                                 <span class="text-line">
-                                    <span class="word" data-text="MOBILE">
-                                        <span class="char gradient-text">M</span>
-                                        <span class="char gradient-text">O</span>
-                                        <span class="char gradient-text">B</span>
-                                        <span class="char gradient-text">I</span>
-                                        <span class="char gradient-text">L</span>
-                                        <span class="char gradient-text">E</span>
-                                    </span>
-                                    <span class="word" data-text="DEVELOPER">
-                                        <span class="char gradient-text">D</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">V</span>
-                                        <span class="char gradient-text">E</span>
-                                        <span class="char gradient-text">L</span>
-                                        <span class="char gradient-text">O</span>
+                                    <span class="word" data-text="PRODUCT">
                                         <span class="char gradient-text">P</span>
+                                        <span class="char gradient-text">R</span>
+                                        <span class="char gradient-text">O</span>
+                                        <span class="char gradient-text">D</span>
+                                        <span class="char gradient-text">U</span>
+                                        <span class="char gradient-text">C</span>
+                                        <span class="char gradient-text">T</span>
+                                    </span>
+                                    <span class="word" data-text="MANAGER">
+                                        <span class="char gradient-text">M</span>
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">N</span>
+                                        <span class="char gradient-text">A</span>
+                                        <span class="char gradient-text">G</span>
                                         <span class="char gradient-text">E</span>
                                         <span class="char gradient-text">R</span>
                                     </span>
@@ -776,6 +876,25 @@
                                         <span class="char gradient-text">R</span>
                                         <span class="char gradient-text">E</span>
                                         <span class="char gradient-text">C</span>
+                                        <span class="char gradient-text">T</span>
+                                        <span class="char gradient-text">O</span>
+                                        <span class="char gradient-text">R</span>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="text-reveal-item" data-role="VIDEO EDITOR">
+                                <span class="text-line">
+                                    <span class="word" data-text="VIDEO">
+                                        <span class="char gradient-text">V</span>
+                                        <span class="char gradient-text">I</span>
+                                        <span class="char gradient-text">D</span>
+                                        <span class="char gradient-text">E</span>
+                                        <span class="char gradient-text">O</span>
+                                    </span>
+                                    <span class="word" data-text="EDITOR">
+                                        <span class="char gradient-text">E</span>
+                                        <span class="char gradient-text">D</span>
+                                        <span class="char gradient-text">I</span>
                                         <span class="char gradient-text">T</span>
                                         <span class="char gradient-text">O</span>
                                         <span class="char gradient-text">R</span>
@@ -822,7 +941,7 @@
 
             <!-- Project Showcase Display - Large display area that syncs with carousel -->
             <div class="project-showcase" id="projectShowcase">
-                <!-- Project 1 Display -->
+                <!-- Aviz Health Display -->
                 <div class="showcase-panel active" data-project="1">
                     <div class="showcase-content">
                         <div class="showcase-main">
@@ -838,32 +957,33 @@
                             <div class="showcase-mini-cards">
                                 <div class="mini-card mini-card-stats">
                                     <img src="/assets/icons/chart.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Analytics</span>
+                                    <span class="mini-card-label">v2.0</span>
                                 </div>
                                 <div class="mini-card mini-card-tech">
-                                    <img src="/assets/icons/atom.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">React</span>
+                                    <img src="/assets/icons/smartphone.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Flutter ×3</span>
                                 </div>
                                 <div class="mini-card mini-card-status">
                                     <img src="/assets/icons/rocket.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Live</span>
+                                    <span class="mini-card-label">Live on Play</span>
                                 </div>
                                 <div class="mini-card mini-card-type">
-                                    <img src="/assets/icons/palette.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">UI/UX</span>
+                                    <img src="/assets/icons/target.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Healthcare</span>
                                 </div>
                             </div>
                             <!-- Project info -->
                             <div class="showcase-info">
                                 <span class="showcase-number">01</span>
-                                <h3 class="showcase-title gradient-text">Project One</h3>
-                                <p class="showcase-description">A comprehensive web application featuring modern design patterns and interactive elements.</p>
+                                <h3 class="showcase-title gradient-text">Aviz Health</h3>
+                                <p class="showcase-description">Three Flutter apps, one Next.js 16 mission control, and a Bun + Hono backend firing zero-lag bookings and ambulance SOS dispatch. Live on Google Play — v2.0.</p>
+                                <a class="showcase-case-link" href="/projects/aviz-health">View case study →</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 2 Display -->
+                <!-- Swalook Display -->
                 <div class="showcase-panel" data-project="2">
                     <div class="showcase-content">
                         <div class="showcase-main">
@@ -876,32 +996,33 @@
                         <div class="showcase-sidebar">
                             <div class="showcase-mini-cards">
                                 <div class="mini-card mini-card-stats">
-                                    <img src="/assets/icons/smartphone.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Mobile</span>
+                                    <img src="/assets/icons/layers.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Turborepo</span>
                                 </div>
                                 <div class="mini-card mini-card-tech">
-                                    <img src="/assets/icons/layers.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Flutter</span>
+                                    <img src="/assets/icons/bolt.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Bun + Hono</span>
                                 </div>
                                 <div class="mini-card mini-card-status">
-                                    <img src="/assets/icons/target.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Beta</span>
+                                    <img src="/assets/icons/check-circle.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">In Production</span>
                                 </div>
                                 <div class="mini-card mini-card-type">
-                                    <img src="/assets/icons/app-window.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">App</span>
+                                    <img src="/assets/icons/settings.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">CRM</span>
                                 </div>
                             </div>
                             <div class="showcase-info">
                                 <span class="showcase-number">02</span>
-                                <h3 class="showcase-title gradient-text">Project Two</h3>
-                                <p class="showcase-description">Cross-platform mobile application with seamless user experience and native performance.</p>
+                                <h3 class="showcase-title gradient-text">Swalook CRM</h3>
+                                <p class="showcase-description">Ground-up overhaul of an enterprise salon-management platform: Next.js 16 monorepo frontend, 35+ documented API endpoints, Redis caching, and a Flutter app with ML Kit AR previews.</p>
+                                <a class="showcase-case-link" href="/projects/swalook">View case study →</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 3 Display -->
+                <!-- Genuinest Display -->
                 <div class="showcase-panel" data-project="3">
                     <div class="showcase-content">
                         <div class="showcase-main">
@@ -914,32 +1035,33 @@
                         <div class="showcase-sidebar">
                             <div class="showcase-mini-cards">
                                 <div class="mini-card mini-card-stats">
-                                    <img src="/assets/icons/globe.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Web3</span>
+                                    <img src="/assets/icons/cpu.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">20TB Self-Hosted</span>
                                 </div>
                                 <div class="mini-card mini-card-tech">
-                                    <img src="/assets/icons/ethereum.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Solidity</span>
+                                    <img src="/assets/icons/link-chain.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Flutter + Riverpod</span>
                                 </div>
                                 <div class="mini-card mini-card-status">
-                                    <img src="/assets/icons/hammer.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">WIP</span>
+                                    <img src="/assets/icons/wrench.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Docker · Coolify</span>
                                 </div>
                                 <div class="mini-card mini-card-type">
-                                    <img src="/assets/icons/gem.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">DApp</span>
+                                    <img src="/assets/icons/app-window.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Founding Engineer</span>
                                 </div>
                             </div>
                             <div class="showcase-info">
                                 <span class="showcase-number">03</span>
-                                <h3 class="showcase-title gradient-text">Project Three</h3>
-                                <p class="showcase-description">Decentralized application pushing the boundaries of blockchain technology.</p>
+                                <h3 class="showcase-title gradient-text">Genuinest</h3>
+                                <p class="showcase-description">As Founding Engineer: a Flutter product backed by Bun + Hono, then the fun part — migrating off big cloud bills to Docker, Coolify, Traefik, and a 20TB self-hosted MinIO cluster.</p>
+                                <a class="showcase-case-link" href="/projects/genuinest">View case study →</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 4 Display -->
+                <!-- Vini & Tini Display -->
                 <div class="showcase-panel" data-project="4">
                     <div class="showcase-content">
                         <div class="showcase-main">
@@ -953,31 +1075,32 @@
                             <div class="showcase-mini-cards">
                                 <div class="mini-card mini-card-stats">
                                     <img src="/assets/icons/cpu.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">AI</span>
+                                    <span class="mini-card-label">AI/ML</span>
                                 </div>
                                 <div class="mini-card mini-card-tech">
                                     <img src="/assets/icons/snake.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Python</span>
+                                    <span class="mini-card-label">PyTorch</span>
                                 </div>
                                 <div class="mini-card mini-card-status">
-                                    <img src="/assets/icons/flask.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Alpha</span>
+                                    <img src="/assets/icons/gem.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">On HuggingFace</span>
                                 </div>
                                 <div class="mini-card mini-card-type">
                                     <img src="/assets/icons/brain.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">ML</span>
+                                    <span class="mini-card-label">BitNet b1.58</span>
                                 </div>
                             </div>
                             <div class="showcase-info">
                                 <span class="showcase-number">04</span>
-                                <h3 class="showcase-title gradient-text">Project Four</h3>
-                                <p class="showcase-description">Machine learning powered application with intelligent automation features.</p>
+                                <h3 class="showcase-title gradient-text">Vini & Tini</h3>
+                                <p class="showcase-description">Two small language models trained from scratch on the BitNet b1.58 ternary architecture — one personal assistant, one TypeScript coder — built to run on the edge, not in a data center.</p>
+                                <a class="showcase-case-link" href="/projects/vini-tini">View case study →</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 5 Display -->
+                <!-- Tenet PG Management Display -->
                 <div class="showcase-panel" data-project="5">
                     <div class="showcase-content">
                         <div class="showcase-main">
@@ -990,26 +1113,65 @@
                         <div class="showcase-sidebar">
                             <div class="showcase-mini-cards">
                                 <div class="mini-card mini-card-stats">
-                                    <img src="/assets/icons/gamepad.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Game</span>
+                                    <img src="/assets/icons/layers.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Bun Monorepo</span>
                                 </div>
                                 <div class="mini-card mini-card-tech">
-                                    <img src="/assets/icons/cube.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">Unity</span>
+                                    <img src="/assets/icons/atom.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">Next.js 16</span>
                                 </div>
                                 <div class="mini-card mini-card-status">
-                                    <img src="/assets/icons/sparkle.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">New</span>
+                                    <img src="/assets/icons/check-circle.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">E2E Tested</span>
                                 </div>
                                 <div class="mini-card mini-card-type">
-                                    <img src="/assets/icons/box-3d.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
-                                    <span class="mini-card-label">3D</span>
+                                    <img src="/assets/icons/palette.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">4 Theme Modes</span>
                                 </div>
                             </div>
                             <div class="showcase-info">
                                 <span class="showcase-number">05</span>
-                                <h3 class="showcase-title gradient-text">Project Five</h3>
-                                <p class="showcase-description">Immersive gaming experience with stunning visuals and engaging gameplay.</p>
+                                <h3 class="showcase-title gradient-text">Tenet PG Management</h3>
+                                <p class="showcase-description">Full PG/hostel management platform in a Bun + Turborepo monorepo: Next.js 16 dashboard, Hono backend with SSE and UPI payments, PDF invoices — shipped with Playwright and Vitest coverage.</p>
+                                <a class="showcase-case-link" href="/projects">View case study →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ai-Vestor Display -->
+                <div class="showcase-panel" data-project="6">
+                    <div class="showcase-content">
+                        <div class="showcase-main">
+                            <div class="showcase-hero">
+                                <div class="showcase-image-placeholder">
+                                    <span class="showcase-placeholder-label">Project Preview</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="showcase-sidebar">
+                            <div class="showcase-mini-cards">
+                                <div class="mini-card mini-card-stats">
+                                    <img src="/assets/icons/sparkle.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">1st Place</span>
+                                </div>
+                                <div class="mini-card mini-card-tech">
+                                    <img src="/assets/icons/cpu.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">100+ LSTM Models</span>
+                                </div>
+                                <div class="mini-card mini-card-status">
+                                    <img src="/assets/icons/chart.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">90% Accuracy</span>
+                                </div>
+                                <div class="mini-card mini-card-type">
+                                    <img src="/assets/icons/flask.svg" alt="" class="icon mini-card-icon" aria-hidden="true">
+                                    <span class="mini-card-label">FinTech</span>
+                                </div>
+                            </div>
+                            <div class="showcase-info">
+                                <span class="showcase-number">06</span>
+                                <h3 class="showcase-title gradient-text">Ai-Vestor</h3>
+                                <p class="showcase-description">First place, FinTech track — CHARUSAT-Odoo Hackathon 2025, out of 650+ applicants and 75 teams. An AI stock-prediction platform with 100+ trained LSTM models and a gamified investment LMS.</p>
+                                <a class="showcase-case-link" href="/projects">View case study →</a>
                             </div>
                         </div>
                     </div>
@@ -1020,79 +1182,94 @@
             <div class="work-carousel-wrapper">
                 <div class="work-carousel" id="workCarousel">
                     <div class="work-carousel-track">
-                        <!-- Placeholder slides - will be replaced with actual work -->
+                        <!-- Real project slides -->
                         <div class="work-slide" data-index="0">
                             <div class="work-slide-content">
                                 <span class="work-slide-number">01</span>
-                                <h3 class="work-slide-title">Project One</h3>
+                                <h3 class="work-slide-title">Aviz Health</h3>
                             </div>
                             <div class="slide-preview">
                                 <div class="slide-preview-image">
                                     <div class="slide-preview-placeholder">Preview</div>
                                 </div>
                                 <div class="slide-preview-info">
-                                    <div class="slide-preview-title">Project One</div>
-                                    <div class="slide-preview-desc">Web Application</div>
+                                    <div class="slide-preview-title">Aviz Health</div>
+                                    <div class="slide-preview-desc">Healthcare Platform · Live on Play</div>
                                 </div>
                             </div>
                         </div>
                         <div class="work-slide" data-index="1">
                             <div class="work-slide-content">
                                 <span class="work-slide-number">02</span>
-                                <h3 class="work-slide-title">Project Two</h3>
+                                <h3 class="work-slide-title">Swalook CRM</h3>
                             </div>
                             <div class="slide-preview">
                                 <div class="slide-preview-image">
                                     <div class="slide-preview-placeholder">Preview</div>
                                 </div>
                                 <div class="slide-preview-info">
-                                    <div class="slide-preview-title">Project Two</div>
-                                    <div class="slide-preview-desc">Mobile App</div>
+                                    <div class="slide-preview-title">Swalook CRM</div>
+                                    <div class="slide-preview-desc">Enterprise SaaS Overhaul</div>
                                 </div>
                             </div>
                         </div>
                         <div class="work-slide" data-index="2">
                             <div class="work-slide-content">
                                 <span class="work-slide-number">03</span>
-                                <h3 class="work-slide-title">Project Three</h3>
+                                <h3 class="work-slide-title">Genuinest</h3>
                             </div>
                             <div class="slide-preview">
                                 <div class="slide-preview-image">
                                     <div class="slide-preview-placeholder">Preview</div>
                                 </div>
                                 <div class="slide-preview-info">
-                                    <div class="slide-preview-title">Project Three</div>
-                                    <div class="slide-preview-desc">Blockchain</div>
+                                    <div class="slide-preview-title">Genuinest</div>
+                                    <div class="slide-preview-desc">Founding Engineer · Self-Hosted Infra</div>
                                 </div>
                             </div>
                         </div>
                         <div class="work-slide" data-index="3">
                             <div class="work-slide-content">
                                 <span class="work-slide-number">04</span>
-                                <h3 class="work-slide-title">Project Four</h3>
+                                <h3 class="work-slide-title">Vini &amp; Tini</h3>
                             </div>
                             <div class="slide-preview">
                                 <div class="slide-preview-image">
                                     <div class="slide-preview-placeholder">Preview</div>
                                 </div>
                                 <div class="slide-preview-info">
-                                    <div class="slide-preview-title">Project Four</div>
-                                    <div class="slide-preview-desc">AI/ML</div>
+                                    <div class="slide-preview-title">Vini &amp; Tini</div>
+                                    <div class="slide-preview-desc">AI/ML · SLMs From Scratch</div>
                                 </div>
                             </div>
                         </div>
                         <div class="work-slide" data-index="4">
                             <div class="work-slide-content">
                                 <span class="work-slide-number">05</span>
-                                <h3 class="work-slide-title">Project Five</h3>
+                                <h3 class="work-slide-title">Tenet PG Management</h3>
                             </div>
                             <div class="slide-preview">
                                 <div class="slide-preview-image">
                                     <div class="slide-preview-placeholder">Preview</div>
                                 </div>
                                 <div class="slide-preview-info">
-                                    <div class="slide-preview-title">Project Five</div>
-                                    <div class="slide-preview-desc">Game Dev</div>
+                                    <div class="slide-preview-title">Tenet PG Management</div>
+                                    <div class="slide-preview-desc">Product Build · Monorepo</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="work-slide" data-index="5">
+                            <div class="work-slide-content">
+                                <span class="work-slide-number">06</span>
+                                <h3 class="work-slide-title">Ai-Vestor</h3>
+                            </div>
+                            <div class="slide-preview">
+                                <div class="slide-preview-image">
+                                    <div class="slide-preview-placeholder">Preview</div>
+                                </div>
+                                <div class="slide-preview-info">
+                                    <div class="slide-preview-title">Ai-Vestor</div>
+                                    <div class="slide-preview-desc">Hackathon Winner · FinTech AI</div>
                                 </div>
                             </div>
                         </div>

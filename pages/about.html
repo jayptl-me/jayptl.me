@@ -4,23 +4,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>About Jay Patel</title>
+    <title>About Jay Patel | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/about" />
+    <link rel="alternate" type="text/markdown" href="/about.md" title="Markdown version of the about page" />
     <meta name="description"
-        content="Learn about Jay Patel - Software Developer, UI/UX Designer & Creative Director. From gaming to building high-performance mobile apps with Flutter." />
+        content="Jay Patel — Software Developer, UI/UX Designer, Product Manager, Creative Director, and Video Editor. Founding-grade full-stack engineer who ships healthcare platforms, trains small language models, and still builds games for fun." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jayptl.me/about" />
     <meta property="og:title" content="About Jay Patel" />
     <meta property="og:description"
-        content="Software Developer, UI/UX Designer & Creative Director specializing in high-performance mobile apps." />
+        content="Developer, designer, product mind, creative director — and yes, video editor. Building software that feels alive." />
     <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="About Jay Patel" />
-    <meta name="twitter:description" content="Software Developer, UI/UX Designer & Creative Director." />
+    <meta name="twitter:description" content="Five roles. One engineer who does design, product, and story." />
     <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
 
     <!-- Favicon -->
@@ -35,23 +36,144 @@
         as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">
+            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800&display=swap">
     </noscript>
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/pages/about.css" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "@id": "https://jayptl.me/about#webpage",
+            "url": "https://jayptl.me/about",
+            "name": "About Jay Patel",
+            "description": "Jay Patel — Software Developer, UI/UX Designer, Product Manager, Creative Director, and Video Editor. Founding-grade full-stack engineer who ships healthcare platforms, trains small language models, and still builds games for fun.",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "about": {
+                "@type": "Person",
+                "@id": "https://jayptl.me/#person",
+                "name": "Jay Patel",
+                "url": "https://jayptl.me/",
+                "email": "mailto:hello@jayptl.me",
+                "jobTitle": ["Software Developer", "UI/UX Designer", "Product Manager", "Creative Director", "Video Editor"],
+                "sameAs": ["https://github.com/jayptl-me", "https://huggingface.co/jayptl-rq"]
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <main>
-        <h1>They told me to stop playing games. So I started building them.</h1>
-        <p class="lead">My journey as a developer started when I was told to quit video games—so I decided to build them
-            instead. That passion evolved into architecting high-performance mobile apps with Flutter, where I obsess
-            over creating buttery-smooth user experiences that feel intuitive and alive.</p>
-        <p class="note-trimmed">(This about page intentionally trimmed — original
-            extended bio has been refactored.)</p>
-        <p class="back-link-container"><a href="/" class="btn-text-gradient">←
-                Back home</a></p>
+    <main class="about-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker gradient-text">Who am I?</p>
+            <h1>They told me to stop playing games. So I started building them.</h1>
+            <p class="page-hero-lead">Then I kept going — platforms, ecosystems, language models trained from scratch,
+                self-hosted infrastructure humming in a closet. The controller became a keyboard; the hobby became an
+                engineering career that refuses to stay in one lane.</p>
+        </header>
+
+        <section class="about-roles" aria-label="What I do">
+            <h2 class="sr-only">Roles</h2>
+            <ul class="role-grid">
+                <li><strong>Software Developer</strong><span>Flutter, Next.js 16, Bun + Hono, Python. 30+ shipped
+                        products across mobile, web, and backend.</span></li>
+                <li><strong>UI/UX Designer</strong><span>Design systems in Figma/Adobe XD translated into component
+                        libraries users actually enjoy.</span></li>
+                <li><strong>Product Manager</strong><span>Problem → stakeholders → scope → ship. I've owned roadmaps
+                        end-to-end on founding-team timelines.</span></li>
+                <li><strong>Creative Director</strong><span>Narrative, motion, sound design, and the taste to know
+                        when less is more.</span></li>
+                <li><strong>Video Editor</strong><span>Cuts, pacing, and motion graphics — because shipping the product
+                        includes telling its story.</span></li>
+            </ul>
+        </section>
+
+        <section class="about-story">
+            <h2>The short version</h2>
+            <p>I'm a founding-engineer-grade full-stack developer from Anand, Gujarat, with 4+ years across TypeScript,
+                Dart/Flutter, Python, and Solidity. I've built production apps spanning Flutter, React Native, Next.js,
+                Angular, and Astro — backed by Bun + Hono APIs running on infrastructure I migrated off big cloud bills
+                onto Docker, Coolify, and Traefik myself.</p>
+            <p>I architected Aviz Health — three Flutter apps plus a Next.js admin console live on Google Play as v2.0
+                — rebuilt the Swalook CRM platform from the ground up, and served as Founding Engineer at Genuinest.
+                On the research side, I train small language models from scratch (Vini and Tini, BitNet b1.58 ternary
+                architecture) for edge deployment — one of them is published on HuggingFace.</p>
+            <p>Along the way: first place in the FinTech track at CHARUSAT-Odoo Hackathon 2025 out of 650+ applicants,
+                a Technical Leadership Award, certifications across Google Cloud, AWS, MongoDB, Meta, and DataCamp, and
+                a B.Tech in Information Technology from A.D. Patel Institute of Technology.</p>
+            <p>If it ships, I can build it, design it, plan it, film it, and make the launch trailer for it.</p>
+        </section>
+
+        <section class="beyond-code" aria-labelledby="beyondTitle">
+            <h2 id="beyondTitle"><span class="case-section-no gradient-text">//</span> Beyond the Code</h2>
+            <p class="beyond-lede">The part of the README where the human shows up.</p>
+
+            <div class="beyond-grid">
+                <article class="beyond-card">
+                    <img src="/assets/icons/gamepad.svg" alt="" class="icon beyond-icon" aria-hidden="true">
+                    <h3>Gamer, professionally unprofessional</h3>
+                    <p>Games taught me systems thinking before any textbook did — economies, feedback loops, difficulty
+                        curves, why players quit. I don't just play them; I dissect them. It's market research my
+                        therapist and my product sense both benefit from.</p>
+                </article>
+                <article class="beyond-card">
+                    <img src="/assets/icons/joystick.svg" alt="" class="icon beyond-icon" aria-hidden="true">
+                    <h3>Game dev experiments</h3>
+                    <p>Godot projects live on my drive — physics sandboxes, mechanics prototypes, the occasional boss
+                        fight nobody asked for. Building games keeps my UX instincts honest: nothing exposes bad
+                        interaction design faster than a player rage-quitting your menu.</p>
+                </article>
+                <article class="beyond-card">
+                    <img src="/assets/icons/cpu.svg" alt="" class="icon beyond-icon" aria-hidden="true">
+                    <h3>Homelab operator</h3>
+                    <p>A self-hosted stack runs at home the way other people run aquariums: Ollama inference, n8n
+                        automation workflows, vector databases, a 20TB storage cluster. It hums, it serves models, and
+                        it's the reason my cloud bill is a rounding error.</p>
+                </article>
+                <article class="beyond-card">
+                    <img src="/assets/icons/sparkle.svg" alt="" class="icon beyond-icon" aria-hidden="true">
+                    <h3>Sound &amp; motion tinkerer</h3>
+                    <p>This site's lightsaber theme-toggle swoosh? Synthesized by hand with the Web Audio API. I care
+                        about how things feel at 60fps and how they sound doing it — craft lives in the details most
+                        people never consciously notice.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="creative-lab" aria-labelledby="labTitle">
+            <h2 id="labTitle"><span class="case-section-no gradient-text">//</span> Creative Lab</h2>
+            <p class="beyond-lede">Editing is engineering with a timeline. Selected work lands here.</p>
+
+            <div class="lab-grid">
+                <figure class="lab-slot">
+                    <div class="showcase-image-placeholder lab-media">
+                        <span class="showcase-placeholder-label">Edit Reel — Coming Soon</span>
+                    </div>
+                    <figcaption>Signature cuts · showreel</figcaption>
+                </figure>
+                <figure class="lab-slot">
+                    <div class="showcase-image-placeholder lab-media">
+                        <span class="showcase-placeholder-label">Product Story — Coming Soon</span>
+                    </div>
+                    <figcaption>Launch trailers &amp; product films</figcaption>
+                </figure>
+                <figure class="lab-slot">
+                    <div class="showcase-image-placeholder lab-media">
+                        <span class="showcase-placeholder-label">Motion Experiments — Coming Soon</span>
+                    </div>
+                    <figcaption>Motion design studies</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            <p>Enough about me — <a href="/projects" class="btn-text-gradient">see the work →</a></p>
+        </footer>
     </main>
+
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>

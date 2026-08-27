@@ -16,10 +16,9 @@
 
   function buildNavHTML() {
     // Use absolute paths from root for consistent behavior across dev/production
-    const pathname = location.pathname;
-    const onHome = pathname === '/' || pathname === '/index.html' || pathname.endsWith('/index.html');
     const homeHref = '/';
-    const projectsHref = onHome ? '#bento-showcase' : '/#bento-showcase';
+    const projectsHref = '/projects';
+    const aboutHref = '/about';
     const privacyHref = '/pages/privacy.html';
     const designSystemHref = '/pages/design-system.html';
 
@@ -90,10 +89,11 @@
                   <span class="nav-text">More</span>
                 </button>
                 <div class="dropdown-menu" id="moreMenu" role="menu">
+                  <a role="menuitem" href="${aboutHref}" class="dropdown-item">About</a>
                   <a role="menuitem" href="${designSystemHref}" class="dropdown-item">Design System</a>
                   <a role="menuitem" href="${privacyHref}" class="dropdown-item">Privacy Policy</a>
                   <a role="menuitem" href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="dropdown-item">GitHub</a>
-                  <a role="menuitem" href="https://www.linkedin.com/in/jayptl/" target="_blank" rel="noopener" class="dropdown-item">LinkedIn</a>
+                  <a role="menuitem" href="https://www.linkedin.com/in/jayptl-rq/" target="_blank" rel="noopener" class="dropdown-item">LinkedIn</a>
                 </div>
               </div>
             </div>
@@ -122,11 +122,12 @@
             </div>
             <nav class="mobile-list" aria-label="Primary">
               <a href="${projectsHref}" class="mobile-link"><span>Projects</span></a>
+              <a href="${aboutHref}" class="mobile-link"><span>About</span></a>
               <a href="${homeHref}" class="mobile-link"><span>Home</span></a>
               <a href="${designSystemHref}" class="mobile-link"><span>Design System</span></a>
               <a href="${privacyHref}" class="mobile-link"><span>Privacy</span></a>
               <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="mobile-link"><span>GitHub</span></a>
-              <a href="https://www.linkedin.com/in/jayptl/" target="_blank" rel="noopener" class="mobile-link"><span>LinkedIn</span></a>
+              <a href="https://www.linkedin.com/in/jayptl-rq/" target="_blank" rel="noopener" class="mobile-link"><span>LinkedIn</span></a>
             </nav>
             <div class="mobile-footer">
               <button class="theme-toggle ghost-btn" aria-label="Toggle dark/light mode">

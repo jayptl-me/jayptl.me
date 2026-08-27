@@ -1,10 +1,15 @@
 /**
  * Cursor Utilities
  * Helper classes for custom cursor interactions
- * 
+ *
  * @file utilities/cursor.css
  * @author Jay Patel
  */
+
+:root {
+    /* Cursor accent follows theme: blue in light, turquoise in dark */
+    --cursor-accent-rgb: 33, 150, 243;
+}
 
 /* ==========================================================================
    CURSOR UTILITY CLASSES
@@ -51,7 +56,7 @@
 
 /* Glow effect on hover */
 .cursor-glow:hover {
-    box-shadow: 0 0 20px rgba(33, 150, 243, 0.4);
+    box-shadow: 0 0 20px rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.4);
     transition: box-shadow 0.3s ease;
 }
 
@@ -74,7 +79,7 @@
     left: 50%;
     width: 0;
     height: 0;
-    background: radial-gradient(circle, rgba(33, 150, 243, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.3) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: all 0.3s ease;
@@ -112,7 +117,7 @@
 /* Info state */
 .cursor-info {
     border: 2px solid var(--theme-info);
-    box-shadow: 0 0 15px rgba(33, 150, 243, 0.4);
+    box-shadow: 0 0 15px rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.4);
 }
 
 /* ==========================================================================
@@ -128,11 +133,11 @@
 
     0%,
     100% {
-        box-shadow: 0 0 10px rgba(33, 150, 243, 0.4);
+        box-shadow: 0 0 10px rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.4);
     }
 
     50% {
-        box-shadow: 0 0 25px rgba(33, 150, 243, 0.8);
+        box-shadow: 0 0 25px rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.8);
     }
 }
 
@@ -203,7 +208,7 @@
     left: 50%;
     width: 4px;
     height: 4px;
-    background: rgba(33, 150, 243, 0.8);
+    background: rgba(var(--cursor-accent-rgb, 33, 150, 243), 0.8);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
@@ -291,4 +296,17 @@
     .cursor-trail::after {
         animation: none;
     }
+}
+
+/* ==========================================================================
+   DARK MODE - cursor accent turns turquoise (site contract: no blue in dark)
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cursor-accent-rgb: 0, 184, 204;
+    }
+}
+
+html[data-theme="dark"] {
+    --cursor-accent-rgb: 0, 184, 204;
 }

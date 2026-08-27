@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Genuinest — Case Study | Jay Patel | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/projects/genuinest" />
+    <link rel="alternate" type="text/markdown" href="/projects/genuinest.md" title="Markdown version of this case study" />
+    <meta name="description"
+        content="How Jay Patel served as Founding Engineer at Genuinest — building the Flutter product and migrating the company from costly cloud services to a fully self-hosted Docker, Coolify, and Traefik stack with 20TB of MinIO storage." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/projects/genuinest" />
+    <meta property="og:title" content="Genuinest — Case Study | Jay Patel" />
+    <meta property="og:description"
+        content="Founding Engineer: core Flutter product plus a cloud-to-self-hosted migration that erased the monthly bill." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Genuinest — Case Study | Jay Patel" />
+    <meta name="twitter:description" content="Build the product, then build the infrastructure it runs on." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts Preload -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/case-study.css" />
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "@id": "https://jayptl.me/projects/genuinest#article",
+            "headline": "Genuinest — Case Study",
+            "description": "How Jay Patel served as Founding Engineer at Genuinest — building the Flutter product and migrating the company from costly cloud services to a fully self-hosted Docker, Coolify, and Traefik stack with 20TB of MinIO storage.",
+            "url": "https://jayptl.me/projects/genuinest",
+            "inLanguage": "en",
+            "author": { "@id": "https://jayptl.me/#person" },
+            "publisher": { "@id": "https://jayptl.me/#person" },
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "mainEntityOfPage": "https://jayptl.me/projects/genuinest"
+        }
+    </script>
+</head>
+
+<body>
+    <main class="case-study-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/projects">← All projects</a>
+        </nav>
+
+        <header class="case-hero">
+            <p class="page-hero-kicker gradient-text">Founding Engineer · Self-Hosted Infrastructure</p>
+            <h1>Genuinest</h1>
+            <p class="case-hero-tagline">The brief was "build our app." The real job became "build our app, then
+                unhook the company from its cloud bill." This is the story of shipping a cross-platform product and
+                the infrastructure war story that came with it.</p>
+            <div class="badge-row">
+                <span class="tag tag-status">Private Client · Founding Engineer</span>
+                <span class="tag">Flutter + Riverpod</span>
+                <span class="tag">Bun + Hono</span>
+                <span class="tag">Docker · Coolify</span>
+                <span class="tag">20TB MinIO</span>
+            </div>
+        </header>
+
+        <section class="tldr-card" aria-label="Summary">
+            <h2>The 60-second version</h2>
+            <dl class="tldr-grid">
+                <div><dt>My role</dt><dd>Founding Engineer — core mobile product, backend API, and the entire
+                        infrastructure transition</dd></div>
+                <div><dt>The product</dt><dd>Cross-platform mobile application on Flutter with Riverpod, GoRouter, and
+                        offline-first storage</dd></div>
+                <div><dt>The stack</dt><dd>Flutter · Bun + Hono + TypeScript · MongoDB, Redis, MeiliSearch, RabbitMQ
+                        · Docker + Coolify + Traefik</dd></div>
+                <div><dt>Hardest problem</dt><dd>Migrating a running company off high-cost managed clouds to
+                        self-hosted infra — mid-flight, without stopping the business</dd></div>
+                <div><dt>The payoff</dt><dd>20TB S3-compatible storage cluster on-premise; recurring cloud bills
+                        eliminated down to utility costs</dd></div>
+                <div><dt>Killer features</dt><dd>Surepass KYC (PAN/Digilocker) · OpenTelemetry + SigNoz observability
+                        · PostHog analytics</dd></div>
+            </dl>
+        </section>
+
+        <figure class="case-figure">
+            <div class="showcase-image-placeholder case-hero-media">
+                <span class="showcase-placeholder-label">Genuinest — Product Preview</span>
+            </div>
+            <figcaption>Product screens and the infrastructure topology land here.</figcaption>
+        </figure>
+
+        <article class="case-body">
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">01</span> The problem — and who felt it</h2>
+                <p>Two problems, one wearing a trench coat. First: an early-stage company needed its core
+                    cross-platform product actually built — properly, not prototype-grade. Second — the quieter killer:
+                    every month, the cloud invoice grew faster than the user base. Managed databases, managed storage,
+                    managed everything — each individually reasonable, collectively a business model hazard.</p>
+                <p>Who felt it:</p>
+                <ul class="stakeholder-list">
+                    <li><strong>The founders</strong> — watching burn rate get eaten by infrastructure line items that
+                        scaled with success and punished them for existing.</li>
+                    <li><strong>The users</strong> — who just needed a fast, reliable app with auth that worked and
+                        push notifications that arrived.</li>
+                    <li><strong>Future engineers</strong> — who would inherit whatever foundation got poured now.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">02</span> My role</h2>
+                <p>Founding Engineer means you build the thing, then you build the thing that builds the thing. I
+                    architected the core Flutter application, built the backend API, and then spearheaded the entire
+                    DevOps transition from high-cost cloud providers to automated, containerized self-hosted
+                    deployment. Private client work, so the product itself stays behind glass — the engineering is the
+                    story here.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">03</span> Designing the product</h2>
+                <ul>
+                    <li><strong>Riverpod for state</strong> — compile-safe dependency injection and testable state
+                        containers over the widget tree, no magic globals.</li>
+                    <li><strong>GoRouter for navigation</strong> — declarative, deep-linkable routes because mobile
+                        users arrive from notifications, not just icons.</li>
+                    <li><strong>Hive/SQLite offline-first storage</strong> — the app keeps working when the network
+                        doesn't; sync happens quietly in the background.</li>
+                    <li><strong>Firebase Cloud Messaging</strong> — push done right, wired into the same notification
+                        surface across platforms.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">04</span> Engineering it</h2>
+                <ul>
+                    <li><strong>API layer:</strong> Bun + Hono + TypeScript with Zod validation at the edge, JWT
+                        access/refresh token rotation, rate limiting, and OpenAPI/Scalar docs generated from the source
+                        of truth.</li>
+                    <li><strong>Data plane:</strong> on-premise MongoDB, Redis, MeiliSearch (instant search),
+                        RabbitMQ — colocated where latency lives.</li>
+                    <li><strong>Storage:</strong> a 20TB MinIO S3-compatible object-storage cluster — the single
+                        biggest line item on the old cloud bill, brought in-house.</li>
+                    <li><strong>KYC:</strong> Surepass PAN/Digilocker verification flows, because regulated products
+                        need identity plumbing that doesn't embarrass itself.</li>
+                    <li><strong>Observability:</strong> OpenTelemetry collector feeding SigNoz, PostHog for product
+                        analytics, Slack webhooks for the 2 AM alerts, Resend for email.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">05</span> Shipping it — the migration story</h2>
+                <p>This is the part I'd put on a poster. Docker multi-stage builds slimmed every service to deployable
+                    artifacts. Coolify turned deployments into a button instead of a ceremony. Traefik v3 fronted
+                    everything with automatic HTTPS via Let's Encrypt, and Tailscale stitched the private network
+                    together so internal services never touch the public internet. The cutover happened while the
+                    business kept running — data migrated, DNS flipped, and the recurring storage bill dropped to bare
+                    utility costs. Same reliability, fraction of the burn.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">06</span> What it proves</h2>
+                <ul>
+                    <li>"Founding Engineer" isn't a title, it's a scope: product, API, infrastructure, observability,
+                        compliance integrations — all owned end to end.</li>
+                    <li>Self-hosting is a legitimate cost strategy at startup scale when executed with containerization
+                        discipline — not a hipster retreat from the cloud.</li>
+                    <li>Modern tooling (Docker, Coolify, Traefik, Tailscale) collapses the ops-team-sized gap a solo
+                        engineer used to face.</li>
+                    <li>Observability isn't optional even when you're the only on-call rotation.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">07</span> What I learned</h2>
+                <p>Cloud convenience has a price tag; sometimes paying it in one-time hardware and a weekend of
+                Ansible-grade discipline is the better deal. Also: never migrate storage on a Friday, always keep the
+                old provider warm until DNS propagates globally, and write the rollback runbook before you need the
+                rollback runbook.</p>
+            </section>
+        </article>
+
+        <nav class="case-next" aria-label="More case studies">
+            <a href="/projects/vini-tini" class="card-link card-link-primary">Next case study: Vini &amp; Tini AI →</a>
+        </nav>
+    </main>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,329 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "jayptl.me",
+    "version": "1.1.0",
+    "description": "Public HTTP interface of jayptl.me, the personal portfolio of Jay Patel (Software Developer, UI/UX Designer, Product Manager, Creative Director, Video Editor).\n\nThis is a content site, so the API surface consists of content pages, agent-facing resources, and a small JSON service:\n\n- Every HTML page is also available as Markdown via content negotiation: send `Accept: text/markdown` to the same URL, or fetch the `.md` companion path directly. Negotiated responses carry `Vary: Accept`.\n- Requests that cannot be satisfied (unknown API path, unsupported Accept header, wrong method) receive structured JSON errors with `error.code`, `error.message`, and `error.hint` fields.\n- `/api/health` is a liveness probe intended for monitors and deploy health checks.",
+    "contact": {
+      "name": "Jay Patel",
+      "email": "hello@jayptl.me",
+      "url": "https://jayptl.me/"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/jayptl-me/jayptl.me/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://jayptl.me",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Pages",
+      "description": "Content pages. All respond 200 with text/html and, when negotiated via Accept, text/markdown."
+    },
+    {
+      "name": "Agents",
+      "description": "Machine-readable resources for AI agents and crawlers."
+    },
+    {
+      "name": "API",
+      "description": "JSON service endpoints."
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Homepage",
+        "description": "Jay Patel's portfolio homepage: roles and featured projects. Markdown variant available via `Accept: text/markdown` or /index.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": {
+                "schema": { "type": "string" }
+              },
+              "text/markdown": {
+                "schema": { "type": "string" }
+              }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/about": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "About Jay Patel",
+        "description": "Roles, background, awards, and side projects. Markdown variant: /about.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Projects index",
+        "description": "All 33 shipped projects with featured case-study links. Markdown variant: /projects.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/projects/{slug}": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Project case study",
+        "description": "Deep-dive case study for a featured project. Markdown variant: /projects/{slug}.md.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["aviz-health", "swalook", "genuinest", "vini-tini"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Case study content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/privacy": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Privacy policy",
+        "description": "Consent-only analytics, no personal data collection, GDPR basis. Markdown variant: /privacy.md.",
+        "responses": {
+          "200": {
+            "description": "Policy content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/design-system": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Design system",
+        "description": "Internal style guide for the site's visual language.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": ["API"],
+        "summary": "Health check",
+        "description": "Liveness probe. Returns JSON service status for monitors and deploy health checks.",
+        "responses": {
+          "200": {
+            "description": "Service is healthy.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Health" }
+              }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "This OpenAPI specification",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.1 document describing this site.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Curated index for LLMs",
+        "description": "llmstxt.org-format index of the site's content and machine-readable resources.",
+        "responses": {
+          "200": {
+            "description": "Markdown-formatted index.",
+            "content": {
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/llms-full.txt": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Full flattened content",
+        "description": "All site pages concatenated as Markdown for one-shot ingestion.",
+        "responses": {
+          "200": {
+            "description": "Markdown-formatted full content.",
+            "content": {
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/robots.txt": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Robots directives",
+        "description": "Crawler directives; known AI crawlers (GPTBot, ClaudeBot, ChatGPT-User, PerplexityBot, Google-Extended, Applebot-Extended, DeepSeekBot, and others) are explicitly allowed.",
+        "responses": {
+          "200": {
+            "description": "robots.txt body.",
+            "content": {
+              "text/plain": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/sitemap.xml": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "XML sitemap",
+        "responses": {
+          "200": {
+            "description": "Sitemap document.",
+            "content": {
+              "application/xml": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "Structured error returned for /api/* paths, unsupported methods, and any request whose Accept header prefers application/json.",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Stable machine-readable error code.",
+                "examples": ["NOT_FOUND", "METHOD_NOT_ALLOWED", "NOT_ACCEPTABLE"]
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable explanation."
+              },
+              "hint": {
+                "type": "string",
+                "description": "Resolution hint pointing at relevant documentation."
+              },
+              "status": {
+                "type": "integer",
+                "description": "HTTP status code, duplicated for convenience."
+              },
+              "path": {
+                "type": "string",
+                "description": "Request path that produced the error."
+              },
+              "documentation": {
+                "type": "string",
+                "description": "URL of the site's agent documentation (llms.txt)."
+              }
+            }
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok"
+          },
+          "service": { "type": "string", "examples": ["jayptl.me"] },
+          "version": { "type": "string", "description": "Site version." },
+          "uptimeSeconds": {
+            "type": "number",
+            "description": "Server uptime in seconds."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "No resource at this path. JSON error body (see the Error schema) for /api/* paths and JSON-preferring clients; HTML 404 page for browsers.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "NotAcceptable": {
+        "description": "The Accept header cannot be satisfied by any representation of this resource (per RFC 9110 content negotiation).",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      }
+    }
+  }
+}

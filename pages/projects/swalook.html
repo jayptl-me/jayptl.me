@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Swalook CRM — Case Study | Jay Patel | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/projects/swalook" />
+    <link rel="alternate" type="text/markdown" href="/projects/swalook.md" title="Markdown version of this case study" />
+    <meta name="description"
+        content="How Jay Patel rebuilt Swalook CRM from the ground up — a Next.js 16 Turborepo frontend, a Bun + Hono backend with 35+ documented endpoints, and a Flutter consumer app with ML Kit AR previews." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/projects/swalook" />
+    <meta property="og:title" content="Swalook CRM — Case Study | Jay Patel" />
+    <meta property="og:description"
+        content="Enterprise CRM overhaul: Next.js 16 monorepo, 35+ documented API endpoints, Flutter AR previews." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Swalook CRM — Case Study | Jay Patel" />
+    <meta name="twitter:description" content="Ground-up rebuild of an enterprise salon-management platform." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts Preload -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/case-study.css" />
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "@id": "https://jayptl.me/projects/swalook#article",
+            "headline": "Swalook CRM — Case Study",
+            "description": "How Jay Patel rebuilt Swalook CRM from the ground up — a Next.js 16 Turborepo frontend, a Bun + Hono backend with 35+ documented endpoints, and a Flutter consumer app with ML Kit AR previews.",
+            "url": "https://jayptl.me/projects/swalook",
+            "inLanguage": "en",
+            "author": { "@id": "https://jayptl.me/#person" },
+            "publisher": { "@id": "https://jayptl.me/#person" },
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "mainEntityOfPage": "https://jayptl.me/projects/swalook"
+        }
+    </script>
+</head>
+
+<body>
+    <main class="case-study-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/projects">← All projects</a>
+        </nav>
+
+        <header class="case-hero">
+            <p class="page-hero-kicker gradient-text">Enterprise SaaS · In Production</p>
+            <h1>Swalook CRM</h1>
+            <p class="case-hero-tagline">Some CRMs are built. Swalook was rebuilt — a ground-up architectural overhaul
+                of a salon-management platform serving real merchants with real concurrent workloads, where "the
+                dashboard is slow" is a business problem, not a vibe.</p>
+            <div class="badge-row">
+                <span class="tag tag-status">In Production</span>
+                <span class="tag">5 Repos → 1 Platform</span>
+                <span class="tag">Next.js 16</span>
+                <span class="tag">Bun + Hono</span>
+                <span class="tag">Flutter</span>
+            </div>
+        </header>
+
+        <section class="tldr-card" aria-label="Summary">
+            <h2>The 60-second version</h2>
+            <dl class="tldr-grid">
+                <div><dt>My role</dt><dd>Full-stack developer — architecture lead across frontend, backend, mobile,
+                        marketing site, and admin console</dd></div>
+                <div><dt>The product</dt><dd>Salon management CRM: appointments, clients, commerce, and analytics for
+                        merchant teams</dd></div>
+                <div><dt>The stack</dt><dd>Next.js 16 Turborepo · Bun + Hono + Drizzle (PostgreSQL/Aiven) · Redis +
+                        BullMQ · Flutter consumer app</dd></div>
+                <div><dt>Hardest problem</dt><dd>Migrating a live business off legacy MySQL without breaking the
+                        merchants using it daily</dd></div>
+                <div><dt>Status</dt><dd>v1.90 tagged and shipping at v2.swalook.in</dd></div>
+                <div><dt>Killer features</dt><dd>Recharts dashboards · ML Kit AR hair previews · multi-tenant RBAC
+                        command center</dd></div>
+            </dl>
+        </section>
+
+        <figure class="case-figure">
+            <div class="showcase-image-placeholder case-hero-media">
+                <span class="showcase-placeholder-label">Swalook CRM — Product Preview</span>
+            </div>
+            <figcaption>Dashboard, booking flow, and AR preview screens land here.</figcaption>
+        </figure>
+
+        <article class="case-body">
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">01</span> The problem — and who felt it</h2>
+                <p>Salons run on tight margins and tighter schedules. The merchants using Swalook don't care about your
+                    architecture diagram; they care that the appointment book opens instantly at 9 AM when three
+                    customers are standing at the counter. The legacy system was buckling under exactly that pressure:
+                    a codebase where adding features meant holding your breath.</p>
+                <p>The stakeholders:</p>
+                <ul class="stakeholder-list">
+                    <li><strong>Merchants</strong> (salon owners and staff) — need the day's bookings, walk-ins, and
+                        revenue at a glance, all day, on mediocre hardware.</li>
+                    <li><strong>End customers</strong> — book through the consumer app and expect modern UX, including
+                        the fun stuff like seeing a hairstyle on their own face before committing.</li>
+                    <li><strong>Platform admins</strong> — run the multi-tenant operation: onboarding salons, managing
+                        roles, watching the health of every tenant from one seat.</li>
+                    <li><strong>The business itself</strong> — needed a foundation new features could ship on weekly,
+                        not quarterly.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">02</span> My role</h2>
+                <p>I executed the complete architectural overhaul — five repositories orchestrated into one coherent
+                    platform: <code>swalook-frontend-new</code>, <code>swalook-backend</code>,
+                    <code>swalook-prototype</code> (Flutter), <code>swalook-landing-page</code>, and
+                    <code>crm-super-admin</code>. Frontend, backend, mobile, marketing surface, and the multi-tenant
+                    command center all shipped through this rewrite.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">03</span> Designing the overhaul</h2>
+                <p>Three design decisions carried the whole project:</p>
+                <ul>
+                    <li><strong>Turborepo monorepo over repo sprawl.</strong> Five products sharing types, components,
+                        and release discipline — one <code>bun run</code> away from synchronized builds.</li>
+                    <li><strong>Shadcn UI + Recharts for the merchant experience.</strong> Dense information design
+                        that stays legible on a 13-inch screen at a busy front desk — dashboards first, decoration
+                        never.</li>
+                    <li><strong>A consumer app that earns its install.</strong> The Flutter prototype uses Provider,
+                        Dio, video playback, and ML Kit face-mesh detection to overlay hairstyle previews in AR — the
+                        difference between "booking app" and "reason to download."</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">04</span> Engineering it</h2>
+                <ul>
+                    <li><strong>Frontend:</strong> Next.js 16 App Router in TypeScript with TanStack patterns, Shadcn
+                        UI componentry, and Recharts analytics — structured so each product ships independently yet
+                        shares a design backbone via Turborepo.</li>
+                    <li><strong>Backend:</strong> Bun + Hono + TypeScript, migrated from MySQL to PostgreSQL on Aiven
+                        with Drizzle ORM, Redis caching (ioredis) on hot reads, and BullMQ job queues for background
+                        processing. 35+ REST endpoints documented end-to-end with OpenAPI/Scalar.</li>
+                    <li><strong>Multi-tenancy:</strong> the super-admin console gives platform operators role-based
+                        access control across tenants — onboarding, permissions, and oversight in one Next.js 16
+                        command center.</li>
+                    <li><strong>Deployments:</strong> managed across Vercel and Render, tuned for high-throughput
+                        concurrent merchant traffic — the kind where one slow endpoint becomes thirty support tickets
+                        by lunch.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">05</span> Shipping it</h2>
+                <p>This is a living production system, not a portfolio demo: versioned releases (v1.90 tagged across
+                    frontend and backend), merchants transacting daily, and a landing presence with SEO-optimized
+                    product pages plus a Framer-Motion-animated blog. Deploys go out while businesses are open — which
+                    teaches you a healthy respect for backward compatibility and feature flags.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">06</span> What it proves</h2>
+                <ul>
+                    <li>Enterprise rewrites can ship incrementally without pausing the revenue — the platform kept
+                        running merchants' days while being replaced underneath them.</li>
+                    <li>Bun + Hono + Drizzle is a production-grade stack, not an experiment: documented APIs, queues,
+                        caching layers, and all.</li>
+                    <li>One engineer can hold five repositories in their head when the architecture does the heavy
+                        lifting.</li>
+                    <li>ML Kit face-mesh AR isn't a gimmick when it moves booking conversion — it's product strategy
+                        in a shader.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">07</span> What I learned</h2>
+                <p>Data migrations are about trust, not schema. Every table moved off MySQL was another promise kept
+                    to a merchant who never noticed. And OpenAPI documentation written early pays rent forever — the
+                    Scalar docs became the team's source of truth and cut my "quick question about this endpoint"
+                    interruptions to near zero.</p>
+            </section>
+        </article>
+
+        <nav class="case-next" aria-label="More case studies">
+            <a href="/projects/genuinest" class="card-link card-link-primary">Next case study: Genuinest DevOps →</a>
+        </nav>
+    </main>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+</body>
+
+</html>

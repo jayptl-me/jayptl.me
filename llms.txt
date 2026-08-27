@@ -1,0 +1,37 @@
+# jayptl.me
+
+> Jay Patel's personal portfolio. Jay is a founding-engineer-grade full-stack developer from Anand, Gujarat, India with 4+ years across TypeScript, Dart/Flutter, Python, and Solidity — 30+ shipped products spanning mobile, web, backend, and self-hosted infrastructure. Roles: Software Developer, UI/UX Designer, Product Manager, Creative Director, Video Editor. Contact: hello@jayptl.me.
+
+Every page is also available as Markdown by sending `Accept: text/markdown` (e.g. `curl -H "Accept: text/markdown" https://jayptl.me/projects`) or by fetching the `.md` URLs listed below.
+
+## About
+
+- [About Jay Patel](https://jayptl.me/about.md): Roles, background, hackathon wins, certifications, and what Jay builds outside client work.
+
+## Projects
+
+- [Projects index](https://jayptl.me/projects.md): All 33 shipped projects with featured case-study links.
+- [Aviz Health case study](https://jayptl.me/projects/aviz-health.md): Digital healthcare ecosystem — three Flutter apps, Next.js 16 admin console, Bun + Hono backend, live on Google Play v2.0.
+- [Swalook CRM case study](https://jayptl.me/projects/swalook.md): Enterprise salon-management SaaS overhaul — Next.js 16 Turborepo, 35+ OpenAPI-documented endpoints, ML Kit AR previews.
+- [Genuinest case study](https://jayptl.me/projects/genuinest.md): Founding Engineer work — Flutter product plus migration to self-hosted Docker/Coolify/Traefik with 20TB MinIO.
+- [Vini & Tini case study](https://jayptl.me/projects/vini-tini.md): Two small language models trained from scratch on BitNet b1.58; Tini published on HuggingFace (jayptl-rq/tini).
+
+## API
+
+- [OpenAPI specification](https://jayptl.me/openapi.json): Machine-readable description of every public endpoint, content types, and error format.
+- [Health endpoint](https://jayptl.me/api/health): Liveness probe returning JSON service status.
+- [Error format](https://jayptl.me/openapi.json): JSON error bodies (`error.code`, `error.message`, `error.hint`) for /api/* paths and JSON-preferring clients.
+
+## Policies
+
+- [Privacy policy](https://jayptl.me/privacy.md): Consent-only analytics, no personal data collection, GDPR basis.
+- [Security policy](https://jayptl.me/.well-known/security.txt): How to report security issues.
+
+## Optional
+
+- [Full site content, flattened](https://jayptl.me/llms-full.txt): Every page above concatenated as Markdown for one-shot ingestion.
+- [Homepage](https://jayptl.me/index.md): Markdown version of the homepage with featured project summaries.
+- [Sitemap](https://jayptl.me/sitemap.xml): XML sitemap for crawlers.
+- [robots.txt](https://jayptl.me/robots.txt): Crawler directives — AI agents explicitly allowed.
+- [GitHub](https://github.com/jayptl-me): Source code for this site and other projects.
+- [HuggingFace](https://huggingface.co/jayptl-rq): Published models and datasets.

@@ -12,10 +12,13 @@
 
 :root {
     /* Scrollbar colors */
+    /* Light mode: brand blue primary */
     --scrollbar-track: rgba(33, 150, 243, 0.1);
     --scrollbar-thumb: rgba(33, 150, 243, 0.6);
     --scrollbar-thumb-hover: rgba(33, 150, 243, 0.8);
     --scrollbar-thumb-active: rgba(33, 150, 243, 1);
+    /* Glow color follows the theme: blue in light, turquoise in dark */
+    --scrollbar-glow-rgb: 33, 150, 243;
 
     /* Scrollbar sizes */
     --scrollbar-width: 8px;
@@ -29,19 +32,21 @@
 /* Dark theme adjustments */
 @media (prefers-color-scheme: dark) {
     :root {
-        --scrollbar-track: rgba(100, 181, 246, 0.15);
-        --scrollbar-thumb: rgba(100, 181, 246, 0.7);
-        --scrollbar-thumb-hover: rgba(100, 181, 246, 0.9);
-        --scrollbar-thumb-active: rgba(100, 181, 246, 1);
+        --scrollbar-track: rgba(77, 214, 226, 0.15);
+        --scrollbar-thumb: rgba(77, 214, 226, 0.7);
+        --scrollbar-thumb-hover: rgba(77, 214, 226, 0.9);
+        --scrollbar-thumb-active: rgba(77, 214, 226, 1);
+        --scrollbar-glow-rgb: 38, 201, 216;
         --scrollbar-border: rgba(255, 255, 255, 0.3);
     }
 }
 
 html[data-theme="dark"] {
-    --scrollbar-track: rgba(100, 181, 246, 0.15);
-    --scrollbar-thumb: rgba(100, 181, 246, 0.7);
-    --scrollbar-thumb-hover: rgba(100, 181, 246, 0.9);
-    --scrollbar-thumb-active: rgba(100, 181, 246, 1);
+    --scrollbar-track: rgba(77, 214, 226, 0.15);
+    --scrollbar-thumb: rgba(77, 214, 226, 0.7);
+    --scrollbar-thumb-hover: rgba(77, 214, 226, 0.9);
+    --scrollbar-thumb-active: rgba(77, 214, 226, 1);
+    --scrollbar-glow-rgb: 38, 201, 216;
     --scrollbar-border: rgba(255, 255, 255, 0.3);
 }
 
@@ -88,7 +93,7 @@ html[data-theme="dark"] {
     border: 1px solid var(--scrollbar-border);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
     box-shadow:
-        0 0 10px rgba(33, 150, 243, 0.3),
+        0 0 10px rgba(var(--scrollbar-glow-rgb, 0, 184, 204), 0.3),
         inset 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
@@ -96,7 +101,7 @@ html[data-theme="dark"] {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--scrollbar-thumb-hover);
     box-shadow:
-        0 0 15px rgba(33, 150, 243, 0.5),
+        0 0 15px rgba(var(--scrollbar-glow-rgb, 0, 184, 204), 0.5),
         inset 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
@@ -104,7 +109,7 @@ html[data-theme="dark"] {
 ::-webkit-scrollbar-thumb:active {
     background: var(--scrollbar-thumb-active);
     box-shadow:
-        0 0 20px rgba(33, 150, 243, 0.7),
+        0 0 20px rgba(var(--scrollbar-glow-rgb, 0, 184, 204), 0.7),
         inset 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
@@ -153,13 +158,13 @@ html.hide-scrollbars-global::-webkit-scrollbar {
     0%,
     100% {
         box-shadow:
-            0 0 10px rgba(33, 150, 243, 0.3),
+            0 0 10px rgba(var(--scrollbar-glow-rgb, 0, 184, 204), 0.3),
             inset 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     50% {
         box-shadow:
-            0 0 20px rgba(33, 150, 243, 0.6),
+            0 0 20px rgba(var(--scrollbar-glow-rgb, 0, 184, 204), 0.6),
             inset 0 0 20px rgba(255, 255, 255, 0.2);
     }
 }

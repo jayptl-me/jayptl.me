@@ -322,6 +322,32 @@
     margin: 0;
 }
 
+/* Case study link */
+.showcase-case-link {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--primary-500);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(var(--primary-500-rgb), 0.35);
+    padding-bottom: 2px;
+    transition: color var(--duration-fast) var(--ease-smooth), border-color var(--duration-fast) var(--ease-smooth);
+}
+
+.showcase-case-link:hover {
+    color: var(--accent-500);
+    border-color: rgba(var(--accent-500-rgb), 0.6);
+}
+
+.showcase-case-link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--rounded-xs);
+}
+
 /* ==========================================================================
    WORK CAROUSEL
    ========================================================================== */

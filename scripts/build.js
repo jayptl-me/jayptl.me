@@ -42,10 +42,13 @@ const config = {
     'css/**/*',
     'js/**/*',
     'assets/**/*',
+    'markdown/**/*',
     'robots.txt',
     'humans.txt',
     'sitemap.xml',
     'site.webmanifest',
+    'llms.txt',
+    'openapi.json',
     '.htaccess'
   ],
 
@@ -108,6 +111,8 @@ async function copyFiles() {
     { src: 'sitemap.xml', dest: 'dist/sitemap.xml' },
     { src: 'site.webmanifest', dest: 'dist/site.webmanifest' },
     { src: 'security.txt', dest: 'dist/security.txt' },
+    { src: 'llms.txt', dest: 'dist/llms.txt' },
+    { src: 'openapi.json', dest: 'dist/openapi.json' },
     { src: 'CNAME', dest: 'dist/CNAME' },
     { src: '.nojekyll', dest: 'dist/.nojekyll' },
     { src: '_headers', dest: 'dist/_headers' },
@@ -132,6 +137,9 @@ async function copyFiles() {
     { src: 'js', dest: 'dist/js' },
     { src: 'assets', dest: 'dist/assets' },
     { src: 'pages', dest: 'dist/pages' },
+    // Markdown companions mirror the dist layout (index.md, pages/about.md, ...)
+    // so scripts/server.js can negotiate Accept: text/markdown per page.
+    { src: 'markdown', dest: 'dist' },
     { src: '.well-known', dest: 'dist/.well-known' }
   ];
 
@@ -174,22 +182,49 @@ async function copyErrorPages() {
 async function createHtaccess() {
   const htaccessContent = `# Apache Configuration for Production
 
-# Enable Rewrite Engine
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  
-  # Force HTTPS
-  RewriteCond %{HTTPS} off
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-  
-  # Clean URLs - Rewrite to pages folder
-  RewriteRule ^about$ /pages/about.html [L]
+  # Enable Rewrite Engine
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Markdown content negotiation (acceptmarkdown.com) — serve the .md
+    # companion when the client's Accept header prefers text/markdown.
+    # Primary implementation is scripts/server.js; these rules give the
+    # Apache fallback host the same behavior.
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^$ index.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^about$ pages/about.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^privacy$ pages/privacy.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects$ pages/projects/index.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/aviz-health$ pages/projects/aviz-health.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/swalook$ pages/projects/swalook.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/genuinest$ pages/projects/genuinest.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/vini-tini$ pages/projects/vini-tini.md [T=text/markdown; charset=utf-8,L]
+
+    # Clean URLs - Rewrite to pages folder
+    RewriteRule ^about$ /pages/about.html [L]
   RewriteRule ^privacy$ /pages/privacy.html [L]
   RewriteRule ^design-system$ /pages/design-system.html [L]
+  RewriteRule ^projects$ /pages/projects/index.html [L]
+  RewriteRule ^projects/aviz-health$ /pages/projects/aviz-health.html [L]
+  RewriteRule ^projects/swalook$ /pages/projects/swalook.html [L]
+  RewriteRule ^projects/genuinest$ /pages/projects/genuinest.html [L]
+  RewriteRule ^projects/vini-tini$ /pages/projects/vini-tini.html [L]
   
   # Legacy redirects
   RewriteRule ^about\\.html$ /pages/about.html [R=301,L]
   RewriteRule ^privacy\\.html$ /pages/privacy.html [R=301,L]
+  RewriteRule ^projects\\.html$ /pages/projects/index.html [R=301,L]
 </IfModule>
 
 # Enable GZIP Compression
@@ -232,6 +267,11 @@ async function createHtaccess() {
 
 # Cache-Control Headers
 <IfModule mod_headers.c>
+  # Negotiated representations vary by Accept — tell caches to key on it
+  <FilesMatch "\\.(html|md)$">
+    Header set Vary "Accept, Accept-Encoding"
+  </FilesMatch>
+
   # Cache static assets for 1 year
   <FilesMatch "\\.(css|js|jpg|jpeg|png|gif|svg|webp|woff|woff2|ttf|ico)$">
     Header set Cache-Control "max-age=31536000, public, immutable"
@@ -288,6 +328,52 @@ async function createBuildInfo() {
 }
 
 /**
+ * Generate llms-full.txt (llmstxt.org "full" variant)
+ *
+ * Concatenates every markdown companion into one document so agents can
+ * ingest the whole site in a single request. Source order: homepage,
+ * about, projects index, case studies, privacy.
+ */
+async function createLlmsFull() {
+  log.info('Generating llms-full.txt...');
+
+  const documents = [
+    'index.md',
+    'pages/about.md',
+    'pages/projects/index.md',
+    'pages/projects/aviz-health.md',
+    'pages/projects/swalook.md',
+    'pages/projects/genuinest.md',
+    'pages/projects/vini-tini.md',
+    'pages/privacy.md'
+  ];
+
+  const sections = [];
+  for (const doc of documents) {
+    try {
+      const content = await fs.readFile(path.join(config.distDir, doc), 'utf8');
+      const body = content.replace(/\s+$/, '');
+      const url = doc === 'index.md'
+        ? 'https://jayptl.me/'
+        : `https://jayptl.me/${doc.replace(/^pages\//, '').replace(/\.md$/, '').replace(/^projects\/index$/, 'projects')}`;
+      sections.push(`<!-- source: ${url} -->\n\n${body}`);
+    } catch (error) {
+      log.warn(`llms-full.txt: missing markdown companion ${doc}: ${error.message}`);
+    }
+  }
+
+  if (sections.length === 0) {
+    throw new Error('llms-full.txt: no markdown companions found. Aborting.');
+  }
+
+  await fs.writeFile(
+    path.join(config.distDir, 'llms-full.txt'),
+    sections.join('\n\n---\n\n') + '\n'
+  );
+  log.success(`Generated llms-full.txt (${sections.length} documents)`);
+}
+
+/**
  * Main build function
  */
 async function build() {
@@ -312,6 +398,9 @@ async function build() {
 
     // Create .htaccess
     await createHtaccess();
+
+    // Generate llms-full.txt from the markdown companions copied above
+    await createLlmsFull();
 
     // Create build info
     await createBuildInfo();

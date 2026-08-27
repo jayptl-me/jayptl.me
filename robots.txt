@@ -1,9 +1,67 @@
+# robots.txt for https://jayptl.me
+# Crawl everything. Known AI/agent crawlers are explicitly allowed below.
+
 User-agent: *
+Allow: /
+
+# --- AI crawlers and agents: explicitly allowed ---
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Google (Gemini training & grounding)
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# DeepSeek
+User-agent: DeepSeekBot
+Allow: /
+
+# Apple (Apple Intelligence)
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# Agent readiness auditors
+User-agent: ora-agent
 Allow: /
 
 # Sitemap reference
 Sitemap: https://jayptl.me/sitemap.xml
-
-# (Optional examples left commented for future use)
-# Disallow: /admin/
-# Disallow: /private/

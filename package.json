@@ -12,7 +12,8 @@
     "deploy:prepare": "bun run build && bun run optimize && bun run validate",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
     "deploy": "bun run deploy:prepare && bun scripts/deploy.js",
-    "serve:dist": "node scripts/server.js"
+    "serve:dist": "node scripts/server.js",
+    "test": "rm -rf dist && node scripts/build.js && node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "terser": "^5.36.0",

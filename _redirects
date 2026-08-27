@@ -1,19 +1,35 @@
 # Render redirects and rewrites configuration
+#
+# NOTE: This file only applies when the site is deployed as a static site.
+# Production now runs scripts/server.js (see render.yaml), which implements
+# clean URLs itself plus Accept: text/markdown negotiation and JSON API
+# errors — behaviors static hosts cannot express in _redirects.
 
 # Clean URLs - rewrite to pages folder (200 = rewrite, not redirect)
 /about           /pages/about.html           200
 /privacy         /pages/privacy.html         200
 /design-system   /pages/design-system.html   200
+/projects        /pages/projects/index.html  200
+/projects/aviz-health /pages/projects/aviz-health.html 200
+/projects/swalook     /pages/projects/swalook.html     200
+/projects/genuinest   /pages/projects/genuinest.html   200
+/projects/vini-tini   /pages/projects/vini-tini.html   200
 
 # Legacy redirects - redirect old paths to new Clean URLs (301 = permanent redirect)
 /about.html      /about                      301!
 /privacy.html    /privacy                    301!
 /design-system.html /design-system           301!
+/projects.html   /projects                   301!
 
 # Direct file access redirects (prevent duplicate content)
 /pages/about.html /about                     301!
 /pages/privacy.html /privacy                 301!
 /pages/design-system.html /design-system     301!
+/pages/projects/index.html /projects         301!
+/pages/projects/aviz-health.html /projects/aviz-health 301!
+/pages/projects/swalook.html /projects/swalook     301!
+/pages/projects/genuinest.html /projects/genuinest   301!
+/pages/projects/vini-tini.html /projects/vini-tini   301!
 
 # Error page fallback - catch all unmatched routes
 /*                   /pages/404.html         404

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Projects — Jay Patel | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/projects" />
+    <link rel="alternate" type="text/markdown" href="/projects.md" title="Markdown version of the projects page" />
+    <meta name="description"
+        content="33 shipped projects by Jay Patel — healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch. Developer, designer, product mind." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/projects" />
+    <meta property="og:title" content="Projects — Jay Patel" />
+    <meta property="og:description"
+        content="Healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Projects — Jay Patel" />
+    <meta name="twitter:description" content="33 shipped projects. One engineer who does design, product, and DevOps." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts Preload -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/projects.css" />
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "@id": "https://jayptl.me/projects#webpage",
+            "url": "https://jayptl.me/projects",
+            "name": "Projects — Jay Patel",
+            "description": "33 shipped projects by Jay Patel — healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch.",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "author": { "@id": "https://jayptl.me/#person" },
+            "mainEntity": {
+                "@type": "ItemList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "url": "https://jayptl.me/projects/aviz-health", "name": "Aviz Health" },
+                    { "@type": "ListItem", "position": 2, "url": "https://jayptl.me/projects/swalook", "name": "Swalook CRM" },
+                    { "@type": "ListItem", "position": 3, "url": "https://jayptl.me/projects/genuinest", "name": "Genuinest" },
+                    { "@type": "ListItem", "position": 4, "url": "https://jayptl.me/projects/vini-tini", "name": "Vini & Tini" }
+                ]
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <main class="projects-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker gradient-text">The Hangar</p>
+            <h1>Every suit I've built.</h1>
+            <p class="page-hero-lead">Thirty-three projects shipped across healthcare, commerce, fintech, and AI —
+                designed, engineered, deployed, and in most cases talked off the ledge at 2 AM. Filter by how you want
+                to know me.</p>
+        </header>
+
+        <section class="case-study-callout" aria-label="Featured case studies">
+            <h2 class="sr-only">Featured case studies</h2>
+            <p class="case-study-callout-label">Start with the deep dives:</p>
+            <div class="case-study-callout-links">
+                <a href="/projects/aviz-health" class="chip chip-primary">Aviz Health ★</a>
+                <a href="/projects/swalook" class="chip">Swalook CRM</a>
+                <a href="/projects/genuinest" class="chip">Genuinest DevOps</a>
+                <a href="/projects/vini-tini" class="chip">Vini &amp; Tini AI</a>
+            </div>
+        </section>
+
+        <div class="project-filters" role="group" aria-label="Filter projects by category">
+            <button class="filter-btn active" data-filter="all" aria-pressed="true">All <span class="filter-count">33</span></button>
+            <button class="filter-btn" data-filter="client" aria-pressed="false">Client Work <span class="filter-count">13</span></button>
+            <button class="filter-btn" data-filter="personal" aria-pressed="false">Personal <span class="filter-count">8</span></button>
+            <button class="filter-btn" data-filter="aiml" aria-pressed="false">AI / ML <span class="filter-count">3</span></button>
+            <button class="filter-btn" data-filter="opensource" aria-pressed="false">Open Source <span class="filter-count">9</span></button>
+        </div>
+
+        <section class="project-grid" id="projectGrid" aria-label="All projects">
+
+            <!-- ============ CLIENT WORK ============ -->
+            <article class="project-card" data-category="client" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Aviz Health — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Live on Play · v2.0</span>
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Next.js 16</span>
+                        <span class="tag">Bun + Hono</span>
+                    </div>
+                    <h3>Aviz Health</h3>
+                    <p>Digital healthcare ecosystem connecting patients, verified doctors, labs, pharmacies, and ground
+                        crews — three Flutter apps, a Next.js 16 mission-control dashboard, and zero-lag ambulance SOS
+                        dispatch. My hero project.</p>
+                    <div class="project-card-links">
+                        <a href="/projects/aviz-health" class="card-link card-link-primary">Read the case study →</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Swalook CRM — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">In Production</span>
+                        <span class="tag">Next.js 16</span>
+                        <span class="tag">Turborepo</span>
+                        <span class="tag">PostgreSQL</span>
+                    </div>
+                    <h3>Swalook CRM</h3>
+                    <p>Ground-up architectural overhaul of an enterprise salon-management platform: monorepo frontend,
+                        35+ documented REST endpoints, Redis caching, BullMQ queues, and a Flutter consumer app with
+                        ML Kit AR previews.</p>
+                    <div class="project-card-links">
+                        <a href="/projects/swalook" class="card-link card-link-primary">Read the case study →</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Genuinest — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Founding Engineer</span>
+                        <span class="tag">Flutter + Riverpod</span>
+                        <span class="tag">Docker · Coolify</span>
+                        <span class="tag">20TB MinIO</span>
+                    </div>
+                    <h3>Genuinest</h3>
+                    <p>Built the core product as Founding Engineer, then migrated the whole company off expensive cloud
+                        services to self-hosted Docker, Coolify, and Traefik — with a 20TB S3-compatible storage
+                        cluster that erased the monthly bill.</p>
+                    <div class="project-card-links">
+                        <a href="/projects/genuinest" class="card-link card-link-primary">Read the case study →</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Thhiya — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Private Client</span>
+                        <span class="tag">React 19</span>
+                        <span class="tag">Puppeteer</span>
+                        <span class="tag">Gemini AI</span>
+                    </div>
+                    <h3>Thhiya</h3>
+                    <p>Global partner-discovery and workforce-management platform. Engineered stealth-scraping
+                        pipelines aggregating corporate regulations for 195 countries, with Gemini-powered provider
+                        matching and a 20% latency reduction.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">BhawBhaw / Wocofy — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Private Client</span>
+                        <span class="tag">React Native</span>
+                        <span class="tag">Next.js 14 ×2</span>
+                        <span class="tag">Razorpay</span>
+                    </div>
+                    <h3>BhawBhaw / Wocofy</h3>
+                    <p>Pet-services marketplace spanning four products: user and vendor React Native apps plus customer
+                        and admin Next.js web apps — maps, payments, charts, document pipelines, and speech-enabled
+                        search included.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Aorta Rooms — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Live — aortarooms.com</span>
+                        <span class="tag">Next.js 15</span>
+                        <span class="tag">Prisma</span>
+                        <span class="tag">AWS S3</span>
+                    </div>
+                    <h3>Aorta Rooms</h3>
+                    <p>Hotel booking platform with a Framer-Motion-polished Next.js 15 frontend and a Bun-compatible
+                        Hono backend — room inventory, booking flows, Twilio SMS, ZeptoMail, and Firebase push.</p>
+                    <div class="project-card-links">
+                        <a href="https://aortarooms.com" target="_blank" rel="noopener" class="card-link">Visit site ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Niti Health — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Private Client</span>
+                        <span class="tag">Flutter ×3</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">GraphQL</span>
+                    </div>
+                    <h3>Niti Health</h3>
+                    <p>Healthcare ERP with three Flutter apps (Patient, Doctor, Clinic) on an Express backend running
+                        MongoDB, MySQL, Redis, Cassandra, Apollo GraphQL, and BullMQ — all Dockerized.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">School Of Hatha Yoga — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Deployed on Render</span>
+                        <span class="tag">React 18</span>
+                        <span class="tag">Shadcn UI</span>
+                        <span class="tag">Hono API</span>
+                    </div>
+                    <h3>School Of Hatha Yoga</h3>
+                    <p>Modern corporate web ecosystem: React 18 + Shadcn UI + Framer Motion frontend over a
+                        JWT-authenticated Hono API with Zod validation — responsive, themed, and deployed via Render.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Huselk — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Team Lead</span>
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Razorpay</span>
+                    </div>
+                    <h3>Huselk</h3>
+                    <p>Led a squad shipping an enterprise clothing e-commerce app — Firebase suite, Razorpay checkout,
+                        cached imagery — plus a companion admin panel, translating Figma/XD systems into modular
+                        Flutter components.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">The Neural Networker — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Internship</span>
+                        <span class="tag">Next.js</span>
+                        <span class="tag">React Native</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <h3>The Neural Networker</h3>
+                    <p>Built AI-integrated web and mobile interfaces for algorithmic execution workflows, and tuned
+                        MongoDB compound indexes that sped analytical dashboards up by 30%.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Dpizza Time — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">GoRouter</span>
+                        <span class="tag">Lottie</span>
+                    </div>
+                    <h3>Dpizza Time</h3>
+                    <p>End-to-end food ordering and management app with a companion real-time admin panel — Firebase
+                        auth, Firestore sync, push notifications, and GetIt-wired architecture.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Zchat — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Firebase Firestore</span>
+                    </div>
+                    <h3>Zchat</h3>
+                    <p>Real-time chat application in Flutter with Firebase Firestore message synchronization.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="client">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Donman — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Provider</span>
+                    </div>
+                    <h3>Donman</h3>
+                    <p>Flutter app with Provider state management built for a service-marketplace concept.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
+                </div>
+            </article>
+
+            <!-- ============ PERSONAL ============ -->
+            <article class="project-card" data-category="personal" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Tenet PG — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Personal Product</span>
+                        <span class="tag">Bun Turborepo</span>
+                        <span class="tag">Next.js 16</span>
+                        <span class="tag">Playwright + Vitest</span>
+                    </div>
+                    <h3>Tenet PG Management</h3>
+                    <p>Full PG/hostel management platform: Next.js 16 dashboard with four theme modes (including cartoon
+                        brutalist, because taste), Hono backend with SSE, UPI payments, PDF invoices, QR codes, and a
+                        documented Flutter phase.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/tenet_management" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Ai-Vestor — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">🏆 1st Place — FinTech</span>
+                        <span class="tag">100+ LSTM Models</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">Oracle Cloud</span>
+                    </div>
+                    <h3>Ai-Vestor</h3>
+                    <p>AI stock-prediction platform that took first place in the FinTech track at CHARUSAT-Odoo
+                        Hackathon 2025 — 650+ applicants, 75 teams. 90% prediction accuracy, gamified investment LMS,
+                        deployed on Oracle Cloud.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Hackathon build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="aiml">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Product-X — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">TensorFlow / Keras</span>
+                        <span class="tag">LSTM</span>
+                        <span class="tag">Upstox API</span>
+                        <span class="tag">Hono</span>
+                    </div>
+                    <h3>Product-X — Stock Prediction ML</h3>
+                    <p>Time-series forecasting platform: LSTM neural networks consuming real-time Upstox market data,
+                        served through Hono with interactive React + Vite dashboards.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Private research build</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Whyknot.live — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Astro</span>
+                        <span class="tag">React Islands</span>
+                        <span class="tag">Hono</span>
+                        <span class="tag">Resend</span>
+                    </div>
+                    <h3>Whyknot.live (y-knot)</h3>
+                    <p>Astro-based waitlist marketing site with React islands, a Hono backend on MongoDB + Redis,
+                        email via Resend/Nodemailer, an Astro admin panel, and DOMPurify sanitization.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">HMS — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">React + Vite</span>
+                        <span class="tag">Shadcn UI</span>
+                        <span class="tag">TanStack Query</span>
+                        <span class="tag">Bun + Hono</span>
+                    </div>
+                    <h3>HMS — Hospital Management System</h3>
+                    <p>Hospital management frontend with TanStack Query data layers, React Hook Form, and Recharts
+                        dashboards over a Zod-validated Bun + Hono backend.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">All Socials — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Real-time Chat</span>
+                        <span class="tag">Biometric Auth</span>
+                    </div>
+                    <h3>All Socials</h3>
+                    <p>Flutter mobile app with a hacker-themed UI, real-time chat system, and biometric/password
+                        protection. Because security dashboards deserve style too.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">SixthAiPatcher — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Bun / Node.js</span>
+                        <span class="tag">AI Automation</span>
+                    </div>
+                    <h3>SixthAiPatcher</h3>
+                    <p>AI automation maintenance and UI patching framework — keeping AI-assisted interfaces honest,
+                        automatically.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">jayptl.me — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">You Are Here</span>
+                        <span class="tag">Vanilla JS</span>
+                        <span class="tag">Custom Build Pipeline</span>
+                        <span class="tag">Zero Frameworks</span>
+                    </div>
+                    <h3>jayptl.me — This Site</h3>
+                    <p>The portfolio itself: hand-rolled HTML/CSS/JS with a scroll-reveal narrative engine, WebAudio
+                        sound design, skeuomorphic/glassmorphic theme duality, and a Bun-powered minify-and-deploy
+                        pipeline. No frameworks were harmed.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/jayptl.me" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="personal">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Ambica Impex — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Bun Turborepo</span>
+                        <span class="tag">Next.js 16 ×2</span>
+                        <span class="tag">Three.js</span>
+                        <span class="tag">GSAP</span>
+                    </div>
+                    <h3>Ambica Impex Platform</h3>
+                    <p>Export/import business ERP as a monorepo: customer-facing site with Three.js postprocessing and
+                        GSAP, an admin dashboard with ExcelJS exports, and a Hono backend with server-side PDF
+                        generation.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/ambica_web" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ============ AI / ML ============ -->
+            <article class="project-card" data-category="aiml" data-featured="true">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Vini &amp; Tini — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Research</span>
+                        <span class="tag">BitNet b1.58</span>
+                        <span class="tag">PyTorch</span>
+                        <span class="tag">HuggingFace</span>
+                    </div>
+                    <h3>Vini &amp; Tini</h3>
+                    <p>Two small language models trained from scratch on the BitNet b1.58 ternary architecture — Vini,
+                        an edge-first personal assistant; Tini, a TypeScript coding model published on HuggingFace
+                        under Apache 2.0.</p>
+                    <div class="project-card-links">
+                        <a href="/projects/vini-tini" class="card-link card-link-primary">Read the case study →</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="aiml">
+                <div class="project-card-media"><span class="project-card-placeholder-label">AI Agent Stack — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag tag-status">Infrastructure</span>
+                        <span class="tag">Ollama</span>
+                        <span class="tag">n8n + LangChain</span>
+                        <span class="tag">Qdrant / Chroma</span>
+                    </div>
+                    <h3>Self-Hosted AI Agent Stack</h3>
+                    <p>Personal AI infrastructure: Ollama local inference, Hermes Agent with persistent memory,
+                        OpenClaude coding agent, n8n workflows with MCP connectors, and Qdrant/Chroma RAG over local
+                        corpora.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Self-hosted — not public</span></div>
+                </div>
+            </article>
+
+            <!-- ============ OPEN SOURCE & SMALLER ============ -->
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">NutriSnack — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Hono</span>
+                        <span class="tag">Radix UI</span>
+                    </div>
+                    <h3>NutriSnack</h3>
+                    <p>AI-powered food calorie analyzer with image analysis, auth, and a dashboard — full Radix UI
+                        component suite over a Zod-validated Hono API.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/nutrisnack" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">NDS Services — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Monorepo</span>
+                        <span class="tag">Next.js</span>
+                        <span class="tag">Bun + Hono</span>
+                        <span class="tag">Flutter</span>
+                    </div>
+                    <h3>NDS Services</h3>
+                    <p>Multi-service monorepo combining a Next.js admin shell, Bun + Hono API, and a Flutter mobile
+                        notes app, with Render deployment config baked in.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/nds_services" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">EV Charging — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Real-time Maps</span>
+                        <span class="tag">Geospatial</span>
+                    </div>
+                    <h3>EV Charging Project</h3>
+                    <p>Full-stack EV charging-station management with a real-time interactive map and geospatial
+                        capabilities.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/ev-charging-project" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Medicare — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">PHP</span>
+                        <span class="tag">Supabase</span>
+                    </div>
+                    <h3>Medicare</h3>
+                    <p>Healthcare management system with patient registration, login, appointment booking, and schedule
+                        management on PHP + Supabase.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/medicare" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Campus Cultural — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Angular</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">PostgreSQL</span>
+                    </div>
+                    <h3>Campus Cultural Platform</h3>
+                    <p>Multi-module Angular application with an Express server and PostgreSQL — built for campus
+                        cultural events.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/campus_cultural_platform" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Within — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Social</span>
+                    </div>
+                    <h3>Within</h3>
+                    <p>Social connection app in Flutter with a full app/backend/frontend/testing structure.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/within" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Event Booking — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Multi-platform</span>
+                    </div>
+                    <h3>Event Booking</h3>
+                    <p>Event booking system with admin, client, and customer apps — one Flutter codebase targeting
+                        Android, iOS, Linux, macOS, Windows, and web.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/event_booking" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">DriveNotes — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Google Drive API</span>
+                    </div>
+                    <h3>DriveNotes</h3>
+                    <p>Secure notes app storing CRUD notes in your own Google Drive — feature-based architecture, your
+                        data stays yours.</p>
+                    <div class="project-card-links">
+                        <a href="https://github.com/jayptl-me/drivenotes" target="_blank" rel="noopener" class="card-link">View on GitHub ↗</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-category="opensource">
+                <div class="project-card-media"><span class="project-card-placeholder-label">Cross Suite — Preview</span></div>
+                <div class="project-card-body">
+                    <div class="project-card-tags">
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Chrome Extension</span>
+                        <span class="tag">Web + Mobile</span>
+                    </div>
+                    <h3>Cross Suite</h3>
+                    <p>The Cross ecosystem: Cross-Check-Web (TypeScript), cross-net-extension (Chrome extension), and
+                        the cross-access mobile app — one concept across web, browser, and pocket.</p>
+                    <div class="project-card-links"><span class="card-link-muted">Experimental builds</span></div>
+                </div>
+            </article>
+
+        </section>
+
+        <p class="projects-empty" id="projectsEmpty" hidden>No suits match that filter. Try another category.</p>
+
+        <footer class="page-footer">
+            <p>Want the story behind any of these? <a href="/about" class="btn-text-gradient">Meet Jay →</a></p>
+        </footer>
+    </main>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/projects-filter.js"></script>
+</body>
+
+</html>

@@ -7,8 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Primary Meta Tags -->
-    <title>Privacy Policy - Jay Patel | Software Developer & Designer</title>
+    <title>Privacy Policy - Jay Patel | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/privacy" />
+    <link rel="alternate" type="text/markdown" href="/privacy.md" title="Markdown version of the privacy policy">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
     <meta name="title" content="Privacy Policy - Jay Patel | Software Developer & Designer">
@@ -60,8 +61,23 @@
 
     <!-- Theme Detection (external to support CSP) -->
     <script defer src="/js/theme-detection.js"></script>
-    <!-- JSON-LD Structured Data loader (external file to satisfy CSP) -->
-    <script defer src="/js/load-jsonld.js"></script>
+    <!-- JSON-LD Structured Data (inline so crawlers see it without JavaScript) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Privacy Policy",
+            "url": "https://jayptl.me/privacy",
+            "description": "Privacy policy for jayptl.me - Learn how we protect your privacy and handle data on this portfolio website.",
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "about": {
+                "@type": "Person",
+                "@id": "https://jayptl.me/#person",
+                "name": "Jay Patel",
+                "url": "https://jayptl.me/"
+            }
+        }
+        </script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",

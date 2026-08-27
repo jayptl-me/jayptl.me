@@ -64,7 +64,9 @@ async function validateRequiredFiles() {
     { path: 'robots.txt', name: 'robots.txt' },
     { path: 'sitemap.xml', name: 'sitemap.xml' },
     { path: 'site.webmanifest', name: 'site.webmanifest' },
-    { path: '.htaccess', name: '.htaccess' }
+    { path: '.htaccess', name: '.htaccess' },
+    { path: 'llms.txt', name: 'llms.txt' },
+    { path: 'openapi.json', name: 'openapi.json' }
   ];
   
   for (const file of requiredFiles) {
@@ -281,6 +283,137 @@ async function validateAssets() {
 }
 
 /**
+ * Validate agent-readiness artifacts:
+ * - llms.txt format (llmstxt.org): H1 name, blockquote summary, sections
+ * - openapi.json parses and describes the API surface
+ * - Markdown companions exist for every negotiable page
+ * - robots.txt explicitly allows known AI crawlers
+ */
+async function validateAgentReadiness() {
+  log.info('Validating agent-readiness artifacts...');
+
+  // llms.txt
+  const llmsPath = path.join(config.distDir, 'llms.txt');
+  if (await fileExists(llmsPath)) {
+    const content = await fs.readFile(llmsPath, 'utf8');
+
+    if (!content.startsWith('# ')) {
+      config.errors.push('llms.txt: must start with an H1 site name');
+      log.error('llms.txt: missing H1 site name');
+    } else {
+      log.success('llms.txt: has H1 site name');
+    }
+
+    if (!content.split('\n').some(line => line.startsWith('> '))) {
+      config.warnings.push('llms.txt: missing blockquote summary');
+      log.warn('llms.txt: missing blockquote summary');
+    } else {
+      log.success('llms.txt: has blockquote summary');
+    }
+
+    const linkCount = (content.match(/\]\((https?:\/\/|\/)[^)]+\)/g) || []).length;
+    if (linkCount < 3) {
+      config.warnings.push('llms.txt: very few links — add sections pointing at real resources');
+      log.warn(`llms.txt: only ${linkCount} links found`);
+    } else {
+      log.success(`llms.txt: ${linkCount} resource links`);
+    }
+
+    if (!content.includes('openapi.json')) {
+      config.warnings.push('llms.txt: does not reference the OpenAPI spec');
+      log.warn('llms.txt: missing OpenAPI spec link');
+    }
+  }
+
+  // llms-full.txt
+  if (!(await fileExists(path.join(config.distDir, 'llms-full.txt')))) {
+    config.warnings.push('llms-full.txt not found in dist');
+    log.warn('llms-full.txt not found');
+  } else {
+    log.success('Found llms-full.txt');
+  }
+
+  // openapi.json
+  const openapiPath = path.join(config.distDir, 'openapi.json');
+  if (await fileExists(openapiPath)) {
+    try {
+      const spec = JSON.parse(await fs.readFile(openapiPath, 'utf8'));
+      if (!spec.openapi || !spec.info || !spec.info.title || !spec.paths) {
+        config.errors.push('openapi.json: missing openapi/info/paths fields');
+        log.error('openapi.json: invalid OpenAPI structure');
+      } else {
+        const pathCount = Object.keys(spec.paths).length;
+        log.success(`openapi.json: valid OpenAPI ${spec.openapi} document (${pathCount} paths)`);
+        if (!spec.paths['/api/health']) {
+          config.warnings.push('openapi.json: /api/health not documented');
+        }
+      }
+    } catch (error) {
+      config.errors.push(`openapi.json: does not parse as JSON (${error.message})`);
+      log.error('openapi.json: does not parse as JSON');
+    }
+  }
+
+  // Markdown companions for negotiable pages
+  const mdCompanions = [
+    'index.md',
+    'pages/about.md',
+    'pages/privacy.md',
+    'pages/projects/index.md',
+    'pages/projects/aviz-health.md',
+    'pages/projects/swalook.md',
+    'pages/projects/genuinest.md',
+    'pages/projects/vini-tini.md'
+  ];
+  for (const md of mdCompanions) {
+    if (await fileExists(path.join(config.distDir, md))) {
+      log.success(`markdown companion: ${md}`);
+    } else {
+      config.errors.push(`Missing markdown companion: ${md} (Accept: text/markdown negotiation needs it)`);
+      log.error(`Missing markdown companion: ${md}`);
+    }
+  }
+
+  // robots.txt explicitly allows AI crawlers
+  const robotsPath = path.join(config.distDir, 'robots.txt');
+  if (await fileExists(robotsPath)) {
+    const robots = await fs.readFile(robotsPath, 'utf8');
+    const aiAgents = ['GPTBot', 'ClaudeBot', 'ChatGPT-User', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'DeepSeekBot'];
+    for (const agent of aiAgents) {
+      if (!robots.includes(`User-agent: ${agent}`)) {
+        config.warnings.push(`robots.txt: AI crawler ${agent} not explicitly allowed`);
+        log.warn(`robots.txt: ${agent} not explicitly allowed`);
+      }
+    }
+    log.success('robots.txt: AI crawler allowlist checked');
+  }
+
+  // JSON-LD present and parseable on the homepage
+  const homePath = path.join(config.distDir, 'index.html');
+  if (await fileExists(homePath)) {
+    const home = await fs.readFile(homePath, 'utf8');
+    const blocks = home.match(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g) || [];
+    if (blocks.length === 0) {
+      config.errors.push('index.html: no JSON-LD structured data');
+      log.error('index.html: no JSON-LD');
+    } else {
+      let parsed = 0;
+      for (const block of blocks) {
+        try {
+          JSON.parse(block.replace(/<\/?script[^>]*>/g, ''));
+          parsed++;
+        } catch {
+          config.errors.push('index.html: JSON-LD block does not parse');
+        }
+      }
+      if (parsed === blocks.length) {
+        log.success(`index.html: ${blocks.length} JSON-LD block(s), all parse`);
+      }
+    }
+  }
+}
+
+/**
  * Print validation summary
  */
 function printSummary() {
@@ -343,9 +476,11 @@ async function validate() {
     
     await validateSitemap();
     console.log('');
-    
+
     await validateAssets();
-    
+
+    await validateAgentReadiness();
+
     // Print summary
     const passed = printSummary();
     

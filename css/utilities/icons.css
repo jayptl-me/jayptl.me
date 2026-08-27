@@ -60,9 +60,9 @@
 /* Dark mode - lighter icons for contrast on black */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Primary gradient - lighter for dark backgrounds */
-        --icon-gradient-start: #64b5f6;
-        /* Primary 300 - lighter blue */
+        /* Primary gradient - turquoise in dark mode (site contract: no blue) */
+        --icon-gradient-start: #26c9d8;
+        /* Accent 400 - turquoise */
         --icon-gradient-end: #4dd0e1;
         /* Lighter turquoise */
     }
@@ -84,8 +84,8 @@
     .icon-info {
         --icon-gradient-start: #a78bfa;
         /* Purple 400 - lighter */
-        --icon-gradient-end: #60a5fa;
-        /* Blue 400 - lighter */
+        --icon-gradient-end: #4dd0e1;
+        /* Turquoise - replaces blue 400 */
     }
 }
 
@@ -112,7 +112,7 @@ html[data-theme="light"] .icon-info {
 
 /* Force dark theme - lighter icons */
 html[data-theme="dark"] {
-    --icon-gradient-start: #64b5f6;
+    --icon-gradient-start: #26c9d8;
     --icon-gradient-end: #4dd0e1;
 }
 
@@ -128,7 +128,7 @@ html[data-theme="dark"] .icon-warning {
 
 html[data-theme="dark"] .icon-info {
     --icon-gradient-start: #a78bfa;
-    --icon-gradient-end: #60a5fa;
+    --icon-gradient-end: #4dd0e1;
 }
 
 /* ==========================================================================

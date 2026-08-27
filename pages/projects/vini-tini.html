@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vini &amp; Tini — Case Study | Jay Patel | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/projects/vini-tini" />
+    <link rel="alternate" type="text/markdown" href="/projects/vini-tini.md" title="Markdown version of this case study" />
+    <meta name="description"
+        content="How Jay Patel trained two small language models from scratch on the BitNet b1.58 ternary architecture — Vini, an edge-first personal assistant, and Tini, a TypeScript coding model published on HuggingFace." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/projects/vini-tini" />
+    <meta property="og:title" content="Vini &amp; Tini — Case Study | Jay Patel" />
+    <meta property="og:description"
+        content="Two small language models trained from scratch — BitNet b1.58, built for the edge, one on HuggingFace." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Vini &amp; Tini — Case Study | Jay Patel" />
+    <meta name="twitter:description" content="Small models, trained from scratch, on a mission to the edge." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts Preload -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Audiowide:wght@400&family=Exo+2:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/case-study.css" />
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "@id": "https://jayptl.me/projects/vini-tini#article",
+            "headline": "Vini & Tini — Case Study",
+            "description": "How Jay Patel trained two small language models from scratch on the BitNet b1.58 ternary architecture — Vini, an edge-first personal assistant, and Tini, a TypeScript coding model published on HuggingFace.",
+            "url": "https://jayptl.me/projects/vini-tini",
+            "inLanguage": "en",
+            "author": { "@id": "https://jayptl.me/#person" },
+            "publisher": { "@id": "https://jayptl.me/#person" },
+            "isPartOf": { "@id": "https://jayptl.me/#website" },
+            "mainEntityOfPage": "https://jayptl.me/projects/vini-tini"
+        }
+    </script>
+</head>
+
+<body>
+    <main class="case-study-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/projects">← All projects</a>
+        </nav>
+
+        <header class="case-hero">
+            <p class="page-hero-kicker gradient-text">AI / ML Research · Published</p>
+            <h1>Vini &amp; Tini</h1>
+            <p class="case-hero-tagline">Everyone can call an LLM API. I wanted to know what it takes to build one.
+                So I trained two small language models from scratch on the BitNet b1.58 ternary architecture — one
+                that runs my home, and one that writes TypeScript. No fine-tuned checkpoints of someone else's
+                homework.</p>
+            <div class="badge-row">
+                <span class="tag tag-status">Trained From Scratch</span>
+                <span class="tag">BitNet b1.58</span>
+                <span class="tag">PyTorch</span>
+                <span class="tag">On HuggingFace</span>
+                <span class="tag">Edge-First</span>
+            </div>
+        </header>
+
+        <section class="tldr-card" aria-label="Summary">
+            <h2>The 60-second version</h2>
+            <dl class="tldr-grid">
+                <div><dt>My role</dt><dd>Researcher and engineer — data pipelines, training loops, evaluation,
+                        deployment design</dd></div>
+                <div><dt>Vini</dt><dd>Personal-assistant SLM: reminders, timers, Q&amp;A, smart-home control, tool
+                        routing — for Raspberry Pi-class hardware</dd></div>
+                <div><dt>Tini</dt><dd>TypeScript coding model, published open source on HuggingFace under Apache
+                        2.0 (jayptl-rq/tini)</dd></div>
+                <div><dt>The approach</dt><dd>BitNet b1.58 ternary weights (−1 / 0 / +1) — tiny memory footprint,
+                        edge-deployable by design</dd></div>
+                <div><dt>Ecosystem</dt><dd>Sits inside my self-hosted stack: Ollama inference, n8n + MCP automation,
+                        Qdrant RAG</dd></div>
+                <div><dt>Status</dt><dd>V1 trained and iterating; Tini publicly downloadable</dd></div>
+            </dl>
+        </section>
+
+        <figure class="case-figure">
+            <div class="showcase-image-placeholder case-hero-media">
+                <span class="showcase-placeholder-label">Vini &amp; Tini — Training &amp; Demo Previews</span>
+            </div>
+            <figcaption>Training curves, eval outputs, and demo clips land here.</figcaption>
+        </figure>
+
+        <article class="case-body">
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">01</span> The problem — and why "just use an API"
+                    wasn't the answer</h2>
+                <p>Commercial LLMs are brilliant and borrowed: your prompts leave the building, your assistant lives
+                    in someone else's pricing tier, and nothing runs when the internet doesn't. I wanted an assistant
+                    that lives on my desk, answers in milliseconds, knows nothing leaves the room — and keeps working
+                    during power-cut-induced network blackouts. That constraint set points exactly one direction:
+                    small models, local hardware.</p>
+                <p>The stakeholders here are unusual but real:</p>
+                <ul class="stakeholder-list">
+                    <li><strong>Me, as the user</strong> — an assistant that handles reminders, timers, Q&amp;A, IoT
+                        toggles, and tool routing without phoning home.</li>
+                    <li><strong>Developers like me</strong> — who want a compact coding model specialized for
+                        TypeScript backend work, inspectable and Apache 2.0 licensed.</li>
+                    <li><strong>The edge itself</strong> — Raspberry Pis and old desktops deserve useful AI without
+                        24GB VRAM.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">02</span> My role</h2>
+                <p>Sole researcher-engineer. Dataset collection and curation, tokenizer strategy, training-loop
+                    implementation in PyTorch, evaluation harnesses, and deployment packaging — the full pipeline from
+                    raw text to a model with a job. This is research discipline applied to product instincts:
+                    every experiment logged, every checkpoint versioned, every failure kept as evidence.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">03</span> Why BitNet b1.58</h2>
+                <p>BitNet b1.58 quantizes weights to three values — −1, 0, +1 — replacing most multiplications with
+                    additions. The payoff is brutal efficiency: dramatically smaller memory footprint and
+                    energy-per-token, which is precisely the currency of edge devices. For an assistant meant to live
+                    on a Raspberry Pi, ternary weights aren't a compromise — they're the enabling technology. Both
+                    models share this architectural spine; only their diets differ.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">04</span> Training them</h2>
+                <ul>
+                    <li><strong>Vini (the assistant):</strong> trained on curated instruction data spanning
+                        conversational Q&amp;A, command parsing, and tool-routing traces — because an assistant's real
+                        skill is deciding <em>which</em> tool, not just generating text. Repo structure carries
+                        <code>models/</code>, <code>docs/</code>, and shared configs so experiments reproduce.</li>
+                    <li><strong>Tini (the coder):</strong> fed a diet of TypeScript backend code — configs, data
+                        collection pipelines, inference and deployment directories all versioned. Trained notebooks
+                        and a HuggingFace dataset ship alongside the model.</li>
+                    <li><strong>Evaluation:</strong> both models run against task-level benchmarks (does the timer
+                        actually get set? does the code actually compile?) rather than vanity perplexity alone.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">05</span> Shipping it</h2>
+                <p>Tini is published on HuggingFace at <strong>jayptl-rq/tini</strong> under Apache 2.0 — model card,
+                dataset references, and deployment configs included. Vini stays closer to home by design: it's the
+                living brain of my self-hosted ecosystem, wired into Ollama-based local inference, n8n workflows with
+                MCP connectors for tool calls, and Qdrant vector storage for retrieval over my own corpora. Research
+                that never runs daily is just a notebook graveyard — Vini runs daily.</p>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">06</span> What it proves</h2>
+                <ul>
+                    <li>ML engineering beyond API consumption: tokenizers, training loops, evals, quantization-aware
+                        architecture choices — owned end to end.</li>
+                    <li>Open-source contribution with real hygiene: license, docs, reproducibility artifacts.</li>
+                    <li>Systems thinking across the full AI stack — training, serving (FastAPI/Hono), orchestration
+                        (n8n + MCP), and retrieval (Qdrant/Chroma).</li>
+                    <li>Judgment about trade-offs: knowing when 1.58-bit ternary weights beat a 70B parameter cloud
+                        bill.</li>
+                </ul>
+            </section>
+
+            <section class="case-section">
+                <h2><span class="case-section-no gradient-text">07</span> What I learned</h2>
+                <p>Data quality beats architecture cleverness more often than Twitter admits. Evaluation is the actual
+                product — a model without a benchmark you trust is a vibe. And there's something clarifying about
+                hardware limits: when your model has to fit on a board the size of a credit card, every design choice
+                becomes honest.</p>
+            </section>
+        </article>
+
+        <nav class="case-next" aria-label="More projects">
+            <a href="/projects" class="card-link card-link-primary">Back to all projects →</a>
+        </nav>
+    </main>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+</body>
+
+</html>

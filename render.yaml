@@ -1,78 +1,30 @@
+# Render blueprint for jayptl.me
+#
+# Served by scripts/server.js (Node) instead of a static site so the
+# agent-facing behaviors work in production:
+#   - Accept: text/markdown content negotiation with Vary: Accept
+#     (acceptmarkdown.com)
+#   - JSON error responses for /api/* and JSON-preferring clients
+#   - /api/health liveness probe (used as the Render health check)
+# Clean URLs, security headers, and cache policy previously declared in
+# static-host config are now implemented in the server itself.
+#
+# Note: switching an existing Render static service to this blueprint
+# requires re-creating the service in the Render dashboard (static sites
+# cannot be converted in place).
 services:
   - type: web
     name: jayptl-portfolio
-    env: static
+    runtime: node
     buildCommand: bun install && bun run build
-    staticPublishPath: ./dist
+    startCommand: node scripts/server.js
+    healthCheckPath: /api/health
     pullRequestPreviewsEnabled: true
-    
-    # Error page configuration
-    errorDocument: /pages/404.html
-    serverErrorDocument: /pages/500.html
-    
-    headers:
-      - path: /*
-        name: X-Frame-Options
-        value: DENY
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-      - path: /*
-        name: X-XSS-Protection
-        value: 1; mode=block
-      - path: /*
-        name: Referrer-Policy
-        value: strict-origin-when-cross-origin
-      - path: /*
-        name: Permissions-Policy
-        value: geolocation=(), microphone=(), camera=()
-      - path: /*
-        name: Strict-Transport-Security
-        value: max-age=31536000; includeSubDomains; preload
-      
-      # Cache control for static assets
-      - path: /assets/*
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
-      - path: /css/*
-        name: Cache-Control
-        value: public, max-age=2592000
-      - path: /js/*
-        name: Cache-Control
-        value: public, max-age=2592000
-    
-    routes:
-      - type: rewrite
-        source: /about
-        destination: /pages/about.html
-      - type: rewrite
-        source: /privacy
-        destination: /pages/privacy.html
-      - type: rewrite
-        source: /design-system
-        destination: /pages/design-system.html
-      - type: redirect
-        source: /about.html
-        destination: /about
-      - type: redirect
-        source: /privacy.html
-        destination: /privacy
-      - type: redirect
-        source: /design-system.html
-        destination: /design-system
-      # Prevent direct access to /pages/* paths
-      - type: redirect
-        source: /pages/about.html
-        destination: /about
-      - type: redirect
-        source: /pages/privacy.html
-        destination: /privacy
-      - type: redirect
-        source: /pages/design-system.html
-        destination: /design-system
-    
+
     envVars:
       - key: NODE_VERSION
-        value: 18
+        value: 20
       - key: BUN_VERSION
         value: 1.0.0
+      - key: NODE_ENV
+        value: production

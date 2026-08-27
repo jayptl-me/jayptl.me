@@ -1,0 +1,225 @@
+/* ==========================================================================
+   CASE STUDY PAGES (/projects/<slug>)
+   Uses existing design tokens + theme duality. No new palette.
+   ========================================================================== */
+
+.case-study-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: calc(var(--space-24) + var(--space-8)) var(--space-6) var(--space-16);
+    font-family: var(--font-body);
+    color: var(--theme-text);
+}
+
+/* ---- Breadcrumb ----------------------------------------------------------- */
+.breadcrumb {
+    margin-bottom: var(--space-8);
+}
+
+.breadcrumb a {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--theme-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.breadcrumb a:hover {
+    color: var(--theme-primary);
+}
+
+.breadcrumb a:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--rounded-xs);
+}
+
+/* ---- Hero ------------------------------------------------------------------ */
+.page-hero-kicker {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 var(--space-3);
+}
+
+.case-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.05;
+    margin: 0 0 var(--space-4);
+}
+
+.case-hero-tagline {
+    font-size: var(--text-lg);
+    line-height: 1.65;
+    color: var(--theme-text-secondary);
+    max-width: 62ch;
+    margin: 0 0 var(--space-6);
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+/* ---- TL;DR card ------------------------------------------------------------- */
+.tldr-card {
+    background: var(--theme-surface-bg);
+    border: var(--theme-surface-border);
+    border-radius: var(--rounded-xl);
+    box-shadow: var(--theme-surface-shadow);
+    backdrop-filter: blur(var(--theme-surface-blur));
+    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
+    padding: var(--space-6);
+    margin: var(--space-10) 0;
+}
+
+.tldr-card h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-4);
+}
+
+.tldr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+}
+
+.tldr-grid dt {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--theme-primary);
+    margin-bottom: var(--space-1);
+}
+
+.tldr-grid dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--theme-text-secondary);
+}
+
+/* ---- Hero media placeholder --------------------------------------------------- */
+.case-figure {
+    margin: 0 0 var(--space-10);
+}
+
+.showcase-image-placeholder.case-hero-media {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--theme-surface-border);
+    border-radius: var(--rounded-xl);
+    background: var(--theme-gradient-glow);
+}
+
+.case-figure figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--theme-text-muted);
+    text-align: center;
+}
+
+/* ---- Body sections -------------------------------------------------------------- */
+.case-section {
+    margin-bottom: var(--space-12);
+}
+
+.case-section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 1.75rem);
+    line-height: 1.25;
+    margin: 0 0 var(--space-5);
+}
+
+.case-section-no {
+    font-family: var(--font-display);
+    margin-right: var(--space-3);
+}
+
+.case-body p {
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: var(--theme-text);
+    margin: 0 0 var(--space-4);
+    max-width: 68ch;
+}
+
+.case-body ul {
+    margin: 0 0 var(--space-4);
+    padding-left: var(--space-5);
+}
+
+.case-body li {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    margin-bottom: var(--space-3);
+    max-width: 68ch;
+}
+
+.case-body li::marker {
+    color: var(--theme-primary);
+}
+
+.case-body strong {
+    color: var(--theme-text);
+    font-weight: 700;
+}
+
+.case-body code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--theme-surface-tertiary);
+    border: var(--theme-surface-border);
+    border-radius: var(--rounded-sm);
+    padding: 0.1em 0.4em;
+}
+
+.case-body pre {
+    background: var(--theme-surface-tertiary);
+    border: var(--theme-surface-border);
+    border-radius: var(--rounded-lg);
+    padding: var(--space-4);
+    overflow-x: auto;
+    margin: 0 0 var(--space-5);
+}
+
+.case-body pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}
+
+/* ---- Stakeholder list ------------------------------------------------------------ */
+.stakeholder-list li {
+    margin-bottom: var(--space-4);
+}
+
+/* ---- Next link --------------------------------------------------------------------- */
+.case-next {
+    margin-top: var(--space-16);
+    text-align: center;
+}
+
+/* ---- Responsive ---------------------------------------------------------------------- */
+@media (max-width: 640px) {
+    .case-study-page {
+        padding-inline: var(--space-4);
+    }
+
+    .tldr-grid {
+        grid-template-columns: 1fr;
+    }
+}

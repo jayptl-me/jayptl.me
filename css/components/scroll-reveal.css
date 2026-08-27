@@ -1081,7 +1081,8 @@ html[data-theme="dark"] .reveal-stepper.progress-100::after {
     0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) !important;
 }
 
-/* Force active stepper dot to be blue regardless of theme */
+/* Active stepper dot - follows theme accent (blue in light, turquoise in dark
+   via the dark-mode primary remap in variables.css) */
 .reveal-stepper .stepper-dot.active {
   width: 16px !important;
   /* Use design system primary variable; fall back to direct rgba values if variable is not available */

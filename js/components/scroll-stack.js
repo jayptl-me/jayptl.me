@@ -12,7 +12,9 @@
  *   rotateZ, scale, and opacity. Zero dynamic CSS filter recalculations and zero layout thrashing.
  * - Geometry Caching: Section scroll boundaries and container metrics are cached on resize and
  *   viewport intersection, ensuring zero DOM measurement overhead on scroll ticks.
- * - Mobile Deck Stack: Native CSS sticky cascading with throttled telemetry updates and audio ticks.
+ * - Mobile Pinned Scale Stack: window-scroll sticky pins just under the HUD
+ *   with a per-card stagger; earlier cards scale toward 0.85 over the next
+ *   10vh via a rAF throttle. Transform-only, full copy always visible.
  *
  * @file components/scroll-stack.js
  * @author Jay Patel
@@ -43,6 +45,11 @@
             this.cachedViewportHeight = 0;
             this.cachedTotalScrollable = 1;
             this.cachedTrackWidth = 1000;
+
+            // Mobile pinned-stack cache (layout tops are scroll-stable)
+            this.mobileTrackTop = 0;
+            this.mobileCardOffsets = [];
+            this.mobileTickQueued = false;
 
             // Damped Animation State (Lerp)
             this.targetFocus = 0;
@@ -144,6 +151,15 @@
             this.cachedViewportHeight = window.innerHeight;
             this.cachedTotalScrollable = Math.max(1, this.cachedContainerHeight - this.cachedViewportHeight);
             this.cachedTrackWidth = this.track ? this.track.offsetWidth : 1000;
+
+            // Cache mobile layout tops while the track itself is untransformed,
+            // so pin-start math stays correct at any scroll position.
+            const isMobile = window.innerWidth <= this.breakpoint && !this.reducedMotion;
+            if (isMobile && this.track) {
+                const trackRect = this.track.getBoundingClientRect();
+                this.mobileTrackTop = trackRect.top + scrollY;
+                this.mobileCardOffsets = this.cards.map((card) => card.offsetTop);
+            }
         }
 
         checkMode() {
@@ -172,7 +188,7 @@
                     window.requestAnimationFrame(this.renderLoop);
                 }
             } else if (!this.reducedMotion) {
-                this.updateMobileTelemetry();
+                this.queueMobileStack();
             }
         }
 
@@ -262,18 +278,49 @@
             });
         }
 
-        updateMobileTelemetry() {
+        queueMobileStack() {
+            if (this.mobileTickQueued) return;
+            this.mobileTickQueued = true;
+            window.requestAnimationFrame(() => {
+                this.mobileTickQueued = false;
+                this.renderMobileStack();
+            });
+        }
+
+        renderMobileStack() {
             if (this.cards.length === 0) return;
 
-            const headerOffset = 72;
+            const viewportH = window.innerHeight || this.cachedViewportHeight || 700;
+            const scrollY = window.scrollY || window.pageYOffset;
+            // Pin line sits just under the sticky HUD header with a 10px
+            // per-card stagger (mirrors CSS). Scale settles over the next 10%
+            // of viewport travel; earlier cards shrink toward 0.85 while the
+            // last card stays full for readability.
+            const pinLine = 84;
+            const settleSpan = Math.max(1, viewportH * 0.1);
+            const staggerStep = 10;
+            const floorScale = 0.85;
+            const scaleStep = 0.03;
+
             let activeIdx = 0;
 
             this.cards.forEach((card, idx) => {
-                const rect = card.getBoundingClientRect();
-                const stickyTop = headerOffset + (idx * 18);
-                if (rect.top <= stickyTop + 14) {
-                    activeIdx = idx;
-                }
+                const layoutTop = (this.mobileCardOffsets[idx] || card.offsetTop);
+                const pinTop = pinLine + (idx * staggerStep);
+                const pinStart = (this.mobileTrackTop || 0) + layoutTop - pinTop;
+                const raw = (scrollY - pinStart) / settleSpan;
+                const progress = raw < 0 ? 0 : (raw > 1 ? 1 : raw);
+
+                const isLast = idx === this.cards.length - 1;
+                const restingScale = isLast ? 1 : Math.min(0.97, floorScale + (idx * scaleStep));
+                const scale = 1 - (progress * (1 - restingScale));
+
+                // Compositor-only: scale pinned cards, never clip copy or blur text.
+                card.style.transform = `translate3d(0, 0, 0) scale(${scale.toFixed(4)})`;
+                card.style.opacity = '1';
+                card.style.filter = 'none';
+
+                if (scrollY + 8 >= pinStart) activeIdx = idx;
             });
 
             if (activeIdx !== this.lastActiveIndex) {
@@ -329,10 +376,10 @@
                     behavior: 'smooth'
                 });
             } else if (this.cards[targetIndex]) {
-                const card = this.cards[targetIndex];
-                const stickyTop = 72 + (targetIndex * 18);
-                const cardAbsoluteTop = card.getBoundingClientRect().top + window.scrollY;
-                const targetY = Math.max(0, cardAbsoluteTop - stickyTop);
+                const pinTop = 84 + (targetIndex * 10);
+                const layoutTop = (this.mobileCardOffsets[targetIndex] || this.cards[targetIndex].offsetTop);
+                const cardAbsoluteTop = (this.mobileTrackTop || 0) + layoutTop;
+                const targetY = Math.max(0, cardAbsoluteTop - pinTop);
 
                 window.scrollTo({
                     top: targetY,

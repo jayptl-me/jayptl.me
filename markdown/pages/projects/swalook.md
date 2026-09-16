@@ -17,13 +17,12 @@ Jay executed the complete architectural overhaul — five repositories orchestra
 ## Designing the overhaul
 
 - **Turborepo monorepo over repo sprawl** — five products sharing types, components, and release discipline.
-- **Tailored UI + Recharts for the merchant experience** — dense information design that stays legible on a 13-inch screen at a busy front desk.
+- **Shadcn UI + Recharts for the merchant experience** — dense information design that stays legible on a 13-inch screen at a busy front desk.
 - **A consumer app that earns its install** — Flutter with Provider, Dio, video playback, and ML Kit face-mesh detection overlaying hairstyle previews in AR.
 
 ## Engineering it
 
-- **Frontend** — Next.js 16 App Router in TypeScript with TanStack patterns, bespoke UI componentry, Recharts analytics.
-
+- **Frontend** — Next.js 16 App Router in TypeScript with TanStack patterns, Shadcn UI, Recharts analytics.
 - **Backend** — Bun + Hono + TypeScript, migrated from MySQL to PostgreSQL on Aiven with Drizzle ORM, Redis caching (ioredis) on hot reads, and BullMQ job queues. 35+ REST endpoints documented end-to-end with OpenAPI/Scalar.
 - **Multi-tenancy** — super-admin console with role-based access control across tenants.
 - **Deployments** — managed across Vercel and Render, tuned for high-throughput concurrent merchant traffic.

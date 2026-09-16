@@ -1,0 +1,17 @@
+# Security Policy for jayptl.me
+# Based on RFC 9116 (https://www.rfc-editor.org/rfc/rfc9116.html)
+
+Contact: mailto:security@jayptl.me
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://jayptl.me/.well-known/security.txt
+
+# Acknowledgments
+Acknowledgments: https://jayptl.me/security/acknowledgments
+
+# Policy
+Policy: https://jayptl.me/security/disclosure-policy
+
+# Encryption
+# Add your PGP key URL if available
+# Encryption: https://jayptl.me/pgp-key.txt

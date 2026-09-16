@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Design System — jayptl.me (Engineer Notebook)</title>
+    <link rel="canonical" href="https://jayptl.me/design-system" />
+    <meta name="description"
+        content="Design system for jayptl.me — Engineer Notebook: Space Grotesk, IBM Plex, Architects Daughter, doodle-led with HUD accents.">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jayptl.me/design-system">
+    <meta property="og:title" content="Design System — jayptl.me">
+    <meta property="og:description"
+        content="The tokens, type, doodle + HUD vocabulary behind the jayptl.me redesign.">
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Design System — jayptl.me">
+    <meta name="twitter:description"
+        content="The tokens, type, doodle + HUD vocabulary behind the jayptl.me redesign.">
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png">
+
+    <!-- Main stylesheet (fonts self-hosted via main.css -> fonts-local.css) -->
+    <link rel="stylesheet" href="/css/main.css">
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
+    <script src="/js/theme-detection.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+
+    <style>
+        /* Design-system page chrome (components live in css/main.css) */
+        .ds-page {
+            padding: calc(var(--space-16) + var(--space-10)) var(--space-4) var(--space-16);
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .ds-hero {
+            text-align: center;
+            margin-bottom: var(--space-14, var(--space-12));
+        }
+        .ds-hero .hud-label {
+            justify-content: center;
+            margin-bottom: var(--space-3);
+        }
+        .ds-hero .hud-label::before {
+            display: none;
+        }
+        .ds-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            font-weight: 600;
+            line-height: 1.08;
+            letter-spacing: -0.015em;
+            margin: 0 0 var(--space-3);
+        }
+        .ds-hero .lead {
+            max-width: 640px;
+            margin: 0 auto;
+            color: var(--theme-text-secondary);
+        }
+
+        .ds-section {
+            margin-bottom: var(--space-16);
+            padding: var(--space-8);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--rounded-2xl);
+            background: var(--theme-surface);
+            box-shadow: var(--theme-surface-shadow-sm);
+        }
+        .ds-section > .section-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 var(--space-2);
+        }
+        .ds-section > .section-lede {
+            color: var(--theme-text-secondary);
+            margin: 0 0 var(--space-6);
+            max-width: 70ch;
+        }
+        .ds-subhead {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--hud-label);
+            margin: var(--space-8) 0 var(--space-3);
+        }
+        .ds-subhead:first-of-type {
+            margin-top: 0;
+        }
+
+        .ds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-4);
+        }
+        .ds-tile {
+            padding: var(--space-5);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--rounded-xl);
+            background: var(--theme-bg-secondary);
+        }
+        .ds-tile h4 {
+            font-family: var(--font-display);
+            font-size: 1.0625rem;
+            font-weight: 600;
+            margin: 0 0 var(--space-2);
+        }
+        .ds-tile p {
+            font-size: var(--text-sm);
+            color: var(--theme-text-secondary);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .ds-tile .token {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--hud-label);
+            display: block;
+            margin-top: var(--space-2);
+        }
+
+        /* Face samples */
+        .face-display {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        .face-body {
+            font-family: var(--font-body);
+            font-size: 1.0625rem;
+            line-height: 1.6;
+        }
+        .face-hand {
+            font-family: var(--font-hand);
+            font-size: 1.375rem;
+            color: var(--ink-hand);
+        }
+        .face-mono {
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+        }
+
+        /* Color swatch rows */
+        .swatch-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: var(--space-4);
+        }
+        .swatch {
+            width: 88px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--theme-border);
+        }
+        .swatch .chip {
+            height: 48px;
+            display: block;
+        }
+        .swatch .meta {
+            padding: 6px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--theme-text-secondary);
+            background: var(--theme-surface);
+        }
+        .swatch .meta b {
+            display: block;
+            color: var(--theme-text);
+            font-weight: 600;
+        }
+
+        /* Sprite gallery */
+        .sprite-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-5);
+            align-items: center;
+        }
+        .sprite-gallery .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--doodle-line);
+        }
+        .sprite-gallery .item svg {
+            width: 44px;
+            height: 36px;
+        }
+        .sprite-gallery .item span {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--theme-text-tertiary);
+        }
+
+        /* Live sticker row */
+        .sticker-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-6);
+            align-items: flex-start;
+            padding: var(--space-4) 0;
+        }
+
+        .fig-demo .frame {
+            aspect-ratio: 16 / 7;
+            border: 1px dashed var(--theme-border-strong);
+            border-radius: var(--rounded-lg);
+            background: var(--theme-bg-secondary);
+            display: grid;
+            place-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--theme-text-tertiary);
+        }
+
+        @media (max-width: 640px) {
+            .ds-page {
+                padding: calc(var(--space-16) + var(--space-6)) var(--space-4) var(--space-10);
+            }
+            .ds-section {
+                padding: var(--space-5);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Shared doodle sprite (inlined canonical copy of assets/doodle-sprite.svg; no fetch) -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false" id="doodleSprite">
+        <defs>
+            <symbol id="d-arrow" viewBox="0 0 64 24"><title>Hand-drawn arrow</title><path d="M3 13 C 18 13 30 12 44 8 M40 5 c 4 3 8 5 14 4 M40 11 c 5 1 9 2 14 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-underline" viewBox="0 0 120 14"><title>Hand-drawn underline</title><path d="M4 9 C 20 4 34 6 48 9 C 62 12 74 6 88 8 C 100 10 110 8 116 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-circle" viewBox="0 0 64 48"><title>Hand-drawn circle</title><path d="M40 5 C 54 8 60 18 58 28 C 56 38 45 44 32 43 C 19 42 8 35 8 24 C 8 14 20 7 32 6 C 40 5 46 7 50 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-bracket-l" viewBox="0 0 24 48"><title>Hand-drawn left bracket</title><path d="M18 3 C 8 4 4 10 4 16 L4 32 C 4 38 8 44 18 45" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-bracket-r" viewBox="0 0 24 48"><title>Hand-drawn right bracket</title><path d="M6 3 C 16 4 20 10 20 16 L20 32 C 20 38 16 44 6 45" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-sparkle" viewBox="0 0 32 32"><title>Hand-drawn sparkle</title><path d="M16 3 L18 13 L28 11 L21 17 L27 25 L17 21 L13 30 L11 19 L3 20 L10 14 L5 6 L15 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-tape" viewBox="0 0 96 24"><title>Hand-drawn washi tape</title><path d="M8 22 L88 22 C 90 16 90 8 88 2 L8 2 C 6 8 6 16 8 22 Z M12 4 L84 4 M12 20 L84 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.7" pathLength="1"/></symbol>
+            <symbol id="d-scissors" viewBox="0 0 96 24"><title>Hand-drawn scissors cut line</title><circle cx="18" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><circle cx="18" cy="17" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><path d="M22 12 L44 12 M46 6 L44 12 L46 18 M46 6 c 10 0 20 0 30 6 M46 18 c 10 0 20 0 30 -6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-asterisk" viewBox="0 0 24 24"><title>Hand-drawn asterisk</title><path d="M12 3 L12 21 M4 7 L20 17 M20 7 L4 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
+        </defs>
+    </svg>
+    <main class="ds-page">
+        <!-- Header -->
+        <header class="ds-hero">
+            <p class="hud-label">Design System</p>
+            <h1>Engineer Notebook</h1>
+            <p class="lead">The single source of truth for the jayptl.me redesign: four type voices, one handwriting,
+                a doodle-led surface with HUD accents, and two themes that never mix. Everything here is
+                hand-written vanilla HTML/CSS/JS.</p>
+        </header>
+
+        <!-- 01 · Type -->
+        <section class="ds-section" aria-labelledby="ds-type">
+            <h2 class="section-title" id="ds-type">Type</h2>
+            <p class="section-lede">Stack A — "Engineer Notebook" (dossier 04 §1A). Drafting-desk DNA across all
+                four roles. Handwriting is never body text; mono carries every number.</p>
+
+            <div class="ds-grid">
+                <div class="ds-tile">
+                    <h4>Display — Space Grotesk</h4>
+                    <p class="face-display">Every suit I've built.</p>
+                    <p>Headings, section titles, case-study heroes. Weights 500/600/700; tight tracking at display
+                        sizes.</p>
+                    <span class="token">--font-display</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Body — IBM Plex Sans</h4>
+                    <p class="face-body">The short version: I build it, design it, plan it, film it, and make the
+                        launch trailer.</p>
+                    <p>Open apertures hold up on translucent surfaces. 65ch cap; 16–18px floors.</p>
+                    <span class="token">--font-body</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Hand — Architects Daughter</h4>
+                    <p class="face-hand">this is where the work happens</p>
+                    <p>The one casual voice. Annotations only: captions, margin notes, sticker labels. Minimum 16px;
+                        dark theme uses near-black-teal ink for 4.5:1 over glass.</p>
+                    <span class="token">--font-hand · --ink-hand</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>HUD — IBM Plex Mono</h4>
+                    <p class="face-mono">SITE.STATUS: 30+ shipped · v2.0 · 1st</p>
+                    <p>Numbers, micro-labels, FIG captions, readouts. Tabular figures on; uppercase labels track
+                        +0.12em+.</p>
+                    <span class="token">--font-mono · .hud-readout</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02 · Color law -->
+        <section class="ds-section" aria-labelledby="ds-color">
+            <h2 class="section-title" id="ds-color">Color law</h2>
+            <p class="section-lede">Two committed ramps, one per theme, never mixed. Blue is light-only; turquoise is
+                dark-only. No emoji, one accent per surface. Gradients stay inside the ramp — icon fills, ambient
+                glows, progress fills — never gradient text, never competing hues.</p>
+
+            <p class="ds-subhead">Light theme — skeuomorphic blue ramp</p>
+            <div class="swatch-row">
+                <div class="swatch"><span class="chip" style="background:#bbdefb"></span><span class="meta"><b>100</b>#bbdefb</span></div>
+                <div class="swatch"><span class="chip" style="background:#90caf9"></span><span class="meta"><b>200</b>#90caf9</span></div>
+                <div class="swatch"><span class="chip" style="background:#64b5f6"></span><span class="meta"><b>300</b>#64b5f6</span></div>
+                <div class="swatch"><span class="chip" style="background:#2196f3"></span><span class="meta"><b>500</b>#2196f3</span></div>
+                <div class="swatch"><span class="chip" style="background:#1976d2"></span><span class="meta"><b>600</b>#1976d2</span></div>
+                <div class="swatch"><span class="chip" style="background:#1565c0"></span><span class="meta"><b>700</b>#1565c0</span></div>
+            </div>
+
+            <p class="ds-subhead">Dark theme — turquoise glass ramp</p>
+            <div class="swatch-row">
+                <div class="swatch"><span class="chip" style="background:#26c9d8"></span><span class="meta"><b>400</b>#26c9d8</span></div>
+                <div class="swatch"><span class="chip" style="background:#00b8cc"></span><span class="meta"><b>500</b>#00b8cc</span></div>
+                <div class="swatch"><span class="chip" style="background:#009fb3"></span><span class="meta"><b>600</b>#009fb3</span></div>
+                <div class="swatch"><span class="chip" style="background:#008190"></span><span class="meta"><b>700</b>#008190</span></div>
+                <div class="swatch"><span class="chip" style="background:#123b42"></span><span class="meta"><b>ink</b>#123b42</span></div>
+            </div>
+
+            <p class="ds-subhead">Working tokens</p>
+            <div class="ds-grid">
+                <div class="ds-tile"><h4>Doodle ink</h4><p>Handwriting reads in neutral or dark-teal ink; lines use the
+                    accent at reduced alpha.</p><span class="token">--doodle-line · --marker-band</span></div>
+                <div class="ds-tile"><h4>HUD accents</h4><p>Labels and readouts always resolve to the committed ramp
+                    (blue light / turquoise dark).</p><span class="token">--hud-label · --hud-bracket</span></div>
+                <div class="ds-tile"><h4>Paper grid</h4><p>Optional flat ground, alpha baked to 8% max so it never
+                    fights text contrast.</p><span class="token">--paper-grid-line · .paper-grid</span></div>
+                <div class="ds-tile"><h4>Glow</h4><p>Ambient radial only, one focal element per viewport.</p><span class="token">--glow-focal</span></div>
+            </div>
+        </section>
+
+        <!-- 03 · Doodle system -->
+        <section class="ds-section" aria-labelledby="ds-doodle">
+            <h2 class="section-title" id="ds-doodle">Doodle system</h2>
+            <p class="section-lede">Hand-drawn marks annotate content — they never replace layout. Symbols live in
+                <code>assets/doodle-sprite.svg</code> and are placed with <code>&lt;svg class="doodle"&gt;&lt;use
+                    href="#d-…"/&gt;&lt;/svg&gt;</code>; strokes inherit currentColor.</p>
+
+            <p class="ds-subhead">Sprite vocabulary</p>
+            <div class="sprite-gallery">
+                <span class="item"><svg><use href="#d-arrow"/></svg><span>d-arrow</span></span>
+                <span class="item"><svg><use href="#d-underline"/></svg><span>d-underline</span></span>
+                <span class="item"><svg><use href="#d-circle"/></svg><span>d-circle</span></span>
+                <span class="item"><svg><use href="#d-bracket-l"/></svg><span>d-bracket-l</span></span>
+                <span class="item"><svg><use href="#d-bracket-r"/></svg><span>d-bracket-r</span></span>
+                <span class="item"><svg><use href="#d-sparkle"/></svg><span>d-sparkle</span></span>
+                <span class="item"><svg><use href="#d-tape"/></svg><span>d-tape</span></span>
+                <span class="item"><svg><use href="#d-scissors"/></svg><span>d-scissors</span></span>
+                <span class="item"><svg><use href="#d-asterisk"/></svg><span>d-asterisk</span></span>
+            </div>
+
+            <p class="ds-subhead">Highlighter band</p>
+            <p class="section-lede" style="margin-bottom:0">A flat, hard-edged band reads as
+                <mark class="marker-highlight">hand-annotated emphasis</mark> without a gradient — pair with the
+                underline doodle under a heading:</p>
+            <div class="section-head" style="margin-top:var(--space-5)">
+                <span class="section-no">01</span><h2>Selected work</h2>
+                <svg class="doodle" aria-hidden="true"><use href="#d-underline"/></svg>
+            </div>
+        </section>
+
+        <!-- 04 · HUD system -->
+        <section class="ds-section" aria-labelledby="ds-hud">
+            <h2 class="section-title" id="ds-hud">HUD accents</h2>
+            <p class="section-lede">Instrument-panel grammar only where there is real data: micro-labels, tabular
+                readouts, corner frames, FIG captions. Fake telemetry is banned — every readout traces to something
+                true.</p>
+
+            <div class="ds-grid">
+                <div class="ds-tile">
+                    <h4>Micro-label</h4>
+                    <p class="hud-label">01 · About</p>
+                    <p>Mono, uppercase, tracked. The dash is a pseudo-element.</p>
+                    <span class="token">.hud-label</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Metric chips</h4>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0">
+                        <div class="metric"><b>30+</b><span>products shipped</span></div>
+                        <div class="metric"><b>1st</b><span>CHARUSAT FinTech</span></div>
+                    </div>
+                    <p>Tabular numerals via <code>font-variant-numeric</code>.</p>
+                    <span class="token">.metric</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>FIG captions</h4>
+                    <p class="fig-caption"><b>FIG 1</b> — patient, partner, hero, and admin views</p>
+                    <p>Spec-document grammar borrowed from engineering drawings.</p>
+                    <span class="token">.fig-caption</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Corner frame</h4>
+                    <div class="corner-frame scanlines" style="padding:14px;height:72px;display:grid;place-items:center">
+                        <span class="hud-readout" style="font-size:.75rem">SYS.LOCK: ACQUIRED</span>
+                    </div>
+                    <p>Bracket-only border via CSS mask; scanlines stay panel-sized.</p>
+                    <span class="token">.corner-frame .scanlines</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 · Stickers -->
+        <section class="ds-section" aria-labelledby="ds-sticker">
+            <h2 class="section-title" id="ds-sticker">Stickers</h2>
+            <p class="section-lede">Rotated chips with counter-rotated handwritten captions. Rotation is capped at
+                ±12deg; on mobile they collapse into an inline strip. The homepage footer carries the Reset-stickers
+                toy.</p>
+            <div class="sticker-row">
+                <div class="sticker" style="--r:-4deg">
+                    <span class="sticker-art"><svg class="doodle" aria-hidden="true"><use href="#d-sparkle"/></svg></span>
+                    <span class="sticker-caption">this is where the work happens</span>
+                </div>
+                <div class="sticker" style="--r:5deg">
+                    <span class="sticker-art"><svg class="doodle" aria-hidden="true"><use href="#d-asterisk"/></svg></span>
+                    <span class="sticker-caption">homelab hums, cloud bill doesn't</span>
+                </div>
+                <div class="sticker" style="--r:-2deg">
+                    <span class="sticker-art"><svg class="doodle" aria-hidden="true"><use href="#d-tape"/></svg></span>
+                    <span class="sticker-caption">oh, I also train small language models</span>
+                </div>
+            </div>
+            <p class="section-lede" style="margin-bottom:0">One sticker per row may carry a slow idle bob; the rest sit
+                still. <code>.sticker--idle</code> gates on
+                <code>prefers-reduced-motion: no-preference</code>.</p>
+        </section>
+
+        <!-- 06 · Components -->
+        <section class="ds-section" aria-labelledby="ds-components">
+            <h2 class="section-title" id="ds-components">Components</h2>
+            <p class="section-lede">Buttons, cards, tag runs, and link rows inherit the existing system components and
+                the new redesign layer. Tags and links use mono chips and dot-separated rows.</p>
+
+            <div class="ds-grid">
+                <div class="ds-tile">
+                    <h4>Buttons</h4>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0">
+                        <button class="btn btn-primary" type="button">Primary</button>
+                        <button class="btn btn-outline" type="button">Outline</button>
+                        <button class="btn btn-ghost" type="button">Ghost</button>
+                    </div>
+                    <span class="token">.btn .btn-primary</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Tag run</h4>
+                    <ul class="tag-row" style="margin:10px 0">
+                        <li>Flutter ×3</li><li>Next.js 16</li><li>Bun + Hono</li>
+                    </ul>
+                    <span class="token">.tag-row</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Links row</h4>
+                    <ul class="links-row" style="margin:10px 0">
+                        <li><a href="/">Case study</a></li><li><a href="/">Live</a></li><li><a href="/">Source</a></li>
+                    </ul>
+                    <span class="token">.links-row</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Hand note</h4>
+                    <p class="hand hand--md" style="margin:10px 0">five lanes, one garage</p>
+                    <span class="token">.hand .hand--md</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07 · Motion law -->
+        <section class="ds-section" aria-labelledby="ds-motion">
+            <h2 class="section-title" id="ds-motion">Motion law</h2>
+            <p class="section-lede">Ambient idle loops only: one gentle loop per viewport, everything static by
+                default under reduced motion. Nothing flashes faster than three times per second (WCAG 2.3.1).</p>
+            <div class="ds-grid">
+                <div class="ds-tile"><h4>Idle</h4><p>Slow bob on a single sticker, a breathing corner-frame glow on
+                    one focal panel.</p><span class="token">.sticker--idle · .corner-frame--focal</span></div>
+                <div class="ds-tile"><h4>Reduced motion</h4><p>Blanket duration collapse plus per-effect static
+                    fallbacks: doodles render fully drawn, sweeps freeze, type is never animated in.</p><span class="token">@media (prefers-reduced-motion: reduce)</span></div>
+                <div class="ds-tile"><h4>Retired</h4><p>Gradient text washes, inset/neumorphism shadows, full-page CRT
+                    flicker, carousel auto-rotation, and emoji are not part of this system.</p><span class="token">law: no gradient text · no emoji</span></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer" style="border-radius:var(--rounded-2xl)">
+            <div class="site-footer-inner" style="padding: var(--space-6)">
+                <p class="site-footer-signoff hand hand--md">Hand-written HTML/CSS/JS — no frameworks. Analytics only with your consent.</p>
+                <p class="site-footer-meta hud-readout"><a href="/">Portfolio</a> · <a href="/projects">Projects</a> ·
+                    <a href="/about">About</a></p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/doodle.js"></script>
+    <script>
+        // Ensure the injected navbar is visible immediately on this page
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                var navbar = document.getElementById('glassNav');
+                if (navbar) navbar.classList.add('visible');
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+/* ==========================================================================
+   DOODLE SYSTEM (Gate P redesign — doodle-led)
+   Hand-drawn annotations via the committed SVG sprite (assets/doodle-sprite.svg).
+   One handwriting voice (Architects Daughter). Doodles annotate content; they
+   never replace layout (dossier 02 anti-pattern 1). Zero gradients.
+   ========================================================================== */
+
+/* ---- Base annotation ------------------------------------------------ */
+
+/* Sprite symbol usage: <svg class="doodle"><use href="#d-arrow"/></svg> */
+.doodle {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  color: var(--doodle-line);
+  pointer-events: none;
+  flex: none;
+}
+
+/* A hand-drawn stroke wrapped around content (heading, stat, card).
+   Place inside a relatively-positioned parent. */
+.doodle-annotate {
+  position: relative;
+  display: inline-block;
+}
+
+.doodle-annotate .doodle {
+  position: absolute;
+  width: auto;
+  height: auto;
+}
+
+/* Variants: which corner / edge the annotation sits on */
+.doodle-annotate--under .doodle { left: 0; right: 0; bottom: -0.3em; width: 100%; height: 0.32em; }
+.doodle-annotate--over .doodle { left: -0.4em; top: -0.4em; width: calc(100% + 0.8em); height: calc(100% + 0.8em); }
+.doodle-annotate--left .doodle { left: -1.1em; top: 50%; transform: translateY(-50%); height: 1.6em; }
+.doodle-annotate--right .doodle { right: -1.1em; top: 50%; transform: translateY(-50%); height: 1.6em; }
+
+/* ---- Marker-highlight text band (flat fill, hard edges) ------------- */
+.marker-highlight {
+  background: var(--marker-band);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.08em 0.28em;
+  border-radius: 2px;
+  rotate: -0.6deg;
+}
+
+/* ---- Handwriting voice ---------------------------------------------- */
+.hand {
+  font-family: var(--font-hand);
+  color: var(--ink-hand);
+  line-height: 1.35;
+}
+/* Handwriting is decoration/info only — never body text (dossier 04 anti-pattern).
+   Floor sizes: annotations >=16px; informative captions >=18px. */
+.hand--sm { font-size: 1rem; }     /* 16px floor */
+.hand--md { font-size: 1.125rem; } /* 18px captions */
+.hand--lg { font-size: 1.375rem; }
+.hand--accent { color: var(--hud-label); }
+
+/* ---- Paper-grid ground (alpha baked into token; flat hairlines only) */
+.paper-grid {
+  background-image:
+    linear-gradient(var(--paper-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-grid-line) 1px, transparent 1px),
+    linear-gradient(var(--paper-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-grid-major) 1px, transparent 1px);
+  background-size:
+    var(--paper-grid-cell) var(--paper-grid-cell),
+    var(--paper-grid-cell) var(--paper-grid-cell),
+    calc(var(--paper-grid-cell) * var(--paper-grid-major-every)) calc(var(--paper-grid-cell) * var(--paper-grid-major-every)),
+    calc(var(--paper-grid-cell) * var(--paper-grid-major-every)) calc(var(--paper-grid-cell) * var(--paper-grid-major-every));
+}
+
+/* ---- Torn-paper edge (one per viewport max) ------------------------- */
+.torn-edge {
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% calc(100% - 10px),
+    96% calc(100% - 6px), 90% 100%, 83% calc(100% - 7px),
+    74% calc(100% - 2px), 65% 100%, 56% calc(100% - 8px),
+    48% calc(100% - 3px), 39% 100%, 30% calc(100% - 6px),
+    22% calc(100% - 2px), 13% 100%, 6% calc(100% - 7px), 0% calc(100% - 3px)
+  );
+}
+
+/* ---- Inlined sprite host (one per page, never fetched) ------------- */
+#doodleSprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---- Draw-on (scroll-triggered, reduced-motion collapsed) -----------
+   Every stroked shape carries pathLength="1" (doodle-sprite.svg, icons/*),
+   so dash math needs no measuring: dasharray:1 hides the stroke,
+   offset 1 -> 0 draws it. doodle.js only toggles .is-drawn on the host and
+   staggers children via --d. Static <svg class="doodle"><use> instances
+   stay fully drawn; only INLINE svg.doodle-draw / svg.icon-draw animate
+   (sprite <use> clones live in shadow DOM and can't be dash-animated). */
+.js .doodle-draw path,
+.js .doodle-draw circle,
+.js .doodle-draw ellipse,
+.js .doodle-draw line,
+.js .doodle-draw polyline,
+.js .doodle-draw polygon,
+.js .doodle-draw rect,
+.js .icon-draw path,
+.js .icon-draw circle,
+.js .icon-draw ellipse,
+.js .icon-draw line,
+.js .icon-draw polyline,
+.js .icon-draw polygon,
+.js .icon-draw rect {
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 700ms var(--ease-out) var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .doodle-draw:not(.is-drawn) path,
+  .js .doodle-draw:not(.is-drawn) circle,
+  .js .doodle-draw:not(.is-drawn) ellipse,
+  .js .doodle-draw:not(.is-drawn) line,
+  .js .doodle-draw:not(.is-drawn) polyline,
+  .js .doodle-draw:not(.is-drawn) polygon,
+  .js .doodle-draw:not(.is-drawn) rect,
+  .js .icon-draw:not(.is-drawn) path,
+  .js .icon-draw:not(.is-drawn) circle,
+  .js .icon-draw:not(.is-drawn) ellipse,
+  .js .icon-draw:not(.is-drawn) line,
+  .js .icon-draw:not(.is-drawn) polyline,
+  .js .icon-draw:not(.is-drawn) polygon,
+  .js .icon-draw:not(.is-drawn) rect {
+    stroke-dashoffset: 1;
+  }
+  .js .doodle-draw.is-drawn path,
+  .js .doodle-draw.is-drawn circle,
+  .js .doodle-draw.is-drawn ellipse,
+  .js .doodle-draw.is-drawn line,
+  .js .doodle-draw.is-drawn polyline,
+  .js .doodle-draw.is-drawn polygon,
+  .js .doodle-draw.is-drawn rect,
+  .js .icon-draw.is-drawn path,
+  .js .icon-draw.is-drawn circle,
+  .js .icon-draw.is-drawn ellipse,
+  .js .icon-draw.is-drawn line,
+  .js .icon-draw.is-drawn polyline,
+  .js .icon-draw.is-drawn polygon,
+  .js .icon-draw.is-drawn rect {
+    stroke-dashoffset: 0;
+  }
+}

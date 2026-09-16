@@ -1,0 +1,157 @@
+/* ==========================================================================
+   HUD SYSTEM (Gate P redesign — HUD accents)
+   Instrument-panel grammar only: mono micro-labels, tabular readouts,
+   corner-bracket focus, FIG captions, one static scanline panel, blueprint
+   ground. Restraint law: one idea per surface; glow is a spotlight, never
+   ambience (dossier 03 §4). All idle loops collapse under reduced motion.
+   ========================================================================== */
+
+/* ---- Mono micro-label ------------------------------------------------ */
+.hud-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hud-label);
+}
+.hud-label::before {
+  content: "";
+  width: 1.6em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+.hud-label--dim { color: var(--hud-label-dim); }
+
+/* ---- Readout (mono numbers; tabular) --------------------------------- */
+.hud-readout {
+  font-family: var(--font-mono);
+  color: var(--hud-readout);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Metric chip: value over unit (used in the Now rail) ------------- */
+.metric {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--theme-border);
+  border-radius: 12px;
+  background: var(--theme-surface-secondary);
+}
+.metric b {
+  font-family: var(--font-mono);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--theme-text);
+  font-variant-numeric: tabular-nums;
+}
+.metric span {
+  font-family: var(--font-mono);
+  font-size: 0.625rem; /* 10px */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--theme-text-tertiary);
+}
+
+/* ---- Corner brackets (focus/target frame) ----------------------------- */
+/* Approach A (dossier 03 §2.3): mask knocks the border out except corners.
+   Fallback for old browsers: plain border. */
+.corner-frame {
+  position: relative;
+  border: 1px solid var(--theme-border);
+  border-radius: 14px;
+}
+@supports (mask: conic-gradient(#000 0 0)) {
+  .corner-frame {
+    border: 1px solid var(--hud-bracket);
+    -webkit-mask:
+      conic-gradient(at 14px 14px, #0000 75%, #000 0) 0 0 / calc(100% - 14px) calc(100% - 14px),
+      conic-gradient(#000 0 0) content-box;
+    mask:
+      conic-gradient(at 14px 14px, #0000 75%, #000 0) 0 0 / calc(100% - 14px) calc(100% - 14px),
+      conic-gradient(#000 0 0) content-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    -webkit-mask-clip: padding-box, content-box;
+    mask-clip: padding-box, content-box;
+  }
+}
+
+/* ---- Scanlines (static, panel-only; never whole viewport) ------------- */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(3, 30, 62, 0.05) 0,
+    rgba(3, 30, 62, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+html[data-theme="dark"] .scanlines::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 184, 204, 0.045) 0,
+    rgba(0, 184, 204, 0.045) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+@media (prefers-color-scheme: dark) {
+  .scanlines::after {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 184, 204, 0.045) 0,
+      rgba(0, 184, 204, 0.045) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+}
+
+/* ---- FIG caption (spec-document grammar, dossier 03 §1.7) ------------- */
+.fig {
+  margin: 0;
+}
+.fig-caption {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--theme-text-tertiary);
+  letter-spacing: 0.02em;
+  margin-top: 8px;
+}
+.fig-caption b {
+  color: var(--hud-label);
+  font-weight: 600;
+  margin-right: 0.4em;
+}
+
+/* ---- Ambient idle loop: slow corner-pulse on a focal element ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .corner-frame--focal::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    box-shadow: var(--glow-focal);
+    opacity: 0.55;
+    animation: hud-breathe 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes hud-breathe {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.7; }
+  }
+}

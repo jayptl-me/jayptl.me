@@ -1,0 +1,420 @@
+/**
+ * Custom Cursor Component
+ * Light-blue glassmorphic cursor with smooth animations
+ * 
+ * @file components/custom-cursor.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   CURSOR VARIABLES
+   ========================================================================== */
+
+:root {
+    /* Cursor colors derived from token palette (subtle by default - light mode: blue) */
+    --cursor-primary: rgba(var(--primary-500-rgb, 33, 150, 243), 0.65);
+    --cursor-primary-hover: rgba(var(--primary-600-rgb, 30, 136, 229), 0.8);
+    --cursor-secondary: rgba(var(--primary-400-rgb, 66, 165, 245), 0.28);
+    --cursor-accent: rgba(var(--primary-500-rgb, 33, 150, 243), 0.45);
+
+    /* Cursor sizes */
+    --cursor-size-small: 8px;
+    --cursor-size-default: 20px;
+    --cursor-size-hover: 40px;
+    --cursor-size-click: 60px;
+
+    /* Cursor animations */
+    --cursor-duration: 0.2s;
+    --cursor-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        --cursor-primary: rgba(var(--accent-400-rgb, 38, 201, 216), 0.75);
+        --cursor-primary-hover: rgba(var(--accent-300-rgb, 77, 214, 226), 0.9);
+        --cursor-secondary: rgba(var(--accent-500-rgb, 0, 184, 204), 0.35);
+        --cursor-accent: rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
+    }
+}
+
+html[data-theme="dark"] {
+    --cursor-primary: rgba(var(--accent-400-rgb, 38, 201, 216), 0.75);
+    --cursor-primary-hover: rgba(var(--accent-300-rgb, 77, 214, 226), 0.9);
+    --cursor-secondary: rgba(var(--accent-500-rgb, 0, 184, 204), 0.35);
+    --cursor-accent: rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
+}
+
+/* Light theme explicit override (Pure brand blue) */
+html[data-theme="light"] {
+    --cursor-primary: rgba(var(--primary-500-rgb, 33, 150, 243), 0.65);
+    --cursor-primary-hover: rgba(var(--primary-600-rgb, 30, 136, 229), 0.8);
+    --cursor-secondary: rgba(var(--primary-400-rgb, 66, 165, 245), 0.28);
+    --cursor-accent: rgba(var(--primary-500-rgb, 33, 150, 243), 0.45);
+}
+
+/* ==========================================================================
+   HIDE DEFAULT CURSOR
+   ========================================================================== */
+
+* {
+    cursor: none !important;
+}
+
+/* Override for inputs and textareas: hide native cursor so custom cursor is shown everywhere */
+input,
+textarea,
+[contenteditable] {
+    /* we intentionally hide the native caret/cursor here so our custom cursor handles text fields.
+       note: the visible caret for text input is still provided by the browser when the field is focused;
+       we're only hiding the mouse cursor. */
+    cursor: none !important;
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR ELEMENTS
+   ========================================================================== */
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size-default);
+    height: var(--cursor-size-default);
+    background: var(--cursor-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: var(--z-maximum);
+    /* Perf A: compositor-only. Position arrives via --cx/--cy (JS transform vars);
+       states scale via --csx/--csy. No left/top/width/height animation,
+       no backdrop-filter, no mix-blend-mode (both force full-scene repaint). */
+    --cx: -100px;
+    --cy: -100px;
+    --csx: 1;
+    --csy: 1;
+    transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%) scale(var(--csx), var(--csy));
+    transition: transform var(--cursor-duration) var(--cursor-ease), opacity var(--cursor-duration) var(--cursor-ease), background-color var(--cursor-duration) var(--cursor-ease);
+    will-change: transform;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 0 14px var(--cursor-secondary),
+        0 0 28px var(--cursor-secondary),
+        inset 0 0 16px rgba(255, 255, 255, 0.06);
+}
+
+.custom-cursor::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform var(--cursor-duration) var(--cursor-ease), opacity var(--cursor-duration) var(--cursor-ease), background-color var(--cursor-duration) var(--cursor-ease);
+}
+
+.cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size-hover);
+    height: var(--cursor-size-hover);
+    background: var(--cursor-secondary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: calc(var(--z-maximum) - 1);
+    /* Perf A: same compositor-only contract as .custom-cursor. */
+    --cx: -100px;
+    --cy: -100px;
+    --csx: 1;
+    --csy: 1;
+    transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%) scale(var(--csx), var(--csy));
+    transition: transform 0.4s var(--cursor-ease), opacity 0.4s var(--cursor-ease), background-color 0.4s var(--cursor-ease);
+    will-change: transform;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   CURSOR STATES
+   ========================================================================== */
+
+/* Hover state — scale only (20px -> 40px = 2x), no width/height layout */
+.custom-cursor.hover {
+    --csx: 2;
+    --csy: 2;
+    background: var(--cursor-primary-hover);
+    box-shadow:
+        0 0 22px var(--cursor-accent),
+        0 0 44px var(--cursor-accent),
+        inset 0 0 22px rgba(255, 255, 255, 0.15);
+}
+
+.custom-cursor.hover::before {
+    transform: translate(-50%, -50%) scale(1.5);
+    background: rgba(255, 255, 255, 1);
+}
+
+.cursor-follower.hover {
+    --csx: 1.5;
+    --csy: 1.5;
+    opacity: 0.8;
+}
+
+/* Click state — scale only (20px -> 60px = 3x) */
+.custom-cursor.click {
+    --csx: 3;
+    --csy: 3;
+    background: var(--cursor-accent);
+    box-shadow:
+        0 0 28px var(--cursor-primary),
+        0 0 56px var(--cursor-primary),
+        inset 0 0 28px rgba(255, 255, 255, 0.22);
+}
+
+.cursor-follower.click {
+    --csx: 2.25;
+    --csy: 2.25;
+    opacity: 1;
+}
+
+/* Text state — asymmetric scale only (20px dot -> 2x20 bar) */
+.custom-cursor.text {
+    --csx: 0.1;
+    --csy: 1;
+    border-radius: 2px;
+    background: var(--cursor-primary);
+    box-shadow: 0 0 8px var(--cursor-primary);
+}
+
+.custom-cursor.text::before {
+    display: none;
+}
+
+.cursor-follower.text {
+    --csx: 0.5;
+    --csy: 0.75;
+    border-radius: 10px;
+    opacity: 0.4;
+}
+
+/* Hidden state */
+.custom-cursor.hidden,
+.cursor-follower.hidden {
+    opacity: 0;
+    --csx: 0.01;
+    --csy: 0.01;
+}
+
+/* ==========================================================================
+   INTERACTIVE ELEMENTS
+   ========================================================================== */
+
+/* Links and buttons - clean styling without spill effect */
+a,
+button,
+[role="button"],
+.clickable {
+    position: relative;
+}
+
+/* Remove the old spill hover effect - buttons handle their own hover states */
+
+/* ==========================================================================
+   SPECIAL CURSOR ANIMATIONS
+   ========================================================================== */
+
+/* Magnetic effect for important elements */
+.cursor-magnetic {
+    transition: transform 0.1s ease-out;
+}
+
+/* Ripple effect on click */
+@keyframes cursor-ripple {
+    0% {
+        transform: translate3d(var(--cx, 0px), var(--cy, 0px), 0) translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(var(--cx, 0px), var(--cy, 0px), 0) translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.cursor-ripple {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size-default);
+    height: var(--cursor-size-default);
+    border: 2px solid var(--cursor-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: calc(var(--z-maximum) - 2);
+    --cx: -100px;
+    --cy: -100px;
+    transform: translate3d(var(--cx), var(--cy), 0) translate(-50%, -50%) scale(1);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.cursor-ripple.play {
+    animation: cursor-ripple 0.6s ease-out forwards;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Hide custom cursor on touch devices */
+    .custom-cursor,
+    .cursor-follower {
+        display: none;
+    }
+
+    * {
+        cursor: auto !important;
+    }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .custom-cursor,
+    .cursor-follower {
+        transition: none;
+    }
+
+    .cursor-ripple {
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .custom-cursor {
+        background: var(--theme-text);
+        border-color: var(--theme-bg);
+        box-shadow: none;
+        mix-blend-mode: normal;
+    }
+
+    .cursor-follower {
+        background: transparent;
+        border: 2px solid var(--theme-text);
+    }
+}
+
+/* ==========================================================================
+   DIALOG AND MODAL SPECIFIC CURSOR SUPPORT
+   ========================================================================== */
+
+/* Ensure custom cursor appears on dialogs and modals */
+.consent-settings-dialog,
+.consent-banner,
+[role="dialog"],
+[role="modal"],
+.modal,
+.dialog {
+    /* Ensure these elements don't interfere with custom cursor */
+    position: relative;
+}
+
+.consent-settings-dialog *,
+.consent-banner *,
+[role="dialog"] *,
+[role="modal"] *,
+.modal *,
+.dialog * {
+    /* Reset cursor to none for dialog children to allow custom cursor */
+    cursor: none !important;
+}
+
+/* Override for interactive elements in dialogs */
+.consent-settings-dialog button,
+.consent-settings-dialog a,
+.consent-settings-dialog [role="button"],
+.consent-banner button,
+.consent-banner a,
+.consent-banner [role="button"],
+[role="dialog"] button,
+[role="dialog"] a,
+[role="dialog"] [role="button"],
+[role="modal"] button,
+[role="modal"] a,
+[role="modal"] [role="button"],
+.modal button,
+.modal a,
+.modal [role="button"],
+.dialog button,
+.dialog a,
+.dialog [role="button"] {
+    cursor: none !important;
+}
+
+/* Ensure dialog and banner inputs still allow interaction but keep native mouse cursor hidden */
+.consent-settings-dialog input[type="text"],
+.consent-settings-dialog input[type="email"],
+.consent-settings-dialog textarea,
+.consent-settings-dialog [contenteditable],
+.consent-banner input[type="text"],
+.consent-banner input[type="email"],
+.consent-banner textarea,
+.consent-banner [contenteditable],
+[role="dialog"] input[type="text"],
+[role="dialog"] input[type="email"],
+[role="dialog"] textarea,
+[role="dialog"] [contenteditable],
+[role="modal"] input[type="text"],
+[role="modal"] input[type="email"],
+[role="modal"] textarea,
+[role="modal"] [contenteditable] {
+    /* Keep pointer hidden; browser will still show text caret when the field is focused.
+       This avoids native pointer clashes with the custom cursor in modals and dialogs. */
+    cursor: none !important;
+}
+
+/* ==========================================================================
+   CURSOR FOR SPECIFIC ELEMENTS
+   ========================================================================== */
+
+/* Loading state */
+.custom-cursor.loading {
+    animation: cursor-spin 1s linear infinite;
+}
+
+@keyframes cursor-spin {
+    from {
+        transform: translate3d(var(--cx, 0px), var(--cy, 0px), 0) translate(-50%, -50%) scale(var(--csx, 1), var(--csy, 1)) rotate(0deg);
+    }
+
+    to {
+        transform: translate3d(var(--cx, 0px), var(--cy, 0px), 0) translate(-50%, -50%) scale(var(--csx, 1), var(--csy, 1)) rotate(360deg);
+    }
+}
+
+/* Disabled state */
+.custom-cursor.disabled {
+    background: var(--theme-text-muted);
+    opacity: 0.5;
+}
+
+/* Error state */
+.custom-cursor.error {
+    background: var(--theme-error);
+    box-shadow: 0 0 20px var(--theme-error);
+}
+
+/* Success state */
+.custom-cursor.success {
+    background: var(--theme-success);
+    box-shadow: 0 0 20px var(--theme-success);
+}

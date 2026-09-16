@@ -1,0 +1,71 @@
+/* ==========================================================================
+   SPLIT TEXT (Gate P — vanilla SplitText, zero deps)
+   Runtime-split word/char stagger. Hidden state applies only under .js;
+   no-JS renders plain text. Motion runs on opacity/transform (compositor
+   thread). Per-unit stagger arrives via --d, duration via --split-dur.
+   from { opacity: 0, y: 40 } -> to { opacity: 1, y: 0 };
+   easing approximates power3.out.
+   ========================================================================== */
+
+.split-host {
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
+.js [data-split] .split-word,
+.js [data-split] .split-char {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.js [data-split].is-split .split-word,
+.js [data-split].is-split .split-char {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--split-dur, 600ms) ease,
+    transform var(--split-dur, 600ms) cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+/* Hero stepper voice: Audiowide display caps, theme ink. */
+.text-reveal-item .split-host {
+  font-family: var(--font-audiowide);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+  color: var(--theme-icon);
+}
+
+.text-reveal-item.final .split-host .word-jay {
+  position: relative;
+  z-index: var(--z-tooltip);
+}
+
+@media (max-width: 768px) {
+  .text-reveal-item .split-host {
+    font-size: clamp(1.5rem, 7vw, 2.5rem);
+  }
+}
+
+/* Reduced motion: fully shown, no transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-split] .split-word,
+  .js [data-split] .split-char {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

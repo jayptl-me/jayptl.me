@@ -1,0 +1,20 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon"><title>Gem icon</title>
+  <defs>
+    <linearGradient id="i-gem-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <path d="M6 3h12l4 6-10 13L2 9z" fill="url(#i-gem-grad)" opacity="0.2" pathLength="1"/>
+    <path d="M6 3h12l4 6-10 13L2 9z" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+    <path d="M11 3l1 10L2 9l4-6" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+    <path d="M13 3l-1 10 10-4-4-6" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <path d="M6 3h12l4 6-10 13L2 9z" fill="currentColor" opacity="0.2" pathLength="1"/>
+    <path d="M6 3h12l4 6-10 13L2 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+    <path d="M11 3l1 10L2 9l4-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+    <path d="M13 3l-1 10 10-4-4-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+  </g>
+</svg>

@@ -1,0 +1,1595 @@
+/**
+ * Scroll-to-Reveal Text Component
+ * Scroll-based text revelation with stepper controls and progress indication
+ * 
+ * @file components/scroll-reveal.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   SCROLL REVEAL TEXT CONTAINER
+   ========================================================================== */
+
+.text-reveal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100svh;
+  /* Small viewport height for better mobile support */
+  height: 100dvh;
+  /* Dynamic viewport height fallback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: var(--z-content);
+  background: var(--theme-bg);
+  pointer-events: none;
+  /* Scoped scroll control for the overlay */
+  scroll-behavior: auto;
+  overscroll-behavior: none;
+  /* Capture vertical swipes and prevent pull-to-refresh */
+  touch-action: none;
+  opacity: 1;
+  transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
+}
+
+/* Static backdrop grid - stays fixed while text scrolls */
+.text-reveal-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Perspective grid pattern - HIGH VISIBILITY & ANIMATED */
+  background:
+    /* Vertical lines */
+    repeating-linear-gradient(90deg,
+      rgba(var(--primary-500-rgb), 0.15) 0px,
+      rgba(var(--primary-500-rgb), 0.15) 1px,
+      transparent 1px,
+      transparent 50px),
+    /* Horizontal lines */
+    repeating-linear-gradient(0deg,
+      rgba(var(--primary-500-rgb), 0.15) 0px,
+      rgba(var(--primary-500-rgb), 0.15) 1px,
+      transparent 1px,
+      transparent 50px);
+
+  background-size: 50px 50px;
+  animation: gridPan 20s linear infinite;
+
+  /* Grid visible to 75% of bottom-left, minimal fade from top-right */
+  mask-image:
+    linear-gradient(-45deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+
+  -webkit-mask-image: linear-gradient(-45deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gridPan {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Light beam effect from top-right - layered gradients for realism */
+.text-reveal-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* Core light source - bright spot at top-right */
+    radial-gradient(circle at 100% 0%,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(var(--primary-300-rgb), 0.2) 25%,
+      transparent 60%),
+    /* Light beam spreading diagonally */
+    linear-gradient(225deg,
+      rgba(var(--primary-400-rgb), 0.15) 0%,
+      rgba(var(--accent-500-rgb), 0.05) 50%,
+      transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+  /* Above grid, below text */
+}
+
+.text-reveal-container.in-view {
+  pointer-events: auto;
+  /* Avoid forcing vendor-specific overflow scrolling globally */
+  z-index: var(--z-overlay);
+  /* Opaque backdrop ensures underlying sections can NEVER show through */
+  background: var(--theme-bg);
+}
+
+.text-reveal-container.reveal-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Smooth re-engagement animation when returning into hero (no opacity drop to avoid flashing underlying content) */
+.text-reveal-container.reengaging {
+  transform: translateY(24px);
+}
+
+/* Liquid-like enter when overlay re-engages */
+.text-reveal-container.liquid-enter {
+  animation: liquidEnter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes liquidEnter {
+  0% {
+    transform: translateY(14px) scaleY(0.985);
+  }
+
+  55% {
+    transform: translateY(-6px) scaleY(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* When released, container is hidden and occupies no layout space */
+.text-reveal-container.released {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+/* Transitional fade state when releasing to native scroll */
+.text-reveal-container.releasing {
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
+}
+
+/* Liquid-like exit when releasing to native scroll */
+.text-reveal-container.released.liquid-exit {
+  animation: liquidExit 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  background: transparent;
+}
+
+@keyframes liquidExit {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+
+  45% {
+    transform: translateY(-10px) scaleY(0.98);
+  }
+
+  80% {
+    transform: translateY(3px) scaleY(1.008);
+  }
+
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.text-reveal-list {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(80px, 15vh, 140px);
+  /* Ensure text sits above grid and light */
+  z-index: 2;
+}
+
+.text-reveal-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  padding: clamp(1rem, 4vw, 2rem);
+  opacity: 0;
+  transition: transform var(--duration-700) cubic-bezier(0.22, 1, 0.36, 1), opacity var(--duration-700) ease-out;
+  pointer-events: none;
+  text-align: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.text-reveal-item.revealed {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.text-reveal-item:has(.particle-text) {
+  padding: 0;
+  width: 100vw;
+  height: 100svh;
+  height: 100dvh;
+}
+
+.text-reveal-item.active {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Subtle jelly bounce for the last item */
+.text-reveal-item.bounce-in {
+  animation: jellyIn var(--duration-700) cubic-bezier(0.2, 0.8, 0.2, 1) 50ms both;
+}
+
+@keyframes jellyIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.98) translateY(6px);
+  }
+
+  35% {
+    transform: translate(-50%, -50%) scale(1.04) translateY(-4px);
+  }
+
+  65% {
+    transform: translate(-50%, -50%) scale(0.997) translateY(1px);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+}
+
+/* Bottom scroll indicator */
+#bottomScrollHint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-text-secondary);
+  font-size: var(--text-sm);
+  z-index: var(--z-above-content);
+  opacity: 1;
+  transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
+  pointer-events: none;
+}
+
+#bottomScrollHint.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Final message removed */
+
+/* ==========================================================================
+   GRADIENT OVERLAYS
+   ========================================================================== */
+
+.gradient-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: var(--z-above-content);
+}
+
+.gradient-top {
+  top: 0;
+  background: linear-gradient(to bottom,
+      var(--bg-primary) 0%,
+      var(--bg-primary) 20%,
+      rgba(var(--bg-primary-rgb), 0.9) 50%,
+      rgba(var(--bg-primary-rgb), 0.3) 80%,
+      transparent 100%);
+}
+
+.gradient-bottom {
+  bottom: 0;
+  background: linear-gradient(to top,
+      var(--bg-primary) 0%,
+      var(--bg-primary) 20%,
+      rgba(var(--bg-primary-rgb), 0.9) 50%,
+      rgba(var(--bg-primary-rgb), 0.3) 80%,
+      transparent 100%);
+}
+
+/* ==========================================================================
+   SCROLL REVEAL SYSTEM - REMOVED STEPPER CONTROLS
+   ========================================================================== */
+
+.scroll-reveal-container {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  /* Small viewport height for better mobile support */
+  min-height: 100dvh;
+  /* Dynamic viewport height fallback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+
+/* ==========================================================================
+   TEXT STYLING WITH GRADIENTS
+   ========================================================================== */
+
+/* Scroll reveal text: theme-aware color (blue in light, turquoise in dark) */
+.gradient-text,
+.text-reveal-item.active .gradient-text {
+  color: var(--theme-icon);
+  text-shadow: none;
+}
+
+/* Retired 2026-09-16: pre-split .char spans replaced by the runtime
+   SplitText (js/components/split-text.js) and the particle field
+   (js/components/particle-text.js). Char keyframes deleted with them. */
+
+/* ==========================================================================
+   RESPONSIVE - Faster on mobile for snappier feel
+   ========================================================================== */
+
+/* Retired: mobile char keyframes deleted with sandMerge (see above). */
+
+/* ==========================================================================
+   SCROLL PROGRESS INDICATOR - REMOVED
+   ========================================================================== */
+
+/* Progress indicator styles removed - stepper scroll only */
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Extra Small Devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+
+  .text-reveal-list {
+    min-height: 80px;
+  }
+
+  .text-reveal-item {
+    padding: 1rem;
+    width: 100%;
+  }
+}
+
+/* Small Devices (landscape phones, 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+
+  .text-reveal-list {
+    min-height: 90px;
+  }
+
+  .text-reveal-item {
+    padding: 1.5rem;
+    width: 100%;
+  }
+}
+
+/* Medium Devices (tablets, 769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .text-reveal-container {
+    padding: 0;
+  }
+
+  .text-reveal-list {
+    min-height: 100px;
+  }
+
+  .text-reveal-item {
+    padding: 2rem;
+    width: 100%;
+  }
+}
+
+/* Large Devices (laptops/desktops, 1025px to 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .text-reveal-list {
+    min-height: 120px;
+  }
+
+  .text-reveal-item {
+    padding: 2.5rem;
+  }
+}
+
+/* Extra Large Devices (large laptops/desktops, 1441px and up) */
+@media (min-width: 1441px) {
+  .text-reveal-list {
+    min-height: 140px;
+  }
+
+  .text-reveal-item {
+    padding: 3rem;
+  }
+}
+
+/* Ultra Wide Screens (1920px and up) — char sizes now live in split-text.css. */
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .text-reveal-list {
+    min-height: 60px;
+  }
+
+  .text-reveal-item {
+    padding: 1rem;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal-item,
+  .gradient-text,
+  .stepper-button,
+  .progress-fill,
+  .text-reveal-container,
+  .text-reveal-container::before {
+    animation: none !important;
+    transition: opacity 0.15s ease !important;
+    filter: none !important;
+  }
+
+  /* Maintain same brand blue in reduced motion */
+  .text-reveal-item.active .gradient-text {
+    color: var(--primary-600, var(--primary-500));
+  }
+}
+
+/* ==========================================================================
+   THEME ADAPTATIONS
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .gradient-top {
+    background: linear-gradient(to bottom,
+        var(--bg-primary) 0%,
+        var(--bg-primary) 20%,
+        rgba(18, 18, 18, 0.9) 50%,
+        rgba(18, 18, 18, 0.3) 80%,
+        transparent 100%);
+  }
+
+  .gradient-bottom {
+    background: linear-gradient(to top,
+        var(--bg-primary) 0%,
+        var(--bg-primary) 20%,
+        rgba(18, 18, 18, 0.9) 50%,
+        rgba(18, 18, 18, 0.3) 80%,
+        transparent 100%);
+  }
+
+  /* Dark mode grid - more visible lines with accent glow */
+  .text-reveal-container::before {
+    background:
+      /* Vertical lines */
+      repeating-linear-gradient(90deg,
+        rgba(var(--accent-500-rgb), 0.1) 0px,
+        rgba(var(--accent-500-rgb), 0.1) 1px,
+        transparent 1px,
+        transparent 50px),
+      /* Horizontal lines */
+      repeating-linear-gradient(0deg,
+        rgba(var(--accent-500-rgb), 0.1) 0px,
+        rgba(var(--accent-500-rgb), 0.1) 1px,
+        transparent 1px,
+        transparent 50px);
+  }
+
+  /* Dark mode light beam - intensified turquoise glow */
+  .text-reveal-container::after {
+    background: radial-gradient(circle at 100% 0%,
+        rgba(var(--accent-400-rgb), 0.25) 0%,
+        rgba(var(--accent-500-rgb), 0.12) 25%,
+        transparent 60%);
+  }
+}
+
+/* Manual dark theme toggle - matching grid colors */
+html[data-theme="dark"] .text-reveal-container::before {
+  background:
+    /* Vertical lines */
+    repeating-linear-gradient(90deg,
+      rgba(var(--accent-500-rgb), 0.1) 0px,
+      rgba(var(--accent-500-rgb), 0.1) 1px,
+      transparent 1px,
+      transparent 50px),
+    /* Horizontal lines */
+    repeating-linear-gradient(0deg,
+      rgba(var(--accent-500-rgb), 0.1) 0px,
+      rgba(var(--accent-500-rgb), 0.1) 1px,
+      transparent 1px,
+      transparent 50px);
+}
+html[data-theme="dark"] .text-reveal-container::after {
+  background: radial-gradient(circle at 100% 0%,
+      rgba(var(--accent-400-rgb), 0.25) 0%,
+      rgba(var(--accent-500-rgb), 0.12) 25%,
+      transparent 60%);
+}
+
+/* ==========================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================================================== */
+
+.text-reveal-container {
+  will-change: scroll-position;
+  transform: translateZ(0);
+}
+
+.text-reveal-item {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.gradient-text {
+  /* No gradient animation needed anymore */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* ========================================================================
+   MOBILE STEPPER UI
+   ======================================================================== */
+/* ========================================================================
+   STEPPER FLOATING WRAPPER & SCROLL HINT (Option A: Liquid Glass)
+   ======================================================================== */
+.stepper-wrapper {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+  max-width: 90vw;
+  width: max-content;
+  transition: opacity var(--duration-300) var(--ease-out), transform var(--duration-300) var(--ease-out);
+}
+
+.stepper-wrapper > * {
+  pointer-events: auto;
+}
+
+/* Simple Scroll Hint Text directly above the pill */
+.stepper-scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-family: var(--font-mono);
+  font-size: 0.625rem; /* 10px */
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hud-label, var(--theme-text-secondary));
+  opacity: 0.75;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    color var(--duration-200) var(--ease-smooth),
+    opacity var(--duration-200) var(--ease-smooth),
+    transform var(--duration-200) var(--ease-smooth);
+}
+
+.stepper-scroll-hint:hover {
+  opacity: 1;
+  color: var(--theme-primary, var(--primary-500));
+}
+
+.stepper-scroll-hint:active {
+  opacity: 0.9;
+}
+
+.stepper-scroll-hint .scroll-hint-chevron {
+  width: 8px;
+  height: 5px;
+  display: inline-block;
+  opacity: 0.7;
+  transition: transform var(--duration-200) var(--ease-smooth), opacity var(--duration-200) var(--ease-smooth);
+  animation: chevronBob 2.4s ease-in-out infinite;
+}
+
+.stepper-scroll-hint:hover .scroll-hint-chevron {
+  opacity: 1;
+  transform: translateY(1.5px);
+  animation-play-state: paused;
+}
+
+/* Final Step State: "SCROLL TO KNOW" */
+.stepper-scroll-hint.is-final {
+  color: var(--accent-400, #26c9d8);
+  opacity: 0.95;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-shadow: 0 0 10px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+  animation: finalHintPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes chevronBob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes finalHintPulse {
+  0%, 100% {
+    opacity: 0.85;
+    text-shadow: 0 0 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
+  }
+}
+
+/* Option A: Liquid Glass Island Stepper Pill */
+.reveal-stepper {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  max-width: 85vw;
+  width: max-content;
+
+  background: linear-gradient(160deg,
+    rgba(var(--theme-bg-rgb), 0.82) 0%,
+    rgba(var(--theme-bg-rgb), 0.65) 60%,
+    rgba(var(--primary-500-rgb, 33, 150, 243), 0.08) 100%
+  );
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+
+  border: 1px solid color-mix(in oklab, var(--primary-500, #2196f3) 25%, rgba(255, 255, 255, 0.14));
+  border-radius: 9999px;
+  padding: 8px 16px;
+  z-index: var(--z-overlay);
+
+  /* Specular rim + soft deep elevation */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 12px 36px rgba(0, 0, 0, 0.22),
+    0 2px 10px rgba(0, 0, 0, 0.08);
+
+  transition:
+    background 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    transform 260ms var(--ease-out);
+  will-change: transform;
+}
+
+/* ========================================================================== */
+/* TERMINAL OVERRIDE: enforce solid colors for scroll text (light + dark) */
+/* ========================================================================== */
+.gradient-text,
+.text-reveal-item.active .gradient-text {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: var(--primary-600, var(--primary-500)) !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Dark mode: use turquoise/accent for consistency with bento icons */
+@media (prefers-color-scheme: dark) {
+
+  .gradient-text,
+  .text-reveal-item.active .gradient-text {
+    color: var(--accent-400, var(--accent-300)) !important;
+  }
+}
+
+/* Explicit light mode override */
+html[data-theme="light"] .gradient-text,
+html[data-theme="light"] .text-reveal-item.active .gradient-text {
+  color: var(--primary-600, var(--primary-500)) !important;
+}
+
+/* Explicit dark mode override */
+html[data-theme="dark"] .gradient-text,
+html[data-theme="dark"] .text-reveal-item.active .gradient-text {
+  color: var(--accent-400, var(--accent-300)) !important;
+}
+
+/* Animated progress bars on sides of stepper - grow equally from both ends */
+.reveal-stepper::before,
+.reveal-stepper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 3px;
+  border-radius: 2px;
+  /* Solid brand blue (single hue) instead of dual-stop gradient for consistency */
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9);
+  box-shadow:
+    0 0 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+    0 0 24px rgba(105, 180, 255, 0.3);
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.9;
+}
+
+/* Dark mode: use lighter accent-400 for all stepper bars */
+@media (prefers-color-scheme: dark) {
+
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9);
+    box-shadow:
+      0 0 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+      0 0 24px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+  }
+}
+
+/* Left expanding bar - grows from center outward */
+.reveal-stepper::before {
+  right: 100%;
+  margin-right: 16px;
+  width: 80%;
+  background: linear-gradient(90deg, transparent, rgba(var(--primary-500-rgb, 33, 150, 243), 0.9));
+}
+
+/* Right expanding bar - grows from center outward */
+.reveal-stepper::after {
+  left: 100%;
+  margin-left: 16px;
+  width: 80%;
+  background: linear-gradient(90deg, rgba(var(--primary-500-rgb, 33, 150, 243), 0.9), transparent);
+}
+
+/* Dark mode: use lighter accent-400 for gradient bars */
+@media (prefers-color-scheme: dark) {
+  .reveal-stepper::before {
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9));
+  }
+
+  .reveal-stepper::after {
+    background: linear-gradient(90deg, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9), transparent);
+  }
+}
+
+/* Progress-based bar animation states - both bars start at 100% and deplete equally */
+.reveal-stepper.progress-100::before {
+  width: 80%;
+}
+
+.reveal-stepper.progress-100::after {
+  width: 80%;
+}
+
+.reveal-stepper.progress-80::before {
+  width: 64%;
+}
+
+.reveal-stepper.progress-80::after {
+  width: 64%;
+}
+
+.reveal-stepper.progress-60::before {
+  width: 48%;
+}
+
+.reveal-stepper.progress-60::after {
+  width: 48%;
+}
+
+.reveal-stepper.progress-40::before {
+  width: 32%;
+}
+
+.reveal-stepper.progress-40::after {
+  width: 32%;
+}
+
+.reveal-stepper.progress-20::before {
+  width: 16%;
+}
+
+.reveal-stepper.progress-20::after {
+  width: 16%;
+}
+
+.reveal-stepper.progress-0::before {
+  width: 0;
+}
+
+.reveal-stepper.progress-0::after {
+  width: 0;
+}
+
+/* Enhanced visual effects at key progress points */
+.reveal-stepper.progress-100::before,
+.reveal-stepper.progress-100::after {
+  box-shadow:
+    0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.55),
+    0 0 32px rgba(105, 180, 255, 0.35),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.28);
+  /* Keep width constrained even at 100% progress */
+  max-width: 80vw;
+}
+
+/* Ensure stepper container is constrained at progress-100 */
+.reveal-stepper.progress-100 {
+  max-width: 80vw;
+  max-width: min(80vw, 600px);
+  /* Cap at reasonable size on very wide screens */
+}
+
+/* Dark mode: lighten hue for progress-100 emphasis (use accent-400) */
+@media (prefers-color-scheme: dark) {
+
+  .reveal-stepper.progress-100::before,
+  .reveal-stepper.progress-100::after {
+    box-shadow:
+      0 0 16px rgba(var(--accent-400-rgb, 38, 201, 216), 0.65),
+      0 0 34px rgba(var(--accent-400-rgb, 38, 201, 216), 0.45),
+      0 2px 10px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35);
+  }
+}
+
+html[data-theme="dark"] .reveal-stepper.progress-100::before,
+html[data-theme="dark"] .reveal-stepper.progress-100::after {
+  box-shadow:
+    0 0 16px rgba(var(--accent-400-rgb, 38, 201, 216), 0.65),
+    0 0 34px rgba(var(--accent-400-rgb, 38, 201, 216), 0.45),
+    0 2px 10px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35);
+}
+
+/* Smooth pulsing effect for full bars */
+.reveal-stepper.progress-100::before,
+.reveal-stepper.progress-100::after {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.stepper-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.28);
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition:
+    width 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out),
+    border-color 240ms var(--ease-out),
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stepper-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+}
+
+.stepper-dot:hover {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.2);
+}
+
+/* Liquid Active Dot */
+.stepper-dot.active {
+  width: 24px !important;
+  background: linear-gradient(90deg, var(--primary-500, #2196f3), var(--primary-400, #42a5f5)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow:
+    0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.55),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  transform: scale(1) !important;
+}
+
+.stepper-dot.active:hover {
+  background: linear-gradient(90deg, var(--primary-600, #1976d2), var(--primary-500, #2196f3)) !important;
+  box-shadow:
+    0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.7),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
+}
+
+.stepper-dot:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3);
+  transform: scale(1.15);
+}
+
+.stepper-dot.active:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) !important;
+}
+
+/* Dark mode: use lighter accent-400 for active dots */
+@media (prefers-color-scheme: dark) {
+  .reveal-stepper .stepper-dot.active {
+    background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9) !important;
+    border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.4) !important;
+    box-shadow:
+      0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+      0 2px 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25) !important;
+  }
+}
+
+
+
+/* ==========================================================================
+   LIGHT & DARK THEME ADAPTATIONS FOR STEPPER
+   ========================================================================== */
+
+/* Light theme adaptations */
+@media (prefers-color-scheme: light) {
+  .stepper-scroll-hint {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--primary-700, #1976d2);
+  }
+
+  .reveal-stepper {
+    background: linear-gradient(160deg,
+        rgba(255, 255, 255, 0.94) 0%,
+        rgba(255, 255, 255, 0.82) 60%,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.08) 100%);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 10px 30px rgba(0, 0, 0, 0.08),
+      0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    box-shadow:
+      0 0 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+      0 0 16px rgba(30, 58, 138, 0.2);
+  }
+
+  .reveal-stepper::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.9));
+  }
+
+  .reveal-stepper::after {
+    background: linear-gradient(90deg,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.9),
+        transparent);
+  }
+
+  .stepper-dot {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .stepper-dot.active {
+    background: linear-gradient(90deg, var(--primary-600, #1976d2), var(--primary-500, #2196f3)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow:
+      0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+      0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .stepper-dot:hover {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .stepper-dot.active:hover {
+    background: rgba(var(--primary-500-rgb, 33, 150, 243), 1);
+    box-shadow:
+      0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+      0 3px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25);
+  }
+
+  /* Light Theme Grid Visibility */
+  .text-reveal-container::before {
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+        transparent 1px,
+        transparent 50px),
+      repeating-linear-gradient(0deg,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 0px,
+        rgba(var(--primary-600-rgb, 33, 150, 243), 0.1) 1px,
+        transparent 1px,
+        transparent 50px);
+  }
+
+  /* Light Theme Top-Right Light Source */
+  .text-reveal-container::after {
+    background:
+      radial-gradient(circle at 100% 0%,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.15) 30%,
+        transparent 60%),
+      linear-gradient(225deg,
+        rgba(var(--primary-500-rgb, 33, 150, 243), 0.05) 0%,
+        transparent 50%);
+  }
+}
+
+/* Dark theme adaptations */
+@media (prefers-color-scheme: dark) {
+  .stepper-scroll-hint {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--theme-text-secondary);
+  }
+
+  .reveal-stepper {
+    background: linear-gradient(160deg,
+        rgba(14, 20, 32, 0.88) 0%,
+        rgba(10, 15, 26, 0.72) 60%,
+        rgba(var(--accent-400-rgb, 38, 201, 216), 0.10) 100%);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.28);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      0 14px 40px rgba(0, 0, 0, 0.45),
+      0 0 20px rgba(var(--accent-400-rgb, 38, 201, 216), 0.15);
+  }
+
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    box-shadow:
+      0 0 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+      0 0 24px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+  }
+
+  .reveal-stepper::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--accent-400-rgb, 38, 201, 216), 0.85));
+  }
+
+  .reveal-stepper::after {
+    background: linear-gradient(90deg,
+        rgba(var(--accent-400-rgb, 38, 201, 216), 0.85),
+        transparent);
+  }
+
+  .stepper-dot {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .stepper-dot.active {
+    background: linear-gradient(90deg, var(--accent-500, #00b8cc), var(--accent-400, #26c9d8)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow:
+      0 0 18px rgba(var(--accent-400-rgb, 38, 201, 216), 0.65),
+      0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .stepper-dot:hover {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Manual theme overrides for explicit theme switching */
+html[data-theme="light"] .stepper-scroll-hint {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--primary-700, #1976d2);
+}
+
+html[data-theme="light"] .reveal-stepper {
+  background: linear-gradient(160deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 255, 255, 0.82) 60%,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.08) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .reveal-stepper::before,
+html[data-theme="light"] .reveal-stepper::after {
+  box-shadow:
+    0 0 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+    0 0 16px rgba(30, 58, 138, 0.2);
+}
+
+html[data-theme="light"] .reveal-stepper::before {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.9));
+}
+
+html[data-theme="light"] .reveal-stepper::after {
+  background: linear-gradient(90deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.9),
+      transparent);
+}
+
+html[data-theme="light"] .stepper-dot {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .stepper-dot:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="light"] .stepper-dot.active {
+  background: linear-gradient(90deg, var(--primary-600, #1976d2), var(--primary-500, #2196f3)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow:
+    0 0 16px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+html[data-theme="dark"] .stepper-scroll-hint {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--theme-text-secondary);
+}
+
+html[data-theme="dark"] .reveal-stepper {
+  background: linear-gradient(160deg,
+      rgba(14, 20, 32, 0.88) 0%,
+      rgba(10, 15, 26, 0.72) 60%,
+      rgba(var(--accent-400-rgb, 38, 201, 216), 0.10) 100%);
+  border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 14px 40px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(var(--accent-400-rgb, 38, 201, 216), 0.15);
+}
+
+html[data-theme="dark"] .reveal-stepper::before,
+html[data-theme="dark"] .reveal-stepper::after {
+  box-shadow:
+    0 0 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 0 24px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+}
+
+html[data-theme="dark"] .reveal-stepper::before {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--accent-400-rgb, 38, 201, 216), 0.85));
+}
+
+html[data-theme="dark"] .reveal-stepper::after {
+  background: linear-gradient(90deg,
+      rgba(var(--accent-400-rgb, 38, 201, 216), 0.85),
+      transparent);
+}
+
+html[data-theme="dark"] .stepper-dot {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .stepper-dot:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+html[data-theme="dark"] .stepper-dot.active {
+  background: linear-gradient(90deg, var(--accent-500, #00b8cc), var(--accent-400, #26c9d8)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow:
+    0 0 18px rgba(var(--accent-400-rgb, 38, 201, 216), 0.65),
+    0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+@media (max-width: 640px) {
+  .reveal-stepper::before,
+  .reveal-stepper::after {
+    display: none !important;
+  }
+}
+
+
+/* ==========================================================================
+  ULTRA-STRICT SCROLL CONTROL (scoped)
+  ========================================================================== */
+
+/* NOTE: Global html/body scroll behavior overrides were removed to avoid
+  site-wide regressions. Use the scoped `body.lock-scroll` class to apply
+  strict scroll control only while the overlay is active. */
+
+/* ==========================================================================
+   GLASSMORPHIC NAVBAR (revealed after final item)
+   ========================================================================== */
+
+.glass-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  padding: 8px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  z-index: var(--z-header);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.glass-nav.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.glass-nav-inner {
+  display: contents;
+}
+
+.glass-nav .nav-left,
+.glass-nav .nav-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.glass-nav .nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-nav .nav-brand {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: var(--theme-text);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.glass-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  color: var(--theme-text);
+  text-decoration: none;
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.glass-nav .nav-link:hover {
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Active and focus-visible states for nav links */
+.glass-nav .nav-link.active {
+  background: linear-gradient(180deg,
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.18),
+      rgba(var(--primary-500-rgb, 33, 150, 243), 0.1));
+  border-color: rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.glass-nav .nav-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+}
+
+.glass-nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.glass-nav .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--theme-text);
+  text-decoration: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.glass-nav .icon-btn:hover {
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.26);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Focus-visible for accessibility */
+.glass-nav .nav-link:focus-visible,
+.glass-nav .icon-btn:focus-visible,
+.glass-nav .nav-brand:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
+}
+
+/* Button revamp utility (can be used elsewhere) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg,
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.2),
+      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--theme-text);
+  text-decoration: none;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.26);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.btn:active {
+  transform: translateY(0);
+  filter: saturate(1.05);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.12));
+  border-color: rgba(33, 150, 243, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, rgba(33, 150, 243, 0.28), rgba(33, 150, 243, 0.16));
+}
+
+/* Transition of final 'Jay' to navbar */
+.jay-to-nav {
+  position: fixed !important;
+  top: 14px !important;
+  left: 50% !important;
+  transform: translate(-50%, 0) !important;
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 450ms var(--ease-out);
+}
+
+.text-reveal-item.final .word-jay {
+  position: relative;
+  z-index: var(--z-tooltip);
+}
+
+/* Brand pulse effect when text switches to Jay Patel */
+.glass-nav .nav-brand.pulse {
+  animation: brandPulse 600ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
+}
+
+@keyframes brandPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Lock page scrolling during reveal - scoped via `.lock-scroll` class.
+   Overflow-only lock: no height clamp, no position hijack. The reserved
+   `scrollbar-gutter: stable` on html keeps layout from shifting, so the
+   old `height: 100svh` + body{position:fixed} trick (which created a second
+   scroll context = double scrollbar) is gone. */
+html.lock-scroll,
+body.lock-scroll {
+  /* Prevent page scrolling while overlay is active */
+  overflow: hidden !important;
+  /* Keep native overscroll and pull-to-refresh disabled while locked */
+  overscroll-behavior: none !important;
+  overscroll-behavior-y: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Ultra-strict scroll container */
+.text-reveal-container {
+  scroll-behavior: auto;
+  overscroll-behavior: none;
+}
+
+/* Prevent any scroll momentum on mobile devices */
+@media (max-width: 768px) {
+  .text-reveal-container {
+    touch-action: pan-y;
+    overscroll-behavior: none;
+  }
+}
+
+/* ==========================================================================
+   DARK MODE EXPLICIT OVERRIDES - Turquoise accent for consistency
+   ========================================================================== */
+
+html[data-theme="dark"] .reveal-stepper::before,
+html[data-theme="dark"] .reveal-stepper::after {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9);
+  box-shadow:
+    0 0 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 0 24px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
+}
+
+html[data-theme="dark"] .reveal-stepper::before {
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9));
+}
+
+html[data-theme="dark"] .reveal-stepper::after {
+  background: linear-gradient(90deg, rgba(var(--accent-400-rgb, 38, 201, 216), 0.9), transparent);
+}
+
+html[data-theme="dark"] .stepper-dot.active {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9) !important;
+  border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 2px 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25) !important;
+}
+
+html[data-theme="dark"] .stepper-dot.active:hover {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 1) !important;
+  box-shadow:
+    0 0 18px rgba(var(--accent-400-rgb, 38, 201, 216), 0.6),
+    0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.3) !important;
+}
+
+html[data-theme="dark"] .stepper-dot:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4),
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.3);
+}
+
+html[data-theme="dark"] .stepper-dot.active:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 0 20px rgba(var(--accent-400-rgb, 38, 201, 216), 0.6),
+    0 4px 12px rgba(var(--accent-400-rgb, 38, 201, 216), 0.35) !important;
+}
+
+html[data-theme="dark"] .reveal-stepper .stepper-dot.active {
+  background: rgba(var(--accent-400-rgb, 38, 201, 216), 0.9) !important;
+  border: 1px solid rgba(var(--accent-400-rgb, 38, 201, 216), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.5),
+    0 2px 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25) !important;
+}
+
+/* ==========================================================================
+   MANUAL LIGHT ON DARK-OS — kill turquoise leaks (site contract: light = blue)
+   The unguarded `prefers-color-scheme: dark` blocks above match whenever the
+   OS is dark, even with data-theme="light". These explicit overrides win by
+   specificity + source order, so the stepper pill stays brand blue.
+   ========================================================================== */
+html[data-theme="light"] .reveal-stepper .stepper-dot.active {
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 0.9) !important;
+  border: 1px solid rgba(var(--primary-500-rgb, 33, 150, 243), 0.4) !important;
+  box-shadow:
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 2px 8px rgba(var(--primary-500-rgb, 33, 150, 243), 0.25) !important;
+}
+
+html[data-theme="light"] .reveal-stepper .stepper-dot.active:hover {
+  background: rgba(var(--primary-500-rgb, 33, 150, 243), 1) !important;
+  box-shadow:
+    0 0 18px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3) !important;
+}
+
+html[data-theme="light"] .stepper-dot:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.4),
+    0 0 14px rgba(var(--primary-500-rgb, 33, 150, 243), 0.3);
+}
+
+html[data-theme="light"] .stepper-dot.active:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
+    0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
+    0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) !important;
+}

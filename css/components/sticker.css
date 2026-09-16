@@ -1,0 +1,98 @@
+/* ==========================================================================
+   STICKER SYSTEM (Gate P redesign)
+   Rotated sticker chips with Architects Daughter captions, scattered at
+   section boundaries — reward scrolling, never interrupt reading (dossier
+   01 §2.4 / 02 §2.4). Rotations capped at ±12deg. One interactive toy:
+   the footer "Reset stickers" control re-rolls --r (js/components/doodle.js).
+   ========================================================================== */
+
+.sticker {
+  --r: 3deg;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 180px;
+  padding: 12px 16px 10px;
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: 14px;
+  box-shadow: var(--sticker-shadow);
+  rotate: var(--r);
+  transition: rotate 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+}
+
+.sticker .sticker-art {
+  width: 52px;
+  height: 52px;
+  color: var(--hud-label);
+  display: grid;
+  place-items: center;
+}
+.sticker .sticker-art .doodle {
+  width: 44px;
+  height: 44px;
+}
+
+/* Handwriting caption, counter-rotated a touch so it sits level */
+.sticker .sticker-caption {
+  font-family: var(--font-hand);
+  font-size: 1.0625rem; /* 17px (>=16px floor) */
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink-hand);
+  rotate: calc(var(--r) * -0.4);
+}
+
+/* Section-boundary placement helper */
+.sticker-zone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+/* Reset button lives in the footer */
+.reset-stickers {
+  font-family: var(--font-hand);
+  font-size: 1.0625rem;
+  color: var(--hud-label);
+  background: none;
+  border: 0;
+  border-bottom: 1px dashed currentColor;
+  padding: 0 2px 1px;
+  cursor: pointer;
+}
+.reset-stickers:hover { color: var(--theme-primary-hover); }
+.reset-stickers:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Ambient idle bob on ONE sticker max per viewport (reduced-motion off).
+   translateY only: base rotation comes from the `rotate: var(--r)` property
+   (doodle.js caps .sticker--idle to a single sticker), so keyframes must not
+   rotate again or idle stickers sit at 2x rotation. */
+@media (prefers-reduced-motion: no-preference) {
+  .sticker--idle {
+    animation: sticker-bob 6s ease-in-out infinite;
+  }
+  @keyframes sticker-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+}
+
+/* Mobile: convert scatter to an inline strip so stickers stop overlapping */
+@media (max-width: 720px) {
+  .sticker-zone {
+    gap: 12px;
+  }
+  .sticker {
+    max-width: 150px;
+    padding: 9px 12px 8px;
+  }
+}

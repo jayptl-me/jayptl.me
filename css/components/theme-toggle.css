@@ -1,0 +1,198 @@
+/**
+ * Theme Toggle Component Styles
+ * Styles for the theme toggle button and related animations
+ * 
+ * @file css/components/theme-toggle.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   THEME TOGGLE COMPONENT
+   ========================================================================== */
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    top: var(--space-5);
+    right: var(--space-5);
+    z-index: var(--z-header);
+    background: rgba(128, 128, 128, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    /* Ensure icons fit perfectly */
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-300) var(--ease-out),
+        background-color var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out),
+        border-color var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out),
+        box-shadow var(--duration-300) var(--ease-out);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Add clickable class for custom cursor */
+    cursor: pointer;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus {
+    transform: scale(1.1);
+    /* Default fallback */
+    background: rgba(var(--primary-500-rgb), 0.15);
+    outline: none;
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Icons within the toggle */
+.theme-toggle svg {
+    width: 100%;
+    height: 100%;
+    max-width: 32px;
+    max-height: 32px;
+    min-width: 20px;
+    min-height: 20px;
+    fill: var(--theme-text);
+    transition: opacity var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out),
+        transform var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out),
+        fill var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out);
+}
+
+/* Sun/moon crossfade: both icons stay rendered and stacked so the swap
+   spins on the master clock instead of popping via display:none. */
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+    display: block;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    pointer-events: none;
+}
+
+/* Light mode - moon out */
+.theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+}
+
+.theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* Dark mode - sun out */
+html[data-theme="dark"] .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+html[data-theme="dark"] .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+}
+
+/* Animations for icon transitions */
+@media (prefers-reduced-motion: no-preference) {
+    .theme-toggle svg {
+        transition: opacity var(--duration-300) var(--ease-out),
+            transform var(--duration-500) var(--ease-out);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+        position: absolute;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .theme-toggle {
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        padding: 4px;
+        /* Ensure it doesn't extend beyond viewport */
+        max-width: calc(100vw - 24px);
+        box-sizing: border-box;
+    }
+
+    .theme-toggle svg {
+        width: 100%;
+        height: 100%;
+        max-width: 24px;
+        max-height: 24px;
+        min-width: var(--space-4);
+        min-height: var(--space-4);
+    }
+}
+
+/* Lightsaber variant (used in navbar): blade color glides on the master
+   clock so it lands with the ignite/retract sound (~380ms). */
+.theme-toggle .lightsaber-blade {
+    /* Default to current text color; overridden per theme below */
+    fill: currentColor;
+    transition: fill var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out),
+        opacity var(--theme-x-duration, 380ms) var(--theme-x-ease, ease-out);
+}
+
+.theme-toggle .lightsaber-glow {
+    fill: transparent;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Accessibility: Disable transitions and glow for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .theme-toggle .lightsaber-blade,
+    .theme-toggle .lightsaber-glow {
+        transition: none !important;
+        filter: none !important;
+    }
+
+    /* Ensure the glow is completely hidden in reduced-motion mode */
+    .theme-toggle .lightsaber-glow {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Light: saber off (black), no glow */
+html[data-theme="light"] .theme-toggle .lightsaber-blade {
+    fill: var(--theme-text);
+    filter: none;
+}
+
+html[data-theme="light"] .theme-toggle .lightsaber-glow {
+    opacity: 0;
+    filter: none;
+}
+
+/* Dark: saber on (turquoise), no glow/spill */
+html[data-theme="dark"] .theme-toggle .lightsaber-blade {
+    fill: var(--accent-400);
+    filter: none;
+}
+
+html[data-theme="dark"] .theme-toggle .lightsaber-glow {
+    opacity: 0;
+    filter: none;
+}
+
+/* No glow on hover in dark theme */
+html[data-theme="dark"] .theme-toggle:hover .lightsaber-blade {
+    filter: none;
+}
+
+/* No glow on hover in light theme */
+html[data-theme="light"] .theme-toggle:hover .lightsaber-blade {
+    filter: none;
+}

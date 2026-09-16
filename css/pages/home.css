@@ -1,0 +1,359 @@
+/**
+ * Home Page Styles — BELOW HERO (Gate P redesign)
+ * Doodle-led, HUD-accent homepage sections under the locked hero.
+ * Light = blue skeuomorphic ramp; dark = turquoise glass. No gradients.
+ *
+ * @file pages/home.css
+ */
+
+/* ==========================================================================
+   BELOW-HERO SECTION SCAFFOLD
+   ========================================================================== */
+.home-section {
+  padding: var(--space-20) 0;
+  position: relative;
+}
+.home-section + .home-section {
+  border-top: 1px dashed var(--theme-border);
+}
+
+/* Shared intro headings in the new display voice */
+.home-section .hud-label {
+  margin-bottom: var(--space-3);
+}
+.home-section .section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  text-wrap: balance;
+  color: var(--theme-text);
+  margin: 0 0 var(--space-4);
+  max-width: 24ch;
+}
+
+/* ==========================================================================
+   01 · INTRO
+   ========================================================================== */
+.home-intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-8);
+  align-items: start;
+}
+.home-intro-lead {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  color: var(--theme-text-secondary);
+  max-width: 60ch;
+  margin: 0 0 var(--space-4);
+}
+.home-intro-more {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--theme-text);
+  max-width: 58ch;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* Handwritten margin note + arrow */
+.home-note {
+  position: relative;
+  align-self: center;
+  max-width: 240px;
+  text-align: left;
+  padding: var(--space-2) 0;
+}
+.home-note .hand {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+.doodle-note-arrow {
+  position: absolute;
+  width: 74px;
+  height: 30px;
+  top: -26px;
+  right: -14px;
+  rotate: -8deg;
+  color: var(--doodle-line);
+}
+
+/* ==========================================================================
+   02 · NOW — static real metrics rail (HUD readouts)
+   ========================================================================== */
+.now-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 var(--space-4);
+}
+.now-rail .metric {
+  flex: 0 0 auto;
+  min-width: 150px;
+}
+.now-footnote {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--theme-text-tertiary);
+  margin: 0;
+}
+
+/* ==========================================================================
+   03 · SELECTED WORK — calm featured grid (no carousel)
+   ========================================================================== */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-8) 0 var(--space-6);
+}
+.work-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--rounded-2xl);
+  overflow: hidden;
+  box-shadow: var(--theme-surface-shadow-sm);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
+}
+.work-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--theme-surface-shadow);
+  border-color: var(--theme-border-hover);
+}
+.work-card--hover .work-card-cover {
+  transform: scale(1.02);
+}
+.work-card-cover {
+  transition: transform 300ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-card:hover,
+  .work-card--hover .work-card-cover {
+    transform: none;
+  }
+}
+
+/* Cover with placement badge on the corner (dossier 01 §2.1) */
+.work-card-cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: var(--theme-bg-secondary);
+  overflow: hidden;
+}
+.work-cover-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-text-tertiary);
+}
+.work-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--theme-primary);
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.work-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  flex: 1;
+}
+.work-card-title {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+.work-card-title a {
+  color: var(--theme-text);
+  text-decoration: none;
+}
+.work-card-title a:hover {
+  color: var(--theme-primary-hover);
+}
+.work-card-desc {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  margin: 0;
+  max-width: none;
+}
+
+/* Tech tag run + dot-separated links row (dossier 01 §2.1) */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tag-row li {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.03em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--marker-band);
+  color: var(--hud-label);
+}
+.links-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: auto;
+  font-size: var(--text-sm);
+}
+.links-row li + li::before {
+  content: "\00B7";
+  margin-right: 8px;
+  color: var(--theme-text-tertiary);
+}
+.links-row a {
+  color: var(--theme-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.links-row a:hover {
+  color: var(--theme-primary-hover);
+  text-decoration: underline;
+}
+
+.work-all-link {
+  font-size: var(--text-base);
+  margin: var(--space-4) 0 0;
+}
+.work-all-link a {
+  color: var(--theme-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.work-all-link a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   04 · STICKER BREAK — see css/components/sticker.css
+   ========================================================================== */
+.home-section--sticker {
+  padding: var(--space-12) 0;
+  border-top: 0;
+  background: var(--theme-bg-secondary);
+}
+
+/* ==========================================================================
+   05 · ABOUT TEASER
+   ========================================================================== */
+.home-about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  gap: var(--space-10);
+  align-items: center;
+}
+.home-about-copy .section-title {
+  max-width: 22ch;
+}
+.home-about-text {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  color: var(--theme-text-secondary);
+  max-width: 55ch;
+  margin: 0 0 var(--space-6);
+}
+.home-fig {
+  margin: 0;
+}
+.home-fig-frame {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--rounded-xl);
+  border: 1px dashed var(--theme-border-strong);
+  background: var(--theme-surface-secondary);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--theme-border);
+  background: var(--theme-bg-secondary);
+  padding: var(--space-10) 0;
+}
+.site-footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+.site-footer-signoff {
+  margin: 0;
+}
+.site-footer-meta {
+  font-size: 0.8125rem;
+  color: var(--theme-text-tertiary);
+  margin: 0;
+}
+.site-footer-meta a {
+  color: var(--theme-primary);
+  text-decoration: none;
+}
+.site-footer-meta a:hover {
+  text-decoration: underline;
+}
+.reset-stickers {
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 860px) {
+  .home-intro-grid,
+  .home-about-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-note {
+    max-width: 100%;
+    padding-left: var(--space-2);
+  }
+  .home-section {
+    padding: var(--space-16) 0;
+  }
+}
+@media (max-width: 640px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+  .now-rail .metric {
+    flex: 1 1 130px;
+  }
+}

@@ -1,0 +1,20 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon icon-success"><title>Check Circle icon</title>
+  <defs>
+    <linearGradient id="i-check-circle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #14b8a6);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #0d9488);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <circle cx="12" cy="12" r="10" fill="url(#i-check-circle-grad)" opacity="0.2" pathLength="1"/>
+    <circle cx="12" cy="12" r="10" stroke="url(#i-check-circle-grad)" stroke-width="2" fill="none" pathLength="1"/>
+    <path d="M8 12l3 3 5-6" stroke="url(#i-check-circle-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+  </g>
+  
+  <!-- Monochrome fallback -->
+  <g class="icon-mono" style="display:none;">
+    <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" pathLength="1"/>
+    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+    <path d="M8 12l3 3 5-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+  </g>
+</svg>

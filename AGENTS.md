@@ -1,0 +1,57 @@
+# jayptl.me — Project Rules (AGENTS.md)
+
+Project-level brain. Global laws live in Hermes memory; only jayptl.me facts belong here.
+
+## Hard rules
+
+- STRICTLY hand-written HTML/CSS/JS. No frameworks, no build-step rewrites.
+- 100% ORIGINAL, BESPOKE IMPLEMENTATION. All UI features, animations, layouts, and components must be written completely from scratch in custom vanilla HTML/CSS/JS. UI concepts, snippets, or blocks from prompts, documentation, or the web may serve ONLY as conceptual inspiration for our own custom implementations.
+- ZERO external proprietary dependencies or registries. Never fetch from, install, import, or configure private/commercial registries (e.g. commercial component registries, private registries, paid UI kits, or authenticated npm scopes).
+- ZERO third-party trademark/product names in deliverables, source code, docstrings, comments, or commit messages. Never brand or attribute our bespoke code to external proprietary libraries.
+- Light theme = skeuomorphic BLUE ramp (#2196f3). NEVER turquoise in light mode.
+- Dark theme = glassmorphism TURQUOISE ramp (#00b8cc). NEVER blue in dark mode.
+- Zero emojis in deliverables.
+
+## Theme Taste & Aesthetics Specification
+
+The portfolio uses two fundamentally distinct design languages across light and dark modes. Agents must NEVER mix their tokens, visual materials, or color ramps.
+
+### 1. Dark Mode Taste: "Liquid Glass" (Turquoise Ramp)
+- **Vibe & Mood**: Sci-Fi, deep space refractive liquid glass, glowing neon reflections, sleek obsidian aesthetic.
+- **Color Palette**: STRICTLY Turquoise ramp (`#00b8cc`, `var(--accent-400)`, `var(--accent-500)`, `var(--accent-300)`). **NEVER blue in dark mode.**
+- **Materiality & Surfaces**:
+  - Translucent obsidian/slate surfaces (`linear-gradient(135deg, rgba(14, 22, 33, 0.78), rgba(8, 13, 20, 0.88))`).
+  - High blur refraction: `backdrop-filter: blur(20px) saturate(160%)`.
+  - Specular rim reflections: crisp white/translucent inner highlight on the top edge (`inset 0 1px 1px 0 rgba(255, 255, 255, 0.22)`).
+  - Ambient edge glow: diffuse turquoise perimeter glow (`0 0 20px -2px rgba(0, 184, 204, 0.15)`).
+  - Neon accents: glowing cyan/turquoise badges, status indicators, and lightsaber beam.
+
+### 2. Light Mode Taste: "Soft Calm Clay & Light Play UI" (Skeuomorphic Blue Ramp)
+- **Vibe & Mood**: Tactile, organic, calm, premium porcelain/clay extrusion with directional ambient lighting and physical depth.
+- **Color Palette**: STRICTLY Skeuomorphic Blue ramp (`#2196f3`, `var(--primary-500)`, `var(--primary-600)`, `var(--primary-900)`). **NEVER turquoise in light mode.**
+- **Materiality & Surfaces**:
+  - Opaque-matte porcelain/clay surfaces (`rgba(244, 248, 252, 0.94)` or `#ffffff`).
+  - Tactile depth via dual diffused shadows: soft ambient spread (`0 12px 30px -6px rgba(33, 150, 243, 0.18)`) + close contact shadow (`0 4px 12px rgba(0, 0, 0, 0.05)`).
+  - Light Play inner bevels: top inner highlight catching an overhead light source (`inset 0 2px 1px rgba(255, 255, 255, 0.95)`) and bottom ambient shadow rim (`inset 0 -2px 1px rgba(33, 150, 243, 0.10)`).
+  - Pill buttons and cards feel physically pressable and extruded, rather than flat or harsh.
+
+## Ops
+
+- Dev server habitually runs on port 8000 (other projects must not take it;
+  swalook backend uses 8001 for this reason).
+- Static deploy: Netlify-style `_headers` / `_redirects` + `render.yaml` in root.
+- `dist/` is build output; edit sources in `pages/`, `css/`, `js/`.
+
+## Decision Gates — Two-Gate Law (adopted 2026-08-26, global across ~/Development)
+
+1. GATE R — Research that feeds planning finalizes ONLY when Jay picks from named,
+   distinct, production-grade options (official docs, live sites, shipped OSS, cited
+   sources). Rejection means research MORE distinct/deeper sources; never re-serve
+   the same options reworded.
+2. GATE P — Implementation starts ONLY after a written plan citing finalized research
+   AND Jay's explicit approval. No code edits, DB writes, deploys, builds, or messages
+   sent on Jay's behalf before Gate P passes.
+
+Read-only research and diagnostics are unrestricted. Full protocol: Hermes global
+skill `option-rack-protocol`. Per-project decision registers log their own entries
+(pm/DECISIONS.md where present); numbering is independent per project.

@@ -17,8 +17,7 @@ Hero project · Live on Google Play. A digital healthcare ecosystem where patien
 
 ### Swalook CRM
 
-Enterprise SaaS · In production. A ground-up architectural overhaul of a salon-management platform serving real merchants with real concurrent workloads. Next.js 16 Turborepo monorepo (five products), Tailored UI + Recharts dashboards, a Bun + Hono backend on PostgreSQL/Drizzle with Redis and BullMQ, 35+ REST endpoints documented with OpenAPI/Scalar, and a Flutter consumer app with ML Kit face-mesh AR hairstyle previews.
-
+Enterprise SaaS · In production. A ground-up architectural overhaul of a salon-management platform serving real merchants with real concurrent workloads. Next.js 16 Turborepo monorepo (five products), Shadcn UI + Recharts dashboards, a Bun + Hono backend on PostgreSQL/Drizzle with Redis and BullMQ, 35+ REST endpoints documented with OpenAPI/Scalar, and a Flutter consumer app with ML Kit face-mesh AR hairstyle previews.
 
 ### Genuinest
 

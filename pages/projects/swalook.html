@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Swalook CRM — Case Study | Jay Patel | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/projects/swalook" />
-    <link rel="alternate" type="text/markdown" href="/projects/swalook.md" title="Markdown version of this case study" />
+    <link rel="alternate" type="text/markdown" href="/projects/swalook.md"
+        title="Markdown version of this case study" />
     <meta name="description"
         content="How Jay Patel rebuilt Swalook CRM from the ground up — a Next.js 16 Turborepo frontend, a Bun + Hono backend with 35+ documented endpoints, and a Flutter consumer app with ML Kit AR previews." />
 
@@ -76,17 +77,35 @@
         <section class="tldr-card" aria-label="Summary">
             <h2>The 60-second version</h2>
             <dl class="tldr-grid">
-                <div><dt>My role</dt><dd>Full-stack developer — architecture lead across frontend, backend, mobile,
-                        marketing site, and admin console</dd></div>
-                <div><dt>The product</dt><dd>Salon management CRM: appointments, clients, commerce, and analytics for
-                        merchant teams</dd></div>
-                <div><dt>The stack</dt><dd>Next.js 16 Turborepo · Bun + Hono + Drizzle (PostgreSQL/Aiven) · Redis +
-                        BullMQ · Flutter consumer app</dd></div>
-                <div><dt>Hardest problem</dt><dd>Migrating a live business off legacy MySQL without breaking the
-                        merchants using it daily</dd></div>
-                <div><dt>Status</dt><dd>v1.90 tagged and shipping at v2.swalook.in</dd></div>
-                <div><dt>Killer features</dt><dd>Recharts dashboards · ML Kit AR hair previews · multi-tenant RBAC
-                        command center</dd></div>
+                <div>
+                    <dt>My role</dt>
+                    <dd>Full-stack developer — architecture lead across frontend, backend, mobile,
+                        marketing site, and admin console</dd>
+                </div>
+                <div>
+                    <dt>The product</dt>
+                    <dd>Salon management CRM: appointments, clients, commerce, and analytics for
+                        merchant teams</dd>
+                </div>
+                <div>
+                    <dt>The stack</dt>
+                    <dd>Next.js 16 Turborepo · Bun + Hono + Drizzle (PostgreSQL/Aiven) · Redis +
+                        BullMQ · Flutter consumer app</dd>
+                </div>
+                <div>
+                    <dt>Hardest problem</dt>
+                    <dd>Migrating a live business off legacy MySQL without breaking the
+                        merchants using it daily</dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd>v1.90 tagged and shipping at v2.swalook.in</dd>
+                </div>
+                <div>
+                    <dt>Killer features</dt>
+                    <dd>Recharts dashboards · ML Kit AR hair previews · multi-tenant RBAC
+                        command center</dd>
+                </div>
             </dl>
         </section>
 
@@ -98,15 +117,15 @@
         </figure>
 
         <article class="case-body">
-        <nav class="case-rail" aria-label="Sections">
-          <a href="#cs-01">01</a>
-        <a href="#cs-02">02</a>
-        <a href="#cs-03">03</a>
-        <a href="#cs-04">04</a>
-        <a href="#cs-05">05</a>
-        <a href="#cs-06">06</a>
-        <a href="#cs-07">07</a>
-        </nav>
+            <nav class="case-rail" aria-label="Sections">
+                <a href="#cs-01">01</a>
+                <a href="#cs-02">02</a>
+                <a href="#cs-03">03</a>
+                <a href="#cs-04">04</a>
+                <a href="#cs-05">05</a>
+                <a href="#cs-06">06</a>
+                <a href="#cs-07">07</a>
+            </nav>
 
             <section class="case-section" id="cs-01">
                 <h2><span class="case-section-no hud-readout">01</span> The problem — and who felt it</h2>
@@ -133,7 +152,8 @@
                     platform: <code>swalook-frontend-new</code>, <code>swalook-backend</code>,
                     <code>swalook-prototype</code> (Flutter), <code>swalook-landing-page</code>, and
                     <code>crm-super-admin</code>. Frontend, backend, mobile, marketing surface, and the multi-tenant
-                    command center all shipped through this rewrite.</p>
+                    command center all shipped through this rewrite.
+                </p>
             </section>
 
             <section class="case-section" id="cs-03">
@@ -142,7 +162,7 @@
                 <ul>
                     <li><strong>Turborepo monorepo over repo sprawl.</strong> Five products sharing types, components,
                         and release discipline — one <code>bun run</code> away from synchronized builds.</li>
-                    <li><strong>Tailored UI + Recharts for the merchant experience.</strong> Dense information design
+                    <li><strong>Shadcn UI + Recharts for the merchant experience.</strong> Dense information design
                         that stays legible on a 13-inch screen at a busy front desk — dashboards first, decoration
                         never.</li>
                     <li><strong>A consumer app that earns its install.</strong> The Flutter prototype uses Provider,
@@ -154,7 +174,7 @@
             <section class="case-section" id="cs-04">
                 <h2><span class="case-section-no hud-readout">04</span> Engineering it</h2>
                 <ul>
-                    <li><strong>Frontend:</strong> Next.js 16 App Router in TypeScript with TanStack patterns, bespoke
+                    <li><strong>Frontend:</strong> Next.js 16 App Router in TypeScript with TanStack patterns, Shadcn
                         UI componentry, and Recharts analytics — structured so each product ships independently yet
                         shares a design backbone via Turborepo.</li>
 
@@ -201,7 +221,9 @@
             </section>
         </article>
 
-        <nav class="case-next" aria-label="More case studies"><p class="hand">up next</p><a href="/projects/genuinest" class="card-link card-link-primary">Next case study: Genuinest DevOps →</a>
+        <nav class="case-next" aria-label="More case studies">
+            <p class="hand">up next</p><a href="/projects/genuinest" class="card-link card-link-primary">Next case
+                study: Genuinest DevOps →</a>
         </nav>
     </main>
 

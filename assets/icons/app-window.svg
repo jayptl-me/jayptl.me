@@ -1,0 +1,22 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon"><title>App Window icon</title>
+  <defs>
+    <linearGradient id="i-app-window-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#i-app-window-grad)" opacity="0.15" pathLength="1"/>
+    <rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#i-app-window-grad)" stroke-width="2" fill="none" pathLength="1"/>
+    <path d="M3 9h18" stroke="url(#i-app-window-grad)" stroke-width="2" pathLength="1"/>
+    <circle cx="7" cy="6" r="1" fill="url(#i-app-window-grad)" pathLength="1"/>
+    <circle cx="10" cy="6" r="1" fill="url(#i-app-window-grad)" pathLength="1"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" opacity="0.15" pathLength="1"/>
+    <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+    <path d="M3 9h18" stroke="currentColor" stroke-width="2" pathLength="1"/>
+    <circle cx="7" cy="6" r="1" fill="currentColor" pathLength="1"/>
+    <circle cx="10" cy="6" r="1" fill="currentColor" pathLength="1"/>
+  </g>
+</svg>

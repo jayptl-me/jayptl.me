@@ -1,0 +1,22 @@
+/**
+ * PixelSwap — Visible Raw Retro-Tech Clip & Tile Ripple
+ *
+ * @file components/pixel-swap.css
+ */
+
+.pixel-swap-host {
+  will-change: clip-path;
+  contain: paint;
+}
+
+.pixel-swap-svg-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -9999;
+}
+

@@ -1,0 +1,65 @@
+/* ==========================================================================
+   RESUME PAGE (/resume)
+   Canonical HTML resume. Print-friendly. Uses existing theme tokens only.
+   Light = blue ramp, Dark = turquoise glass. No new palette.
+   ========================================================================== */
+
+.resume-page .resume-contact {
+    margin: var(--space-4) 0 0;
+}
+
+.resume-page .resume-actions {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+}
+
+.resume-page .resume-actions button {
+    font: inherit;
+    cursor: pointer;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 8px;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-surface-bg);
+    color: var(--theme-text);
+    transition: border-color var(--duration-fast) var(--ease-smooth),
+        color var(--duration-fast) var(--ease-smooth);
+}
+
+.resume-page .resume-actions button:hover {
+    border-color: var(--theme-primary);
+    color: var(--theme-primary);
+}
+
+.resume-page section {
+    margin: var(--space-10) 0;
+}
+
+.resume-page article {
+    margin: var(--space-5) 0;
+}
+
+.resume-page ul {
+    padding-left: 1.25rem;
+}
+
+@media print {
+    .navbar,
+    .consent-settings-toggle,
+    .preloader,
+    .resume-actions {
+        display: none !important;
+    }
+
+    .about-page {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    body {
+        background: #fff;
+        color: #111;
+    }
+}

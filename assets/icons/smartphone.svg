@@ -1,0 +1,18 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon"><title>Smartphone icon</title>
+  <defs>
+    <linearGradient id="i-smartphone-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <rect x="5" y="2" width="14" height="20" rx="3" fill="url(#i-smartphone-grad)" opacity="0.2" pathLength="1"/>
+    <rect x="5" y="2" width="14" height="20" rx="3" stroke="url(#i-smartphone-grad)" stroke-width="2" fill="none" pathLength="1"/>
+    <line x1="12" y1="18" x2="12" y2="18" stroke="url(#i-smartphone-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <rect x="5" y="2" width="14" height="20" rx="3" fill="currentColor" opacity="0.2" pathLength="1"/>
+    <rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+    <line x1="12" y1="18" x2="12" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+  </g>
+</svg>

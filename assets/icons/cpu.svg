@@ -1,0 +1,20 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon"><title>CPU icon</title>
+  <defs>
+    <linearGradient id="i-cpu-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <rect x="4" y="4" width="16" height="16" rx="2" fill="url(#i-cpu-grad)" opacity="0.15" pathLength="1"/>
+    <rect x="4" y="4" width="16" height="16" rx="2" stroke="url(#i-cpu-grad)" stroke-width="2" fill="none" pathLength="1"/>
+    <rect x="9" y="9" width="6" height="6" rx="1" fill="url(#i-cpu-grad)" opacity="0.5" pathLength="1"/>
+    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" stroke="url(#i-cpu-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+  </g>
+  <g class="icon-mono" style="display:none;">
+    <rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor" opacity="0.15" pathLength="1"/>
+    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+    <rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" opacity="0.5" pathLength="1"/>
+    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+  </g>
+</svg>

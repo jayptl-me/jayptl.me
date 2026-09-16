@@ -1,0 +1,928 @@
+/**
+ * Hero Section Components
+ * Homepage hero sections and landing area styles
+ * 
+ * @file components/hero.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   BASE HERO STYLES
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  height: 100svh;
+  /* Small viewport height for better mobile support */
+  height: 100dvh;
+  /* Dynamic viewport height fallback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--theme-bg) !important;
+  background-image: none !important;
+}
+
+.hero-container {
+  max-width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: var(--space-6);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  /* Allow interaction with text picker */
+  pointer-events: auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-container {
+    padding: var(--space-8);
+  }
+}
+
+/* ==========================================================================
+   HERO CONTENT
+   ========================================================================== */
+
+.hero-content {
+  max-width: min(800px, 100%);
+  margin: 0 auto;
+  text-align: center !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  /* Center the content area properly */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 var(--space-4);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-6);
+  text-wrap: balance;
+  text-align: center !important;
+  display: block;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  /* Theme-aware Gradient Text Effect */
+  background: var(--theme-gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  /* Fallback for browsers that don't support background-clip: text */
+  @supports not (background-clip: text) {
+    color: var(--theme-text);
+  }
+}
+
+.hero-subtitle {
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  color: var(--theme-text-secondary);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-normal);
+  margin-bottom: var(--space-8);
+  text-wrap: balance;
+}
+
+.hero-description {
+  font-size: var(--text-lg);
+  color: var(--theme-text-secondary);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-10);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   HERO ACTIONS
+   ========================================================================== */
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-12);
+}
+
+@media (max-width: 640px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ==========================================================================
+   HERO VARIANTS
+   ========================================================================== */
+
+/* Split Hero */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--space-12);
+  text-align: left;
+  padding: var(--space-12) 0;
+}
+
+@media (min-width: 768px) {
+  .hero-split {
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+}
+
+.hero-split .hero-content {
+  max-width: none;
+}
+
+.hero-split .hero-actions {
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .hero-split .hero-actions {
+    justify-content: center;
+  }
+}
+
+/* Minimal Hero */
+.hero-minimal {
+  min-height: 60vh;
+  background: none;
+  padding: var(--space-20) 0;
+}
+
+.hero-minimal .hero-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+}
+
+/* Full-screen Hero */
+.hero-fullscreen {
+  height: 100svh;
+  /* Small viewport height for better mobile support */
+  height: 100dvh;
+  /* Dynamic viewport height fallback */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+/* ==========================================================================
+   HERO MEDIA
+   ========================================================================== */
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  transition: transform var(--duration-700) var(--ease-out);
+}
+
+.hero-image:hover {
+  transform: scale(1.02);
+}
+
+.hero-video {
+  width: 100%;
+  max-width: 600px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+}
+
+.hero-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto var(--space-6);
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hero-avatar {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* ==========================================================================
+   HERO BACKGROUND EFFECTS
+   ========================================================================== */
+
+.hero-gradient {
+  color: white;
+}
+
+.hero-gradient .hero-title,
+.hero-gradient .hero-subtitle,
+.hero-gradient .hero-description {
+  color: white;
+}
+
+.hero-gradient .hero-subtitle,
+.hero-gradient .hero-description {
+  opacity: 0.9;
+}
+
+.hero-dark {
+  background-color: var(--secondary-900);
+  color: white;
+}
+
+.hero-dark .hero-title,
+.hero-dark .hero-subtitle,
+.hero-dark .hero-description {
+  color: white;
+}
+
+.hero-dark .hero-subtitle,
+.hero-dark .hero-description {
+  opacity: 0.8;
+}
+
+/* Background Image Hero */
+.hero-bg-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.hero-bg-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.hero-bg-image .hero-container {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+/* ==========================================================================
+   HERO ANIMATIONS
+   ========================================================================== */
+
+.hero-animated .hero-title {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.2s forwards;
+}
+
+.hero-animated .hero-subtitle {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.4s forwards;
+}
+
+.hero-animated .hero-description {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.6s forwards;
+}
+
+.hero-animated .hero-actions {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp var(--duration-1000) var(--ease-out) 0.8s forwards;
+}
+
+.hero-animated .hero-image {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: fadeInScale var(--duration-1000) var(--ease-out) 1s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   HERO SCROLL INDICATOR
+   ========================================================================== */
+
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: var(--space-8);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--theme-text-secondary);
+  font-size: var(--text-sm);
+  animation: bounce 2s infinite;
+}
+
+.hero-scroll-arrow {
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* ==========================================================================
+   HERO FLOATING ELEMENTS
+   ========================================================================== */
+
+.hero-floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floating-element {
+  position: absolute;
+  opacity: 0.1;
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  top: 60%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.floating-element:nth-child(3) {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ==========================================================================
+   HERO PARTICLES
+   ========================================================================== */
+
+.hero-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-300);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: particle-float 8s linear infinite;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE HERO
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: 80vh;
+    padding: var(--space-8) 0;
+  }
+
+  .hero-container {
+    padding: var(--space-4);
+  }
+
+  .hero-scroll-indicator {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   PROJECTS SECTION (basic showcase)
+   ========================================================================== */
+.projects-section {
+  padding: var(--space-20) var(--space-6);
+  background: var(--theme-bg);
+}
+
+.projects-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.projects-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: var(--space-8);
+  color: var(--theme-text);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+.project-card {
+  /* Glassmorphism base */
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-5);
+  transition: transform var(--duration-300) var(--ease-out), box-shadow var(--duration-300) var(--ease-out);
+}
+
+/* Light Mode Glass Card */
+html[data-theme="light"] .project-card {
+  background: var(--glass-bg-light);
+  border: var(--glass-border-light);
+}
+
+/* Dark Mode Glass Card */
+html[data-theme="dark"] .project-card {
+  background: var(--glass-bg-dark);
+  border: var(--glass-border-dark);
+}
+
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
+}
+
+.project-card:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring), var(--theme-shadow);
+}
+
+.project-title {
+  font-weight: var(--weight-semibold);
+  color: var(--theme-text);
+  margin-bottom: var(--space-2);
+}
+
+.project-desc {
+  color: var(--theme-text-secondary);
+}
+
+/* ==========================================================================
+   RESPONSIVE HERO STYLES
+   ========================================================================== */
+
+/* Extra Small Devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  .hero {
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
+    padding-bottom: 8vh;
+  }
+
+  .hero-container {
+    padding: var(--space-3);
+    max-width: 100%;
+  }
+
+  .hero-content {
+    min-height: 70vh;
+    max-width: 100%;
+    padding: var(--space-2);
+  }
+}
+
+/* Small Devices (landscape phones, 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .hero {
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
+    padding-bottom: 10vh;
+  }
+
+  .hero-container {
+    padding: var(--space-4);
+    max-width: 95%;
+  }
+
+  .hero-content {
+    min-height: 65vh;
+    max-width: 90%;
+  }
+}
+
+/* Medium Devices (tablets, 769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero {
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
+    padding-bottom: 12vh;
+  }
+
+  .hero-container {
+    padding: var(--space-6);
+    max-width: 90%;
+  }
+
+  .hero-content {
+    min-height: 60vh;
+    max-width: 85%;
+  }
+}
+
+/* Large Devices (laptops/desktops, 1025px and up) */
+@media (min-width: 1025px) {
+  .hero {
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
+    padding-bottom: 16vh;
+  }
+
+  .hero-container {
+    padding: var(--space-8);
+    max-width: 1200px;
+  }
+
+  .hero-content {
+    min-height: 60vh;
+    max-width: 800px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: 100svh;
+    /* Small viewport height for better mobile support */
+    min-height: 100dvh;
+    /* Dynamic viewport height fallback */
+    padding-bottom: 10vh;
+  }
+
+  .hero-content {
+    min-height: 80vh;
+  }
+}
+
+/* ==========================================================================
+   INTRODUCTION SECTION STYLES
+   ========================================================================== */
+
+.introduction-section {
+  padding: 0;
+  background: var(--theme-bg);
+  /* Account for fixed navbar height (64px) for true centering */
+  margin-top: var(--space-16);
+  min-height: calc(100vh - var(--space-16));
+  min-height: calc(100dvh - var(--space-16));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.intro-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: var(--space-8);
+  text-wrap: balance;
+}
+
+.intro-subheadline {
+  margin-top: var(--space-3);
+  font-size: 1.125rem;
+  line-height: var(--leading-relaxed);
+  color: var(--theme-text-secondary);
+  text-wrap: balance;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-body {
+  margin-top: var(--space-5);
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  font-size: 1rem;
+  line-height: var(--leading-relaxed);
+}
+
+.intro-body p {
+  margin-bottom: var(--space-4);
+}
+
+.intro-body p:last-child {
+  margin-bottom: 0;
+}
+
+.intro-ctas {
+  margin-top: var(--space-6);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.intro-flair {
+  margin-top: var(--space-5);
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile responsive styles for introduction section */
+@media (max-width: 480px) {
+  .introduction-section {
+    padding: 0 var(--space-4);
+    margin-top: var(--space-16);
+    min-height: calc(100vh - var(--space-16));
+    min-height: calc(100dvh - var(--space-16));
+  }
+
+  .intro-container {
+    max-width: 100%;
+  }
+
+  .intro-headline {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.1;
+    margin-bottom: var(--space-6);
+  }
+
+  .intro-subheadline {
+    font-size: 1rem;
+    margin-top: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+
+  .intro-body {
+    margin-top: var(--space-4);
+    font-size: 0.9rem;
+    text-align: left;
+    padding: 0 var(--space-2);
+  }
+
+  .intro-body p {
+    margin-bottom: var(--space-3);
+  }
+
+  .intro-ctas {
+    margin-top: var(--space-5);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+
+  .intro-ctas .btn {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .intro-flair {
+    margin-top: var(--space-4);
+  }
+
+  .intro-flair svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Tablet responsive styles for introduction section */
+@media (min-width: 481px) and (max-width: 768px) {
+  .introduction-section {
+    padding: 0 var(--space-5);
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
+  }
+
+  .intro-container {
+    max-width: 95%;
+  }
+
+  .intro-headline {
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .intro-subheadline {
+    font-size: 1.0625rem;
+    padding: 0 var(--space-3);
+  }
+
+  .intro-body {
+    font-size: 0.95rem;
+    padding: 0 var(--space-3);
+  }
+
+  .intro-ctas {
+    flex-direction: row;
+    gap: var(--space-3);
+    padding: 0 var(--space-3);
+  }
+
+  .intro-ctas .btn {
+    flex: 1;
+    max-width: 200px;
+  }
+}
+
+/* Large tablet to small desktop */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .introduction-section {
+    padding: 0 var(--space-6);
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
+  }
+
+  .intro-container {
+    max-width: 90%;
+  }
+
+  .intro-headline {
+    font-size: clamp(2.5rem, 6vw, 3.25rem);
+  }
+
+  .intro-body {
+    max-width: 800px;
+  }
+}
+
+/* ==========================================================================
+   DARK MODE ADJUSTMENTS
+   ========================================================================== */
+
+@media (prefers-color-scheme: light) {
+  .hero-gradient {
+    background: linear-gradient(135deg,
+        var(--primary-500) 0%,
+        var(--primary-400) 100%);
+  }
+  
+  .particle {
+    background-color: var(--primary-300);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background: var(--theme-bg);
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(135deg,
+        var(--accent-600) 0%,
+        var(--accent-500) 100%);
+  }
+  
+  .particle {
+    background-color: var(--accent-400);
+  }
+
+  .floating-element {
+    opacity: 0.05;
+  }
+}
+
+/* Explicit theme overrides */
+html[data-theme="light"] .hero-gradient {
+  background: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      var(--primary-400) 100%);
+}
+
+html[data-theme="light"] .particle {
+  background-color: var(--primary-300);
+}
+
+html[data-theme="dark"] .hero-gradient {
+  background: linear-gradient(135deg,
+      var(--accent-600) 0%,
+      var(--accent-500) 100%);
+}
+
+html[data-theme="dark"] .particle {
+  background-color: var(--accent-400);
+}

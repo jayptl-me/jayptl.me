@@ -1,0 +1,15 @@
+/* ME */
+Developer: Jay Patel
+Site: https://jayptl.me/
+Contact: hello@jayptl.me
+Role: Software Developer / UI-UX / Creative Direction
+
+/* SITE */
+Last-Updated: 2025-08-30
+Standards: HTML5, CSS3, ES6
+Hosting: Render
+Generator: Hand-crafted code (no framework)
+Language: English
+
+/* THANKS */
+Thanks: Open Web, MDN, W3C, OSS Community

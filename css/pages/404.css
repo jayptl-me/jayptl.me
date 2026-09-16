@@ -1,0 +1,82 @@
+/* 404 + 500 — shared error-page treatment (Gate P redesign).
+   Doodle-led, HUD accents, no gradients. The error code reads as a mono
+   HUD readout; one doodle mark carries the hand-drawn voice. */
+
+html { color-scheme: light dark; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+    font-family: var(--font-body);
+    background: var(--theme-bg);
+    color: var(--theme-text);
+    position: relative;
+}
+
+.error-page {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    padding: var(--space-10);
+}
+
+/* Mono HUD error code (no gradient text) */
+.error-code {
+    font-family: var(--font-mono);
+    font-size: clamp(3.5rem, 12vw, 6.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--hud-label);
+    font-variant-numeric: tabular-nums;
+    margin: 0 0 var(--space-4);
+}
+
+.error-page h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0 0 var(--space-4);
+}
+
+.error-page > p:not(.error-code):not(.error-footnote) {
+    font-size: var(--text-lg);
+    line-height: 1.65;
+    color: var(--theme-text-secondary);
+    margin: 0 auto var(--space-8);
+    max-width: 46ch;
+}
+
+.error-page .btn {
+    margin-bottom: var(--space-8);
+}
+
+.error-footnote {
+    font-size: 0.8125rem;
+    color: var(--theme-text-tertiary);
+    margin: 0;
+}
+.error-footnote a {
+    color: var(--theme-primary);
+    text-decoration: none;
+}
+.error-footnote a:hover {
+    text-decoration: underline;
+}
+
+/* Hand-drawn mark above the code */
+.error-doodle {
+    display: grid;
+    place-items: center;
+    margin: 0 0 var(--space-4);
+    color: var(--doodle-line);
+}
+.error-doodle .doodle {
+    width: 64px;
+    height: 48px;
+}

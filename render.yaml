@@ -1,0 +1,30 @@
+# Render blueprint for jayptl.me
+#
+# Served by scripts/server.js (Node) instead of a static site so the
+# agent-facing behaviors work in production:
+#   - Accept: text/markdown content negotiation with Vary: Accept
+#     (acceptmarkdown.com)
+#   - JSON error responses for /api/* and JSON-preferring clients
+#   - /api/health liveness probe (used as the Render health check)
+# Clean URLs, security headers, and cache policy previously declared in
+# static-host config are now implemented in the server itself.
+#
+# Note: switching an existing Render static service to this blueprint
+# requires re-creating the service in the Render dashboard (static sites
+# cannot be converted in place).
+services:
+  - type: web
+    name: jayptl-portfolio
+    runtime: node
+    buildCommand: bun install && bun run build
+    startCommand: node scripts/server.js
+    healthCheckPath: /api/health
+    pullRequestPreviewsEnabled: true
+
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: BUN_VERSION
+        value: 1.0.0
+      - key: NODE_ENV
+        value: production

@@ -207,7 +207,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const goingUp = y < lastY - 2;
             lastY = y;
 
-            // Only control visibility when reveal overlay is released
+            // Mobile sheet stays put while open; never auto-hide under the drawer.
+            const isMobile = (() => {
+                try {
+                    return window.matchMedia && window.matchMedia('(max-width: 860px)').matches;
+                } catch { return false; }
+            })();
+            if (isMobile && glassNav.classList.contains('open')) {
+                lastY = y;
+                return;
+            }
+
+            // Only control visibility when reveal overlay is released.
+            // Mobile mirrors desktop: visible on open, then same hide/show after release.
             const overlayReleased = document.querySelector('.text-reveal-container')?.classList.contains('released');
             if (overlayReleased) {
                 if (goingDown) {

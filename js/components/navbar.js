@@ -303,6 +303,7 @@
         drawer.setAttribute("aria-hidden", String(!open));
         try { drawer.inert = !open; } catch { }
         toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
         document.body.classList.toggle('no-scroll', open);
         document.body.classList.toggle('nav-open', open);
 
@@ -323,6 +324,14 @@
       toggle.addEventListener("click", () => {
         const willOpen = !nav.classList.contains('open');
         setOpen(willOpen);
+      });
+
+      toggle.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const willOpen = !nav.classList.contains('open');
+          setOpen(willOpen);
+        }
       });
 
       const backdrop = drawer.querySelector('.mobile-overlay');
@@ -415,23 +424,41 @@
     });
 
     // 3. Visibility behavior with hero reveal overlay
+    // Hidden during the stepper on all viewports, visible after release.
+    const MOBILE_QUERY = '(max-width: 860px)';
+    const syncVisibility = () => {
+      const ov = document.querySelector('.text-reveal-container');
+      if (!ov || ov.classList.contains('released')) {
+        setNavbarAccessibility(nav, true);
+      } else {
+        setNavbarAccessibility(nav, false);
+      }
+    };
     const overlay = document.querySelector('.text-reveal-container');
     const isReleased = overlay && overlay.classList.contains('released');
     if (!overlay || isReleased) {
       setNavbarAccessibility(nav, true);
     } else {
       setNavbarAccessibility(nav, false);
+    }
+    if (overlay && !isReleased) {
       // Auto-show when overlay releases
       try {
         const mo = new MutationObserver(() => {
           if (overlay.classList.contains('released')) {
-            setNavbarAccessibility(nav, true);
+            syncVisibility();
             mo.disconnect();
           }
         });
         mo.observe(overlay, { attributes: true, attributeFilter: ['class'] });
       } catch { /* noop */ }
     }
+    try {
+      const mq = window.matchMedia(MOBILE_QUERY);
+      const onBpChange = () => syncVisibility();
+      if (mq && mq.addEventListener) mq.addEventListener('change', onBpChange);
+      else window.addEventListener('resize', onBpChange, { passive: true });
+    } catch { /* noop */ }
   }
 
   // Expose navbar accessibility function globally for other components

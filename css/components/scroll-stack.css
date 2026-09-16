@@ -501,9 +501,12 @@ html[data-theme="dark"] .scroll-stack-btn-primary:hover {
 }
 
 /* ==========================================================================
-   08 · MOBILE STICKY PEEKING DECK STACK (<= 860px)
-   Cards stack vertically into a tactile physical deck as user scrolls,
-   with sticky top offsets, peeking tabs, full descriptions, and reactive HUD.
+   08 · MOBILE PINNED SCALE STACK (<= 860px)
+   Bespoke window-scroll pinned deck: cards pin just under the sticky HUD
+   with a 10px stagger, earlier cards shrink toward 0.85 as later cards cover
+   them. Gaps are kept tight (64px) so stacking feels continuous with no dead
+   scroll; track bottom padding is a small release spacer for the last pin.
+   Compositor-only (transform + opacity); full copy stays visible.
    ========================================================================== */
 @media (max-width: 860px) {
   .scroll-stack-container.is-scroll-driven {
@@ -513,7 +516,7 @@ html[data-theme="dark"] .scroll-stack-btn-primary:hover {
   .scroll-stack-container.is-scroll-driven .scroll-stack-stage {
     position: static;
     height: auto;
-    padding: var(--space-6) 0 var(--space-12);
+    padding: var(--space-4) 0 var(--space-8);
     overflow: visible;
   }
 
@@ -538,7 +541,7 @@ html[data-theme="dark"] .scroll-stack-btn-primary:hover {
     perspective: none;
     transform-style: flat;
     display: block;
-    padding: var(--space-6) var(--space-4) var(--space-8);
+    padding: var(--space-4) var(--space-4) var(--space-6);
     overflow: visible;
   }
 
@@ -552,23 +555,26 @@ html[data-theme="dark"] .scroll-stack-btn-primary:hover {
     max-height: none;
     margin: 0 auto;
     position: relative;
-    padding-bottom: var(--space-10);
+    /* Release spacer: lets the final pinned card settle before the footer. */
+    padding-bottom: var(--space-16);
   }
 
   .scroll-stack-card {
     position: sticky !important;
-    top: calc(72px + var(--card-index, 0) * 18px) !important;
+    top: calc(84px + var(--card-index, 0) * 10px) !important;
     inset: auto !important;
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
-    margin-bottom: 28vh;
+    margin-bottom: var(--space-16);
     border-radius: var(--rounded-2xl);
-    transform: none !important;
+    /* JS drives scale per scroll frame; origin top keeps the peek edge stable. */
+    transform-origin: top center !important;
+    will-change: transform !important;
     opacity: 1 !important;
-    filter: none !important;
+    z-index: calc(var(--card-index, 0) + 1) !important;
     overflow: hidden !important;
     box-sizing: border-box;
     transition: box-shadow 220ms ease, border-color 220ms ease;
@@ -594,8 +600,8 @@ html[data-theme="dark"] .scroll-stack-btn-primary:hover {
   }
 
   .scroll-stack-card-cover {
-    height: 140px;
-    min-height: 140px;
+    height: 120px;
+    min-height: 120px;
     border-right: none;
     border-bottom: 1px solid var(--theme-border-light);
   }

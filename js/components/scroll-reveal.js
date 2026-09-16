@@ -16,7 +16,7 @@ class ScrollRevealComponent {
     static DESKTOP_COOLDOWN_DURATION = 500;
     static MOBILE_STEP_INTERVAL = 350;
     static DESKTOP_STEP_INTERVAL = 450;
-    static MOBILE_BREAKPOINT = 768;
+    static MOBILE_BREAKPOINT = 860;
 
     constructor() {
         this.container = document.querySelector('.text-reveal-container');
@@ -181,10 +181,9 @@ class ScrollRevealComponent {
         this._keyboardHandler = this.handleKeyboard.bind(this);
         document.addEventListener('keydown', this._keyboardHandler);
 
-        // Touch events for mobile
-        if (this.isMobile) {
-            this.setupTouchEvents();
-        }
+        // Touch events for mobile and touch-capable widths.
+        // Always bound so the 769-860px range matching the nav breakpoint works.
+        this.setupTouchEvents();
 
         // Wheel event for stepper scrolling - very strict
         this._wheelHandler = this.handleWheel.bind(this);
@@ -608,7 +607,7 @@ class ScrollRevealComponent {
     }
 
     handleResize() {
-        this.isMobile = window.innerWidth <= 768;
+        this.isMobile = window.innerWidth <= 860;
     }
 
 

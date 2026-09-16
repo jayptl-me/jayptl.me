@@ -1,0 +1,432 @@
+/**
+ * Theme System - Automatic Light and Dark Mode Support
+ * Semantic color tokens that adapt to system preference only
+ * 
+ * @file base/theme.css
+ * @author Jay Patel
+ */
+
+/* Force color-scheme support */
+html {
+  color-scheme: light dark;
+}
+
+:root {
+  /* Light theme variables (default) */
+  --theme-bg: var(--white);
+  --theme-bg-rgb: 255, 255, 255;
+  /* RGB values for rgba() usage */
+  --theme-bg-secondary: var(--neutral-50);
+  --theme-bg-elevated: var(--white);
+  --theme-bg-overlay: rgba(255, 255, 255, 0.95);
+
+  --theme-surface: var(--white);
+  --theme-surface-secondary: var(--neutral-100);
+  --theme-surface-tertiary: var(--neutral-100);
+
+  --theme-text: var(--neutral-900);
+  --theme-text-secondary: var(--neutral-700);
+  --theme-text-tertiary: #595959;
+  --theme-text-inverse: var(--white);
+  --theme-text-muted: #595959;
+  --text-primary: var(--neutral-900);
+
+  /* Primary stays blue, accent turquoise adds energy */
+  --theme-primary: var(--primary-500);
+  --theme-primary-hover: var(--primary-600);
+  --theme-primary-active: var(--primary-700);
+  --theme-primary-light: var(--primary-100);
+
+  /* Accent tokens for light mode stay aligned with blue primary */
+  --theme-accent: var(--primary-600);
+  --theme-accent-hover: var(--primary-700);
+  --theme-accent-active: var(--primary-800);
+  --theme-accent-soft: var(--primary-50);
+
+  --theme-border: var(--neutral-200);
+  --theme-border-strong: var(--neutral-300);
+  --theme-border-light: var(--neutral-100);
+  --theme-border-hover: var(--neutral-300);
+  --theme-divider: var(--neutral-100);
+
+  --theme-overlay: rgba(0, 0, 0, 0.5);
+  --theme-backdrop: rgba(0, 0, 0, 0.25);
+
+  --theme-shadow: var(--shadow);
+  --theme-shadow-elevated: var(--shadow-lg);
+
+  /* Light mode brand gradients (pure blue ramps, no green/teal) */
+  --theme-gradient-primary: linear-gradient(135deg, var(--primary-600), var(--primary-400));
+  --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+  --theme-gradient-text: linear-gradient(135deg, var(--primary-700), var(--primary-500));
+
+  /* Semantic */
+  --theme-success: var(--success);
+  --theme-error: var(--error);
+  --theme-warning: var(--warning);
+  --theme-info: var(--info);
+
+  /* Icon Colors - Light Mode: Blue primary */
+  --theme-icon: var(--primary-500);
+  --theme-icon-hover: var(--primary-600);
+  --theme-icon-glow-rgb: var(--primary-500-rgb);
+
+  /* Interactive Glow States - Light Mode */
+  --theme-glow: var(--glow-primary);
+  --theme-glow-sm: var(--glow-primary-sm);
+  --theme-glow-lg: var(--glow-primary-lg);
+  --theme-glow-intense: var(--glow-primary-intense);
+
+  /* Surface Elevation - Light Mode */
+  --theme-elevation-1: var(--elevation-1);
+  --theme-elevation-2: var(--elevation-2);
+  --theme-elevation-3: var(--elevation-3);
+  --theme-elevation-4: var(--elevation-4);
+  --theme-elevation-5: var(--elevation-5);
+
+  /* Enhanced Gradients - Light Mode */
+  --theme-gradient-glow: linear-gradient(135deg, rgba(var(--primary-500-rgb), 0.12), rgba(var(--primary-400-rgb), 0.08));
+  --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  --theme-gradient-border: var(--border-gradient-primary);
+
+  /* Theme Surface Style - Light Mode (Skeuomorphic) */
+  --theme-surface-bg: var(--skeu-bg);
+  --theme-surface-shadow: var(--skeu-shadow-raised);
+  --theme-surface-shadow-sm: var(--skeu-shadow-raised-sm);
+  --theme-surface-shadow-lg: var(--skeu-shadow-raised-lg);
+  --theme-surface-shadow-hover: var(--skeu-shadow-raised-lg);
+  --theme-surface-pressed: var(--skeu-shadow-pressed);
+  --theme-surface-border: 1px solid var(--skeu-border);
+  --theme-surface-highlight: var(--skeu-highlight);
+  --theme-surface-blur: 0px;
+}
+
+/* ==========================================================================
+   EXPLICIT THEME OVERRIDES (MANUAL THEME TOGGLE)
+   ========================================================================== */
+html[data-theme="light"] {
+  --theme-bg: var(--white);
+  --theme-bg-rgb: 255, 255, 255;
+  --theme-bg-secondary: var(--neutral-50);
+  --theme-bg-elevated: var(--white);
+  --theme-bg-overlay: rgba(255, 255, 255, 0.95);
+
+  --theme-surface: var(--white);
+  --theme-surface-secondary: var(--neutral-100);
+  --theme-surface-tertiary: var(--neutral-100);
+
+  --theme-text: var(--neutral-900);
+  --theme-text-secondary: var(--neutral-700);
+  --theme-text-tertiary: #595959;
+  --theme-text-inverse: var(--white);
+  --theme-text-muted: #595959;
+  --text-primary: var(--neutral-900);
+
+  --theme-primary: var(--primary-500);
+  --theme-primary-hover: var(--primary-600);
+  --theme-primary-active: var(--primary-700);
+  --theme-primary-light: var(--primary-100);
+
+  --theme-border: var(--neutral-200);
+  --theme-border-strong: var(--neutral-300);
+  --theme-border-light: var(--neutral-100);
+  --theme-border-hover: var(--neutral-300);
+  --theme-divider: var(--neutral-100);
+
+  --theme-overlay: rgba(0, 0, 0, 0.5);
+  --theme-backdrop: rgba(0, 0, 0, 0.25);
+
+  --theme-shadow: var(--shadow);
+  --theme-shadow-elevated: var(--shadow-lg);
+
+  --theme-accent: var(--primary-600);
+  --theme-accent-hover: var(--primary-700);
+  --theme-accent-active: var(--primary-800);
+  --theme-accent-soft: var(--primary-50);
+
+  --theme-gradient-primary: linear-gradient(135deg, var(--primary-600), var(--primary-400));
+  --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+  --theme-gradient-text: linear-gradient(135deg, var(--primary-700), var(--primary-500));
+  --theme-gradient-glow: linear-gradient(135deg, rgba(var(--primary-500-rgb), 0.12), rgba(var(--primary-400-rgb), 0.08));
+
+  --theme-success: var(--success);
+  --theme-error: var(--error);
+  --theme-warning: var(--warning);
+  --theme-info: var(--info);
+
+  /* Icon Colors - Light Mode: Blue primary */
+  --theme-icon: var(--primary-500);
+  --theme-icon-hover: var(--primary-600);
+  --theme-icon-glow-rgb: var(--primary-500-rgb);
+
+  /* HUD mono labels + readouts (Light Mode: brand blue & neutral) */
+  --hud-label: var(--primary-600);
+  --hud-label-dim: var(--neutral-500);
+  --hud-readout: var(--neutral-800);
+  --hud-bracket: var(--primary-500);
+
+  /* Handwriting / doodle ink (Light Mode) */
+  --ink-hand: var(--neutral-700);
+  --doodle-line: rgba(var(--primary-500-rgb), 0.55);
+  --marker-band: rgba(var(--primary-500-rgb), 0.16);
+
+  /* Paper-grid ground */
+  --paper-grid-line: rgba(var(--primary-500-rgb), 0.07);
+  --paper-grid-major: rgba(var(--primary-500-rgb), 0.1);
+  --sticker-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  --glow-focal: 0 0 24px rgba(var(--primary-500-rgb), 0.18), 0 0 2px rgba(var(--primary-500-rgb), 0.25);
+
+  /* Theme Surface Style - Light Mode (Skeuomorphic) */
+  --theme-surface-bg: var(--skeu-bg);
+  --theme-surface-shadow: var(--skeu-shadow-raised);
+  --theme-surface-shadow-sm: var(--skeu-shadow-raised-sm);
+  --theme-surface-shadow-lg: var(--skeu-shadow-raised-lg);
+  --theme-surface-shadow-hover: var(--skeu-shadow-raised-lg);
+  --theme-surface-pressed: var(--skeu-shadow-pressed);
+  --theme-surface-border: 1px solid var(--skeu-border);
+  --theme-surface-highlight: var(--skeu-highlight);
+  --theme-surface-blur: 0px;
+
+  background-color: var(--white);
+  color: var(--theme-text);
+}
+
+html[data-theme="dark"] {
+  --theme-bg: var(--black);
+  --theme-bg-rgb: 0, 0, 0;
+  --theme-bg-secondary: var(--neutral-900);
+  --theme-bg-elevated: var(--neutral-800);
+  --theme-bg-overlay: rgba(33, 33, 33, 0.95);
+
+  --theme-surface: var(--neutral-900);
+  --theme-surface-secondary: var(--neutral-800);
+  --theme-surface-tertiary: var(--neutral-700);
+
+  --theme-text: var(--neutral-100);
+  --theme-text-secondary: var(--neutral-300);
+  --theme-text-tertiary: var(--neutral-400);
+  --theme-text-inverse: var(--neutral-900);
+  --theme-text-muted: #a3a3a3;
+  --text-primary: var(--neutral-100);
+
+  --theme-primary: var(--accent-400);
+  --theme-primary-hover: var(--accent-300);
+  --theme-primary-active: var(--accent-200);
+  --theme-primary-light: var(--accent-800);
+
+  --theme-border: var(--neutral-700);
+  --theme-border-strong: var(--neutral-600);
+  --theme-border-light: var(--neutral-800);
+  --theme-border-hover: var(--neutral-600);
+  --theme-divider: var(--neutral-800);
+
+  --theme-overlay: rgba(0, 0, 0, 0.7);
+  --theme-backdrop: rgba(0, 0, 0, 0.5);
+
+  --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --theme-shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+
+  --theme-gradient-primary: linear-gradient(135deg, var(--accent-500), var(--accent-400));
+  --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+  --theme-gradient-text: linear-gradient(135deg, var(--accent-300), var(--accent-400));
+
+  --theme-success: var(--success);
+  --theme-error: var(--error);
+  --theme-warning: var(--warning);
+  --theme-info: var(--info);
+
+  /* Icon Colors - Dark Mode: Turquoise accent */
+  --theme-icon: var(--accent-400);
+  --theme-icon-hover: var(--accent-300);
+  --theme-icon-glow-rgb: var(--accent-400-rgb);
+
+  /* Interactive Glow States - Dark Mode (Turquoise) */
+  --theme-glow: var(--glow-accent);
+  --theme-glow-sm: var(--glow-accent-sm);
+  --theme-glow-lg: var(--glow-accent-lg);
+  --theme-glow-intense: var(--glow-accent-intense);
+
+  /* Surface Elevation - Dark Mode (Stronger shadows) */
+  --theme-elevation-1: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --theme-elevation-2: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --theme-elevation-3: 0 10px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  --theme-elevation-4: 0 20px 40px rgba(0, 0, 0, 0.45), 0 8px 16px rgba(0, 0, 0, 0.35);
+  --theme-elevation-5: 0 32px 56px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.4);
+
+  /* Enhanced Gradients - Dark Mode */
+  --theme-gradient-glow: linear-gradient(135deg, rgba(var(--accent-400-rgb), 0.15), rgba(var(--accent-500-rgb), 0.08));
+  --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+  --theme-gradient-border: linear-gradient(135deg, var(--accent-400), var(--accent-600));
+
+  /* Theme Surface Style - Dark Mode (Glassmorphism) */
+  --theme-surface-bg: var(--glass-bg);
+  --theme-surface-shadow: var(--glass-shadow);
+  --theme-surface-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --theme-surface-shadow-lg: var(--glass-shadow-elevated);
+  --theme-surface-shadow-hover: var(--glass-shadow-elevated);
+  --theme-surface-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  --theme-surface-border: 1px solid var(--glass-border);
+  --theme-surface-highlight: var(--glass-inner-glow);
+  --theme-surface-blur: var(--glass-blur);
+
+  background-color: var(--black);
+  color: var(--theme-text);
+}
+
+/* ==========================================================================
+   DARK THEME (AUTOMATIC - SYSTEM PREFERENCE)
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --theme-bg: var(--black);
+    --theme-bg-rgb: 0, 0, 0;
+    --theme-bg-secondary: var(--neutral-900);
+    --theme-bg-elevated: var(--neutral-800);
+    --theme-bg-overlay: rgba(33, 33, 33, 0.95);
+
+    --theme-surface: var(--neutral-900);
+    --theme-surface-secondary: var(--neutral-800);
+    --theme-surface-tertiary: var(--neutral-700);
+
+    --theme-text: var(--neutral-100);
+    --theme-text-secondary: var(--neutral-300);
+    --theme-text-tertiary: var(--neutral-400);
+    --theme-text-inverse: var(--neutral-900);
+    --theme-text-muted: #a3a3a3;
+    --text-primary: var(--neutral-100);
+
+    --theme-primary: var(--accent-400);
+    --theme-primary-hover: var(--accent-300);
+    --theme-primary-active: var(--accent-200);
+    --theme-primary-light: var(--accent-800);
+
+    --theme-border: var(--neutral-700);
+    --theme-border-strong: var(--neutral-600);
+    --theme-border-light: var(--neutral-800);
+    --theme-border-hover: var(--neutral-600);
+    --theme-divider: var(--neutral-800);
+
+    --theme-overlay: rgba(0, 0, 0, 0.7);
+    --theme-backdrop: rgba(0, 0, 0, 0.5);
+
+    --theme-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --theme-shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+
+    --theme-gradient-primary: linear-gradient(135deg, var(--accent-500), var(--accent-400));
+    --theme-gradient-surface: linear-gradient(135deg, var(--theme-bg-secondary), var(--theme-bg));
+    --theme-gradient-text: linear-gradient(135deg, var(--accent-300), var(--accent-400));
+
+    /* Icon Colors - Dark Mode: Turquoise accent */
+    --theme-icon: var(--accent-400);
+    --theme-icon-hover: var(--accent-300);
+    --theme-icon-glow-rgb: var(--accent-400-rgb);
+
+    /* Interactive Glow States - Dark Mode (Turquoise) */
+    --theme-glow: var(--glow-accent);
+    --theme-glow-sm: var(--glow-accent-sm);
+    --theme-glow-lg: var(--glow-accent-lg);
+    --theme-glow-intense: var(--glow-accent-intense);
+
+    /* Surface Elevation - Dark Mode */
+    --theme-elevation-1: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --theme-elevation-2: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+    --theme-elevation-3: 0 10px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+    --theme-elevation-4: 0 20px 40px rgba(0, 0, 0, 0.45), 0 8px 16px rgba(0, 0, 0, 0.35);
+    --theme-elevation-5: 0 32px 56px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.4);
+
+    /* Enhanced Gradients - Dark Mode */
+    --theme-gradient-glow: linear-gradient(135deg, rgba(var(--accent-400-rgb), 0.15), rgba(var(--accent-500-rgb), 0.08));
+    --theme-gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    --theme-gradient-border: linear-gradient(135deg, var(--accent-400), var(--accent-600));
+
+    /* Theme Surface Style - Dark Mode (Glassmorphism) */
+    --theme-surface-bg: var(--glass-bg);
+    --theme-surface-shadow: var(--glass-shadow);
+    --theme-surface-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --theme-surface-shadow-lg: var(--glass-shadow-elevated);
+    --theme-surface-shadow-hover: var(--glass-shadow-elevated);
+    --theme-surface-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    --theme-surface-border: 1px solid var(--glass-border);
+    --theme-surface-highlight: var(--glass-inner-glow);
+    --theme-surface-blur: var(--glass-blur);
+  }
+}
+
+/* Note: Theme transitions are driven by View Transitions API below.
+   Universal wildcard transitions (*, *::before, *::after) are omitted intentionally
+   to prevent layout thrashing, paint invalidation, and muddy intermediate color states. */
+
+/* ==========================================================================
+   DOODLE + HUD TOKEN DARK OVERRIDES (Gate P)
+   Dark surfaces are pitch black / deep graphite; handwriting ink uses luminous
+   mint chalk (#b3f4f8, 17.2:1 contrast) to ensure WCAG AAA compliance.
+   ========================================================================== */
+html[data-theme="dark"] {
+  --ink-hand: #b3f4f8;
+  --doodle-line: rgba(var(--accent-500-rgb), 0.55);
+  --marker-band: rgba(var(--accent-500-rgb), 0.14);
+  --hud-label: var(--accent-300);
+  --hud-readout: #e6fbfc;
+  --hud-bracket: var(--accent-400);
+  --paper-grid-line: rgba(var(--accent-500-rgb), 0.05);
+  --paper-grid-major: rgba(var(--accent-500-rgb), 0.08);
+  --sticker-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+  --glow-focal: 0 0 24px rgba(var(--accent-500-rgb), 0.16), 0 0 2px rgba(var(--accent-500-rgb), 0.22);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --ink-hand: #b3f4f8;
+    --doodle-line: rgba(var(--accent-500-rgb), 0.55);
+    --marker-band: rgba(var(--accent-500-rgb), 0.14);
+    --hud-label: var(--accent-300);
+    --hud-readout: #e6fbfc;
+    --hud-bracket: var(--accent-400);
+    --paper-grid-line: rgba(var(--accent-500-rgb), 0.05);
+    --paper-grid-major: rgba(var(--accent-500-rgb), 0.08);
+    --sticker-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    --glow-focal: 0 0 24px rgba(var(--accent-500-rgb), 0.16), 0 0 2px rgba(var(--accent-500-rgb), 0.22);
+  }
+}
+
+/* Light mode explicit overrides for HUD and doodle tokens (Pure brand blue & neutral) */
+html[data-theme="light"] {
+  --ink-hand: var(--neutral-700);
+  --doodle-line: rgba(var(--primary-500-rgb), 0.55);
+  --marker-band: rgba(var(--primary-500-rgb), 0.16);
+  --hud-label: var(--primary-600);
+  --hud-label-dim: var(--neutral-500);
+  --hud-readout: var(--neutral-800);
+  --hud-bracket: var(--primary-500);
+  --paper-grid-line: rgba(var(--primary-500-rgb), 0.07);
+  --paper-grid-major: rgba(var(--primary-500-rgb), 0.1);
+  --sticker-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  --glow-focal: 0 0 24px rgba(var(--primary-500-rgb), 0.18), 0 0 2px rgba(var(--primary-500-rgb), 0.25);
+}
+
+/* ==========================================================================
+   VIEW TRANSITIONS — Circular Reveal Theme Switch
+   Uses native View Transitions API with Web Animations API clip-path.
+   Compositor-driven: zero layout thrashing, zero paint delay.
+   ========================================================================== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: var(--z-preloader);
+}
+
+/* Reduced motion: instantaneous cut */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

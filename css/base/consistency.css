@@ -1,0 +1,24 @@
+/**
+ * Design System Consistency
+ * Maintains backward compatibility while standardizing variable names
+ * 
+ * @file css/base/consistency.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   BORDER RADIUS STANDARDIZATION
+   ========================================================================== */
+
+/* Standard radius naming convention */
+:root {
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+}

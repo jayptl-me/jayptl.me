@@ -1,0 +1,52 @@
+/* ==========================================================================
+   SECTION HEADINGS (Gate P redesign)
+   Numbered-section spine: "01  About" style wayfinding (dossier 01 §2.2 /
+   brittanychiang v4 grammar) with a hand-drawn underline accent.
+   ========================================================================== */
+
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 var(--space-6);
+}
+
+/* The mono index numeral */
+.section-head .section-no {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--hud-label);
+  line-height: inherit;
+}
+
+/* The display heading text */
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+  position: relative;
+  display: inline-block;
+}
+
+/* Hand-drawn underline accent under the heading */
+.section-head .doodle {
+  grid-column: 2;
+  width: min(180px, 60%);
+  height: 0.42em;
+  margin-top: 2px;
+  color: var(--doodle-line);
+  justify-self: start;
+}
+
+/* Variant: rule runs the full content width beneath the block */
+.section-head--rule {
+  border-bottom: 1px dashed var(--theme-border);
+  padding-bottom: var(--space-4);
+}

@@ -1,0 +1,786 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- Icon sprite for jayptl.me (Gate P). Canonical source per icon: assets/icons/<name>.svg. Consumers needing theme inheritance or animation inline the icon or use <svg class="icon"><use href="#i-<name>"/></svg> after inlining this sprite once per page. Gradient IDs are namespaced i-<name>-grad so inline copies never collide. Every stroked shape carries pathLength="1" for CSS draw-on. -->
+  <defs>
+    <symbol id="i-app-window" viewBox="0 0 24 24">
+      <title>App Window icon</title>
+      <defs>
+      <linearGradient id="i-app-window-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#i-app-window-grad)" opacity="0.15" pathLength="1"/>
+      <rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#i-app-window-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M3 9h18" stroke="url(#i-app-window-grad)" stroke-width="2" pathLength="1"/>
+      <circle cx="7" cy="6" r="1" fill="url(#i-app-window-grad)" pathLength="1"/>
+      <circle cx="10" cy="6" r="1" fill="url(#i-app-window-grad)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M3 9h18" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="7" cy="6" r="1" fill="currentColor" pathLength="1"/>
+      <circle cx="10" cy="6" r="1" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-atom" viewBox="0 0 24 24">
+      <title>Atom icon</title>
+      <defs>
+      <linearGradient id="i-atom-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <!-- Center nucleus -->
+      <circle cx="12" cy="12" r="2.5" fill="url(#i-atom-grad)" pathLength="1"/>
+      <!-- Electron orbits -->
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#i-atom-grad)" stroke-width="1.5" fill="none" transform="rotate(0 12 12)" pathLength="1"/>
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#i-atom-grad)" stroke-width="1.5" fill="none" transform="rotate(60 12 12)" pathLength="1"/>
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="url(#i-atom-grad)" stroke-width="1.5" fill="none" transform="rotate(-60 12 12)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="2.5" fill="currentColor" pathLength="1"/>
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(0 12 12)" pathLength="1"/>
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(60 12 12)" pathLength="1"/>
+      <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" stroke-width="1.5" fill="none" transform="rotate(-60 12 12)" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24">
+      <title>Bolt icon</title>
+      <defs>
+      <linearGradient id="i-bolt-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="url(#i-bolt-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="url(#i-bolt-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-box-3d" viewBox="0 0 24 24">
+      <title>Box 3D icon</title>
+      <defs>
+      <linearGradient id="i-box-3d-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <!-- 3D box with perspective -->
+      <path d="M12 3L3 8v8l9 5 9-5V8l-9-5z" fill="url(#i-box-3d-grad)" opacity="0.15" pathLength="1"/>
+      <!-- Front face -->
+      <path d="M12 3L3 8l9 5 9-5-9-5z" stroke="url(#i-box-3d-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <!-- Left edge -->
+      <path d="M3 8v8l9 5" stroke="url(#i-box-3d-grad)" stroke-width="2" stroke-linejoin="round" pathLength="1"/>
+      <!-- Right edge -->
+      <path d="M21 8v8l-9 5" stroke="url(#i-box-3d-grad)" stroke-width="2" stroke-linejoin="round" pathLength="1"/>
+      <!-- Center line -->
+      <path d="M12 13v8" stroke="url(#i-box-3d-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <!-- 3D text indicator -->
+      <text x="9" y="11" fill="url(#i-box-3d-grad)" font-size="5" font-weight="bold" font-family="system-ui">3D</text>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 3L3 8v8l9 5 9-5V8l-9-5z" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M12 3L3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M3 8v8l9 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round" pathLength="1"/>
+      <path d="M21 8v8l-9 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round" pathLength="1"/>
+      <path d="M12 13v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <text x="9" y="11" fill="currentColor" font-size="5" font-weight="bold" font-family="system-ui">3D</text>
+      </g>
+    </symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24">
+      <title>Brain icon</title>
+      <defs>
+      <linearGradient id="i-brain-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 107 21a4 4 0 005-3.581" fill="url(#i-brain-grad)" opacity="0.15" pathLength="1"/>
+      <path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 107 21a4 4 0 005-3.581" stroke="url(#i-brain-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1017 21a4 4 0 01-5-3.581" fill="url(#i-brain-grad)" opacity="0.15" pathLength="1"/>
+      <path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1017 21a4 4 0 01-5-3.581" stroke="url(#i-brain-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 5v16" stroke="url(#i-brain-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 107 21a4 4 0 005-3.581" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M12 5a3 3 0 10-5.997.125 4 4 0 00-2.526 5.77 4 4 0 00.556 6.588A4 4 0 107 21a4 4 0 005-3.581" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1017 21a4 4 0 01-5-3.581" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M12 5a3 3 0 115.997.125 4 4 0 012.526 5.77 4 4 0 01-.556 6.588A4 4 0 1017 21a4 4 0 01-5-3.581" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 5v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24">
+      <title>Chart icon</title>
+      <defs>
+      <linearGradient id="i-chart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#i-chart-grad)" opacity="0.15" pathLength="1"/>
+      <rect x="6" y="13" width="3" height="5" rx="1" fill="url(#i-chart-grad)" pathLength="1"/>
+      <rect x="10.5" y="9" width="3" height="9" rx="1" fill="url(#i-chart-grad)" pathLength="1"/>
+      <rect x="15" y="5" width="3" height="13" rx="1" fill="url(#i-chart-grad)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <rect x="6" y="13" width="3" height="5" rx="1" fill="currentColor" pathLength="1"/>
+      <rect x="10.5" y="9" width="3" height="9" rx="1" fill="currentColor" pathLength="1"/>
+      <rect x="15" y="5" width="3" height="13" rx="1" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24">
+      <title>Check Circle icon</title>
+      <defs>
+      <linearGradient id="i-check-circle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #14b8a6);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #0d9488);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="10" fill="url(#i-check-circle-grad)" opacity="0.2" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="url(#i-check-circle-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M8 12l3 3 5-6" stroke="url(#i-check-circle-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M8 12l3 3 5-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <title>Close icon</title>
+      <defs>
+      <linearGradient id="i-close-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M18 6L6 18M6 6l12 12" stroke="url(#i-close-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-code" viewBox="0 0 24 24">
+      <title>Code icon</title>
+      <defs>
+      <linearGradient id="i-code-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M16 18l6-6-6-6" stroke="url(#i-code-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M8 6l-6 6 6 6" stroke="url(#i-code-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M16 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M8 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-cookie" viewBox="0 0 24 24">
+      <title>Cookie icon</title>
+      <defs>
+      <linearGradient id="i-cookie-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #f59e0b);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #f43f5e);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="9" fill="url(#i-cookie-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 3a9 9 0 00-9 9c0 3.5 2 6.5 5 8 .5-1 1.5-2 3-2s2.5 1 3 2c3-1.5 5-4.5 5-8a9 9 0 00-7-8.77V5a2 2 0 011 1.73 2 2 0 11-3.5-1.32A9 9 0 0012 3z" fill="url(#i-cookie-grad)" stroke="url(#i-cookie-grad)" stroke-width="0.5" pathLength="1"/>
+      <circle cx="9" cy="10" r="1" fill="url(#i-cookie-grad)" pathLength="1"/>
+      <circle cx="15" cy="11" r="1" fill="url(#i-cookie-grad)" pathLength="1"/>
+      <circle cx="11" cy="14" r="1" fill="url(#i-cookie-grad)" pathLength="1"/>
+      <circle cx="14" cy="16" r="1" fill="url(#i-cookie-grad)" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M12 3a9 9 0 00-9 9c0 3.5 2 6.5 5 8 .5-1 1.5-2 3-2s2.5 1 3 2c3-1.5 5-4.5 5-8a9 9 0 00-7-8.77V5a2 2 0 011 1.73 2 2 0 11-3.5-1.32A9 9 0 0012 3z" fill="currentColor" stroke="currentColor" stroke-width="0.5" pathLength="1"/>
+      <circle cx="9" cy="10" r="1" fill="currentColor" pathLength="1"/>
+      <circle cx="15" cy="11" r="1" fill="currentColor" pathLength="1"/>
+      <circle cx="11" cy="14" r="1" fill="currentColor" pathLength="1"/>
+      <circle cx="14" cy="16" r="1" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24">
+      <title>CPU icon</title>
+      <defs>
+      <linearGradient id="i-cpu-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="4" y="4" width="16" height="16" rx="2" fill="url(#i-cpu-grad)" opacity="0.15" pathLength="1"/>
+      <rect x="4" y="4" width="16" height="16" rx="2" stroke="url(#i-cpu-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <rect x="9" y="9" width="6" height="6" rx="1" fill="url(#i-cpu-grad)" opacity="0.5" pathLength="1"/>
+      <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" stroke="url(#i-cpu-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" opacity="0.5" pathLength="1"/>
+      <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24">
+      <title>Cube icon</title>
+      <defs>
+      <linearGradient id="i-cube-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" fill="url(#i-cube-grad)" opacity="0.15" pathLength="1"/>
+      <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="url(#i-cube-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M3.27 6.96L12 12.01l8.73-5.05" stroke="url(#i-cube-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M12 22.08V12" stroke="url(#i-cube-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M3.27 6.96L12 12.01l8.73-5.05" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M12 22.08V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24">
+      <title>Dice icon</title>
+      <defs>
+      <linearGradient id="i-dice-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#i-dice-grad)" opacity="0.15" pathLength="1"/>
+      <rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#i-dice-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="8" cy="8" r="1.5" fill="url(#i-dice-grad)" pathLength="1"/>
+      <circle cx="16" cy="8" r="1.5" fill="url(#i-dice-grad)" pathLength="1"/>
+      <circle cx="12" cy="12" r="1.5" fill="url(#i-dice-grad)" pathLength="1"/>
+      <circle cx="8" cy="16" r="1.5" fill="url(#i-dice-grad)" pathLength="1"/>
+      <circle cx="16" cy="16" r="1.5" fill="url(#i-dice-grad)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="8" cy="8" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="16" cy="8" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="8" cy="16" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="16" cy="16" r="1.5" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-ethereum" viewBox="0 0 24 24">
+      <title>Ethereum icon</title>
+      <defs>
+      <linearGradient id="i-ethereum-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <!-- Ethereum diamond shape -->
+      <path d="M12 2L4 12l8 4 8-4-8-10z" fill="url(#i-ethereum-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 2L4 12l8 4 8-4-8-10z" stroke="url(#i-ethereum-grad)" stroke-width="1.5" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M4 12l8 10 8-10-8 4-8-4z" fill="url(#i-ethereum-grad)" opacity="0.3" pathLength="1"/>
+      <path d="M4 12l8 10 8-10" stroke="url(#i-ethereum-grad)" stroke-width="1.5" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 16V6" stroke="url(#i-ethereum-grad)" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 2L4 12l8 4 8-4-8-10z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 2L4 12l8 4 8-4-8-10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M4 12l8 10 8-10-8 4-8-4z" fill="currentColor" opacity="0.3" pathLength="1"/>
+      <path d="M4 12l8 10 8-10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M12 16V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24">
+      <title>Flask icon</title>
+      <defs>
+      <linearGradient id="i-flask-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" fill="url(#i-flask-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" stroke="url(#i-flask-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M7 3h10" stroke="url(#i-flask-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M6 15h12" stroke="url(#i-flask-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M9 3h6v5.5l5 8.25a2 2 0 01-1.7 3.25H5.7a2 2 0 01-1.7-3.25l5-8.25V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M7 3h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M6 15h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-gamepad" viewBox="0 0 24 24">
+      <title>Gamepad icon</title>
+      <defs>
+      <linearGradient id="i-gamepad-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M6 12h4M8 10v4" stroke="url(#i-gamepad-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <line x1="15" y1="11" x2="15" y2="11" stroke="url(#i-gamepad-grad)" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+      <line x1="18" y1="13" x2="18" y2="13" stroke="url(#i-gamepad-grad)" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+      <path d="M17.32 5H6.68a4 4 0 00-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 003 3c1.652 0 2.38-.94 2.68-1.56l.78-1.56a1 1 0 01.9-.88h5.28a1 1 0 01.9.88l.78 1.56c.3.62 1.028 1.56 2.68 1.56a3 3 0 003-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0017.32 5z" fill="url(#i-gamepad-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M17.32 5H6.68a4 4 0 00-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 003 3c1.652 0 2.38-.94 2.68-1.56l.78-1.56a1 1 0 01.9-.88h5.28a1 1 0 01.9.88l.78 1.56c.3.62 1.028 1.56 2.68 1.56a3 3 0 003-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0017.32 5z" stroke="url(#i-gamepad-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M6 12h4M8 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <line x1="15" y1="11" x2="15" y2="11" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+      <line x1="18" y1="13" x2="18" y2="13" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+      <path d="M17.32 5H6.68a4 4 0 00-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 003 3c1.652 0 2.38-.94 2.68-1.56l.78-1.56a1 1 0 01.9-.88h5.28a1 1 0 01.9.88l.78 1.56c.3.62 1.028 1.56 2.68 1.56a3 3 0 003-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0017.32 5z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M17.32 5H6.68a4 4 0 00-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 003 3c1.652 0 2.38-.94 2.68-1.56l.78-1.56a1 1 0 01.9-.88h5.28a1 1 0 01.9.88l.78 1.56c.3.62 1.028 1.56 2.68 1.56a3 3 0 003-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0017.32 5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24">
+      <title>Gem icon</title>
+      <defs>
+      <linearGradient id="i-gem-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M6 3h12l4 6-10 13L2 9z" fill="url(#i-gem-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M6 3h12l4 6-10 13L2 9z" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M11 3l1 10L2 9l4-6" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M13 3l-1 10 10-4-4-6" stroke="url(#i-gem-grad)" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M6 3h12l4 6-10 13L2 9z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M6 3h12l4 6-10 13L2 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M11 3l1 10L2 9l4-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M13 3l-1 10 10-4-4-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-github" viewBox="0 0 24 24">
+      <title>Github icon</title>
+      <defs>
+      <linearGradient id="i-github-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="url(#i-github-grad)" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24">
+      <title>Globe icon</title>
+      <defs>
+      <linearGradient id="i-globe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="10" fill="url(#i-globe-grad)" opacity="0.15" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="url(#i-globe-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M2 12h20" stroke="url(#i-globe-grad)" stroke-width="2" pathLength="1"/>
+      <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="url(#i-globe-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M2 12h20" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-hammer" viewBox="0 0 24 24">
+      <title>Hammer icon</title>
+      <defs>
+      <linearGradient id="i-hammer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 010-3L12 9" fill="url(#i-hammer-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 010-3L12 9" stroke="url(#i-hammer-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M17.64 15L22 10.64" stroke="url(#i-hammer-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 00-3.94-1.64H9l.92.82a6.18 6.18 0 011.8 3.93l.09 1.22L20.91 11.7z" fill="url(#i-hammer-grad)" opacity="0.3" pathLength="1"/>
+      <path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 00-3.94-1.64H9l.92.82a6.18 6.18 0 011.8 3.93l.09 1.22L20.91 11.7z" stroke="url(#i-hammer-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 010-3L12 9" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M15 12l-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 010-3L12 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M17.64 15L22 10.64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 00-3.94-1.64H9l.92.82a6.18 6.18 0 011.8 3.93l.09 1.22L20.91 11.7z" fill="currentColor" opacity="0.3" pathLength="1"/>
+      <path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 00-3.94-1.64H9l.92.82a6.18 6.18 0 011.8 3.93l.09 1.22L20.91 11.7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <title>Home icon</title>
+      <defs>
+      <linearGradient id="i-home-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <!-- Gradient version (visible by default) -->
+      <g class="icon-gradient">
+      <path class="icon-bg" d="M12 3L4 9v11a2 2 0 002 2h12a2 2 0 002-2V9l-8-6z" fill="url(#i-home-grad)" opacity="0.2" pathLength="1"/>
+      <path class="icon-fg" d="M12 3L4 9v11a2 2 0 002 2h3v-8a2 2 0 012-2h2a2 2 0 012 2v8h3a2 2 0 002-2V9l-8-6z" fill="url(#i-home-grad)" stroke="url(#i-home-grad)" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome version (hidden, currentColor fallback) -->
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 3L4 9v11a2 2 0 002 2h12a2 2 0 002-2V9l-8-6z" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <path d="M12 3L4 9v11a2 2 0 002 2h3v-8a2 2 0 012-2h2a2 2 0 012 2v8h3a2 2 0 002-2V9l-8-6z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-info-circle" viewBox="0 0 24 24">
+      <title>Info Circle icon</title>
+      <defs>
+      <linearGradient id="i-info-circle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #8b5cf6);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #2196f3);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="10" fill="url(#i-info-circle-grad)" opacity="0.2" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="url(#i-info-circle-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M12 16v-4m0-4h.01" stroke="url(#i-info-circle-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M12 16v-4m0-4h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-joystick" viewBox="0 0 24 24">
+      <title>Joystick icon</title>
+      <defs>
+      <linearGradient id="i-joystick-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="5" r="3" fill="url(#i-joystick-grad)" opacity="0.3" pathLength="1"/>
+      <circle cx="12" cy="5" r="3" stroke="url(#i-joystick-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M12 8v8" stroke="url(#i-joystick-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" fill="url(#i-joystick-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" stroke="url(#i-joystick-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="5" r="3" fill="currentColor" opacity="0.3" pathLength="1"/>
+      <circle cx="12" cy="5" r="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <path d="M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M5 17c0-2 2-3 7-3s7 1 7 3v2c0 1-1 2-2 2H7c-1 0-2-1-2-2v-2z" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24">
+      <title>Layers icon</title>
+      <defs>
+      <linearGradient id="i-layers-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#i-layers-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="url(#i-layers-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M2 17l10 5 10-5" stroke="url(#i-layers-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M2 12l10 5 10-5" stroke="url(#i-layers-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-link-chain" viewBox="0 0 24 24">
+      <title>Link Chain icon</title>
+      <defs>
+      <linearGradient id="i-link-chain-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="url(#i-link-chain-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="url(#i-link-chain-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24">
+      <title>Linkedin icon</title>
+      <defs>
+      <linearGradient id="i-linkedin-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="2" y="2" width="20" height="20" rx="3" fill="url(#i-linkedin-grad)" opacity="0.2" pathLength="1"/>
+      <rect x="2" y="2" width="20" height="20" rx="3" stroke="url(#i-linkedin-grad)" stroke-width="1.5" fill="none" pathLength="1"/>
+      <path d="M7.5 9.5v8M7.5 6.5a1 1 0 100 2 1 1 0 000-2zM11.5 17.5v-4.5a2 2 0 014 0v4.5M11.5 10.5v7" stroke="url(#i-linkedin-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor" opacity="0.15" pathLength="1"/>
+      <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5" fill="none" pathLength="1"/>
+      <path d="M7.5 9.5v8M7.5 6.5a1 1 0 100 2 1 1 0 000-2zM11.5 17.5v-4.5a2 2 0 014 0v4.5M11.5 10.5v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <title>More icon</title>
+      <defs>
+      <linearGradient id="i-more-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="5" r="2" fill="url(#i-more-grad)" pathLength="1"/>
+      <circle cx="12" cy="12" r="2" fill="url(#i-more-grad)" opacity="0.7" pathLength="1"/>
+      <circle cx="12" cy="19" r="2" fill="url(#i-more-grad)" opacity="0.5" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="5" r="2" fill="currentColor" pathLength="1"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7" pathLength="1"/>
+      <circle cx="12" cy="19" r="2" fill="currentColor" opacity="0.5" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24">
+      <title>Palette icon</title>
+      <defs>
+      <linearGradient id="i-palette-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.82-.13 2.68-.36.5-.13.86-.58.86-1.1 0-.28-.11-.53-.29-.71-.18-.18-.43-.29-.71-.29H13c-1.1 0-2-.9-2-2 0-.26.05-.5.14-.73.23-.53.71-.89 1.28-.97.14-.02.28-.03.43-.03h1.5c.52 0 .97-.38 1.04-.89.12-.87.18-1.74.18-2.62 0-1.66-.41-3.24-1.13-4.62-.23-.44-.46-.86-.72-1.26A10.024 10.024 0 0012 2z" fill="url(#i-palette-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.82-.13 2.68-.36.5-.13.86-.58.86-1.1 0-.28-.11-.53-.29-.71-.18-.18-.43-.29-.71-.29H13c-1.1 0-2-.9-2-2 0-.26.05-.5.14-.73.23-.53.71-.89 1.28-.97.14-.02.28-.03.43-.03h1.5c.52 0 .97-.38 1.04-.89.12-.87.18-1.74.18-2.62 0-1.66-.41-3.24-1.13-4.62-.23-.44-.46-.86-.72-1.26A10.024 10.024 0 0012 2z" stroke="url(#i-palette-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="8.5" cy="8.5" r="1.5" fill="url(#i-palette-grad)" pathLength="1"/>
+      <circle cx="12" cy="6" r="1.5" fill="url(#i-palette-grad)" pathLength="1"/>
+      <circle cx="15.5" cy="8.5" r="1.5" fill="url(#i-palette-grad)" pathLength="1"/>
+      <circle cx="6" cy="12" r="1.5" fill="url(#i-palette-grad)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.82-.13 2.68-.36.5-.13.86-.58.86-1.1 0-.28-.11-.53-.29-.71-.18-.18-.43-.29-.71-.29H13c-1.1 0-2-.9-2-2 0-.26.05-.5.14-.73.23-.53.71-.89 1.28-.97.14-.02.28-.03.43-.03h1.5c.52 0 .97-.38 1.04-.89.12-.87.18-1.74.18-2.62 0-1.66-.41-3.24-1.13-4.62-.23-.44-.46-.86-.72-1.26A10.024 10.024 0 0012 2z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.82-.13 2.68-.36.5-.13.86-.58.86-1.1 0-.28-.11-.53-.29-.71-.18-.18-.43-.29-.71-.29H13c-1.1 0-2-.9-2-2 0-.26.05-.5.14-.73.23-.53.71-.89 1.28-.97.14-.02.28-.03.43-.03h1.5c.52 0 .97-.38 1.04-.89.12-.87.18-1.74.18-2.62 0-1.66-.41-3.24-1.13-4.62-.23-.44-.46-.86-.72-1.26A10.024 10.024 0 0012 2z" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="12" cy="6" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="15.5" cy="8.5" r="1.5" fill="currentColor" pathLength="1"/>
+      <circle cx="6" cy="12" r="1.5" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-projects" viewBox="0 0 24 24">
+      <title>Projects icon</title>
+      <defs>
+      <linearGradient id="i-projects-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="3" y="3" width="8" height="8" rx="1.5" fill="url(#i-projects-grad)" opacity="0.3" pathLength="1"/>
+      <rect x="3" y="13" width="8" height="8" rx="1.5" fill="url(#i-projects-grad)" opacity="0.5" pathLength="1"/>
+      <rect x="13" y="3" width="8" height="8" rx="1.5" fill="url(#i-projects-grad)" opacity="0.7" pathLength="1"/>
+      <rect x="13" y="13" width="8" height="8" rx="1.5" fill="url(#i-projects-grad)" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.3" pathLength="1"/>
+      <rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.5" pathLength="1"/>
+      <rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor" opacity="0.7" pathLength="1"/>
+      <rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24">
+      <title>Rocket icon</title>
+      <defs>
+      <linearGradient id="i-rocket-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" fill="url(#i-rocket-grad)" opacity="0.3" pathLength="1"/>
+      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22.18 22.18 0 0112 15z" fill="url(#i-rocket-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22.18 22.18 0 0112 15z" stroke="url(#i-rocket-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" stroke="url(#i-rocket-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" fill="currentColor" opacity="0.3" pathLength="1"/>
+      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22.18 22.18 0 0112 15z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22.18 22.18 0 0112 15z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24">
+      <title>Settings icon</title>
+      <defs>
+      <linearGradient id="i-settings-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="3" fill="url(#i-settings-grad)" opacity="0.3" pathLength="1"/>
+      <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4z" fill="url(#i-settings-grad)" pathLength="1"/>
+      <path d="M21.32 9.55l-1.89-.63.89-1.78A1 1 0 0020.13 6L18 3.87a1 1 0 00-1.15-.19l-1.78.89-.63-1.89A1 1 0 0013.5 2h-3a1 1 0 00-.95.68l-.63 1.89-1.78-.89A1 1 0 006 3.87L3.87 6a1 1 0 00-.19 1.15l.89 1.78-1.89.63A1 1 0 002 10.5v3a1 1 0 00.68.95l1.89.63-.89 1.78A1 1 0 003.87 18L6 20.13a1 1 0 001.15.19l1.78-.89.63 1.89a1 1 0 00.95.68h3a1 1 0 00.95-.68l.63-1.89 1.78.89A1 1 0 0018 20.13L20.13 18a1 1 0 00.19-1.15l-.89-1.78 1.89-.63A1 1 0 0022 13.5v-3a1 1 0 00-.68-.95z" fill="url(#i-settings-grad)" opacity="0.2" stroke="url(#i-settings-grad)" stroke-width="0.5" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4z" fill="currentColor" pathLength="1"/>
+      <path d="M21.32 9.55l-1.89-.63.89-1.78A1 1 0 0020.13 6L18 3.87a1 1 0 00-1.15-.19l-1.78.89-.63-1.89A1 1 0 0013.5 2h-3a1 1 0 00-.95.68l-.63 1.89-1.78-.89A1 1 0 006 3.87L3.87 6a1 1 0 00-.19 1.15l.89 1.78-1.89.63A1 1 0 002 10.5v3a1 1 0 00.68.95l1.89.63-.89 1.78A1 1 0 003.87 18L6 20.13a1 1 0 001.15.19l1.78-.89.63 1.89a1 1 0 00.95.68h3a1 1 0 00.95-.68l.63-1.89 1.78.89A1 1 0 0018 20.13L20.13 18a1 1 0 00.19-1.15l-.89-1.78 1.89-.63A1 1 0 0022 13.5v-3a1 1 0 00-.68-.95z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="0.5" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-smartphone" viewBox="0 0 24 24">
+      <title>Smartphone icon</title>
+      <defs>
+      <linearGradient id="i-smartphone-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <rect x="5" y="2" width="14" height="20" rx="3" fill="url(#i-smartphone-grad)" opacity="0.2" pathLength="1"/>
+      <rect x="5" y="2" width="14" height="20" rx="3" stroke="url(#i-smartphone-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <line x1="12" y1="18" x2="12" y2="18" stroke="url(#i-smartphone-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <rect x="5" y="2" width="14" height="20" rx="3" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <line x1="12" y1="18" x2="12" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-snake" viewBox="0 0 24 24">
+      <title>Snake icon</title>
+      <defs>
+      <linearGradient id="i-snake-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <!-- Snake body - S-curve shape -->
+      <path d="M4 8c0-2.2 1.8-4 4-4h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-2c-2.2 0-4 1.8-4 4s1.8 4 4 4h6" stroke="url(#i-snake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" pathLength="1"/>
+      <!-- Snake head -->
+      <circle cx="19" cy="20" r="2" fill="url(#i-snake-grad)" pathLength="1"/>
+      <!-- Snake eyes/tongue indicator -->
+      <path d="M20 19l1.5-1M20 21l1.5 1" stroke="url(#i-snake-grad)" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M4 8c0-2.2 1.8-4 4-4h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-2c-2.2 0-4 1.8-4 4s1.8 4 4 4h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none" pathLength="1"/>
+      <circle cx="19" cy="20" r="2" fill="currentColor" pathLength="1"/>
+      <path d="M20 19l1.5-1M20 21l1.5 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24">
+      <title>Sparkle icon</title>
+      <defs>
+      <linearGradient id="i-sparkle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" fill="url(#i-sparkle-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" stroke="url(#i-sparkle-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-target" viewBox="0 0 24 24">
+      <title>Target icon</title>
+      <defs>
+      <linearGradient id="i-target-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <circle cx="12" cy="12" r="10" fill="url(#i-target-grad)" opacity="0.1" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="url(#i-target-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="12" cy="12" r="6" stroke="url(#i-target-grad)" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="12" cy="12" r="2" fill="url(#i-target-grad)" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1" pathLength="1"/>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2" fill="none" pathLength="1"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <title>Trash icon</title>
+      <defs>
+      <linearGradient id="i-trash-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #f43f5e);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #f59e0b);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M19 7v12a2 2 0 01-2 2H7a2 2 0 01-2-2V7" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M10 11v6m4-6v6" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M3 7h18" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" fill="url(#i-trash-grad)" opacity="0.2" stroke="url(#i-trash-grad)" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <!-- Monochrome fallback -->
+      <g class="icon-mono" style="display:none;">
+      <path d="M19 7v12a2 2 0 01-2 2H7a2 2 0 01-2-2V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path d="M10 11v6m4-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M3 7h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+      <path d="M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24">
+      <title>Wrench icon</title>
+      <defs>
+      <linearGradient id="i-wrench-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #2196f3);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #00b8cc);stop-opacity:1" />
+      </linearGradient>
+      </defs>
+      <g class="icon-gradient">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" fill="url(#i-wrench-grad)" opacity="0.2" pathLength="1"/>
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="url(#i-wrench-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+      <g class="icon-mono" style="display:none;">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" fill="currentColor" opacity="0.2" pathLength="1"/>
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" pathLength="1"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>

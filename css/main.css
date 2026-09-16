@@ -1,0 +1,84 @@
+/**
+ * Jay Patel Portfolio - Main Stylesheet Entry Point
+ * Professional CSS Architecture using ITCSS (Inverted Triangle CSS) methodology
+ * 
+ * Architecture Structure:
+ * 1. Settings - Variables, configuration
+ * 2. Tools - Mixins and functions (if using preprocessor)
+ * 3. Generic - Reset, normalize, base styles
+ * 4. Elements - Base HTML element styles
+ * 5. Objects - Layout patterns, grids
+ * 6. Components - UI components
+ * 7. Utilities - Helper classes
+ * 
+ * @author Jay Patel
+ * @version 2.0.0
+ */
+
+/* ==========================================================================
+   SETTINGS - Variables and Configuration
+   ========================================================================== */
+@import 'base/variables.css';
+@import 'base/theme.css';
+@import 'base/consistency.css';
+
+/* ==========================================================================
+   GENERIC - Reset and Base Styles
+   ========================================================================== */
+@import 'base/reset.css';
+@import 'base/fonts.css';
+
+/* ==========================================================================
+   ELEMENTS - Base HTML Element Styles
+   ========================================================================== */
+@import 'base/typography.css';
+
+/* ==========================================================================
+   OBJECTS - Layout Patterns and Grids (Minimal)
+   ========================================================================== */
+@import 'layout/containers.css';
+
+/* ==========================================================================
+   COMPONENTS - UI Components (Only Used Ones)
+   ========================================================================== */
+@import 'components/custom-cursor.css';
+@import 'components/custom-scrollbar.css';
+@import 'components/hero.css';
+@import 'components/scroll-reveal.css';
+@import 'components/navbar.css';
+@import 'components/theme-toggle.css';
+@import 'components/consent-banner.css';
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/forms.css';
+@import 'components/grid.css';
+
+/* ==========================================================================
+   REDESIGN LAYER (Gate P) — doodle-led, HUD accents
+   ========================================================================== */
+@import 'components/doodle.css';
+@import 'components/particle-text.css';
+@import 'components/split-text.css';
+@import 'components/pixel-swap.css';
+@import 'components/site-grid.css';
+@import 'components/hud.css';
+@import 'components/sticker.css';
+@import 'components/section-heading.css';
+@import 'components/scroll-stack.css';
+
+/* ==========================================================================
+   PAGES - Page Specific Styles (Only Home)
+   ========================================================================== */
+@import 'pages/home.css';
+@import 'pages/privacy.css';
+
+/* ==========================================================================
+   UTILITIES - Helper Classes and Overrides (Essential Only)
+   ========================================================================== */
+@import 'utilities/icons.css';
+@import 'utilities/responsive.css';
+@import 'utilities/display.css';
+@import 'utilities/light-dark.css';
+@import 'utilities/cursor.css';
+@import 'utilities/text.css';
+@import 'utilities/glass.css';

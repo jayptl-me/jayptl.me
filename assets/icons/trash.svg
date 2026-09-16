@@ -1,0 +1,22 @@
+<svg data-normalized="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="icon icon-warning"><title>Trash icon</title>
+  <defs>
+    <linearGradient id="i-trash-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="gradient-start" style="stop-color:var(--icon-gradient-start, #f43f5e);stop-opacity:1" />
+      <stop offset="100%" class="gradient-end" style="stop-color:var(--icon-gradient-end, #f59e0b);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g class="icon-gradient">
+    <path d="M19 7v12a2 2 0 01-2 2H7a2 2 0 01-2-2V7" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+    <path d="M10 11v6m4-6v6" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+    <path d="M3 7h18" stroke="url(#i-trash-grad)" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+    <path d="M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" fill="url(#i-trash-grad)" opacity="0.2" stroke="url(#i-trash-grad)" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+  </g>
+  
+  <!-- Monochrome fallback -->
+  <g class="icon-mono" style="display:none;">
+    <path d="M19 7v12a2 2 0 01-2 2H7a2 2 0 01-2-2V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+    <path d="M10 11v6m4-6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+    <path d="M3 7h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/>
+    <path d="M8 7V4a1 1 0 011-1h6a1 1 0 011 1v3" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="1"/>
+  </g>
+</svg>

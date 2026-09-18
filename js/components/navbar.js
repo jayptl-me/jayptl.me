@@ -5,6 +5,7 @@
  * Injects a universal, responsive floating island navbar with:
  * - Pod 1: Identity with profile avatar & live availability status indicator
  * - Pod 2: Navigation rail with rich "Projects" case-study dropdown, direct links, and "More" dropdown
+ *           plus the GooeyNav hover/active pill effect (js/components/gooey-nav.js, lazy-loaded)
  * - Pod 3: Quick "Let's Talk" CTA + inline Lightsaber theme toggle + responsive mobile drawer
  *
  * Fully supports dual design systems:
@@ -244,11 +245,37 @@
             </div>
           </div>
         </div>
+        <!-- SVG Alpha-Threshold Filter for Gooey Effect (Natively 100% Transparent, zero black artifacts) -->
+        <svg class="gooey-svg-filter" aria-hidden="true" style="position: absolute; width: 0; height: 0; pointer-events: none; overflow: hidden;">
+          <defs>
+            <filter id="gooeyNavFilter" x="-60%" y="-100%" width="220%" height="300%" color-interpolation-filters="sRGB">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -8" result="goo" />
+              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+          </defs>
+        </svg>
       </header>
     `;
   }
 
   // Accessibility management for navbar visibility (called by scroll-reveal.js and overlay lifecycle)
+  /**
+   * Loads the GooeyNav effect (hover/active pill + bubble particles) for the
+   * desktop nav rail. Lazy and non-blocking: the effect script is only fetched
+   * once the navbar has been injected, and failures degrade silently to the
+   * plain rail.
+   */
+  function loadGooeyEffect() {
+    if (document.getElementById('gooeyNavScript')) return;
+    const script = document.createElement('script');
+    script.id = 'gooeyNavScript';
+    script.src = '/js/components/gooey-nav.js';
+    script.defer = true;
+    script.onerror = function () { script.remove(); };
+    document.head.appendChild(script);
+  }
+
   function setNavbarAccessibility(nav, visible) {
     if (!nav) return;
     if (visible) {
@@ -422,6 +449,9 @@
         });
       }
     });
+
+    // 2.5 Gooey hover/active nav effect (desktop rail only)
+    loadGooeyEffect();
 
     // 3. Visibility behavior with hero reveal overlay
     // Hidden during the stepper on all viewports, visible after release.

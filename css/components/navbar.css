@@ -171,6 +171,7 @@
 
 .nav-rail-link {
     position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -181,12 +182,17 @@
     font-family: var(--font-sans);
     font-size: 13px;
     font-weight: 500;
-    border: 1px solid transparent;
+    border: none !important;
     background: transparent;
     cursor: pointer;
     white-space: nowrap;
-    transition: all var(--duration-fast) var(--ease-smooth);
+    transition: color 0.24s cubic-bezier(0.2, 0.9, 0.25, 1),
+                transform var(--duration-fast) var(--ease-smooth);
     user-select: none;
+}
+
+.nav-rail-link .nav-text {
+    transition: color 0.24s cubic-bezier(0.2, 0.9, 0.25, 1);
 }
 
 .nav-rail-link:focus-visible {
@@ -200,8 +206,9 @@
 }
 
 .dropdown-chevron {
-    transition: transform var(--duration-fast) var(--ease-smooth);
-    opacity: 0.7;
+    transition: color 0.24s cubic-bezier(0.2, 0.9, 0.25, 1),
+                transform var(--duration-fast) var(--ease-smooth);
+    opacity: 0.85;
     margin-left: 1px;
 }
 
@@ -367,6 +374,7 @@
     font-weight: 600;
     letter-spacing: 0.02em;
     white-space: nowrap;
+    border: none !important;
     transition: all var(--duration-fast) var(--ease-smooth);
     cursor: pointer;
 }
@@ -388,7 +396,7 @@
     border-radius: 50%;
     cursor: pointer;
     box-shadow: none;
-    border: 1px solid transparent;
+    border: none !important;
     background: transparent;
     transition: all var(--duration-fast) var(--ease-smooth);
 }
@@ -404,7 +412,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid transparent;
+    border: none !important;
     background: transparent;
     align-items: center;
     justify-content: center;
@@ -479,9 +487,22 @@ html[data-theme="dark"] .nav-rail-link {
 
 html[data-theme="dark"] .nav-rail-link:hover,
 html[data-theme="dark"] .nav-dropdown.open .nav-rail-link {
-    background: rgba(0, 184, 204, 0.12);
-    color: var(--accent-300);
-    border-color: rgba(0, 184, 204, 0.25);
+    background: transparent;
+    color: #ffffff;
+    border: none !important;
+}
+
+html[data-theme="dark"] .nav-rail-link.gooey-active {
+    color: #0d1621 !important;
+}
+
+html[data-theme="dark"] .nav-rail-link.gooey-active .nav-text {
+    color: #0d1621 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .nav-rail-link.gooey-active .dropdown-chevron {
+    color: #0d1621 !important;
 }
 
 html[data-theme="dark"] .dropdown-menu {
@@ -547,22 +568,27 @@ html[data-theme="dark"] .dropdown-item:hover {
 }
 
 html[data-theme="dark"] .nav-cta-btn {
-    background: linear-gradient(135deg, rgba(0, 184, 204, 0.24), rgba(0, 184, 204, 0.10));
-    border: 1px solid rgba(0, 184, 204, 0.45);
+    background: linear-gradient(135deg, rgba(0, 184, 204, 0.22), rgba(0, 184, 204, 0.10));
+    border: none !important;
     color: var(--accent-300);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 14px rgba(0, 184, 204, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(0, 184, 204, 0.18);
 }
 
 html[data-theme="dark"] .nav-cta-btn:hover {
-    background: rgba(0, 184, 204, 0.32);
-    box-shadow: 0 0 18px rgba(0, 184, 204, 0.4);
+    background: rgba(0, 184, 204, 0.28);
+    box-shadow: 0 0 16px rgba(0, 184, 204, 0.32);
     transform: translateY(-1px);
+}
+
+html[data-theme="dark"] .glass-nav .theme-toggle,
+html[data-theme="dark"] .nav-toggle {
+    border: none !important;
 }
 
 html[data-theme="dark"] .glass-nav .theme-toggle:hover,
 html[data-theme="dark"] .nav-toggle:hover {
     background: rgba(0, 184, 204, 0.14);
-    border-color: rgba(0, 184, 204, 0.3);
+    border: none !important;
     color: var(--accent-300);
 }
 
@@ -595,9 +621,23 @@ html[data-theme="dark"] .nav-toggle:hover {
 
     :root:not([data-theme="light"]) .nav-rail-link:hover,
     :root:not([data-theme="light"]) .nav-dropdown.open .nav-rail-link {
-        background: rgba(0, 184, 204, 0.12);
-        color: var(--accent-300);
-        border-color: rgba(0, 184, 204, 0.25);
+        background: transparent;
+        color: #ffffff;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    :root:not([data-theme="light"]) .nav-rail-link.gooey-active {
+        color: #0d1621 !important;
+    }
+
+    :root:not([data-theme="light"]) .nav-rail-link.gooey-active .nav-text {
+        color: #0d1621 !important;
+        opacity: 1 !important;
+    }
+
+    :root:not([data-theme="light"]) .nav-rail-link.gooey-active .dropdown-chevron {
+        color: #0d1621 !important;
     }
 
     :root:not([data-theme="light"]) .dropdown-menu {
@@ -612,10 +652,10 @@ html[data-theme="dark"] .nav-toggle:hover {
     }
 
     :root:not([data-theme="light"]) .nav-cta-btn {
-        background: linear-gradient(135deg, rgba(0, 184, 204, 0.24), rgba(0, 184, 204, 0.10));
-        border: 1px solid rgba(0, 184, 204, 0.45);
+        background: linear-gradient(135deg, rgba(0, 184, 204, 0.22), rgba(0, 184, 204, 0.10));
+        border: none !important;
         color: var(--accent-300);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 14px rgba(0, 184, 204, 0.25);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(0, 184, 204, 0.18);
     }
 }
 
@@ -657,11 +697,23 @@ html[data-theme="light"] .nav-rail-link {
 
 html[data-theme="light"] .nav-rail-link:hover,
 html[data-theme="light"] .nav-dropdown.open .nav-rail-link {
-    background: #ffffff;
-    color: var(--primary-600);
-    border-color: rgba(33, 150, 243, 0.25);
-    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.12),
-                inset 0 1px 1px #ffffff;
+    background: transparent;
+    color: #0f172a;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="light"] .nav-rail-link.gooey-active {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .nav-rail-link.gooey-active .nav-text {
+    color: #0f172a !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] .nav-rail-link.gooey-active .dropdown-chevron {
+    color: #0f172a !important;
 }
 
 html[data-theme="light"] .dropdown-menu {
@@ -733,21 +785,26 @@ html[data-theme="light"] .dropdown-item:hover {
 html[data-theme="light"] .nav-cta-btn {
     background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.35),
-                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.28),
+                inset 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 
 html[data-theme="light"] .nav-cta-btn:hover {
-    box-shadow: 0 7px 18px rgba(33, 150, 243, 0.45),
-                inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.38),
+                inset 0 1px 1px rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
+}
+
+html[data-theme="light"] .glass-nav .theme-toggle,
+html[data-theme="light"] .nav-toggle {
+    border: none !important;
 }
 
 html[data-theme="light"] .glass-nav .theme-toggle:hover,
 html[data-theme="light"] .nav-toggle:hover {
     background: #ffffff;
-    border-color: rgba(33, 150, 243, 0.22);
+    border: none !important;
     color: var(--primary-600);
     box-shadow: 0 2px 6px rgba(33, 150, 243, 0.12);
 }
@@ -1100,6 +1157,357 @@ html[data-theme="light"] .mobile-social-pill.highlight {
     color: #ffffff;
     border-color: transparent;
     box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   GooeyNav Effect (React Bits port) - hover + active rail treatment
+   JS: js/components/gooey-nav.js (lazy-loaded by navbar.js)
+   The rail itself becomes .gooey-nav-container; two overlay layers (.gooey-
+   filter = blur+contrast goo, .gooey-text = opaque label) are parked over the
+   active/last-hovered item while the real links stay interactive beneath.
+   -------------------------------------------------------------------------- */
+
+:root {
+    --linear-ease: linear(
+        0,
+        0.068,
+        0.19 2.7%,
+        0.804 8.1%,
+        1.037,
+        1.199 13.2%,
+        1.245,
+        1.27 15.8%,
+        1.274,
+        1.272 17.4%,
+        1.249 19.1%,
+        0.996 28%,
+        0.949,
+        0.928 33.3%,
+        0.926,
+        0.933 36.8%,
+        1.001 45.6%,
+        1.013,
+        1.019 50.8%,
+        1.018 54.4%,
+        1 63.1%,
+        0.995 68%,
+        1.001 85%,
+        1
+    );
+
+    /* Monochromatic calm gooey palette: single cohesive color token */
+    --goo-color-primary: #ffffff;
+    --goo-color-glow: rgba(255, 255, 255, 0.25);
+    --goo-pill-fill: #ffffff;
+}
+
+html[data-theme="light"] {
+    --goo-color-primary: #ffffff;
+    --goo-color-glow: rgba(0, 0, 0, 0.08);
+    --goo-pill-fill: #ffffff;
+}
+
+.nav-rail.gooey-nav-container {
+    position: relative;
+    /* No transform/filter here: they would isolate the blend context. */
+}
+
+.gooey-effect {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+    z-index: 1;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.36s cubic-bezier(0.2, 0.9, 0.25, 1),
+                width 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+                height 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+                opacity 0.25s ease;
+    will-change: transform, width, height, opacity;
+}
+
+.gooey-effect.no-transition {
+    transition: none !important;
+}
+
+/* Opaque label layer: hidden in favor of real link text at z-index: 2 to guarantee zero jump/glitch */
+.gooey-effect.gooey-text {
+    display: none !important;
+}
+
+/* Goo layer: blob melted out of a naturally transparent backdrop via SVG alpha-threshold filter */
+.gooey-effect.gooey-filter {
+    opacity: 0;
+    transition: opacity 0.24s var(--ease-smooth);
+    filter: url('#gooeyNavFilter');
+    -webkit-filter: url('#gooeyNavFilter');
+    background: transparent !important;
+    pointer-events: none;
+}
+
+.gooey-effect.gooey-filter.gooey-on {
+    opacity: 1;
+}
+
+/* Eliminate backdrop pseudoelements completely: SVG filter works natively on transparent alpha */
+.gooey-effect.gooey-filter::before {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+}
+
+.gooey-effect.gooey-filter::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 9999px;
+    background: #ffffff;
+    transform: scale(0.96);
+    opacity: 0;
+    transition: transform 0.24s cubic-bezier(0.2, 0.85, 0.25, 1),
+                opacity 0.2s ease,
+                border-radius 0.3s ease;
+}
+
+.gooey-effect.gooey-filter.gooey-on::after {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* ACTIVE STATE LOOPER: Continuous calm organic fluid breathing loop */
+.gooey-effect.gooey-filter.gooey-looping::after {
+    animation: gooeyActiveLoop 3.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes gooeyActiveLoop {
+    0% {
+        transform: scale(1);
+        border-radius: 9999px;
+    }
+    50% {
+        transform: scale(1.02, 0.98);
+        border-radius: 20px 24px 22px 26px / 24px 20px 26px 22px;
+    }
+    100% {
+        transform: scale(0.99, 1.015);
+        border-radius: 24px 20px 26px 22px / 22px 26px 20px 24px;
+    }
+}
+
+/* ACTIVE STATE BORDER BUBBLES: Orbiting fluid droplets moving around the pill border */
+.gooey-orbit-bubble {
+    position: absolute;
+    top: calc(50% - 7px);
+    left: calc(50% - 7px);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: -1;
+    background: #ffffff;
+}
+
+html[data-theme="dark"] .gooey-orbit-bubble {
+    background: #ffffff;
+}
+
+html[data-theme="light"] .gooey-orbit-bubble {
+    background: #ffffff;
+}
+
+.gooey-effect.gooey-filter.gooey-looping .gooey-orbit-bubble {
+    opacity: 1;
+}
+
+.gooey-effect.gooey-filter.gooey-looping .gooey-orbit-1 {
+    animation: gooeyOrbitAround 5.2s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+.gooey-effect.gooey-filter.gooey-looping .gooey-orbit-2 {
+    animation: gooeyOrbitAround 5.2s cubic-bezier(0.42, 0, 0.58, 1) infinite -2.6s;
+}
+
+@keyframes gooeyOrbitAround {
+    0% {
+        transform: translate(calc(var(--pill-w, 76px) * 0.5 - 6px), 0px) scale(1.15);
+    }
+    20% {
+        transform: translate(calc(var(--pill-w, 76px) * 0.25), calc(var(--pill-h, 36px) * -0.5 + 4px)) scale(0.95);
+    }
+    35% {
+        transform: translate(calc(var(--pill-w, 76px) * -0.25), calc(var(--pill-h, 36px) * -0.5 + 4px)) scale(0.95);
+    }
+    50% {
+        transform: translate(calc(var(--pill-w, 76px) * -0.5 + 6px), 0px) scale(1.15);
+    }
+    70% {
+        transform: translate(calc(var(--pill-w, 76px) * -0.25), calc(var(--pill-h, 36px) * 0.5 - 4px)) scale(0.95);
+    }
+    85% {
+        transform: translate(calc(var(--pill-w, 76px) * 0.25), calc(var(--pill-h, 36px) * 0.5 - 4px)) scale(0.95);
+    }
+    100% {
+        transform: translate(calc(var(--pill-w, 76px) * 0.5 - 6px), 0px) scale(1.15);
+    }
+}
+
+/* HOVER BUBBLE BURST PARTICLES: Dynamic curved fluid burst */
+.gooey-particle,
+.gooey-point {
+    display: block;
+    opacity: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    transform-origin: center;
+}
+
+.gooey-particle {
+    position: absolute;
+    top: calc(50% - 7px);
+    left: calc(50% - 7px);
+    animation: gooeyParticle var(--time, 1300ms) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.gooey-point {
+    animation: gooeyPoint var(--time, 1300ms) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    background: #ffffff;
+}
+
+html[data-theme="dark"] .gooey-point {
+    background: #ffffff;
+}
+
+html[data-theme="light"] .gooey-point {
+    background: #ffffff;
+}
+
+@keyframes gooeyParticle {
+    0% {
+        transform: rotate(0deg) translate(calc(var(--start-x)), calc(var(--start-y)));
+        opacity: 1;
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.25, 1);
+    }
+    45% {
+        transform: rotate(calc(var(--rotate) * 0.6)) translate(calc(var(--end-x) * 1.15), calc(var(--end-y) * 1.15));
+        opacity: 1;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    80% {
+        transform: rotate(calc(var(--rotate) * 0.9)) translate(calc(var(--end-x) * 0.7), calc(var(--end-y) * 0.7));
+        opacity: 0.9;
+    }
+    100% {
+        transform: rotate(calc(var(--rotate) * 1.1)) translate(calc(var(--end-x) * 0.25), calc(var(--end-y) * 0.25));
+        opacity: 0;
+    }
+}
+
+@keyframes gooeyPoint {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    18% {
+        transform: scale(calc(var(--scale) * 0.75));
+        opacity: 1;
+    }
+    50% {
+        transform: scale(var(--scale));
+        opacity: 1;
+        animation-timing-function: ease-in-out;
+    }
+    80% {
+        transform: scale(calc(var(--scale) * 0.7));
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* DARK MODE: Liquid Glass goo (Pure white metaballs over transparent backdrop with subtle luminous glow) */
+html[data-theme="dark"] .gooey-effect.gooey-filter {
+    filter: url('#gooeyNavFilter') drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+    -webkit-filter: url('#gooeyNavFilter') drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+    mix-blend-mode: normal;
+    background: transparent !important;
+}
+
+html[data-theme="dark"] .gooey-effect.gooey-filter::before {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+}
+
+html[data-theme="dark"] .gooey-effect.gooey-filter::after {
+    background: #ffffff;
+}
+
+/* LIGHT MODE: Clean White goo (Pure white metaballs over transparent backdrop with soft neutral elevation shadow) */
+html[data-theme="light"] .gooey-effect.gooey-filter {
+    filter: url('#gooeyNavFilter') drop-shadow(0 2px 10px rgba(0, 0, 0, 0.12));
+    -webkit-filter: url('#gooeyNavFilter') drop-shadow(0 2px 10px rgba(0, 0, 0, 0.12));
+    mix-blend-mode: normal;
+    background: transparent !important;
+}
+
+html[data-theme="light"] .gooey-effect.gooey-filter::before {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+}
+
+html[data-theme="light"] .gooey-effect.gooey-filter::after {
+    background: #ffffff;
+}
+
+/* Fallback for prefers-color-scheme dark */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .gooey-effect.gooey-filter {
+        filter: url('#gooeyNavFilter') drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+        -webkit-filter: url('#gooeyNavFilter') drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+        mix-blend-mode: normal;
+        background: transparent !important;
+    }
+
+    :root:not([data-theme="light"]) .gooey-effect.gooey-filter::before {
+        display: none !important;
+        content: none !important;
+        background: transparent !important;
+    }
+
+    :root:not([data-theme="light"]) .gooey-effect.gooey-filter::after {
+        background: #ffffff;
+    }
+}
+
+/* Gooey effect is desktop-rail-only; never render on the mobile drawer. */
+@media (max-width: 860px) {
+    .gooey-effect,
+    .gooey-particle,
+    .gooey-point {
+        display: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gooey-effect,
+    .gooey-particle,
+    .gooey-point {
+        animation: none !important;
+        transition: none !important;
+        display: none !important;
+    }
 }
 
 /* --------------------------------------------------------------------------

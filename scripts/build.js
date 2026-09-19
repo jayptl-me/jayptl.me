@@ -379,6 +379,84 @@ async function createLlmsFull() {
 }
 
 /**
+ * Generate clean URL directories and static route files
+ *
+ * For every page in pages/ (e.g. pages/about.html, pages/projects/aviz-health.html):
+ * - Creates dist/<route>/index.html (e.g. dist/about/index.html)
+ * - Creates dist/<route>.html (e.g. dist/about.html)
+ * - Keeps dist/pages/<file> for legacy / compatibility
+ *
+ * For markdown companions in markdown/pages/ (e.g. markdown/pages/about.md):
+ * - Creates dist/<route>.md (e.g. dist/about.md)
+ *
+ * This allows Render (and any static host) to serve clean URLs natively
+ * from static files without requiring server-side URL rewrites.
+ */
+async function generateCleanUrls() {
+  log.info('Generating clean URL directory structure for static hosting...');
+
+  async function processHtmlDir(dir, relDir = '') {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      const subRel = relDir ? `${relDir}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        await processHtmlDir(fullPath, subRel);
+      } else if (entry.isFile() && entry.name.endsWith('.html')) {
+        // Skip 404 and 500 error pages (handled separately)
+        if (entry.name === '404.html' || entry.name === '500.html') {
+          continue;
+        }
+
+        const sourceFile = fullPath;
+        if (entry.name === 'index.html') {
+          const destDir = path.join(config.distDir, relDir);
+          await fs.mkdir(destDir, { recursive: true });
+          await fs.copyFile(sourceFile, path.join(destDir, 'index.html'));
+          log.success(`Generated /${relDir}/index.html`);
+        } else {
+          const slug = subRel.replace(/\.html$/, '');
+          const targetDir = path.join(config.distDir, slug);
+          await fs.mkdir(targetDir, { recursive: true });
+          await fs.copyFile(sourceFile, path.join(targetDir, 'index.html'));
+          await fs.copyFile(sourceFile, path.join(config.distDir, `${slug}.html`));
+          log.success(`Generated /${slug}/index.html and /${slug}.html`);
+        }
+      }
+    }
+  }
+
+  const pagesSrc = path.join(config.sourceDir, 'pages');
+  await processHtmlDir(pagesSrc);
+
+  // Copy markdown files to clean root URLs: dist/pages/*.md -> dist/*.md
+  const mdSrc = path.join(config.sourceDir, 'markdown', 'pages');
+  async function processMdDir(dir, relDir = '') {
+    try {
+      const entries = await fs.readdir(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        const subRel = relDir ? `${relDir}/${entry.name}` : entry.name;
+        if (entry.isDirectory()) {
+          await processMdDir(fullPath, subRel);
+        } else if (entry.isFile() && entry.name.endsWith('.md')) {
+          const cleanName = subRel === 'projects/index.md' ? 'projects.md' : subRel;
+          const destPath = path.join(config.distDir, cleanName);
+          await fs.mkdir(path.dirname(destPath), { recursive: true });
+          await fs.copyFile(fullPath, destPath);
+          log.success(`Generated clean markdown companion: /${cleanName}`);
+        }
+      }
+    } catch (e) {
+      if (e.code !== 'ENOENT') {
+        log.warn(`Could not copy clean markdown companions: ${e.message}`);
+      }
+    }
+  }
+  await processMdDir(mdSrc);
+}
+
+/**
  * Main build function
  */
 async function build() {
@@ -395,8 +473,9 @@ async function build() {
     // Copy files
     await copyFiles();
 
-    // Note: Clean URL structure handled by server rewrites (_redirects, .htaccess)
-    // This avoids duplicate content in /pages/ and /about/ directories
+    // Generate physical clean URL directories (e.g. dist/about/index.html)
+    // for native static hosting support on Render, Cloudflare Pages, etc.
+    await generateCleanUrls();
 
     // Copy error pages to root for direct access
     await copyErrorPages();

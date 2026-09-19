@@ -50,8 +50,17 @@ const mimeTypes = {
  * Create HTTP server
  */
 const server = http.createServer((req, res) => {
-  // Parse URL
-  let filePath = path.join(DIST_DIR, req.url === '/' ? 'index.html' : req.url);
+  // Parse URL pathname (stripping query string and hashes)
+  const parsedUrl = new URL(req.url, 'http://localhost');
+  let cleanPath = decodeURIComponent(parsedUrl.pathname);
+  let filePath = path.join(DIST_DIR, cleanPath === '/' ? 'index.html' : cleanPath);
+
+  // If path exists and is a directory, serve its index.html
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(filePath, 'index.html');
+  } else if (!fs.existsSync(filePath) && fs.existsSync(filePath + '.html')) {
+    filePath = filePath + '.html';
+  }
   
   // Get file extension
   const extname = path.extname(filePath).toLowerCase();

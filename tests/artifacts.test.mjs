@@ -231,3 +231,46 @@ test('page titles carry the brand token for name-based search', () => {
     assert.ok(/jayptl\.me/.test(title), `${page} title mentions jayptl.me`);
   }
 });
+
+/* ------------------- static hosting clean URL routes ------------------- */
+
+test('every content page exists as a directory index.html for static clean URL hosting', () => {
+  const staticRoutes = [
+    'about/index.html',
+    'resume/index.html',
+    'privacy/index.html',
+    'design-system/index.html',
+    'projects/index.html',
+    'projects/aviz-health/index.html',
+    'projects/swalook/index.html',
+    'projects/genuinest/index.html',
+    'projects/vini-tini/index.html'
+  ];
+
+  for (const route of staticRoutes) {
+    const fullPath = path.join(dist, route);
+    assert.ok(fs.existsSync(fullPath), `Expected ${route} to exist in dist/ for static clean URLs`);
+    const content = fs.readFileSync(fullPath, 'utf8');
+    assert.ok(content.includes('<!DOCTYPE html>'), `${route} must contain valid HTML`);
+  }
+});
+
+test('clean markdown companions exist in dist for direct static access', () => {
+  const mdCompanions = [
+    'index.md',
+    'about.md',
+    'resume.md',
+    'privacy.md',
+    'projects.md',
+    'projects/aviz-health.md',
+    'projects/swalook.md',
+    'projects/genuinest.md',
+    'projects/vini-tini.md'
+  ];
+
+  for (const companion of mdCompanions) {
+    const fullPath = path.join(dist, companion);
+    assert.ok(fs.existsSync(fullPath), `Expected ${companion} to exist in dist/ for static markdown requests`);
+  }
+});
+

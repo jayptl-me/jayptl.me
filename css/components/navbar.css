@@ -17,12 +17,12 @@
     padding: calc(12px + env(safe-area-inset-top)) 16px 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start !important;
     z-index: var(--z-header);
     pointer-events: none;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: none;
     box-sizing: border-box;
     background: transparent !important;
     border: none !important;
@@ -43,7 +43,7 @@ body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
 .glass-nav.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: none;
     pointer-events: none;
 }
 
@@ -51,18 +51,7 @@ body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
 .glass-nav.is-closing {
     z-index: var(--z-maximum);
     align-items: flex-start !important;
-    inset: 0 !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    transform: none !important;
-}
-
-.glass-nav.open {
-    pointer-events: auto !important;
-}
-
-.glass-nav.is-closing {
-    pointer-events: none !important;
+    pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -887,7 +876,7 @@ html[data-theme="light"] .nav-toggle:hover {
 
 /* Expanded Dynamic Island Inner Container */
 .island-expanded-content {
-    display: flex;
+    display: none;
     flex-direction: column;
     width: 100%;
     flex: 1;
@@ -895,30 +884,37 @@ html[data-theme="light"] .nav-toggle:hover {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(-4px);
-    transition: opacity 160ms var(--ease-out),
-                transform 160ms var(--ease-out),
-                visibility 0s 260ms;
+    transform: none;
 }
 
 .glass-nav.open .island-expanded-content {
+    display: flex;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateY(0);
-    transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-                transform 260ms cubic-bezier(0.16, 1, 0.3, 1) 40ms,
-                visibility 0s;
+    transform: none;
+    transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1) 40ms;
 }
 
 .glass-nav.is-closing .island-expanded-content {
+    display: flex;
     opacity: 0;
-    transform: translateY(-6px);
+    transform: none;
     visibility: visible;
     pointer-events: none;
-    transition: opacity 180ms ease-out,
-                transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 140ms ease-out;
 }
+
+.glass-nav.is-closing .mobile-gooey-rail-wrap,
+.glass-nav.is-closing .island-scroll-body .mobile-card,
+.glass-nav.is-closing .island-scroll-body .mobile-all-projects,
+.glass-nav.is-closing .island-scroll-body .mobile-social-pill {
+    opacity: 0 !important;
+    transform: translateY(0) !important;
+    transition: opacity 140ms ease-out !important;
+    transition-delay: 0s !important;
+}
+
 
 /* Mobile Gooey Rail */
 .mobile-gooey-rail-wrap {
@@ -980,7 +976,7 @@ html[data-theme="light"] .nav-toggle:hover {
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    padding: 2px 2px 8px;
+    padding: 2px 2px 14px;
     scrollbar-width: thin;
 }
 
@@ -1449,6 +1445,10 @@ html[data-theme="light"] {
     position: absolute;
     left: 0;
     top: 0;
+    /* Optical lift: centers the pill on the text ink rather than the
+       item box. Tune in 1px steps; browsers cache /css/ for 30 days,
+       so verify with a hard refresh. */
+    margin-top: -1px;
     width: 0;
     height: 0;
     pointer-events: none;
@@ -1762,8 +1762,7 @@ html[data-theme="light"] .gooey-effect.gooey-filter::after {
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: max-height 280ms cubic-bezier(0.4, 0, 0.2, 1),
-                    padding 240ms cubic-bezier(0.4, 0, 0.2, 1),
+        transition: max-height 260ms cubic-bezier(0.4, 0, 0.2, 1),
                     box-shadow 260ms var(--ease-smooth),
                     background 260ms var(--ease-smooth),
                     border-color 260ms var(--ease-smooth);
@@ -1774,11 +1773,10 @@ html[data-theme="light"] .gooey-effect.gooey-filter::after {
         max-height: min(580px, calc(100vh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
         max-height: min(580px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
         border-radius: 18px;
-        padding: 4px 10px 14px 10px;
+        padding: 4px 10px;
         overflow: hidden;
         box-sizing: border-box;
         transition: max-height 320ms cubic-bezier(0.16, 1, 0.3, 1),
-                    padding 280ms cubic-bezier(0.16, 1, 0.3, 1),
                     box-shadow 300ms var(--ease-smooth),
                     background 300ms var(--ease-smooth),
                     border-color 300ms var(--ease-smooth);
@@ -1874,16 +1872,7 @@ html[data-theme="light"] .gooey-effect.gooey-filter::after {
     }
 }
 
-/* Page scrim when mobile menu is open (blur is handled by mobile-overlay backdrop-filter) */
-@media (max-width: 860px) {
-    body.nav-open main,
-    body.nav-open .hero,
-    body.nav-open footer,
-    body.nav-open .text-reveal-container.released {
-        opacity: 0.92;
-        transition: opacity var(--duration-fast) var(--ease-out);
-    }
-}
+
 
 /* Body scroll locking */
 body.no-scroll {

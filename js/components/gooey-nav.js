@@ -29,14 +29,14 @@
   }
 
   function createParticle(i, isMobile) {
-    const count = isMobile ? 8 : 10;
-    const distances = isMobile ? [10, 28] : [16, 46];
-    const animTime = isMobile ? 1000 : 1300;
+    const count = isMobile ? 6 : 10;
+    const distances = isMobile ? [6, 18] : [16, 46];
+    const animTime = isMobile ? 800 : 1300;
     const rotate = noise(PARTICLE_R / 10);
     return {
       start: getXY(distances[0], count - i, count),
-      end: getXY(distances[1] + noise(4), count - i, count),
-      time: Math.round(animTime + noise(isMobile ? 120 : TIME_VARIANCE)),
+      end: getXY(distances[1] + noise(3), count - i, count),
+      time: Math.round(animTime + noise(isMobile ? 80 : TIME_VARIANCE)),
       scale: +(1 + noise(0.2)).toFixed(2),
       rotate: Math.round(rotate > 0 ? (rotate + PARTICLE_R / 20) * 10 : (rotate - PARTICLE_R / 20) * 10)
     };
@@ -336,11 +336,20 @@
     }
 
     const reposition = () => {
-      const current = state.shown || state.locked;
+      const current = state.shown || state.locked || resolveLockedItem(rail);
       if (current) {
-        updateEffectPosition(rail, [filter], current);
-        if (!filter.classList.contains('gooey-on') && current.getBoundingClientRect().width > 0) {
-          filter.classList.add('gooey-on');
+        state.locked = current;
+        const rect = current.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          if (!filter.classList.contains('gooey-on')) {
+            filter.classList.add('no-transition');
+            updateEffectPosition(rail, [filter], current);
+            void filter.offsetHeight;
+            filter.classList.remove('no-transition');
+            filter.classList.add('gooey-on');
+          } else {
+            updateEffectPosition(rail, [filter], current);
+          }
         }
       }
     };

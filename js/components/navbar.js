@@ -254,12 +254,15 @@
                   <span>LinkedIn</span>
                 </a>
                 <a href="${designSystemHref}" class="mobile-social-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                   <span>Design System</span>
                 </a>
                 <a href="${privacyHref}" class="mobile-social-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                   <span>Privacy</span>
                 </a>
                 <a href="${emailHref}" class="mobile-social-pill highlight">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   <span>Let's Talk</span>
                 </a>
               </div>
@@ -350,22 +353,23 @@
         }
       };
 
+      let closeTimer = null;
+
       const setOpen = (open) => {
-        if (!open) {
-          if (expandedContent.contains(document.activeElement)) {
-            try { toggle.focus({ preventScroll: true }); } catch { }
-          }
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
         }
 
-        nav.classList.toggle("open", open);
-        expandedContent.setAttribute("aria-hidden", String(!open));
-        try { expandedContent.inert = !open; } catch { }
-        toggle.setAttribute("aria-expanded", String(open));
-        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-        document.body.classList.toggle('no-scroll', open);
-        document.body.classList.toggle('nav-open', open);
-
         if (open) {
+          nav.classList.remove('is-closing');
+          nav.classList.add('open');
+          expandedContent.setAttribute('aria-hidden', 'false');
+          try { expandedContent.inert = false; } catch { }
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.setAttribute('aria-label', 'Close menu');
+          document.body.classList.add('no-scroll', 'nav-open');
+
           document.addEventListener('keydown', onEsc);
           // Re-measure gooey pill after island expansion transition begins & finishes
           requestAnimationFrame(() => {
@@ -379,17 +383,30 @@
           }, 240);
           setTimeout(() => {
             if (window.repositionGooeyNav) window.repositionGooeyNav();
-          }, 420);
+          }, 360);
 
           const firstFocusable = expandedContent.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
           if (firstFocusable) {
             setTimeout(() => firstFocusable.focus({ preventScroll: true }), 100);
           }
         } else {
-          document.removeEventListener('keydown', onEsc);
           if (expandedContent.contains(document.activeElement)) {
-            try { document.activeElement.blur(); } catch { }
+            try { toggle.focus({ preventScroll: true }); } catch { }
           }
+          document.removeEventListener('keydown', onEsc);
+
+          nav.classList.remove('open');
+          nav.classList.add('is-closing');
+          expandedContent.setAttribute('aria-hidden', 'true');
+          try { expandedContent.inert = true; } catch { }
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Open menu');
+
+          closeTimer = setTimeout(() => {
+            nav.classList.remove('is-closing');
+            document.body.classList.remove('no-scroll', 'nav-open');
+            closeTimer = null;
+          }, 280);
         }
       };
 
@@ -412,7 +429,7 @@
 
       // Close when clicking the outer header padding or overlay backdrop
       nav.addEventListener("click", (e) => {
-        if (nav.classList.contains("open") && (e.target === nav || e.target === overlay)) {
+        if ((nav.classList.contains("open") || nav.classList.contains("is-closing")) && (e.target === nav || e.target === overlay)) {
           setOpen(false);
         }
       });
@@ -421,7 +438,7 @@
       const brand = document.getElementById("glassNavBrand");
       if (brand) {
         brand.addEventListener("click", () => {
-          if (nav.classList.contains("open")) {
+          if (nav.classList.contains("open") || nav.classList.contains("is-closing")) {
             setOpen(false);
           }
         });
@@ -435,7 +452,7 @@
       });
 
       const onResize = () => {
-        if (window.innerWidth > 860 && nav.classList.contains('open')) {
+        if (window.innerWidth > 860 && (nav.classList.contains('open') || nav.classList.contains('is-closing'))) {
           setOpen(false);
         }
         if (window.repositionGooeyNav) {

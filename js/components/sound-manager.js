@@ -426,4 +426,24 @@
         }
     }, { once: true });
 
+    // Press feedback (Gate P plan A): subtle click on .btn pointerup.
+    // Delegated, throttled, skipped under reduced motion; progressive
+    // enhancement only — never blocks the tap.
+    (function wireBtnPressSound() {
+        var lastPressSound = 0;
+        document.addEventListener('pointerup', function (event) {
+            var target = event.target && event.target.closest
+                ? event.target.closest('.btn')
+                : null;
+            if (!target || target.disabled) return;
+            if (window.SoundManager.prefersReducedMotion()) return;
+            var now = Date.now();
+            if (now - lastPressSound < 120) return;
+            lastPressSound = now;
+            try {
+                window.SoundManager.playSelectSound();
+            } catch (ignore) { /* press stays silent */ }
+        }, { passive: true });
+    })();
+
 })();

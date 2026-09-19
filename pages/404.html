@@ -37,7 +37,8 @@
     <script src="/js/theme-detection.js"></script>
 </head>
 
-<body>
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <main class="error-page" aria-labelledby="nfTitle">
         <div class="error-doodle" aria-hidden="true">
             <svg class="doodle" width="64" height="48"><use href="#d-circle"/></svg>
@@ -66,6 +67,8 @@
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>

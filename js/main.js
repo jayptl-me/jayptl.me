@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return window.matchMedia && window.matchMedia('(max-width: 860px)').matches;
                 } catch { return false; }
             })();
-            if (isMobile && glassNav.classList.contains('open')) {
+            if (isMobile && (glassNav.classList.contains('open') || glassNav.classList.contains('is-closing'))) {
                 lastY = y;
                 return;
             }

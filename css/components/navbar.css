@@ -20,22 +20,30 @@
     align-items: center;
     z-index: var(--z-header);
     pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    box-sizing: border-box;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    view-transition-name: glass-nav;
+}
+
+/* Only hold the navbar back on pages with an active, unreleased hero stepper */
+body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-16px) scale(0.98);
     transition: opacity var(--duration-200) var(--ease-smooth),
                 transform var(--duration-200) var(--ease-smooth),
                 visibility var(--duration-200) var(--ease-smooth);
-    box-sizing: border-box;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .glass-nav.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     pointer-events: none;
 }
 
@@ -1709,23 +1717,22 @@ html[data-theme="light"] .gooey-effect.gooey-filter::after {
         height: auto;
         max-height: 52px;
         padding: 4px 10px 4px 8px;
-        border-radius: 9999px;
+        border-radius: 24px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         transition: max-height 380ms cubic-bezier(0.16, 1, 0.3, 1),
-                    border-radius 320ms cubic-bezier(0.16, 1, 0.3, 1),
                     padding 280ms cubic-bezier(0.16, 1, 0.3, 1),
                     box-shadow 300ms var(--ease-smooth),
                     background 300ms var(--ease-smooth),
                     border-color 300ms var(--ease-smooth);
-        will-change: max-height, border-radius;
+        will-change: max-height;
     }
 
     .glass-nav.open .nav-island-container {
         max-height: min(620px, calc(100vh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
         max-height: min(620px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
-        border-radius: 26px;
+        border-radius: 24px;
         padding: 6px 10px 14px 10px;
         overflow: hidden;
         box-sizing: border-box;
@@ -1816,14 +1823,14 @@ html[data-theme="light"] .gooey-effect.gooey-filter::after {
     }
 }
 
-/* Page blur when mobile menu is open */
+/* Page scrim when mobile menu is open (blur is handled by mobile-overlay backdrop-filter) */
 @media (max-width: 860px) {
     body.nav-open main,
     body.nav-open .hero,
     body.nav-open footer,
     body.nav-open .text-reveal-container.released {
-        filter: blur(6px) saturate(0.9);
-        transition: filter var(--duration-fast) var(--ease-out);
+        opacity: 0.92;
+        transition: opacity var(--duration-fast) var(--ease-out);
     }
 }
 

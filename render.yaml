@@ -1,30 +1,146 @@
 # Render blueprint for jayptl.me
-#
-# Served by scripts/server.js (Node) instead of a static site so the
-# agent-facing behaviors work in production:
-#   - Accept: text/markdown content negotiation with Vary: Accept
-#     (acceptmarkdown.com)
-#   - JSON error responses for /api/* and JSON-preferring clients
-#   - /api/health liveness probe (used as the Render health check)
-# Clean URLs, security headers, and cache policy previously declared in
-# static-host config are now implemented in the server itself.
-#
-# Note: switching an existing Render static service to this blueprint
-# requires re-creating the service in the Render dashboard (static sites
-# cannot be converted in place).
+# Pure static site deployment served by Render's global CDN (no cold starts, no server spin-down)
 services:
   - type: web
     name: jayptl-portfolio
-    runtime: node
+    runtime: static
     buildCommand: bun install && bun run build
-    startCommand: node scripts/server.js
-    healthCheckPath: /api/health
+    staticPublishPath: ./dist
     pullRequestPreviewsEnabled: true
 
-    envVars:
-      - key: NODE_VERSION
-        value: 20
-      - key: BUN_VERSION
-        value: 1.0.0
-      - key: NODE_ENV
-        value: production
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: geolocation=(), microphone=(), camera=()
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains; preload
+      - path: /assets/resumes/*
+        name: Cache-Control
+        value: public, max-age=3600, must-revalidate
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /*.html
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /llms.txt
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /llms-full.txt
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /openapi.json
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /robots.txt
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /sitemap.xml
+        name: Cache-Control
+        value: public, max-age=3600
+
+    routes:
+      # Clean URL rewrites (defense-in-depth alongside physical dist/ directory indexes)
+      - type: rewrite
+        source: /about
+        destination: /about/index.html
+      - type: rewrite
+        source: /resume
+        destination: /resume/index.html
+      - type: rewrite
+        source: /privacy
+        destination: /privacy/index.html
+      - type: rewrite
+        source: /design-system
+        destination: /design-system/index.html
+      - type: rewrite
+        source: /projects
+        destination: /projects/index.html
+      - type: rewrite
+        source: /projects/aviz-health
+        destination: /projects/aviz-health/index.html
+      - type: rewrite
+        source: /projects/swalook
+        destination: /projects/swalook/index.html
+      - type: rewrite
+        source: /projects/genuinest
+        destination: /projects/genuinest/index.html
+      - type: rewrite
+        source: /projects/vini-tini
+        destination: /projects/vini-tini/index.html
+      # Direct markdown file access
+      - type: rewrite
+        source: /about.md
+        destination: /about.md
+      - type: rewrite
+        source: /resume.md
+        destination: /resume.md
+      - type: rewrite
+        source: /privacy.md
+        destination: /privacy.md
+      - type: rewrite
+        source: /projects.md
+        destination: /projects.md
+      # Legacy .html 301 redirects to clean URLs
+      - type: redirect
+        source: /about.html
+        destination: /about
+      - type: redirect
+        source: /resume.html
+        destination: /resume
+      - type: redirect
+        source: /privacy.html
+        destination: /privacy
+      - type: redirect
+        source: /design-system.html
+        destination: /design-system
+      - type: redirect
+        source: /projects.html
+        destination: /projects
+      # Direct /pages/ path redirects to canonical clean URLs
+      - type: redirect
+        source: /pages/about.html
+        destination: /about
+      - type: redirect
+        source: /pages/resume.html
+        destination: /resume
+      - type: redirect
+        source: /pages/privacy.html
+        destination: /privacy
+      - type: redirect
+        source: /pages/design-system.html
+        destination: /design-system
+      - type: redirect
+        source: /pages/projects/index.html
+        destination: /projects
+      - type: redirect
+        source: /pages/projects/aviz-health.html
+        destination: /projects/aviz-health
+      - type: redirect
+        source: /pages/projects/swalook.html
+        destination: /projects/swalook
+      - type: redirect
+        source: /pages/projects/genuinest.html
+        destination: /projects/genuinest
+      - type: redirect
+        source: /pages/projects/vini-tini.html
+        destination: /projects/vini-tini

@@ -363,7 +363,9 @@
 
         if (open) {
           nav.classList.remove('is-closing');
-          nav.classList.add('open');
+          nav.classList.add('open', 'visible');
+          nav.removeAttribute('aria-hidden');
+          try { nav.inert = false; } catch { }
           expandedContent.setAttribute('aria-hidden', 'false');
           try { expandedContent.inert = false; } catch { }
           toggle.setAttribute('aria-expanded', 'true');
@@ -405,12 +407,20 @@
           closeTimer = setTimeout(() => {
             nav.classList.remove('is-closing');
             document.body.classList.remove('no-scroll', 'nav-open');
+            // Restore desktop-like visibility: setOpen(true) forces
+            // `visible`, so without this the bar stays stuck visible on
+            // the unreleased hero stepper. Ground truth: hidden while
+            // the stepper is unreleased, visible once released (or when
+            // no stepper exists on the page).
+            const ov = document.querySelector('.text-reveal-container');
+            setNavbarAccessibility(nav, !ov || ov.classList.contains('released'));
             closeTimer = null;
           }, 280);
         }
       };
 
       toggle.addEventListener("click", () => {
+        if (nav.classList.contains('is-closing')) return;
         const willOpen = !nav.classList.contains('open');
         setOpen(willOpen);
       });
@@ -418,6 +428,7 @@
       toggle.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
+          if (nav.classList.contains('is-closing')) return;
           const willOpen = !nav.classList.contains('open');
           setOpen(willOpen);
         }
@@ -560,7 +571,12 @@
     }
     try {
       const mq = window.matchMedia('(max-width: 860px)');
-      const onBpChange = () => syncVisibility();
+      const onBpChange = () => {
+        // Never fight an open/closing menu: visibility is owned by
+        // setOpen until the close transition fully settles.
+        if (nav.classList.contains('open') || nav.classList.contains('is-closing')) return;
+        syncVisibility();
+      };
       if (mq && mq.addEventListener) mq.addEventListener('change', onBpChange);
       else window.addEventListener('resize', onBpChange, { passive: true });
     } catch { /* noop */ }

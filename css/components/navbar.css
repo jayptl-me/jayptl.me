@@ -911,8 +911,8 @@ html[data-theme="light"] .nav-toggle:hover {
 .glass-nav.is-closing .island-scroll-body .mobile-social-pill {
     opacity: 0 !important;
     transform: translateY(0) !important;
+    --stagger-delay: 0s !important;
     transition: opacity 140ms ease-out !important;
-    transition-delay: 0s !important;
 }
 
 
@@ -989,35 +989,40 @@ html[data-theme="light"] .nav-toggle:hover {
     background: rgba(128, 128, 128, 0.25);
 }
 
-/* Stagger animation on children ONLY when open */
+/* Stagger animation on children ONLY when open.
+   Entrance delay is scoped to opacity/transform via --stagger-delay so
+   theme color flips (background/color/border/box-shadow) stay instant. */
 .mobile-gooey-rail-wrap,
 .island-scroll-body .mobile-card,
 .island-scroll-body .mobile-all-projects,
 .island-scroll-body .mobile-social-pill {
     opacity: 0;
     transform: translateY(6px);
-    transition: opacity 180ms ease-out,
-                transform 180ms ease-out,
-                background var(--duration-fast) var(--ease-smooth);
-    transition-delay: 0s;
+    --stagger-delay: 0s;
+    transition: opacity 180ms ease-out var(--stagger-delay),
+                transform 180ms ease-out var(--stagger-delay),
+                background-color var(--duration-fast) var(--ease-smooth),
+                color var(--duration-fast) var(--ease-smooth),
+                border-color var(--duration-fast) var(--ease-smooth),
+                box-shadow var(--duration-fast) var(--ease-smooth);
 }
 
 .glass-nav.open .mobile-gooey-rail-wrap {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 40ms;
+    --stagger-delay: 40ms;
 }
 
-.glass-nav.open .mobile-grid .mobile-card:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 60ms; }
-.glass-nav.open .mobile-grid .mobile-card:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 90ms; }
-.glass-nav.open .mobile-grid .mobile-card:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 120ms; }
-.glass-nav.open .mobile-grid .mobile-card:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 150ms; }
-.glass-nav.open .mobile-all-projects { opacity: 1; transform: translateY(0); transition-delay: 180ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 220ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 240ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 260ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 280ms; }
+.glass-nav.open .mobile-grid .mobile-card:nth-child(1) { opacity: 1; transform: translateY(0); --stagger-delay: 60ms; }
+.glass-nav.open .mobile-grid .mobile-card:nth-child(2) { opacity: 1; transform: translateY(0); --stagger-delay: 90ms; }
+.glass-nav.open .mobile-grid .mobile-card:nth-child(3) { opacity: 1; transform: translateY(0); --stagger-delay: 120ms; }
+.glass-nav.open .mobile-grid .mobile-card:nth-child(4) { opacity: 1; transform: translateY(0); --stagger-delay: 150ms; }
+.glass-nav.open .mobile-all-projects { opacity: 1; transform: translateY(0); --stagger-delay: 180ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(1) { opacity: 1; transform: translateY(0); --stagger-delay: 200ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(2) { opacity: 1; transform: translateY(0); --stagger-delay: 220ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(3) { opacity: 1; transform: translateY(0); --stagger-delay: 240ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(4) { opacity: 1; transform: translateY(0); --stagger-delay: 260ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(5) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
 
 /* Grid of Cards */
 .mobile-grid {
@@ -1037,15 +1042,22 @@ html[data-theme="light"] .nav-toggle:hover {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     -webkit-touch-callout: none;
-    transition: all var(--duration-fast) var(--ease-smooth);
+    transition: opacity 180ms ease-out var(--stagger-delay, 0s),
+                transform 180ms ease-out var(--stagger-delay, 0s),
+                background-color var(--duration-fast) var(--ease-smooth),
+                color var(--duration-fast) var(--ease-smooth),
+                border-color var(--duration-fast) var(--ease-smooth),
+                box-shadow var(--duration-fast) var(--ease-smooth);
 }
 
 .mobile-card:active {
+    --stagger-delay: 0s;
     transform: scale(var(--press-scale, 0.97));
 }
 
 .mobile-all-projects:active,
 .mobile-social-pill:active {
+    --stagger-delay: 0s;
     transform: scale(var(--press-scale, 0.97));
 }
 
@@ -1103,7 +1115,12 @@ html[data-theme="light"] .nav-toggle:hover {
     font-size: 11.5px;
     font-weight: 600;
     text-decoration: none;
-    transition: all var(--duration-fast) var(--ease-smooth);
+    transition: opacity 180ms ease-out var(--stagger-delay, 0s),
+                transform 180ms ease-out var(--stagger-delay, 0s),
+                background-color var(--duration-fast) var(--ease-smooth),
+                color var(--duration-fast) var(--ease-smooth),
+                border-color var(--duration-fast) var(--ease-smooth),
+                box-shadow var(--duration-fast) var(--ease-smooth);
 }
 
 .mobile-section-label {
@@ -1140,7 +1157,12 @@ html[data-theme="light"] .nav-toggle:hover {
     text-decoration: none;
     font-size: 11.5px;
     font-weight: 600;
-    transition: all var(--duration-fast) var(--ease-smooth);
+    transition: opacity 180ms ease-out var(--stagger-delay, 0s),
+                transform 180ms ease-out var(--stagger-delay, 0s),
+                background-color var(--duration-fast) var(--ease-smooth),
+                color var(--duration-fast) var(--ease-smooth),
+                border-color var(--duration-fast) var(--ease-smooth),
+                box-shadow var(--duration-fast) var(--ease-smooth);
 }
 
 .mobile-social-pill svg {

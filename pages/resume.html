@@ -91,7 +91,8 @@
     </script>
 </head>
 
-<body>
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <main class="about-page resume-page">
         <header class="page-hero">
             <p class="page-hero-kicker hud-label">Resume — canonical HTML version</p>
@@ -184,6 +185,8 @@
     </main>
 
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
 </body>

@@ -82,7 +82,8 @@
         </script>
 </head>
 
-<body>
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <!-- Universal Navbar injected by navbar.js -->
 
     <!-- Main Content -->
@@ -351,6 +352,8 @@
 
     <!-- Load universal navbar and other components -->
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/consent-banner.js"></script>

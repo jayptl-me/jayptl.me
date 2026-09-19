@@ -585,6 +585,17 @@
   // Expose navbar accessibility function globally for other components
   window.setNavbarAccessibility = setNavbarAccessibility;
 
+  // Safety net for the page-transition entry: if its script ever fails to
+  // load, the render-blocking pre-hide would leave content invisible.
+  setTimeout(function () {
+    try {
+      var html = document.documentElement;
+      if (!html.classList.contains('pt-entering') && !html.classList.contains('pt-entered')) {
+        html.classList.add('pt-entered');
+      }
+    } catch { /* noop */ }
+  }, 2000);
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', insertNav);
   } else {

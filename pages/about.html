@@ -102,7 +102,8 @@
     </script>
 </head>
 
-<body>
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <!-- Shared doodle sprite (inlined canonical copy of assets/doodle-sprite.svg; no fetch) -->
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false" id="doodleSprite">
         <defs>
@@ -308,6 +309,8 @@
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>

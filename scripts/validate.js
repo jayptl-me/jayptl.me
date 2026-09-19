@@ -449,6 +449,61 @@ function printSummary() {
 }
 
 /**
+ * Deployment rule: dist/ must be freshly built from current sources.
+ * Fails when any source file is newer than the last clean build,
+ * so a stale dist/ can never pass validation and reach deploy.
+ */
+async function validateFreshness() {
+  log.info('Validating dist freshness (no stale build)...');
+
+  let buildDate = null;
+  try {
+    const raw = await fs.readFile(path.join(config.distDir, 'build-info.json'), 'utf8');
+    buildDate = new Date(JSON.parse(raw).buildDate).getTime();
+  } catch {
+    config.errors.push('dist/build-info.json missing or unreadable — run a clean build first.');
+    return;
+  }
+  if (!Number.isFinite(buildDate)) {
+    config.errors.push('dist/build-info.json has no valid buildDate — run a clean build first.');
+    return;
+  }
+
+  const sources = ['index.html', 'pages', 'css', 'js', 'markdown'];
+  let newest = 0;
+  let newestFile = '';
+  async function scan(entry) {
+    const full = path.join(process.cwd(), entry);
+    let stat = null;
+    try {
+      stat = await fs.stat(full);
+    } catch {
+      return;
+    }
+    if (stat.isDirectory()) {
+      const kids = await fs.readdir(full);
+      for (const kid of kids) {
+        if (kid === 'node_modules' || kid === '.git') continue;
+        await scan(path.join(entry, kid));
+      }
+    } else if (stat.isFile() && stat.mtimeMs > newest) {
+      newest = stat.mtimeMs;
+      newestFile = entry;
+    }
+  }
+  for (const src of sources) await scan(src);
+
+  if (newest > buildDate) {
+    config.errors.push(
+      `dist/ is stale: ${newestFile} changed after the last build. ` +
+      `Rebuild from scratch (rm -rf dist && node scripts/build.js) before deploying.`
+    );
+  } else {
+    log.success('dist/ is freshly built from current sources');
+  }
+}
+
+/**
  * Main validation function
  */
 async function validate() {
@@ -466,6 +521,9 @@ async function validate() {
     }
     
     // Run validations
+    await validateFreshness();
+    console.log('');
+
     await validateRequiredFiles();
     console.log('');
     

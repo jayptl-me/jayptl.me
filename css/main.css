@@ -60,6 +60,7 @@
 @import 'components/particle-text.css';
 @import 'components/split-text.css';
 @import 'components/pixel-swap.css';
+@import 'components/page-transition.css';
 @import 'components/site-grid.css';
 @import 'components/hud.css';
 @import 'components/sticker.css';

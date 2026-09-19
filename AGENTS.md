@@ -45,6 +45,7 @@ The portfolio uses two fundamentally distinct design languages across light and 
   - When adding any new page to `pages/`, `scripts/build.js` automatically generates its `dist/<slug>/index.html` file, and regression tests in `tests/artifacts.test.mjs` verify coverage.
 - Dev server habitually runs on port 8000 (`scripts/preview.js` serves `dist/` with directory `index.html` resolution).
 - `dist/` is build output; edit sources in `pages/`, `css/`, `js/`, `markdown/`.
+- **Clean-build deployment rule (no stale files, ever)**: `scripts/build.js` wipes `dist/` at startup, so every invocation path builds from scratch. `scripts/validate.js` fails the deploy when any source is newer than `dist/build-info.json`. Never ship a `dist/` that was built before the latest source change — rebuild with `rm -rf dist && node scripts/build.js`.
 
 ## Decision Gates — Two-Gate Law (adopted 2026-08-26, global across ~/Development)
 

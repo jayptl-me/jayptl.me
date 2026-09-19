@@ -55,6 +55,7 @@ class ThemeManager {
             }
         }
 
+        document.documentElement.classList.add('theme-transitioning');
         const transition = document.startViewTransition(() => {
             setDOMTheme();
         });
@@ -81,6 +82,16 @@ class ThemeManager {
                 }
             );
         }).catch(() => { });
+
+        if (transition.finished) {
+            transition.finished.finally(() => {
+                document.documentElement.classList.remove('theme-transitioning');
+            });
+        } else {
+            setTimeout(() => {
+                document.documentElement.classList.remove('theme-transitioning');
+            }, 500);
+        }
     }
 
     toggleTheme(opts = {}) {

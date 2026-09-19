@@ -1,0 +1,120 @@
+/**
+ * Page Transition — bespoke pixel dissolve exit + pixel reveal entry
+ * with staged component choreography.
+ *
+ * Covers every visible component on each page: nav, main sections,
+ * cards, footers. One shared clock so page changes feel coherent.
+ *
+ * @file components/page-transition.css
+ */
+
+:root {
+  --pt-duration: 520ms;
+  --pt-stagger: 60ms;
+  --pt-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --pt-rise: 14px;
+  --pt-cover-duration: 420ms;
+  --pt-uncover-duration: 640ms;
+  --z-veil: 55;
+}
+
+/* Fullscreen veil: covers the reload gap (including the nav swap) so page
+   changes read as one continuous pixel motion. Theme-aware so the seam is
+   invisible; strictly above nav, below nothing interactive. */
+.pt-veil {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-veil);
+  background: var(--theme-bg, #ffffff);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Armed at first paint (html.js is set by the parser-blocking theme script),
+   so a transition entry starts covered with zero JS timing involved. */
+html.js .pt-veil {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Homepage preloader owns its own cover; no-JS never covers. */
+body.preloading .pt-veil,
+html.pt-entered .pt-veil {
+  display: none;
+}
+
+html.pt-covering .pt-veil {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Pixel clip target gets compositor-friendly containment */
+.pt-host {
+  will-change: clip-path;
+  contain: paint;
+}
+
+/* Render-blocking pre-hide: first paint is already transition-ready,
+   so entry never flashes visible -> hidden -> revealed.
+   Applies only when JS runs (html.js is set by the parser-blocking
+   theme script in <head>); no-JS stays fully visible. */
+html.js[data-transition="pixels"]:not(.pt-entering):not(.pt-entered) main,
+html.js[data-transition="pixels"]:not(.pt-entering):not(.pt-entered) .site-footer {
+  opacity: 0;
+}
+
+html.pt-entering main,
+html.pt-entering .site-footer,
+html.pt-entered main,
+html.pt-entered .site-footer {
+  opacity: 1;
+}
+
+/* One motion system at a time: while the pixel choreography owns the
+   swap, the native root fade stays out so exits/entries never play twice. */
+html.pt-exiting::view-transition-old(root),
+html.pt-exiting::view-transition-new(root),
+html.pt-covering::view-transition-old(root),
+html.pt-entering::view-transition-new(root),
+html.pt-uncovering::view-transition-new(root) {
+  animation: none !important;
+}
+
+/* Staged items: hidden pre-entry, rise + fade on .pt-in */
+.pt-item {
+  opacity: 0;
+  transform: translateY(var(--pt-rise));
+  transition: opacity var(--pt-duration) var(--pt-ease) calc(var(--pt-index, 0) * var(--pt-stagger)),
+              transform var(--pt-duration) var(--pt-ease) calc(var(--pt-index, 0) * var(--pt-stagger));
+  will-change: opacity, transform;
+}
+
+.pt-item.pt-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Nav island stays pinned and motionless: cross-document continuity is owned
+   solely by its snapshot morph (view-transition-name: glass-nav). Any entry
+   animation here would double-animate the same element and read as jitter. */
+
+/* While exiting, freeze interaction so the dissolve reads cleanly */
+html.pt-exiting main,
+html.pt-exiting .site-footer,
+html.pt-exiting .page-footer {
+  pointer-events: none;
+}
+
+html.pt-exiting #glassNav {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

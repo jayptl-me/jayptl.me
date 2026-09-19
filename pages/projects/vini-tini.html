@@ -52,7 +52,8 @@
     </script>
 </head>
 
-<body>
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <main class="case-study-page">
         <nav class="breadcrumb" aria-label="Breadcrumb">
             <a href="/projects">← All projects</a>
@@ -197,6 +198,8 @@
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>

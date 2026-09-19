@@ -152,6 +152,39 @@ button {
   color: var(--theme-text-inverse);
 }
 
+/* ==========================================================================
+   PRESS / TAP BASE (Gate P plan A — Native Press Tokens)
+   Kill the default grey tap flash once, globally; owned :active states
+   provide feedback per theme (skeu-pressed light / glass-inset dark).
+   touch-action: manipulation removes double-tap-zoom delay on pressables
+   without preventDefault handlers (MDN touch-action / Pointer Events).
+   ========================================================================== */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button,
+[role="button"],
+.card-interactive,
+.mobile-card,
+.mobile-social-pill,
+.mobile-all-projects,
+.mobile-rail-link {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Long-press callout off for press-only controls (text stays selectable) */
+.btn,
+.nav-toggle,
+.theme-toggle,
+.mobile-card,
+.mobile-social-pill,
+.mobile-all-projects {
+  -webkit-touch-callout: none;
+}
+
 /* Scrollbar styling lives in ONE place: components/custom-scrollbar.css.
    (Removed duplicate ::-webkit-scrollbar block that fought it.) */
 

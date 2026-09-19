@@ -167,8 +167,15 @@
    --danger-muted: rgba(var(--danger-rgb), 0.12);
    --info-muted: rgba(var(--info-rgb), 0.12);
 
-    /* Focus Ring / Outline (Light Mode: Blue primary) */
-    --focus-ring: 0 0 0 3px rgba(var(--primary-500-rgb), 0.35);
+     /* Focus Ring / Outline (Light Mode: Blue primary) */
+     --focus-ring: 0 0 0 3px rgba(var(--primary-500-rgb), 0.35);
+
+    /* Press / tap feedback (Gate P plan A — Native Press Tokens).
+       Built on --primary-*-rgb so the dark remap below resolves it to
+       turquoise automatically; never raw hex, never cross-ramp. */
+    --tap-highlight: rgba(var(--primary-500-rgb), 0.12);
+    --press-scale: 0.97;
+    --press-scale-soft: 0.98;
 
    /* ==========================================================================
      TYPOGRAPHY SYSTEM

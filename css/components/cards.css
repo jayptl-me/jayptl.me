@@ -39,6 +39,13 @@ html[data-theme="light"] .card-default:hover {
     transform: translateY(-2px);
 }
 
+html[data-theme="light"] .card-default:active,
+html[data-theme="light"] .card-interactive.card-default:active {
+    box-shadow: var(--skeu-shadow-pressed-sm);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+}
+
 /* Dark Mode - Glass */
 html[data-theme="dark"] .card-default {
     background: var(--glass-bg);
@@ -52,6 +59,13 @@ html[data-theme="dark"] .card-default:hover {
     border-color: var(--glass-border-accent);
     box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
     transform: translateY(-2px);
+}
+
+html[data-theme="dark"] .card-default:active,
+html[data-theme="dark"] .card-interactive.card-default:active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
 }
 
 /* ==========================================================================
@@ -78,6 +92,12 @@ html[data-theme="light"] .card-elevated:hover {
     transform: translateY(-3px);
 }
 
+html[data-theme="light"] .card-elevated:active {
+    box-shadow: var(--skeu-shadow-pressed-sm);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+}
+
 /* Dark Mode */
 html[data-theme="dark"] .card-elevated {
     background: var(--glass-bg-elevated);
@@ -91,6 +111,12 @@ html[data-theme="dark"] .card-elevated:hover {
     border-color: var(--glass-border-accent);
     box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5), var(--glass-inner-glow), var(--glass-glow-accent);
     transform: translateY(-3px);
+}
+
+html[data-theme="dark"] .card-elevated:active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
 }
 
 /* ==========================================================================
@@ -113,6 +139,12 @@ html[data-theme="light"] .card-glass:hover {
     box-shadow: var(--skeu-shadow-raised-lg), var(--skeu-highlight);
     border-color: rgba(var(--primary-500-rgb), 0.25);
     transform: translateY(-2px);
+}
+
+html[data-theme="light"] .card-glass:active {
+    box-shadow: var(--skeu-shadow-pressed-sm);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
 }
 
 html[data-theme="light"] .card-glass .card-title {
@@ -141,6 +173,12 @@ html[data-theme="dark"] .card-glass:hover {
     border-color: var(--glass-border-accent);
     box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
     transform: translateY(-2px);
+}
+
+html[data-theme="dark"] .card-glass:active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
 }
 
 html[data-theme="dark"] .card-glass .card-title {
@@ -218,6 +256,12 @@ html[data-theme="light"] .card-accent:hover {
     box-shadow: var(--skeu-shadow-raised-lg), var(--skeu-highlight);
 }
 
+html[data-theme="light"] .card-accent:active {
+    box-shadow: var(--skeu-shadow-pressed-sm);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+}
+
 /* Dark Mode - Glass Accent */
 html[data-theme="dark"] .card-accent {
     background: var(--glass-bg);
@@ -247,11 +291,21 @@ html[data-theme="dark"] .card-accent:hover {
     box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
 }
 
+html[data-theme="dark"] .card-accent:active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    transform: scale(var(--press-scale-soft));
+    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+}
+
 /* ==========================================================================
    INTERACTIVE CARD
    ========================================================================== */
 .card-interactive {
     cursor: pointer;
+}
+
+.card-interactive:active {
+    transform: scale(var(--press-scale-soft));
 }
 
 html[data-theme="light"] .card-interactive:focus-visible {
@@ -341,5 +395,10 @@ html[data-theme="dark"] .card-elevated:hover .card-title {
     .card-title,
     .card-accent::before {
         transition: none;
+    }
+
+    .card:active,
+    .card-interactive:active {
+        transform: none;
     }
 }

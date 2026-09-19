@@ -408,6 +408,10 @@ html[data-theme="dark"] .checkbox input:checked~.checkbox-mark {
     box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
 }
 
+.checkbox:active .checkbox-mark {
+    transform: scale(0.92);
+}
+
 .checkbox-label {
     font-size: var(--text-sm);
     color: var(--theme-text);
@@ -496,6 +500,10 @@ html[data-theme="dark"] .radio input:checked~.radio-mark {
 .radio input:focus-visible~.radio-mark {
     outline: none;
     box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
+}
+
+.radio:active .radio-mark {
+    transform: scale(0.92);
 }
 
 .radio-label {
@@ -601,6 +609,10 @@ html[data-theme="dark"] .toggle-thumb {
 .toggle input:focus-visible~.toggle-track {
     outline: none;
     box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb), 0.3);
+}
+
+.toggle:active .toggle-thumb {
+    transform: scale(0.9);
 }
 
 .toggle-label {
@@ -754,5 +766,11 @@ html[data-theme="dark"] .form-select-success {
     .toggle-thumb {
         transition: none;
         animation: none !important;
+    }
+
+    .checkbox:active .checkbox-mark,
+    .radio:active .radio-mark,
+    .toggle:active .toggle-thumb {
+        transform: none;
     }
 }

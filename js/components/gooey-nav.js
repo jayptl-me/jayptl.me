@@ -394,4 +394,21 @@
 
   window.addEventListener('resize', window.repositionGooeyNav, { passive: true });
   window.addEventListener('orientationchange', window.repositionGooeyNav, { passive: true });
+
+  // Late font loads shift rail measurements after entry; snap the pill to its
+  // corrected spot instead of gliding there mid-page.
+  const snapAfterFonts = () => {
+    try {
+      const filters = document.querySelectorAll('.gooey-filter');
+      filters.forEach((f) => f.classList.add('no-transition'));
+      window.repositionGooeyNav();
+      void document.body.offsetHeight;
+      filters.forEach((f) => f.classList.remove('no-transition'));
+    } catch { /* noop */ }
+  };
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(snapAfterFonts);
+  } else {
+    window.addEventListener('load', snapAfterFonts);
+  }
 })();

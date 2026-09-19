@@ -465,10 +465,13 @@ async function build() {
   console.log(`\n${colors.bright}Starting Production Build${colors.reset}\n`);
 
   try {
-    // Create dist directory
-    log.info('Creating dist directory...');
+    // Deployment rule: every build starts from an empty dist directory.
+    // Wiping here (not only in package.json prebuild) keeps ALL invocation
+    // paths stale-proof: bun run build, bun/node scripts/build.js, deploy:prepare.
+    log.info('Wiping dist directory for a clean build...');
+    await fs.rm(config.distDir, { recursive: true, force: true });
     await fs.mkdir(config.distDir, { recursive: true });
-    log.success('Created dist directory');
+    log.success('Created clean dist directory');
 
     // Copy files
     await copyFiles();

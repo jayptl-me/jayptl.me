@@ -185,11 +185,11 @@
             <!-- Mobile Touch-Driven Gooey Rail -->
             <div class="mobile-gooey-rail-wrap">
               <nav class="mobile-gooey-rail" aria-label="Mobile Navigation">
+                <a href="${homeHref}" class="nav-link mobile-rail-link"><span class="nav-text">Home</span></a>
                 <a href="${projectsHref}" class="nav-link mobile-rail-link"><span class="nav-text">Projects</span></a>
                 <a href="${aboutHref}" class="nav-link mobile-rail-link"><span class="nav-text">About</span></a>
                 <a href="${resumeHref}" class="nav-link mobile-rail-link"><span class="nav-text">Resume</span></a>
-                <a href="${designSystemHref}" class="nav-link mobile-rail-link"><span class="nav-text">System</span></a>
-                <a href="${emailHref}" class="nav-link mobile-rail-link"><span class="nav-text">Talk</span></a>
+                <a href="${emailHref}" class="nav-link mobile-rail-link"><span class="nav-text">Contact</span></a>
               </nav>
             </div>
 
@@ -252,6 +252,9 @@
                 <a href="${linkedinHref}" target="_blank" rel="noopener noreferrer" class="mobile-social-pill">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
                   <span>LinkedIn</span>
+                </a>
+                <a href="${designSystemHref}" class="mobile-social-pill">
+                  <span>Design System</span>
                 </a>
                 <a href="${privacyHref}" class="mobile-social-pill">
                   <span>Privacy</span>
@@ -405,6 +408,23 @@
 
       if (overlay) {
         overlay.addEventListener("click", () => setOpen(false));
+      }
+
+      // Close when clicking the outer header padding or overlay backdrop
+      nav.addEventListener("click", (e) => {
+        if (nav.classList.contains("open") && (e.target === nav || e.target === overlay)) {
+          setOpen(false);
+        }
+      });
+
+      // Close when clicking the identity brand while menu is open
+      const brand = document.getElementById("glassNavBrand");
+      if (brand) {
+        brand.addEventListener("click", () => {
+          if (nav.classList.contains("open")) {
+            setOpen(false);
+          }
+        });
       }
 
       expandedContent.querySelectorAll('a').forEach((link) => {

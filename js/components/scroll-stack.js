@@ -63,6 +63,11 @@
 
             // Bind loop
             this.renderLoop = this.renderLoop.bind(this);
+            this._onScroll = null;
+            this._onResize = null;
+            this._onMotionChange = null;
+            this._rafId = 0;
+            this._destroyed = false;
 
             if (this.container && this.cards.length > 0) {
                 this.init();
@@ -98,29 +103,41 @@
             }
 
             // Passive window scroll listener
-            window.addEventListener('scroll', () => {
+            this._onScroll = () => {
                 if (this.isInView) {
                     this.onScroll();
                 }
-            }, { passive: true });
+            };
+            window.addEventListener('scroll', this._onScroll, { passive: true });
 
             // Debounced resize listener
             let resizeTimer;
-            window.addEventListener('resize', () => {
+            this._onResize = () => {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     this.checkMode();
                     this.updateGeometry();
                     this.onScroll();
                 }, 100);
-            }, { passive: true });
+            };
+            window.addEventListener('resize', this._onResize, { passive: true });
 
             // Reduced motion media query listener
-            window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+            this._motionQuery = null;
+            try {
+                this._motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            } catch (e) { /* noop */ }
+            this._onMotionChange = (e) => {
                 this.reducedMotion = e.matches;
                 this.checkMode();
                 this.onScroll();
-            });
+            };
+            try {
+                if (this._motionQuery && this._onMotionChange) {
+                    if (this._motionQuery.addEventListener) this._motionQuery.addEventListener('change', this._onMotionChange);
+                    else if (this._motionQuery.addListener) this._motionQuery.addListener(this._onMotionChange);
+                }
+            } catch (e) { /* noop */ }
 
             // Interactive jump pills
             this.pills.forEach((pill, idx) => {
@@ -185,7 +202,8 @@
 
                 if (!this.isAnimating) {
                     this.isAnimating = true;
-                    window.requestAnimationFrame(this.renderLoop);
+                    try { cancelAnimationFrame(this._rafId); } catch (e) { /* noop */ }
+                    this._rafId = window.requestAnimationFrame(this.renderLoop);
                 }
             } else if (!this.reducedMotion) {
                 this.queueMobileStack();
@@ -193,6 +211,10 @@
         }
 
         renderLoop() {
+            if (this._destroyed) {
+                this.isAnimating = false;
+                return;
+            }
             const isDesktop = window.innerWidth > this.breakpoint && !this.reducedMotion;
             if (!isDesktop) {
                 this.isAnimating = false;
@@ -205,7 +227,7 @@
             if (Math.abs(focusDiff) > 0.0004) {
                 this.currentFocus += focusDiff * 0.14;
                 this.renderDesktopTransforms(this.currentFocus);
-                window.requestAnimationFrame(this.renderLoop);
+                this._rafId = window.requestAnimationFrame(this.renderLoop);
             } else {
                 this.currentFocus = this.targetFocus;
                 this.renderDesktopTransforms(this.currentFocus);
@@ -397,11 +419,48 @@
                 card.style.pointerEvents = '';
             });
         }
+
+        destroy() {
+            this._destroyed = true;
+            this.isAnimating = false;
+            try { cancelAnimationFrame(this._rafId); } catch (e) { /* noop */ }
+            try {
+                if (this.observer && typeof this.observer.disconnect === 'function') this.observer.disconnect();
+            } catch (e) { /* noop */ }
+            this.observer = null;
+            try {
+                if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+                if (this._onResize) window.removeEventListener('resize', this._onResize);
+                if (this._motionQuery && this._onMotionChange) {
+                    if (this._motionQuery.removeEventListener) this._motionQuery.removeEventListener('change', this._onMotionChange);
+                    else if (this._motionQuery.removeListener) this._motionQuery.removeListener(this._onMotionChange);
+                }
+            } catch (e) { /* noop */ }
+            this._onScroll = null;
+            this._onResize = null;
+            this._onMotionChange = null;
+            this.container = null;
+            this.stage = null;
+            this.viewport = null;
+            this.track = null;
+            this.cards = [];
+            this.pills = [];
+        }
     }
 
     function init() {
-        new ScrollStack();
+        try {
+            if (window.scrollStack && typeof window.scrollStack.destroy === 'function') {
+                window.scrollStack.destroy();
+            }
+        } catch (e) { /* noop */ }
+        window.scrollStack = new ScrollStack();
     }
+
+    /* Re-scan hook for seamless revisits. */
+    try {
+        window.ScrollStackRefresh = init;
+    } catch (e) { /* noop */ }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

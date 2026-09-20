@@ -49,8 +49,13 @@
     }
 
     function init() {
-        new FeaturedWork();
+        window.FeaturedWorkInstance = new FeaturedWork();
     }
+
+    /* Re-scan hook for seamless revisits (old nodes detach, new grid binds). */
+    try {
+        window.FeaturedWorkRefresh = init;
+    } catch (e) { /* noop */ }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

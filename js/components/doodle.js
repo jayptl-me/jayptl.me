@@ -19,6 +19,10 @@
 (function () {
     'use strict';
 
+    /* Owned handles so seamless revisits can re-scan without leaking. */
+    var drawObserver = null;
+    var caseRailHandler = null;
+
     /* ---- Inline sprite guard (no fetch) ------------------------------------ */
     function ensureSprite() {
         if (document.getElementById('doodleSprite')) return;
@@ -66,6 +70,10 @@
 
     /* ---- Case-study numbered side-rail scrollspy ------------------------- */
     function initCaseRail() {
+        if (caseRailHandler) {
+            try { window.removeEventListener('scroll', caseRailHandler); } catch (e) { /* noop */ }
+            caseRailHandler = null;
+        }
         var rail = document.querySelector('.case-rail');
         if (!rail) return;
         var links = Array.from(rail.querySelectorAll('a'));
@@ -91,6 +99,7 @@
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
+        caseRailHandler = onScroll;
         onScroll();
     }
 
@@ -102,6 +111,10 @@
        JS only staggers children via --d and flips the class on first
        reveal. Respects prefers-reduced-motion (collapses to fully drawn). */
     function initDoodleDraw() {
+        if (drawObserver) {
+            try { drawObserver.disconnect(); } catch (e) { /* noop */ }
+            drawObserver = null;
+        }
         var drawings = document.querySelectorAll('.doodle-draw, .icon-draw');
         if (!drawings.length) return;
         var reduceMotion = window.matchMedia &&
@@ -129,6 +142,7 @@
                 });
             });
         }, { threshold: 0.4 });
+        drawObserver = io;
         drawings.forEach(function (el) { io.observe(el); });
     }
 
@@ -154,4 +168,9 @@
     } else {
         init();
     }
+
+    /* Re-scan hook for seamless revisits (same document shell). */
+    try {
+        window.Doodle = { init: init };
+    } catch (e) { /* noop */ }
 })();

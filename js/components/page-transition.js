@@ -163,6 +163,11 @@
             var anchor = e.target && e.target.closest ? e.target.closest('a[href]') : null;
             if (!anchor) return;
             if (!shouldIntercept(anchor)) return;
+            // Bespoke router owns seamless swaps where available; this veil
+            // path remains the fallback (full load behind cover).
+            try {
+                if (window.PageRouter && window.PageRouter.handles(anchor)) return;
+            } catch (e) { /* fall through to veil navigation */ }
             // Let the homepage stepper own unreleased overlay anchor flows
             var href = anchor.getAttribute('href');
             if (href && href.charAt(0) === '#' && isHomepageFlow()) return;

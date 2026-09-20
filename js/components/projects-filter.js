@@ -49,4 +49,9 @@
     } else {
         init();
     }
+
+    /* Re-scan hook for seamless revisits. */
+    try {
+        window.ProjectsFilter = { init: init };
+    } catch (e) { /* noop */ }
 })();

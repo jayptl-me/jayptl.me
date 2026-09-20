@@ -29,6 +29,17 @@
  * replays are owner- or pointer-initiated with a 400ms storm guard, and an
  * empty glyph set releases the host back to fallback text.
  *
+ * Responsive behaviour (small screens, coarse pointers):
+ * - Sampling refines on narrow hosts (2px grid, smaller particles, richer
+ *   budget) so ~30px glyphs stay legible instead of holey.
+ * - Scatter / repel / radius scale with viewport (never below 45%), so the
+ *   gather storm reads the same on a 390px phone as on desktop.
+ * - Per-frame glow stays on everywhere (it fuses dots into strokes);
+ *   small screens use a tighter blur, and offscreen sleep bounds cost.
+ * - The loop sleeps while the host is offscreen (IntersectionObserver).
+ * - Touch taps burst nearby particles outward; they spring back via the
+ *   existing gather lerp. Mouse clicks stay inert by owner law.
+ *
  * @file components/particle-text.js
  */
 (function () {
@@ -193,7 +204,16 @@
             paused: false, // owner pause (hidden item) — loop stays off
             destroyed: false,
             pointer: { active: false, x: 0, y: 0, smoothX: 0, smoothY: 0 },
-            mq: null
+            mq: null,
+            // Viewport-relative motion tuning, recomputed per build so
+            // desktop fields stay exactly as authored (scale 1) while
+            // small screens get a calmer, denser storm.
+            vscale: 1, // scatter/repel/radius multiplier, clamped 0.45..1
+            fxScatter: 280,
+            fxRepel: 30,
+            fxRadius: 110,
+            fxGlow: true,
+            viewObs: null
         };
 
         /* ----- gather ---------------------------------------------------- */
@@ -201,7 +221,7 @@
             if (!inst.particles.length || inst.destroyed) return;
             inst.formed = false;
             inst.gatherMs = inst.opts.gatherDuration; // snapshot: one-shot overrides must not leak into later frames
-            var spread = inst.reducedMotion ? 0 : inst.opts.scatter;
+            var spread = inst.reducedMotion ? 0 : inst.fxScatter;
             inst.particles.forEach(function (p) {
                 if (fromScatter) {
                     var angle = p.seed * Math.PI * 2;
@@ -263,8 +283,8 @@
             var ctx = inst.ctx;
             ctx.clearRect(0, 0, inst.width, inst.height);
 
-            if (o.glow && !inst.reducedMotion) {
-                ctx.shadowBlur = o.particleSize * 3;
+            if (o.glow && inst.fxGlow && !inst.reducedMotion) {
+                ctx.shadowBlur = o.particleSize * (inst.smallScreen ? 2 : 3);
                 ctx.shadowColor = rgbToCss(inst.theme.glow);
             } else {
                 ctx.shadowBlur = 0;
@@ -293,12 +313,12 @@
                     baseY += Math.cos(t * 0.75 + p.depth * 10) * o.idleDrift * p.depth;
                 }
 
-                if (ptr.active && o.pointerRepel > 0 && o.repelRadius > 0) {
+                if (ptr.active && inst.fxRepel > 0 && inst.fxRadius > 0) {
                     var dx = baseX - ptr.smoothX;
                     var dy = baseY - ptr.smoothY;
                     var dist = Math.hypot(dx, dy);
-                    if (dist > 0 && dist < o.repelRadius) {
-                        var force = Math.pow(1 - dist / o.repelRadius, 2) * o.pointerRepel;
+                    if (dist > 0 && dist < inst.fxRadius) {
+                        var force = Math.pow(1 - dist / inst.fxRadius, 2) * inst.fxRepel;
                         baseX += (dx / dist) * force;
                         baseY += (dy / dist) * force;
                     }
@@ -357,6 +377,18 @@
             inst.ctx.setTransform(inst.dpr, 0, 0, inst.dpr, 0, 0);
 
             var o = inst.opts;
+            // Viewport-relative tuning: desktop (large viewport) keeps
+            // authored values exactly; small screens calm the storm.
+            inst.vscale = clamp(Math.min(W, H) / 800, 0.45, 1);
+            inst.fxScatter = o.scatter * inst.vscale;
+            inst.fxRepel = o.pointerRepel * inst.vscale;
+            inst.fxRadius = o.repelRadius * inst.vscale;
+            // Glow is the voice of this field: it fuses sparse dots into
+            // continuous strokes. Gated only by author opt-out — small
+            // screens use a tighter blur, and the offscreen sleep plus
+            // visibility handling bound the real GPU cost.
+            inst.fxGlow = o.glow;
+            inst.smallScreen = W < 600;
             var computed = window.getComputedStyle(inst.host);
             var family = o.fontFamily === 'inherit'
                 ? (computed.fontFamily || 'sans-serif')
@@ -407,7 +439,7 @@
                     return; // tainted/unreadable canvas — leave fallback text
                 }
 
-                var step = Math.max(2, Math.floor(o.density));
+                var step = inst.smallScreen ? 2 : Math.max(2, Math.floor(o.density));
                 var targets = [];
                 var ox = W / 2 - off.width / 2;
                 var oy = H / 2 - off.height / 2;
@@ -420,9 +452,9 @@
                     }
                 }
 
-                var maxP = Math.max(MIN_PARTICLES, Math.min(MAX_PARTICLES, Math.floor((W * H) / 90)));
+                var maxP = Math.max(MIN_PARTICLES, Math.min(MAX_PARTICLES, Math.floor((W * H) / (inst.smallScreen ? 80 : 90))));
                 var stride = Math.max(1, Math.ceil(targets.length / maxP));
-                var spread0 = inst.reducedMotion ? 0 : o.scatter;
+                var spread0 = inst.reducedMotion ? 0 : inst.fxScatter;
 
                 inst.particles = targets.filter(function (_, i) { return i % stride === 0; })
                     .map(function (t, i) {
@@ -440,7 +472,7 @@
                             startY: sy,
                             targetX: t.x,
                             targetY: t.y,
-                            size: Math.max(0.6, o.particleSize * (0.75 + t.alpha * 0.45)),
+                            size: Math.max(0.6, o.particleSize * (inst.smallScreen ? 0.75 : 1) * (0.75 + t.alpha * 0.45)),
                             blend: blend,
                             color: '',
                             seed: seed,
@@ -557,6 +589,35 @@
         inst.onClick = function () {
             // Clicks MUST NOT restart or reset formed particle text
         };
+        /* Touch tap burst: kick nearby particles outward; the frame lerp
+           springs them home. Touch/pen only — mouse clicks stay inert. */
+        inst.burst = function (x, y) {
+            if (inst.reducedMotion || inst.destroyed || inst.paused || !inst.particles.length) return;
+            var R = Math.max(60, inst.fxRadius * 1.6);
+            var power = 40 + 90 * inst.vscale;
+            for (var i = 0; i < inst.particles.length; i++) {
+                var p = inst.particles[i];
+                var bdx = p.x - x;
+                var bdy = p.y - y;
+                var bd = Math.hypot(bdx, bdy);
+                if (bd > 0.01 && bd < R) {
+                    var bf = Math.pow(1 - bd / R, 2) * power;
+                    p.x += (bdx / bd) * bf;
+                    p.y += (bdy / bd) * bf;
+                }
+            }
+            inst.resume();
+        };
+        inst.onPointerDown = function (e) {
+            if (!e || inst.reducedMotion || inst.destroyed) return;
+            var pt = ('pointerType' in e) ? e.pointerType : '';
+            if (pt && pt !== 'touch' && pt !== 'pen') return;
+            try {
+                var rect = inst.canvas.getBoundingClientRect();
+                inst.onPointerMove(e);
+                inst.burst(e.clientX - rect.left, e.clientY - rect.top);
+            } catch (err) { /* taps never break */ }
+        };
         inst.onResize = function () {
             if (inst.resizeRaf !== null) window.cancelAnimationFrame(inst.resizeRaf);
             inst.resizeRaf = window.requestAnimationFrame(function () {
@@ -589,6 +650,7 @@
             if (inst.raf !== null) window.cancelAnimationFrame(inst.raf);
             if (inst.resizeRaf !== null) window.cancelAnimationFrame(inst.resizeRaf);
             if (inst.resizeObs) inst.resizeObs.disconnect();
+            if (inst.viewObs) inst.viewObs.disconnect();
             if (inst.mq && inst.mq.removeEventListener) {
                 inst.mq.removeEventListener('change', inst.onReduceMotion);
             }
@@ -597,6 +659,7 @@
             inst.canvas.removeEventListener('pointermove', inst.onPointerMove);
             inst.canvas.removeEventListener('pointerleave', inst.onPointerLeave);
             inst.canvas.removeEventListener('click', inst.onClick);
+            inst.canvas.removeEventListener('pointerdown', inst.onPointerDown);
             delete inst.host._particleText;
         };
 
@@ -611,6 +674,7 @@
         inst.canvas.addEventListener('pointermove', inst.onPointerMove);
         inst.canvas.addEventListener('pointerleave', inst.onPointerLeave);
         inst.canvas.addEventListener('click', inst.onClick);
+        inst.canvas.addEventListener('pointerdown', inst.onPointerDown);
         document.addEventListener('visibilitychange', inst.onVisibility);
 
         if ('ResizeObserver' in window) {
@@ -618,6 +682,21 @@
             inst.resizeObs.observe(inst.host);
         } else {
             window.addEventListener('resize', inst.onResize);
+        }
+
+        /* Sleep the loop while the host is offscreen (battery, mobile). */
+        if ('IntersectionObserver' in window) {
+            try {
+                inst.viewObs = new IntersectionObserver(function (entries) {
+                    var vis = entries.some(function (en) { return en.isIntersecting; });
+                    if (vis) {
+                        if (!inst.reducedMotion) inst.unpause();
+                    } else {
+                        inst.pause();
+                    }
+                }, { threshold: 0 });
+                inst.viewObs.observe(inst.host);
+            } catch (e) { inst.viewObs = null; }
         }
 
         inst.host._particleText = inst;

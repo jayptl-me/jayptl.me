@@ -64,6 +64,9 @@
 @media (max-width: 768px) {
   .particle-text {
     height: clamp(200px, 34vh, 340px);
+    /* Vertical page scroll must always win over the repel gesture:
+       horizontal drags still feed pointermove, vertical swipes scroll. */
+    touch-action: pan-y;
   }
 
   .particle-text__fallback {

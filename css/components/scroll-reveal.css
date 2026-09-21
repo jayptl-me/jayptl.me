@@ -430,7 +430,7 @@
   }
 }
 
-/* Ultra Wide Screens (1920px and up) — char sizes now live in split-text.css. */
+/* Ultra Wide Screens (1920px and up), char sizes now live in split-text.css. */
 
 /* Landscape orientation adjustments for mobile */
 @media (max-height: 600px) and (orientation: landscape) {
@@ -1551,7 +1551,7 @@ html[data-theme="dark"] .reveal-stepper .stepper-dot.active {
 }
 
 /* ==========================================================================
-   MANUAL LIGHT ON DARK-OS — kill turquoise leaks (site contract: light = blue)
+   MANUAL LIGHT ON DARK-OS, kill turquoise leaks (site contract: light = blue)
    The unguarded `prefers-color-scheme: dark` blocks above match whenever the
    OS is dark, even with data-theme="light". These explicit overrides win by
    specificity + source order, so the stepper pill stays brand blue.

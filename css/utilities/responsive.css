@@ -870,7 +870,7 @@
     box-sizing: border-box !important;
   }
 
-  /* NOTE: `svg` intentionally excluded — doodle annotations and
+  /* NOTE: `svg` intentionally excluded, doodle annotations and
      absolutely-positioned strokes size via their own rules. */
 
   /* Prevent ANY horizontal scroll (clip: no nested scroll container) */

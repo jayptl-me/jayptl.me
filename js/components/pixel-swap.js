@@ -1,5 +1,5 @@
 /**
- * PixelSwap — Raw SVG ClipPath Dissolve & Reveal Engine
+ * PixelSwap, Raw SVG ClipPath Dissolve & Reveal Engine
  *
  * Direct content-revealing pixel transitions:
  * - Native SVG <clipPath> with animated <rect> elements.

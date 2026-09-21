@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DOODLE SYSTEM (Gate P redesign — doodle-led)
+   DOODLE SYSTEM (Gate P redesign, doodle-led)
    Hand-drawn annotations via the committed SVG sprite (assets/doodle-sprite.svg).
    One handwriting voice (Architects Daughter). Doodles annotate content; they
    never replace layout (dossier 02 anti-pattern 1). Zero gradients.
@@ -53,7 +53,7 @@
   color: var(--ink-hand);
   line-height: 1.35;
 }
-/* Handwriting is decoration/info only — never body text (dossier 04 anti-pattern).
+/* Handwriting is decoration/info only, never body text (dossier 04 anti-pattern).
    Floor sizes: annotations >=16px; informative captions >=18px. */
 .hand--sm { font-size: 1rem; }     /* 16px floor */
 .hand--md { font-size: 1.125rem; } /* 18px captions */

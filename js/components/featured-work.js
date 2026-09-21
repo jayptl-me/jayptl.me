@@ -24,7 +24,7 @@
             const cards = this.grid.querySelectorAll('.work-card');
 
             cards.forEach((card) => {
-                // Quiet tick on hover (throttled) — the new "calm" signature
+                // Quiet tick on hover (throttled), the new "calm" signature
                 card.addEventListener('mouseenter', () => {
                     this.playHoverSound();
                 });

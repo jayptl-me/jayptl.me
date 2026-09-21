@@ -1,5 +1,5 @@
 /**
- * Scroll Stack Component — Bespoke Zero-Dependency Horizontal & Mobile Deck Stack
+ * Scroll Stack Component, Bespoke Zero-Dependency Horizontal & Mobile Deck Stack
  *
  * Performance & Motion Architecture:
  * - Continuous Mathematical Curves: Zero threshold jumps or step discontinuities

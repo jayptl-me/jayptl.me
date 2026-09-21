@@ -153,7 +153,7 @@ button {
 }
 
 /* ==========================================================================
-   PRESS / TAP BASE (Gate P plan A — Native Press Tokens)
+   PRESS / TAP BASE (Gate P plan A, Native Press Tokens)
    Kill the default grey tap flash once, globally; owned :active states
    provide feedback per theme (skeu-pressed light / glass-inset dark).
    touch-action: manipulation removes double-tap-zoom delay on pressables
@@ -201,7 +201,7 @@ html {
   max-width: 100%;
 }
 
-/* Targeted overflow guards (no global `* { max-width }` — that blanket rule
+/* Targeted overflow guards (no global `* { max-width }`, that blanket rule
    broke tables, fixed layers and transforms and forced 100vw compensation). */
 *,
 *::before,

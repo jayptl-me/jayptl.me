@@ -48,7 +48,7 @@ class ScrollRevealComponent {
         this.accumulatedScroll = 0;
         this.scrollResetTimer = null;
         this.releaseArmed = false; // require one more scroll on last item to release
-        this._releasing = false; // release transition in flight — blocks re-entry until it settles
+        this._releasing = false; // release transition in flight, blocks re-entry until it settles
         this._releaseDisarmTimer = null; // timer to auto-disarm the armed state
         this.hasReleased = false; // avoid re-engaging overlay after release
         this.hasScrolledAway = false; // only re-engage when user has scrolled away and returned

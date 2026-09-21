@@ -329,6 +329,14 @@
 .site-footer-meta a:hover {
   text-decoration: underline;
 }
+.preferred-source-link {
+  white-space: nowrap;
+}
+.site-footer-meta a.preferred-source-link:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 .reset-stickers {
   margin-left: 4px;
 }

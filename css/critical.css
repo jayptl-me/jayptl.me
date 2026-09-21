@@ -2,7 +2,7 @@
 
 /* CRITICAL MOBILE OVERFLOW PREVENTION - LOADED FIRST
    NOTE: mirrors base/reset.css. Single scrollbar source lives in
-   components/custom-scrollbar.css — never hide it here. */
+   components/custom-scrollbar.css, never hide it here. */
 html,
 body {
     overflow-x: clip;
@@ -98,7 +98,7 @@ body {
 }
 
 /* Manual LIGHT override on a dark-OS device: the system-dark block above sets
-   html/body to black unconditionally — cancel it when the user forces light. */
+   html/body to black unconditionally, cancel it when the user forces light. */
 html[data-theme="light"],
 html[data-theme="light"] body {
     background-color: var(--white) !important;
@@ -201,7 +201,7 @@ body {
 }
 
 /* Native themed scrollbar: see components/custom-scrollbar.css (single source).
-   This file must NOT hide it — a hidden viewport bar plus visible inner bars
+   This file must NOT hide it, a hidden viewport bar plus visible inner bars
    is exactly what reads as "two scrollbars". */
 html {
     scrollbar-gutter: stable;

@@ -1,4 +1,4 @@
-# jayptl.me — Project Rules (AGENTS.md)
+# jayptl.me, Project Rules (AGENTS.md)
 
 Project-level brain. Global laws live in Hermes memory; only jayptl.me facts belong here.
 
@@ -11,6 +11,7 @@ Project-level brain. Global laws live in Hermes memory; only jayptl.me facts bel
 - Light theme = skeuomorphic BLUE ramp (#2196f3). NEVER turquoise in light mode.
 - Dark theme = glassmorphism TURQUOISE ramp (#00b8cc). NEVER blue in dark mode.
 - Zero emojis in deliverables.
+- Zero em dashes in deliverables. Use commas, colons, or periods instead.
 
 ## Theme Taste & Aesthetics Specification
 
@@ -45,15 +46,15 @@ The portfolio uses two fundamentally distinct design languages across light and 
   - When adding any new page to `pages/`, `scripts/build.js` automatically generates its `dist/<slug>/index.html` file, and regression tests in `tests/artifacts.test.mjs` verify coverage.
 - Dev server habitually runs on port 8000 (`scripts/preview.js` serves `dist/` with directory `index.html` resolution).
 - `dist/` is build output; edit sources in `pages/`, `css/`, `js/`, `markdown/`.
-- **Clean-build deployment rule (no stale files, ever)**: `scripts/build.js` wipes `dist/` at startup, so every invocation path builds from scratch. `scripts/validate.js` fails the deploy when any source is newer than `dist/build-info.json`. Never ship a `dist/` that was built before the latest source change — rebuild with `rm -rf dist && node scripts/build.js`.
+- **Clean-build deployment rule (no stale files, ever)**: `scripts/build.js` wipes `dist/` at startup, so every invocation path builds from scratch. `scripts/validate.js` fails the deploy when any source is newer than `dist/build-info.json`. Never ship a `dist/` that was built before the latest source change, rebuild with `rm -rf dist && node scripts/build.js`.
 
-## Decision Gates — Two-Gate Law (adopted 2026-08-26, global across ~/Development)
+## Decision Gates, Two-Gate Law (adopted 2026-08-26, global across ~/Development)
 
-1. GATE R — Research that feeds planning finalizes ONLY when Jay picks from named,
+1. GATE R, Research that feeds planning finalizes ONLY when Jay picks from named,
    distinct, production-grade options (official docs, live sites, shipped OSS, cited
    sources). Rejection means research MORE distinct/deeper sources; never re-serve
    the same options reworded.
-2. GATE P — Implementation starts ONLY after a written plan citing finalized research
+2. GATE P, Implementation starts ONLY after a written plan citing finalized research
    AND Jay's explicit approval. No code edits, DB writes, deploys, builds, or messages
    sent on Jay's behalf before Gate P passes.
 

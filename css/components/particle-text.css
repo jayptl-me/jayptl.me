@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PARTICLE TEXT (Gate P — vanilla ParticleText, zero deps)
+   PARTICLE TEXT (Gate P, vanilla ParticleText, zero deps)
    Canvas particle field that gathers into glyph targets. Host carries a
    fixed box so sampling always has geometry and revealing never shifts
    layout. Voice (Audiowide) comes from CSS; colors resolve from theme

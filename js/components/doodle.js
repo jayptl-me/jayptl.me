@@ -105,7 +105,7 @@
 
     /* ---- Hand-drawn draw-on (pathLength=1 CSS, zero measuring) ------------- */
     /* Opt-in: add class="doodle-draw" (or "icon-draw") to an INLINE svg (not
-       a <use> sprite instance — shadow-DOM clones can't be dash-animated).
+       a <use> sprite instance, shadow-DOM clones can't be dash-animated).
        Every stroked shape carries pathLength="1", so doodle.css hides
        strokes with stroke-dashoffset:1 and draws them to 0 on .is-drawn.
        JS only staggers children via --d and flips the class on first

@@ -1,5 +1,5 @@
 /**
- * Page Transition — veil-masked seamless page changes with staged
+ * Page Transition, veil-masked seamless page changes with staged
  * component choreography underneath.
  *
  * A fullscreen pixel veil covers the old document on exit; the reload

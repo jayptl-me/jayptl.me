@@ -3,7 +3,7 @@
 # NOTE: This file only applies when the site is deployed as a static site.
 # Production now runs scripts/server.js (see render.yaml), which implements
 # clean URLs itself plus Accept: text/markdown negotiation and JSON API
-# errors — behaviors static hosts cannot express in _redirects.
+# errors, behaviors static hosts cannot express in _redirects.
 
 # Clean URLs - rewrite to pages folder (200 = rewrite, not redirect)
 /about           /pages/about.html           200

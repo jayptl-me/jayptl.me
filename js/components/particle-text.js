@@ -1,5 +1,5 @@
 /**
- * ParticleText — vanilla canvas particle text (Gate P, P1 full port).
+ * ParticleText, vanilla canvas particle text (Gate P, P1 full port).
  * Custom hand-written canvas particle text engine (zero dependencies):
  * glyph sampled offscreen, particles scatter then gather with stagger,
  * pointer repel, idle drift and glow. Triggers: mount / hover / click.
@@ -23,7 +23,7 @@
  *     <span class="particle-text__sr">Looking for Jay?</span>
  *   </div>
  *
- * data-pt-manual: mount samples geometry but never auto-gathers — the owner
+ * data-pt-manual: mount samples geometry but never auto-gathers, the owner
  * drives every playback via replay(). With it, the field NEVER re-scatters
  * on its own: rebuilds (resize / late fonts) snap back to the formed state,
  * replays are owner- or pointer-initiated with a 400ms storm guard, and an
@@ -54,7 +54,7 @@
         pointerRepel: 30, // fluid hover repel: particles displace under cursor and spring back
         repelRadius: 110,
         idleDrift: 0.7,
-        trigger: 'mount', // mount | hover | click — hero uses mount: mouse must NEVER restart or reset the text
+        trigger: 'mount', // mount | hover | click, hero uses mount: mouse must NEVER restart or reset the text
         fontSize: 'clamp(3.5rem, 12vw, 9rem)',
         fontWeight: '400', // hero voice is Audiowide 400
         fontFamily: 'inherit', // resolves from .particle-text CSS (Audiowide)
@@ -192,7 +192,7 @@
             resizeObs: null,
             buildId: 0,
             gathering: false,
-            formed: false, // true once particles sit on targets — rebuilds must preserve it, never re-scatter
+            formed: false, // true once particles sit on targets, rebuilds must preserve it, never re-scatter
             wantPlay: false, // replay() arrived before particles existed (slow fonts)
             wantOpts: null, // one-shot gather overrides carried for wantPlay
             lastReplay: 0, // replay storm guard (rapid hover in/out)
@@ -201,7 +201,7 @@
             width: 0,
             height: 0,
             dpr: 1,
-            paused: false, // owner pause (hidden item) — loop stays off
+            paused: false, // owner pause (hidden item), loop stays off
             destroyed: false,
             pointer: { active: false, x: 0, y: 0, smoothX: 0, smoothY: 0 },
             mq: null,
@@ -384,7 +384,7 @@
             inst.fxRepel = o.pointerRepel * inst.vscale;
             inst.fxRadius = o.repelRadius * inst.vscale;
             // Glow is the voice of this field: it fuses sparse dots into
-            // continuous strokes. Gated only by author opt-out — small
+            // continuous strokes. Gated only by author opt-out, small
             // screens use a tighter blur, and the offscreen sleep plus
             // visibility handling bound the real GPU cost.
             inst.fxGlow = o.glow;
@@ -436,7 +436,7 @@
                 try {
                     data = offCtx.getImageData(0, 0, off.width, off.height).data;
                 } catch (e) {
-                    return; // tainted/unreadable canvas — leave fallback text
+                    return; // tainted/unreadable canvas, leave fallback text
                 }
 
                 var step = inst.smallScreen ? 2 : Math.max(2, Math.floor(o.density));
@@ -501,7 +501,7 @@
                     inst.drawOnce();
                 } else if (inst.wantPlay) {
                     // A replay arrived mid-build: gather now (bypasses the
-                    // storm cooldown — this IS the awaited playback).
+                    // storm cooldown, this IS the awaited playback).
                     inst.wantPlay = false;
                     var wo = inst.wantOpts;
                     inst.wantOpts = null;
@@ -516,7 +516,7 @@
                     bo.gatherDuration = keepMs;
                     bo.stagger = keepStagger;
                 } else if (inst.formed) {
-                    // Rebuild (resize / late fonts): keep the formed state —
+                    // Rebuild (resize / late fonts): keep the formed state,
                     // never re-scatter on its own.
                     inst.snapToTargets();
                     if (inst.paused) inst.drawOnce();
@@ -590,7 +590,7 @@
             // Clicks MUST NOT restart or reset formed particle text
         };
         /* Touch tap burst: kick nearby particles outward; the frame lerp
-           springs them home. Touch/pen only — mouse clicks stay inert. */
+           springs them home. Touch/pen only, mouse clicks stay inert. */
         inst.burst = function (x, y) {
             if (inst.reducedMotion || inst.destroyed || inst.paused || !inst.particles.length) return;
             var R = Math.max(60, inst.fxRadius * 1.6);

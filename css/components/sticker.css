@@ -1,7 +1,7 @@
 /* ==========================================================================
    STICKER SYSTEM (Gate P redesign)
    Rotated sticker chips with Architects Daughter captions, scattered at
-   section boundaries — reward scrolling, never interrupt reading (dossier
+   section boundaries, reward scrolling, never interrupt reading (dossier
    01 §2.4 / 02 §2.4). Rotations capped at ±12deg. One interactive toy:
    the footer "Reset stickers" control re-rolls --r (js/components/doodle.js).
    ========================================================================== */

@@ -141,7 +141,7 @@ textarea,
    CURSOR STATES
    ========================================================================== */
 
-/* Hover state — scale only (20px -> 40px = 2x), no width/height layout */
+/* Hover state, scale only (20px -> 40px = 2x), no width/height layout */
 .custom-cursor.hover {
     --csx: 2;
     --csy: 2;
@@ -163,7 +163,7 @@ textarea,
     opacity: 0.8;
 }
 
-/* Click state — scale only (20px -> 60px = 3x) */
+/* Click state, scale only (20px -> 60px = 3x) */
 .custom-cursor.click {
     --csx: 3;
     --csy: 3;
@@ -180,7 +180,7 @@ textarea,
     opacity: 1;
 }
 
-/* Text state — asymmetric scale only (20px dot -> 2x20 bar) */
+/* Text state, asymmetric scale only (20px dot -> 2x20 bar) */
 .custom-cursor.text {
     --csx: 0.1;
     --csy: 1;

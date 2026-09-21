@@ -4,23 +4,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Aviz Health — Case Study | Jay Patel | jayptl.me</title>
+    <title>Aviz Health, Case Study | Jay Patel | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/projects/aviz-health" />
     <link rel="alternate" type="text/markdown" href="/projects/aviz-health.md" title="Markdown version of this case study" />
     <meta name="description"
-        content="How Jay Patel designed, engineered, and shipped Aviz Health — a digital healthcare ecosystem with three Flutter apps, a Next.js 16 command center, and a Bun + Hono backend. Live on Google Play as v2.0." />
+        content="How Jay Patel designed, engineered, and shipped Aviz Health, a digital healthcare ecosystem with three Flutter apps, a Next.js 16 command center, and a Bun + Hono backend. Live on Google Play as v2.0." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jayptl.me/projects/aviz-health" />
-    <meta property="og:title" content="Aviz Health — Case Study | Jay Patel" />
+    <meta property="og:title" content="Aviz Health, Case Study | Jay Patel" />
     <meta property="og:description"
         content="Three Flutter apps, one mission-control dashboard, zero-lag ambulance dispatch. Live on Google Play." />
     <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Aviz Health — Case Study | Jay Patel" />
+    <meta name="twitter:title" content="Aviz Health, Case Study | Jay Patel" />
     <meta name="twitter:description" content="A healthcare ecosystem built end-to-end by one founding-grade engineer." />
     <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
 
@@ -40,8 +40,8 @@
             "@context": "https://schema.org",
             "@type": "Article",
             "@id": "https://jayptl.me/projects/aviz-health#article",
-            "headline": "Aviz Health — Case Study",
-            "description": "How Jay Patel designed, engineered, and shipped Aviz Health — a digital healthcare ecosystem with three Flutter apps, a Next.js 16 command center, and a Bun + Hono backend. Live on Google Play as v2.0.",
+            "headline": "Aviz Health, Case Study",
+            "description": "How Jay Patel designed, engineered, and shipped Aviz Health, a digital healthcare ecosystem with three Flutter apps, a Next.js 16 command center, and a Bun + Hono backend. Live on Google Play as v2.0.",
             "url": "https://jayptl.me/projects/aviz-health",
             "inLanguage": "en",
             "author": { "@id": "https://jayptl.me/#person" },
@@ -63,8 +63,8 @@
             <p class="page-hero-kicker hud-label">Hero Project · Live on Google Play</p>
             <h1>Aviz Health</h1>
             <p class="case-hero-tagline">Some people get an AI that reminds them to hydrate. I built the real thing:
-                a digital healthcare ecosystem where patients, doctors, labs, pharmacies, nurses, drivers — and the
-                occasional ambulance — all talk to each other in real time.</p>
+                a digital healthcare ecosystem where patients, doctors, labs, pharmacies, nurses, drivers, and the
+                occasional ambulance, all talk to each other in real time.</p>
             <div class="badge-row">
                 <span class="tag tag-status">Live on Google Play · v2.0</span>
                 <span class="tag">4 Apps, 1 Backend</span>
@@ -78,7 +78,7 @@
         <section class="tldr-card" aria-label="Summary">
             <h2>The 60-second version</h2>
             <dl class="tldr-grid">
-                <div><dt>My role</dt><dd>Sole full-stack engineer — architecture, UI/UX, all four apps, backend, and
+                <div><dt>My role</dt><dd>Sole full-stack engineer, architecture, UI/UX, all four apps, backend, and
                         release pipeline</dd></div>
                 <div><dt>The product</dt><dd>A connected healthcare platform linking patients, verified partners, and
                         ground operations</dd></div>
@@ -94,9 +94,9 @@
 
         <figure class="case-figure">
             <div class="showcase-image-placeholder case-hero-media">
-                <span class="showcase-placeholder-label">Aviz Health — Product Preview</span>
+                <span class="showcase-placeholder-label">Aviz Health, Product Preview</span>
             </div>
-            <figcaption class="fig-caption"><b>FIG 1</b> — patient, partner, hero, and admin views.</figcaption>
+            <figcaption class="fig-caption"><b>FIG 1</b>, patient, partner, hero, and admin views.</figcaption>
         </figure>
 
         <article class="case-body">
@@ -111,7 +111,7 @@
         </nav>
 
             <section class="case-section" id="cs-01">
-                <h2><span class="case-section-no hud-readout">01</span> The problem — and everyone it had to work
+                <h2><span class="case-section-no hud-readout">01</span> The problem, and everyone it had to work
                     for</h2>
                 <p>Healthcare doesn't fail because hospitals lack doctors. It fails in the gaps: booking an
                     appointment takes phone calls, lab results live on paper, pharmacies guess at prescriptions, and
@@ -119,16 +119,16 @@
                 <p>Aviz Health exists to close those gaps. But closing them means serving four groups of stakeholders
                     whose needs actively fight each other:</p>
                 <ul class="stakeholder-list">
-                    <li><strong>Patients</strong> — want care in three taps. They don't want to learn software; they're
+                    <li><strong>Patients</strong>, want care in three taps. They don't want to learn software; they're
                         already having a bad day.</li>
-                    <li><strong>Verified partners</strong> (doctors, hospitals, labs, pharmacies) — want schedule
+                    <li><strong>Verified partners</strong> (doctors, hospitals, labs, pharmacies), want schedule
                         control, clean incoming requests, and zero ambiguity about who's coming and when.</li>
-                    <li><strong>Ground operations — the "Heros"</strong> (nurses, drivers, delivery agents) — need
+                    <li><strong>Ground operations, the "Heros"</strong> (nurses, drivers, delivery agents), need
                         task-first, glanceable interfaces that work one-handed between stops.</li>
-                    <li><strong>Admins</strong> — need god-view: live operations dashboards, partner verification, and
+                    <li><strong>Admins</strong>, need god-view: live operations dashboards, partner verification, and
                         the ability to intervene when the machine misbehaves.</li>
                 </ul>
-                <p>Designing one coherent product for all four was the actual job. The code was the easy part — by
+                <p>Designing one coherent product for all four was the actual job. The code was the easy part, by
                     comparison.</p>
             </section>
 
@@ -136,7 +136,7 @@
                 <h2><span class="case-section-no hud-readout">02</span> My role</h2>
                 <p>I owned the entire technical surface. Architecture, UI/UX systems, three native mobile apps, the web
                     command center, the API layer, data modeling, third-party integrations, and release engineering.
-                    No handoffs, no translation losses — when the ambulance dispatch flow needed to change at midnight,
+                    No handoffs, no translation losses, when the ambulance dispatch flow needed to change at midnight,
                     the person changing it was me.</p>
             </section>
 
@@ -145,23 +145,23 @@
                 <p>One design language, four dialects:</p>
                 <ul>
                     <li><strong>Patient app (aviz_user):</strong> comfort-first. Large touch targets, plain language,
-                        bookings that feel like ordering a ride — browse verified providers, book, pay, consult over
+                        bookings that feel like ordering a ride, browse verified providers, book, pay, consult over
                         video, track your nurse or ambulance on a live map.</li>
                     <li><strong>Partner app (aviz_partner):</strong> efficiency-first. Doctors and hospital staff live
                         in queues: incoming requests, today's schedule, patient context before the consultation starts.
                         Fewer taps per action than the patient app, deliberately.</li>
                     <li><strong>Hero app (aviz_heros):</strong> field-mode. High contrast, oversized controls,
-                        task-by-task flows — accept assignment, navigate, update status — because nobody swipes through
+                        task-by-task flows, accept assignment, navigate, update status, because nobody swipes through
                         nested menus while driving.</li>
                     <li><strong>Admin dashboard (aviz_admin):</strong> mission control. A Next.js 16 console with
-                        HeroUI components, Zustand state, and Recharts analytics — partner verification workflows, live
+                        HeroUI components, Zustand state, and Recharts analytics, partner verification workflows, live
                         operations oversight, and the levers to pull when something's on fire.</li>
                 </ul>
             </section>
 
             <section class="case-section" id="cs-04">
                 <h2><span class="case-section-no hud-readout">04</span> Engineering the ecosystem</h2>
-                <p>The whole platform lives in one monorepo (<code>aviz_health</code>) — three Flutter apps, the admin
+                <p>The whole platform lives in one monorepo (<code>aviz_health</code>), three Flutter apps, the admin
                     dashboard, a shared types package, and the backend under one roof so a protocol change propagates
                     everywhere atomically:</p>
                 <pre><code>aviz_health/
@@ -173,9 +173,9 @@
 └── shared/         # Shared types/configs</code></pre>
                 <ul>
                     <li><strong>Backend:</strong> Bun + Hono + TypeScript over MongoDB/Mongoose, with Redis caching in
-                        front of hot paths — matching, booking, and dispatch stay responsive under load.</li>
+                        front of hot paths, matching, booking, and dispatch stay responsive under load.</li>
                     <li><strong>Real-time everything:</strong> live user-partner matching, appointment state machines,
-                        and the ambulance SOS dispatch pipeline built for zero lag — because in this domain, latency
+                        and the ambulance SOS dispatch pipeline built for zero lag, because in this domain, latency
                         isn't a UX nitpick, it's the product.</li>
                     <li><strong>Integrations:</strong> Agora RTC for video consultations, Cashfree for payments,
                         Google Maps for location and routing, Firebase Auth for identity across all four apps.</li>
@@ -184,7 +184,7 @@
 
             <section class="case-section" id="cs-05">
                 <h2><span class="case-section-no hud-readout">05</span> Shipping it</h2>
-                <p>Four surfaces, one release cadence. The monorepo keeps versions in lockstep — a shared-type change
+                <p>Four surfaces, one release cadence. The monorepo keeps versions in lockstep, a shared-type change
                     lands everywhere together, which is how you avoid the classic multi-app death spiral where the
                     patient app speaks v2 and the backend only understands v1.7. Aviz is live on Google Play today as
                     <strong>version 2.0</strong>, with the admin console and partner tooling running in production
@@ -196,11 +196,11 @@
                 <p>Case studies love numbers; most of mine here are contractual, not public. So read this section as a
                     capability manifest instead:</p>
                 <ul>
-                    <li>Took a healthcare platform from empty repo to consumer-grade Play Store release — v2.0 — across
+                    <li>Took a healthcare platform from empty repo to consumer-grade Play Store release, v2.0, across
                         four applications.</li>
                     <li>Designed one UX system flexible enough for patients, clinicians, and field crews without
                         fragmenting into four unrelated products.</li>
-                    <li>Built the real-time backbone — matching, booking, SOS dispatch — that the whole value
+                    <li>Built the real-time backbone, matching, booking, SOS dispatch, that the whole value
                         proposition hangs on.</li>
                     <li>Integrated the hard third-party surface area (RTC video, payments, maps, auth) that turns demos
                         into products people rely on.</li>
@@ -210,7 +210,7 @@
             <section class="case-section" id="cs-07">
                 <h2><span class="case-section-no hud-readout">07</span> What I learned</h2>
                 <p>Three things stuck: first, in healthcare, the ground-staff app deserves as much design love as the
-                    glossy patient app — the nurse using it 200 times a day is your power user. Second, Redis in front
+                    glossy patient app, the nurse using it 200 times a day is your power user. Second, Redis in front
                     of MongoDB is cheap insurance against the exact traffic spike you didn't model. Third, monorepos
                     aren't a trend accessory; with four synchronized apps they're the difference between shipping and
                     archaeology.</p>
@@ -227,6 +227,9 @@
     <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/page-router.js"></script>
     <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/sound-manager.js"></script>
+    <script defer src="/js/components/audio-toggle.js"></script>
+    <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>
 </body>

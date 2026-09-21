@@ -191,7 +191,7 @@ async function createHtaccess() {
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Markdown content negotiation (acceptmarkdown.com) — serve the .md
+    # Markdown content negotiation (acceptmarkdown.com), serve the .md
     # companion when the client's Accept header prefers text/markdown.
     # Primary implementation is scripts/server.js; these rules give the
     # Apache fallback host the same behavior.
@@ -271,7 +271,7 @@ async function createHtaccess() {
 
 # Cache-Control Headers
 <IfModule mod_headers.c>
-  # Negotiated representations vary by Accept — tell caches to key on it
+  # Negotiated representations vary by Accept, tell caches to key on it
   <FilesMatch "\\.(html|md)$">
     Header set Vary "Accept, Accept-Encoding"
   </FilesMatch>

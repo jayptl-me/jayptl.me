@@ -1,5 +1,5 @@
 /**
- * Home Page Styles — BELOW HERO (Gate P redesign)
+ * Home Page Styles, BELOW HERO (Gate P redesign)
  * Doodle-led, HUD-accent homepage sections under the locked hero.
  * Light = blue skeuomorphic ramp; dark = turquoise glass. No gradients.
  *
@@ -84,7 +84,7 @@
 }
 
 /* ==========================================================================
-   02 · NOW — static real metrics rail (HUD readouts)
+   02 · NOW, static real metrics rail (HUD readouts)
    ========================================================================== */
 .now-rail {
   display: flex;
@@ -104,7 +104,7 @@
 }
 
 /* ==========================================================================
-   03 · SELECTED WORK — calm featured grid (no carousel)
+   03 · SELECTED WORK, calm featured grid (no carousel)
    ========================================================================== */
 .work-grid {
   display: grid;
@@ -262,7 +262,7 @@
 }
 
 /* ==========================================================================
-   04 · STICKER BREAK — see css/components/sticker.css
+   04 · STICKER BREAK, see css/components/sticker.css
    ========================================================================== */
 .home-section--sticker {
   padding: var(--space-12) 0;

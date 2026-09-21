@@ -1,5 +1,5 @@
 /**
- * SplitText — vanilla split-stagger text reveal (Gate P, S1).
+ * SplitText, vanilla split-stagger text reveal (Gate P, S1).
  * Custom vanilla split-stagger text reveal with zero external dependencies
  * (no GSAP): splitType chars/words, per-letter delay, duration, threshold,
  * rootMargin, once, and a completion signal. Runs on CSS transitions
@@ -12,7 +12,7 @@
  *     CROSS PLATFORM DEV
  *   </p>
  *
- * Hosts with [data-split-manual] are split but never auto-played — the
+ * Hosts with [data-split-manual] are split but never auto-played, the
  * owner (scroll-reveal stepper) calls SplitText.play()/reset() instead.
  * Completion: host gets [data-split-done] + a `splittext:done` CustomEvent
  * (mirrors onLetterAnimationComplete).

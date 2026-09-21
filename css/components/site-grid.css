@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SITE GRID (T1 persistent ground — judging round, Gate P)
+   SITE GRID (T1 persistent ground, judging round, Gate P)
    One fixed line pattern behind preloader, stepper and intro-top, so the
    entry/exit transitions never cut between separate canvases: content
    crossfades over ground that never moves. Static paint (the old gridPan

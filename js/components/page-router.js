@@ -1,8 +1,8 @@
 /**
- * Page Router — bespoke seamless navigation for the static site.
+ * Page Router, bespoke seamless navigation for the static site.
  *
  * Intercepts same-origin document navigations, fetches the next document,
- * swaps the content region in place, and updates history — so the browser
+ * swaps the content region in place, and updates history, so the browser
  * tab spinner never appears and the shell (navigation, theme, audio,
  * cursor) persists across pages.
  *

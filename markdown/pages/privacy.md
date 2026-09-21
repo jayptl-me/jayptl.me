@@ -6,10 +6,10 @@ Your privacy is important to me. This policy explains how I handle data on this 
 
 ## Quick summary
 
-- **Cookies** — Only essential cookies for theme preferences and analytics consent. No tracking cookies without permission.
-- **Analytics** — Google Analytics only with your explicit consent. Anonymized data to improve user experience.
-- **Personal data** — No personal information is collected or stored. No email signup, no contact forms that store data.
-- **Purpose** — Data is used solely to understand how visitors interact with the portfolio to improve user experience.
+- **Cookies**, Only essential cookies for theme preferences and analytics consent. No tracking cookies without permission.
+- **Analytics**, Google Analytics only with your explicit consent. Anonymized data to improve user experience.
+- **Personal data**, No personal information is collected or stored. No email signup, no contact forms that store data.
+- **Purpose**, Data is used solely to understand how visitors interact with the portfolio to improve user experience.
 
 ## What information we collect
 
@@ -24,12 +24,12 @@ Your privacy is important to me. This policy explains how I handle data on this 
 
 ### Information we MAY collect (only with your consent)
 
-- **Page views** — Which pages you visit and how you navigate the site
-- **Time on site** — How long you spend viewing different sections
-- **Device information** — Browser type, screen resolution, and device type (anonymized)
-- **Geographic region** — Country and region (not exact location)
-- **Referral source** — Which website or search engine brought you here
-- **Interaction events** — Clicks on navigation, theme changes, scroll depth
+- **Page views**, Which pages you visit and how you navigate the site
+- **Time on site**, How long you spend viewing different sections
+- **Device information**, Browser type, screen resolution, and device type (anonymized)
+- **Geographic region**, Country and region (not exact location)
+- **Referral source**, Which website or search engine brought you here
+- **Interaction events**, Clicks on navigation, theme changes, scroll depth
 
 ## How we use information
 
@@ -39,8 +39,8 @@ We will never: sell your data to third parties; use data for advertising or mark
 
 ## Cookies and local storage
 
-- **Essential cookies (always active)** — Theme preference (dark or light mode) and consent choice (your analytics consent decision).
-- **Analytics cookies (only with consent)** — Google Analytics 4 cookies for usage tracking and session understanding.
+- **Essential cookies (always active)**, Theme preference (dark or light mode) and consent choice (your analytics consent decision).
+- **Analytics cookies (only with consent)**, Google Analytics 4 cookies for usage tracking and session understanding.
 
 You can clear all cookies anytime through your browser settings or by using the privacy settings button on this website.
 
@@ -52,11 +52,11 @@ Privacy-first configuration: IP anonymization enabled, advertising features disa
 
 ## Your rights
 
-- **Consent control** — Enable or disable analytics at any time using the privacy settings button.
-- **Data deletion** — Clear all stored preferences and tracking data through your browser or privacy settings.
-- **Access** — No personal data is stored, so there's nothing to access or download.
-- **Portability** — Theme and consent preferences are stored locally in your browser.
-- **Objection** — You can object to any data processing by disabling analytics.
+- **Consent control**, Enable or disable analytics at any time using the privacy settings button.
+- **Data deletion**, Clear all stored preferences and tracking data through your browser or privacy settings.
+- **Access**, No personal data is stored, so there's nothing to access or download.
+- **Portability**, Theme and consent preferences are stored locally in your browser.
+- **Objection**, You can object to any data processing by disabling analytics.
 
 ## Data security
 
@@ -64,8 +64,8 @@ All connections are encrypted with SSL/TLS (HTTPS). No personal data is stored o
 
 ## Third-party services
 
-- **Google Analytics** — When enabled, this site uses GA4. Review Google's Privacy Policy for how Google processes data.
-- **Hosting** — This website is hosted on a secure hosting platform. Server logs may temporarily contain IP addresses for security and performance monitoring, but these are not linked to any personal information.
+- **Google Analytics**, When enabled, this site uses GA4. Review Google's Privacy Policy for how Google processes data.
+- **Hosting**, This website is hosted on a secure hosting platform. Server logs may temporarily contain IP addresses for security and performance monitoring, but these are not linked to any personal information.
 
 ## Children's privacy
 

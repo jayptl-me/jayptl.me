@@ -1,4 +1,4 @@
-# Jay Patel — Resume
+# Jay Patel, Resume
 
 > Founding-engineer-grade full-stack developer from Anand, Gujarat, India. AI · Full Stack · Mobile · UI/UX. 4+ years, 30+ shipped products. Contact: hello@jayptl.me · https://jayptl.me
 
@@ -10,23 +10,23 @@ Full-stack developer across TypeScript, Dart/Flutter, Python, and Solidity. Prod
 
 ## Skills
 
-- **Mobile** — Flutter, Riverpod, React Native, ML Kit
-- **Web** — Next.js 16, TypeScript, Bun, Hono, Redis, MongoDB
-- **AI** — Python, PyTorch, BitNet b1.58, HuggingFace, RAG, automation
-- **Infra** — Docker, Coolify, Traefik, MinIO, self-hosting
-- **Product** — UI/UX design, roadmaps, creative direction, video editing
+- **Mobile**, Flutter, Riverpod, React Native, ML Kit
+- **Web**, Next.js 16, TypeScript, Bun, Hono, Redis, MongoDB
+- **AI**, Python, PyTorch, BitNet b1.58, HuggingFace, RAG, automation
+- **Infra**, Docker, Coolify, Traefik, MinIO, self-hosting
+- **Product**, UI/UX design, roadmaps, creative direction, video editing
 
 ## Selected work
 
-- **Aviz Health** — Three Flutter apps, Next.js 16 admin console, Bun + Hono backend. Live on Google Play v2.0. [Case study](/projects/aviz-health.md)
-- **Swalook CRM** — Next.js 16 Turborepo overhaul, 35+ OpenAPI-documented endpoints, Redis caching, Flutter app with ML Kit AR previews. [Case study](/projects/swalook.md)
-- **Genuinest** — Founding Engineer. Flutter product on Bun + Hono, migration to Docker / Coolify / Traefik with 20TB MinIO. [Case study](/projects/genuinest.md)
-- **Vini and Tini** — Two small language models trained from scratch on BitNet b1.58 for edge use. Tini on HuggingFace (jayptl-rq/tini). [Case study](/projects/vini-tini.md)
+- **Aviz Health**, Three Flutter apps, Next.js 16 admin console, Bun + Hono backend. Live on Google Play v2.0. [Case study](/projects/aviz-health.md)
+- **Swalook CRM**, Next.js 16 Turborepo overhaul, 35+ OpenAPI-documented endpoints, Redis caching, Flutter app with ML Kit AR previews. [Case study](/projects/swalook.md)
+- **Genuinest**, Founding Engineer. Flutter product on Bun + Hono, migration to Docker / Coolify / Traefik with 20TB MinIO. [Case study](/projects/genuinest.md)
+- **Vini and Tini**, Two small language models trained from scratch on BitNet b1.58 for edge use. Tini on HuggingFace (jayptl-rq/tini). [Case study](/projects/vini-tini.md)
 
 ## Education and recognition
 
-- B.Tech, Information Technology — A.D. Patel Institute of Technology
-- 1st place, FinTech track — CHARUSAT-Odoo Hackathon 2025 (650+ applicants)
+- B.Tech, Information Technology, A.D. Patel Institute of Technology
+- 1st place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants)
 - Technical Leadership Award
 - Certifications across Google Cloud, AWS, MongoDB, Meta, and DataCamp
 

@@ -60,7 +60,7 @@ html[data-theme="light"] {
 }
 
 /* SINGLE SOURCE OF TRUTH for scrollbars (reset.css must not redefine these).
-   One native themed scrollbar only — never hide it globally, or inner
+   One native themed scrollbar only, never hide it globally, or inner
    scroll containers paint their own and you get the "two scrollbar" look. */
 html {
     scrollbar-gutter: stable;
@@ -354,7 +354,7 @@ code::-webkit-scrollbar {
 
 /* Zero-JS scroll progress (MDN scroll-driven animations): the bar fills with
    native scroll position, no scroll listeners. Unsupported browsers simply
-   show an empty track — never a broken bar. */
+   show an empty track, never a broken bar. */
 @supports (animation-timeline: scroll()) {
     .custom-scroll-indicator::before {
         animation: scroll-progress-fill auto linear;

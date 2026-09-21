@@ -404,7 +404,7 @@ html[data-theme="light"] {
 }
 
 /* ==========================================================================
-   VIEW TRANSITIONS — Cross-Document Page Transitions & Circular Theme Switch
+   VIEW TRANSITIONS, Cross-Document Page Transitions & Circular Theme Switch
    Uses native View Transitions API with Web Animations API clip-path.
    Compositor-driven: zero layout thrashing, zero paint delay.
    ========================================================================== */

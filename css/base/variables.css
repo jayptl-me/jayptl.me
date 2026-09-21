@@ -170,7 +170,7 @@
      /* Focus Ring / Outline (Light Mode: Blue primary) */
      --focus-ring: 0 0 0 3px rgba(var(--primary-500-rgb), 0.35);
 
-    /* Press / tap feedback (Gate P plan A — Native Press Tokens).
+    /* Press / tap feedback (Gate P plan A, Native Press Tokens).
        Built on --primary-*-rgb so the dark remap below resolves it to
        turquoise automatically; never raw hex, never cross-ramp. */
     --tap-highlight: rgba(var(--primary-500-rgb), 0.12);
@@ -181,7 +181,7 @@
      TYPOGRAPHY SYSTEM
      ========================================================================== */
 
-   /* Font Families — resolved in css/base/fonts.css to the self-hosted
+   /* Font Families, resolved in css/base/fonts.css to the self-hosted
       Engineer Notebook stack (Space Grotesk / IBM Plex Sans / IBM Plex Mono)
       plus the Architects Daughter handwriting face (--font-hand). */
    --font-sans: var(--font-plex-sans);
@@ -328,7 +328,7 @@
    --z-notification: 45;
    --z-maximum: 50;
    /* Preloader + view-transition veil sit above everything, including the
-      custom cursor. Single token — never hardcode 9999 again. */
+      custom cursor. Single token, never hardcode 9999 again. */
    --z-preloader: 60;
 
    /* ==========================================================================
@@ -497,7 +497,7 @@
    --skeu-highlight-strong: inset 0 2px 0 rgba(255, 255, 255, 0.7);
 
    /* ==========================================================================
-      DOODLE + HUD TOKENS (Gate P redesign — doodle-led, HUD accents)
+      DOODLE + HUD TOKENS (Gate P redesign, doodle-led, HUD accents)
       Doodle ink and HUD accents stay inside the committed ramps (blue light /
       turquoise dark). One accent per surface; paper-grid alpha <= 8%; glows
       ambient only. ========================================================================== */
@@ -523,12 +523,12 @@
    --sticker-rotate-max: 12deg;
    --sticker-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 
-   /* Ambient glow — one focal element per viewport only */
+   /* Ambient glow, one focal element per viewport only */
    --glow-focal: 0 0 24px rgba(var(--primary-500-rgb), 0.18), 0 0 2px rgba(var(--primary-500-rgb), 0.25);
 }
 
 /* ==========================================================================
-   DARK MODE PRIMARY REMAP — kills blue bleeding into dark theme
+   DARK MODE PRIMARY REMAP, kills blue bleeding into dark theme
    --------------------------------------------------------------------------
    The site contract: light = skeuomorphic + BLUE primary, dark = glass +
    TURQUOISE accent. Dozens of component rules reference --primary-* directly
@@ -539,7 +539,7 @@
    ========================================================================== */
 @media (prefers-color-scheme: dark) {
   html:not([data-theme="light"]) {
-    /* Pale tints become translucent teal washes — they are used as
+    /* Pale tints become translucent teal washes, they are used as
        backgrounds/borders and must stay DARK-friendly */
     --primary-50: rgba(38, 201, 216, 0.07);
     --primary-100: rgba(38, 201, 216, 0.13);

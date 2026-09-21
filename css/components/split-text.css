@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SPLIT TEXT (Gate P — vanilla SplitText, zero deps)
+   SPLIT TEXT (Gate P, vanilla SplitText, zero deps)
    Runtime-split word/char stagger. Hidden state applies only under .js;
    no-JS renders plain text. Motion runs on opacity/transform (compositor
    thread). Per-unit stagger arrives via --d, duration via --split-dur.

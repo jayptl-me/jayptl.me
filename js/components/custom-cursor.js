@@ -1,6 +1,6 @@
 /**
  * Custom Cursor Component (perf revision A: compositor-only, idle-gated)
- * Interactive cursor with transform-only positioning — no layout per frame,
+ * Interactive cursor with transform-only positioning, no layout per frame,
  * no backdrop-filter / blend repaint, paused when idle or tab hidden.
  *
  * @file js/components/custom-cursor.js
@@ -344,7 +344,7 @@ class CustomCursor {
             this.setCursorVars(this.currentX, this.currentY);
             this.setFollowerVars(this.followerX, this.followerY);
 
-            // Sleep when converged (sub-pixel) — kills the infinite-loop TBT cost.
+            // Sleep when converged (sub-pixel), kills the infinite-loop TBT cost.
             const dx = Math.abs(this.targetX - this.currentX);
             const dy = Math.abs(this.targetY - this.currentY);
             const fdx = Math.abs(this.targetX - this.followerX);

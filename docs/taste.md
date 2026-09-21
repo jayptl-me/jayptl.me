@@ -44,12 +44,16 @@ HUD grammar (micro-labels, readouts, corner frames, FIG captions) only
 where real data exists — fake telemetry is banned.
 
 ## 6. Motion on the compositor, stillness by default
-Opacity/transform only. Signature easings: `cubic-bezier(0, 0, 0.2, 1)`
-and spring `(0.2, 0.8, 0.2, 1)`; `power3.out` equivalent for split text.
-Staggered reveals (55ms split delay, 90ms doodle stagger). 27+
-`prefers-reduced-motion` guards — every effect collapses to a static,
-fully-drawn end state. Nothing flashes faster than 3×/sec. Canvas work is
-capped (DPR ≤ 2, particle budgets) and paused when hidden.
+Full law: `docs/motion-zen.md` (GATE R Option A, 2026-09-20). One snap
+curve `cubic-bezier(0.16, 1, 0.3, 1)`; exits 140-200ms together with no
+lift, entries 240-520ms delayed with 60ms stagger; pixel edges-exit /
+center-reveal; theme 380ms single clock; opacity/transform/clip only.
+Stale easings noted here previously (`(0,0,0.2,1)`, spring
+`(0.2,0.8,0.2,1)`) remain in old components as violators — do not copy,
+see `motion-zen.md` section 5. 27+ `prefers-reduced-motion` guards —
+every effect collapses to a static, fully-drawn end state. Nothing
+flashes faster than 3x/sec. Canvas work is capped (DPR <= 2, particle
+budgets) and paused when hidden.
 
 ## 7. Tactile play, never decoration-only
 Sound effects (hover, stepper steps, lightsaber theme toggle), custom

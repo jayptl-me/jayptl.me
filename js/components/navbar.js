@@ -550,16 +550,18 @@
       if (st.closeTimer) { clearTimeout(st.closeTimer); st.closeTimer = null; }
     };
 
-    function closeDropdown(dd, opts) {
+    function closeDropdown(dd) {
       const st = ddState.get(dd);
       if (!st) return;
       clearTimers(st);
       if (!dd.classList.contains('open')) return;
-      const hadFocus = dd.contains(document.activeElement);
+      const active = document.activeElement;
+      const focusInMenu = dd.contains(active) && active !== st.btn;
       dd.classList.remove('open');
       st.btn.setAttribute('aria-expanded', 'false');
       st.openedBy = null;
-      if (opts && opts.returnFocus && hadFocus) {
+      // Never leave focus on a link inside the now hidden menu.
+      if (focusInMenu) {
         try { st.btn.focus({ preventScroll: true }); } catch { }
       }
       if (!dropdowns.some((d) => d.classList.contains('open'))) {
@@ -568,8 +570,8 @@
       }
     }
 
-    function closeAllDropdowns(opts) {
-      dropdowns.forEach((dd) => closeDropdown(dd, opts));
+    function closeAllDropdowns() {
+      dropdowns.forEach((dd) => closeDropdown(dd));
     }
 
     function openDropdown(dd, openedBy) {
@@ -627,7 +629,10 @@
         if (e.pointerType !== 'mouse') return;
         if (st.openTimer) { clearTimeout(st.openTimer); st.openTimer = null; }
         if (!dd.classList.contains('open') || st.openedBy !== 'hover') return;
-        if (dd.contains(document.activeElement)) return;
+        // Keyboard focus on a menu link keeps it open; focus left on the
+        // toggle by an earlier click does not.
+        const active = document.activeElement;
+        if (dd.contains(active) && active !== btn) return;
         st.closeTimer = setTimeout(() => {
           st.closeTimer = null;
           closeDropdown(dd);
@@ -672,9 +677,9 @@
       });
     });
 
-    // Escape closes, returning focus to the toggle only if focus was inside
+    // Escape closes; focus inside the menu returns to its toggle
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeAllDropdowns({ returnFocus: true });
+      if (e.key === 'Escape') closeAllDropdowns();
     });
 
     // Another popover (the sound panel) opened: step aside

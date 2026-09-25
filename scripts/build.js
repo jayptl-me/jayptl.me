@@ -13,6 +13,7 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const { META_CONTENT_SECURITY_POLICY, SECURITY_HEADERS } = require('./security-headers');
 
 // ANSI color codes for terminal output
 const colors = {
@@ -286,18 +287,8 @@ async function createHtaccess() {
     Header set Cache-Control "max-age=3600, public, must-revalidate"
   </FilesMatch>
   
-  # Security Headers
-  Header always set X-Content-Type-Options "nosniff"
-  Header always set X-Frame-Options "DENY"
-  Header always set X-XSS-Protection "1; mode=block"
-  Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-  
-  # HSTS (1 year)
-  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  
-  # CSP
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests"
+  # Security Headers (from scripts/security-headers.js)
+${Object.entries(SECURITY_HEADERS).map(([name, value]) => `  Header always set ${name} "${value}"`).join('\n')}
 </IfModule>
 
 # Error Pages
@@ -457,6 +448,41 @@ async function generateCleanUrls() {
 }
 
 /**
+ * Stamp the Content-Security-Policy <meta> tag into every built HTML page.
+ * The HTTP header (render.yaml) is the primary policy; the tag keeps pages
+ * protected on any host that drops custom headers.
+ */
+async function applyCspMeta() {
+  const tag = `<meta http-equiv="Content-Security-Policy" content="${META_CONTENT_SECURITY_POLICY}">`;
+  const existing = /<meta http-equiv="Content-Security-Policy"[^>]*>/i;
+  let count = 0;
+
+  async function walk(dir) {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await walk(full);
+      } else if (entry.name.endsWith('.html')) {
+        const html = await fs.readFile(full, 'utf8');
+        if (!/<head[^>]*>/i.test(html)) continue;
+        const next = existing.test(html)
+          ? html.replace(existing, tag)
+          : html.replace(/<meta charset="[^"]*"\s*\/?>/i, (m) => `${m}\n    ${tag}`);
+        if (next === html && !existing.test(html)) {
+          throw new Error(`No <meta charset> to anchor the CSP tag in ${path.relative(config.distDir, full)}`);
+        }
+        await fs.writeFile(full, next);
+        count++;
+      }
+    }
+  }
+
+  await walk(config.distDir);
+  log.success(`Applied CSP meta tag to ${count} HTML files`);
+}
+
+/**
  * Main build function
  */
 async function build() {
@@ -482,6 +508,9 @@ async function build() {
 
     // Copy error pages to root for direct access
     await copyErrorPages();
+
+    // Stamp the shared CSP into every page
+    await applyCspMeta();
 
     // Create .htaccess
     await createHtaccess();

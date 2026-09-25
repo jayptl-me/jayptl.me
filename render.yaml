@@ -4,11 +4,20 @@ services:
   - type: web
     name: jayptl-portfolio
     runtime: static
-    buildCommand: bun install && bun run build
+    # build.js uses only Node built-ins, so no package install runs at deploy time.
+    buildCommand: bun run build
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: true
 
     headers:
+      # Security headers: keep in sync with scripts/security-headers.js
+      # (tests/security-headers.test.mjs enforces it).
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+      - path: /*
+        name: Strict-Transport-Security
+        value: "max-age=31536000; includeSubDomains"
       - path: /*
         name: X-Frame-Options
         value: DENY
@@ -17,16 +26,19 @@ services:
         value: nosniff
       - path: /*
         name: X-XSS-Protection
-        value: 1; mode=block
+        value: "0"
       - path: /*
         name: Referrer-Policy
         value: strict-origin-when-cross-origin
       - path: /*
         name: Permissions-Policy
-        value: geolocation=(), microphone=(), camera=()
+        value: accelerometer=(), browsing-topics=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
       - path: /*
-        name: Strict-Transport-Security
-        value: max-age=31536000; includeSubDomains; preload
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /*
+        name: Cross-Origin-Resource-Policy
+        value: same-site
       - path: /assets/resumes/*
         name: Cache-Control
         value: public, max-age=3600, must-revalidate

@@ -94,15 +94,8 @@ the feel when working nearby.
 
 ## 5. Known violators (do not copy, fix per page)
 
-- `css/components/forms.css:349,399,403,445,493,497,539,587` spring/bounce
-  + check-bounce/radio-pop.
-- `css/components/buttons.css`, `css/components/cards.css` 50ms press.
-- `css/components/scroll-reveal.css:129,162,234,629,646` mixed curves +
-  jellyIn + chevronBob + finalHintPulse.
-- `css/components/hero.css:354,401,298-322` infinite bounce/float + 1000ms.
-- `css/components/consent-banner.css:376` dialogSlideIn 0.3s.
-- `css/components/theme-toggle.css:100-104` 300ms/500ms override fighting
-  the 380ms master (fix to master on next theme pass).
+None currently. All violators found in the 2026-09-20 audit were fixed
+2026-09-25 (see Rulings log).
 
 ## 6. Per-page annex (research slots, fill one gate at a time)
 
@@ -135,6 +128,30 @@ the feel when working nearby.
 
 ## 8. Rulings log
 
+- 2026-09-25 / known violators fixed: `css/components/forms.css` checkbox/
+  radio/toggle transitions and check-bounce/radio-pop keyframes moved to
+  `--ease-snap`, overshoot removed. `css/components/buttons.css` and
+  `css/components/cards.css` 50ms press transitions moved to
+  `--duration-fast` (150ms) + `--ease-snap`; buttons.css base transform
+  transition moved off `--ease-spring`. `css/components/scroll-reveal.css`
+  liquidEnter/liquidExit moved to `--ease-snap` with overshoot removed
+  (exit shortened to 200ms); the jellyIn/`bounce-in` spring flourish on
+  the stepper's last item removed (JS and CSS) since it sat outside the
+  protected hide/dissolve/reveal/text-last signature below; chevronBob and
+  finalHintPulse infinite loops removed, kept as plain hover/state
+  transitions. `css/components/hero.css` dead, unreferenced
+  `.hero-animated`/`.hero-scroll-indicator`/`.hero-floating-elements`/
+  `.hero-particles` blocks (the infinite bounce/float/particle-float loops
+  and 1000ms fadeInUp/fadeInScale) deleted outright: nothing in `pages/`
+  or `js/` referenced them. `css/components/consent-banner.css`
+  dialogSlideIn moved to `--ease-snap`, and its container added to the
+  reduced-motion block (previously missing). `css/components/
+  theme-toggle.css` svg icon transition moved off local 300ms/500ms onto
+  the `--theme-x-duration`/`--theme-x-ease` master clock, and added to the
+  reduced-motion block alongside the lightsaber blade/glow. Stepper
+  hide/dissolve/reveal/text-last signature (section 4b item 2) left
+  untouched, confirmation was not needed since none of those line ranges
+  were on the violator list.
 - 2026-09-20 / stepper protected: home stepper locked as signature, Jay's
   taste preserved, confirmation required before any stepper change.
   Case-study components approved as primary rebuild surface. Action-path

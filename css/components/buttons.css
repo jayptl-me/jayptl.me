@@ -37,7 +37,7 @@
 
     /* Animation - smooth transitions for all properties */
     transition:
-        transform var(--duration-200) var(--ease-spring),
+        transform var(--duration-200) var(--ease-snap),
         box-shadow var(--duration-200) var(--ease-smooth),
         background var(--duration-200) var(--ease-smooth),
         border-color var(--duration-200) var(--ease-smooth);
@@ -93,7 +93,7 @@ html[data-theme="light"] .btn-primary:active {
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(0.97);
     color: white;
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode - Glass with Glow */
@@ -112,7 +112,7 @@ html[data-theme="dark"] .btn-primary:active {
     box-shadow: var(--glass-shadow);
     transform: scale(0.97);
     color: white;
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -141,7 +141,7 @@ html[data-theme="light"] .btn-secondary:hover {
 html[data-theme="light"] .btn-secondary:active {
     box-shadow: var(--skeu-shadow-pressed-sm), inset 0 2px 3px rgba(0, 0, 0, 0.1);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode - Glass */
@@ -163,7 +163,7 @@ html[data-theme="dark"] .btn-secondary:hover {
 html[data-theme="dark"] .btn-secondary:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -192,7 +192,7 @@ html[data-theme="light"] .btn-outline:hover {
 html[data-theme="light"] .btn-outline:active {
     box-shadow: var(--skeu-shadow-pressed-sm-accent), inset 0 2px 3px rgba(0, 0, 0, 0.15);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode */
@@ -212,7 +212,7 @@ html[data-theme="dark"] .btn-outline:active {
     box-shadow: var(--glass-shadow);
     transform: scale(0.97);
     color: white;
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -236,7 +236,7 @@ html[data-theme="light"] .btn-ghost:hover {
 html[data-theme="light"] .btn-ghost:active {
     box-shadow: var(--skeu-shadow-pressed-sm), inset 0 2px 3px rgba(0, 0, 0, 0.1);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode */
@@ -251,7 +251,7 @@ html[data-theme="dark"] .btn-ghost:hover {
 html[data-theme="dark"] .btn-ghost:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -286,7 +286,7 @@ html[data-theme="light"] .btn-glass:active {
     background: linear-gradient(180deg, var(--neutral-100) 0%, var(--neutral-200) 100%);
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(0.97);
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode - Glass */

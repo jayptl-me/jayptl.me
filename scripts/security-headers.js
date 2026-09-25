@@ -6,9 +6,9 @@
  * config files, so tests/security-headers.test.mjs checks they carry these
  * exact values.
  *
- * Google Analytics 4 only loads after visitor opt-in; its script and
- * collection hosts are allowed below. Cloudflare Web Analytics hosts are
- * allowed in case the CDN injects its beacon.
+ * Consent-gated telemetry scripts and collection endpoints are allowed below.
+ * Reverse-proxy telemetry hosts are allowed in case the edge network injects
+ * a performance beacon.
  */
 
 const CSP_DIRECTIVES = [

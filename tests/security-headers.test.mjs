@@ -1,5 +1,5 @@
 // Security headers: scripts/security-headers.js is the source of truth.
-// render.yaml and _headers are static config, so check they carry the same
+// Configuration files and headers are static, so check they carry the same
 // values; check every built page has the CSP meta tag and no inline code.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -35,6 +35,26 @@ test('_headers matches the shared security headers', () => {
   const file = fs.readFileSync(path.join(root, '_headers'), 'utf8');
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
     assert.ok(file.includes(`  ${name}: ${value}\n`), `_headers ${name} differs`);
+  }
+});
+
+test('.htaccess matches the shared security headers', () => {
+  const file = fs.readFileSync(path.join(root, '.htaccess'), 'utf8');
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    assert.ok(
+      file.includes(`Header always set ${name} "${value}"`),
+      `.htaccess ${name} differs from scripts/security-headers.js`
+    );
+  }
+});
+
+test('dist/.htaccess carries every shared security header', () => {
+  const file = fs.readFileSync(path.join(dist, '.htaccess'), 'utf8');
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    assert.ok(
+      file.includes(`Header always set ${name} "${value}"`),
+      `dist/.htaccess ${name} differs from scripts/security-headers.js`
+    );
   }
 });
 

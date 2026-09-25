@@ -380,7 +380,7 @@ async function createLlmsFull() {
  * For markdown companions in markdown/pages/ (e.g. markdown/pages/about.md):
  * - Creates dist/<route>.md (e.g. dist/about.md)
  *
- * This allows Render (and any static host) to serve clean URLs natively
+ * This allows edge static hosts to serve clean URLs natively
  * from static files without requiring server-side URL rewrites.
  */
 async function generateCleanUrls() {
@@ -503,7 +503,7 @@ async function build() {
     await copyFiles();
 
     // Generate physical clean URL directories (e.g. dist/about/index.html)
-    // for native static hosting support on Render, Cloudflare Pages, etc.
+    // for native static hosting support on edge CDN platforms.
     await generateCleanUrls();
 
     // Copy error pages to root for direct access

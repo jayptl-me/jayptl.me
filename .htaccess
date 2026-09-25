@@ -25,7 +25,7 @@
 <IfModule mod_headers.c>
     # Keep in sync with scripts/security-headers.js
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
-    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set Strict-Transport-Security "max-age=31536000"
     Header always set X-Frame-Options "DENY"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-XSS-Protection "0"

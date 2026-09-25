@@ -1,0 +1,11 @@
+# Weekly check of the build-time packages, grouped into one PR.
+version: 2
+updates:
+  - package-ecosystem: "bun"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      build-tools:
+        patterns:
+          - "*"

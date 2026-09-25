@@ -238,7 +238,7 @@
     </style>
 </head>
 
-<body data-transition="pixels">
+<body data-transition="pixels" data-nav-visible>
     <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <!-- Shared doodle sprite (inlined canonical copy of assets/doodle-sprite.svg; no fetch) -->
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false" id="doodleSprite">
@@ -516,15 +516,7 @@
     <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>
-    <script>
-        // Ensure the injected navbar is visible immediately on this page
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                var navbar = document.getElementById('glassNav');
-                if (navbar) navbar.classList.add('visible');
-            }, 100);
-        });
-    </script>
+    <script defer src="/js/components/page-actions.js"></script>
 </body>
 
 </html>

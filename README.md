@@ -124,7 +124,7 @@ bun run serve:dist
 This project is configured for Render deployment via `render.yaml`:
 
 ```yaml
-Build Command: bun install && bun run build
+Build Command: bun install --frozen-lockfile && bun run test:deploy
 Publish Directory: ./dist
 ```
 

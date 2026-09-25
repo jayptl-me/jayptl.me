@@ -148,6 +148,8 @@
         btn.setAttribute('aria-pressed', 'false');
         btn.setAttribute('aria-label', 'Turn sound on');
         btn.setAttribute('aria-haspopup', 'dialog');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', 'audioPanel');
         btn.innerHTML = speakerSVG();
 
         var panel = buildPanel();
@@ -161,6 +163,10 @@
             panel.hidden = !panel.hidden;
             btn.setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
             if (!panel.hidden) {
+                // One popover at a time: nav dropdowns step aside.
+                try {
+                    window.dispatchEvent(new CustomEvent('nav:popover-open', { detail: { source: 'audio' } }));
+                } catch (e) { /* noop */ }
                 sync(btn, panel);
                 var first = panel.querySelector('.audio-switch');
                 if (first) {
@@ -214,6 +220,17 @@
 
         window.addEventListener('soundchange', function () {
             sync(btn, panel);
+        });
+
+        window.addEventListener('nav:popover-open', function (e) {
+            if (panel.hidden) return;
+            if (e.detail && e.detail.source === 'audio') return;
+            closePanel();
+        });
+
+        // The router keeps the shell, so close the panel on page swaps.
+        window.addEventListener('page:ready', function () {
+            if (!panel.hidden) closePanel();
         });
 
         if (host) {

@@ -1470,7 +1470,7 @@ html[data-theme="light"] .mobile-social-pill.highlight {
 }
 
 /* --------------------------------------------------------------------------
-   GooeyNav Effect (React Bits port) - hover + active rail treatment
+   Gooey nav effect, bespoke - hover + active rail treatment
    JS: js/components/gooey-nav.js (lazy-loaded by navbar.js)
    The rail itself becomes .gooey-nav-container; two overlay layers (.gooey-
    filter = blur+contrast goo, .gooey-text = opaque label) are parked over the
@@ -1979,4 +1979,46 @@ html.no-scroll {
         animation: none !important;
         transition: none !important;
     }
+}
+/* --------------------------------------------------------------------------
+   Skip to content (injected by navbar.js). Off-screen until keyboard focus.
+   -------------------------------------------------------------------------- */
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: var(--z-tooltip);
+    padding: 10px 16px;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    background: var(--primary-700);
+    transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+    transform: none;
+    outline: 2px solid var(--primary-700);
+    outline-offset: 3px;
+}
+
+html[data-theme="dark"] .skip-link {
+    color: var(--black);
+    background: var(--accent-400);
+    outline-color: var(--accent-400);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .skip-link {
+        color: var(--black);
+        background: var(--accent-400);
+        outline-color: var(--accent-400);
+    }
+}
+
+.skip-link[hidden] {
+    display: none;
 }

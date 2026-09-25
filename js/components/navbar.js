@@ -62,18 +62,18 @@
             <div class="nav-rail">
               <!-- Projects Dropdown -->
               <div class="nav-dropdown" id="projectsDropdown">
-                <button class="nav-link nav-rail-link nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="projectsMenu">
+                <button class="nav-link nav-rail-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="projectsMenu">
                   <span class="nav-text">Projects</span>
                   <svg class="dropdown-chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false">
                     <path d="M2.5 4.5L6 8L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
-                <div class="dropdown-menu dropdown-menu--wide" id="projectsMenu" role="menu">
+                <div class="dropdown-menu dropdown-menu--wide" id="projectsMenu">
                   <div class="dropdown-header">
                     <span class="dropdown-header-title">Selected Case Studies</span>
                   </div>
                   <div class="dropdown-grid">
-                    <a role="menuitem" href="${avizHref}" class="dropdown-card">
+                    <a href="${avizHref}" class="dropdown-card">
                       <div class="dropdown-card-icon aviz-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                       </div>
@@ -83,7 +83,7 @@
                       </div>
                     </a>
 
-                    <a role="menuitem" href="${swalookHref}" class="dropdown-card">
+                    <a href="${swalookHref}" class="dropdown-card">
                       <div class="dropdown-card-icon swalook-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                       </div>
@@ -93,7 +93,7 @@
                       </div>
                     </a>
 
-                    <a role="menuitem" href="${vinitiniHref}" class="dropdown-card">
+                    <a href="${vinitiniHref}" class="dropdown-card">
                       <div class="dropdown-card-icon vinitini-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                       </div>
@@ -103,7 +103,7 @@
                       </div>
                     </a>
 
-                    <a role="menuitem" href="${genuinestHref}" class="dropdown-card">
+                    <a href="${genuinestHref}" class="dropdown-card">
                       <div class="dropdown-card-icon genuinest-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
                       </div>
@@ -114,7 +114,7 @@
                     </a>
                   </div>
                   <div class="dropdown-footer">
-                    <a role="menuitem" href="${projectsHref}" class="dropdown-footer-link">
+                    <a href="${projectsHref}" class="dropdown-footer-link">
                       <span>Explore all 10+ projects</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
@@ -128,27 +128,27 @@
 
               <!-- More Dropdown -->
               <div class="nav-dropdown" id="moreDropdown">
-                <button class="nav-link nav-rail-link nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu">
+                <button class="nav-link nav-rail-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="moreMenu">
                   <span class="nav-text">More</span>
                   <svg class="dropdown-chevron" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false">
                     <path d="M2.5 4.5L6 8L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
-                <div class="dropdown-menu" id="moreMenu" role="menu">
-                  <a role="menuitem" href="${designSystemHref}" class="dropdown-item">
+                <div class="dropdown-menu" id="moreMenu">
+                  <a href="${designSystemHref}" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
                     <span>Design System</span>
                   </a>
-                  <a role="menuitem" href="${privacyHref}" class="dropdown-item">
+                  <a href="${privacyHref}" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <span>Privacy Policy</span>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a role="menuitem" href="${githubHref}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
+                  <a href="${githubHref}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
                     <span>GitHub</span>
                   </a>
-                  <a role="menuitem" href="${linkedinHref}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
+                  <a href="${linkedinHref}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
                     <span>LinkedIn</span>
                   </a>
@@ -307,8 +307,31 @@
     document.head.appendChild(script);
   }
 
+  // Keyboard-only "Skip to content" link, shown on focus. Resolves <main>
+  // at click time because the page router swaps it between pages.
+  function insertSkipLink() {
+    if (document.getElementById('skipToContent')) return;
+    const link = document.createElement('a');
+    link.id = 'skipToContent';
+    link.className = 'skip-link';
+    link.href = '#main-content';
+    link.textContent = 'Skip to content';
+    link.addEventListener('click', (e) => {
+      const main = document.querySelector('main');
+      if (!main) return;
+      e.preventDefault();
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+      try { main.focus({ preventScroll: true }); } catch { }
+      main.scrollIntoView({ block: 'start' });
+    });
+    document.body.insertAdjacentElement('afterbegin', link);
+  }
+
   function setNavbarAccessibility(nav, visible) {
     if (!nav) return;
+    // The skip link follows the navbar: hidden while the home stepper owns the screen.
+    const skip = document.getElementById('skipToContent');
+    if (skip) skip.hidden = !visible;
     if (visible) {
       nav.classList.add('visible');
       nav.removeAttribute('aria-hidden');
@@ -338,6 +361,7 @@
 
     const nav = document.getElementById("glassNav");
     if (!nav) return;
+    insertSkipLink();
 
     // 1. Setup Dynamic Island mobile toggle
     const toggle = document.getElementById("navToggle");
@@ -355,6 +379,23 @@
 
       let closeTimer = null;
 
+      // While the island is open, the page behind the scrim is inert so
+      // Tab stays inside the island. Only elements marked here are restored.
+      const setPageInert = (on) => {
+        if (on) {
+          Array.from(document.body.children).forEach((el) => {
+            if (el === nav || el.inert || /^(SCRIPT|STYLE|LINK|TEMPLATE)$/.test(el.tagName)) return;
+            try { el.inert = true; } catch { }
+            el.setAttribute('data-nav-inert', '');
+          });
+        } else {
+          document.querySelectorAll('[data-nav-inert]').forEach((el) => {
+            try { el.inert = false; } catch { }
+            el.removeAttribute('data-nav-inert');
+          });
+        }
+      };
+
       const setOpen = (open) => {
         if (closeTimer) {
           clearTimeout(closeTimer);
@@ -371,6 +412,7 @@
           toggle.setAttribute('aria-expanded', 'true');
           toggle.setAttribute('aria-label', 'Close menu');
           document.body.classList.add('no-scroll', 'nav-open');
+          setPageInert(true);
 
           document.addEventListener('keydown', onEsc);
           // Re-measure gooey pill after island expansion transition begins & finishes
@@ -392,6 +434,7 @@
             setTimeout(() => firstFocusable.focus({ preventScroll: true }), 100);
           }
         } else {
+          setPageInert(false);
           if (expandedContent.contains(document.activeElement)) {
             try { toggle.focus({ preventScroll: true }); } catch { }
           }
@@ -478,65 +521,202 @@
       window.addEventListener('popstate', onNavigate);
     }
 
-    // 2. Setup Multi-Dropdown Support (Projects & More on desktop)
+    // 2. Desktop dropdowns (Projects & More), disclosure pattern:
+    // - Mouse: calm hover intent, opens after a 150ms rest, closes 300ms
+    //   after the pointer leaves. Moving to the other menu while one is
+    //   open switches straight away.
+    // - Click/tap/keyboard: toggles. A click on a hover-opened menu keeps
+    //   it open instead of closing it under the pointer.
+    // - Light dismiss: outside click, Escape, focus leaving the menu,
+    //   picking a link, a router page swap, or about a screen of scrolling.
+    // - Only one popover at a time across the nav and the sound panel,
+    //   coordinated through the `nav:popover-open` event.
+    const HOVER_OPEN_DELAY = 150;
+    const HOVER_CLOSE_DELAY = 300;
     const dropdowns = Array.from(nav.querySelectorAll('.nav-dropdown'));
+    const finePointer = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
+    const ddState = new Map();
+    let scrollAnchor = null;
+
+    const menuLinks = (dd) => Array.from(dd.querySelectorAll('.dropdown-menu a[href]'));
+
+    const onScrollWhileOpen = () => {
+      if (scrollAnchor === null) return;
+      if (Math.abs(window.scrollY - scrollAnchor) > window.innerHeight) closeAllDropdowns();
+    };
+
+    const clearTimers = (st) => {
+      if (st.openTimer) { clearTimeout(st.openTimer); st.openTimer = null; }
+      if (st.closeTimer) { clearTimeout(st.closeTimer); st.closeTimer = null; }
+    };
+
+    function closeDropdown(dd) {
+      const st = ddState.get(dd);
+      if (!st) return;
+      clearTimers(st);
+      if (!dd.classList.contains('open')) return;
+      const active = document.activeElement;
+      const focusInMenu = dd.contains(active) && active !== st.btn;
+      dd.classList.remove('open');
+      st.btn.setAttribute('aria-expanded', 'false');
+      st.openedBy = null;
+      // Never leave focus on a link inside the now hidden menu.
+      if (focusInMenu) {
+        try { st.btn.focus({ preventScroll: true }); } catch { }
+      }
+      if (!dropdowns.some((d) => d.classList.contains('open'))) {
+        scrollAnchor = null;
+        window.removeEventListener('scroll', onScrollWhileOpen);
+      }
+    }
+
+    function closeAllDropdowns() {
+      dropdowns.forEach((dd) => closeDropdown(dd));
+    }
+
+    function openDropdown(dd, openedBy) {
+      const st = ddState.get(dd);
+      if (!st) return;
+      clearTimers(st);
+      dropdowns.forEach((other) => { if (other !== dd) closeDropdown(other); });
+      st.openedBy = openedBy;
+      if (dd.classList.contains('open')) return;
+      dd.classList.add('open');
+      st.btn.setAttribute('aria-expanded', 'true');
+      try {
+        window.dispatchEvent(new CustomEvent('nav:popover-open', { detail: { source: 'nav' } }));
+      } catch { }
+      if (scrollAnchor === null) {
+        scrollAnchor = window.scrollY;
+        window.addEventListener('scroll', onScrollWhileOpen, { passive: true });
+      }
+    }
+
     dropdowns.forEach((dd) => {
       const btn = dd.querySelector('.nav-dropdown-toggle');
       if (!btn) return;
+      const st = { btn, openTimer: null, closeTimer: null, openedBy: null };
+      ddState.set(dd, st);
 
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      btn.addEventListener('click', () => {
         const isOpen = dd.classList.contains('open');
-        // Close any other open dropdown first
-        dropdowns.forEach((other) => {
-          if (other !== dd) {
-            other.classList.remove('open');
-            const otherBtn = other.querySelector('.nav-dropdown-toggle');
-            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        // Toggle this dropdown
-        dd.classList.toggle('open', !isOpen);
-        btn.setAttribute('aria-expanded', String(!isOpen));
+        if (isOpen && st.openedBy === 'hover') {
+          // The pointer already opened it; a click confirms, not toggles.
+          st.openedBy = 'click';
+          return;
+        }
+        if (isOpen) closeDropdown(dd);
+        else openDropdown(dd, 'click');
       });
 
-      btn.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          e.stopPropagation();
-          btn.setAttribute('aria-expanded', 'false');
-          dd.classList.remove('open');
-          btn.focus({ preventScroll: true });
+      dd.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse' || !(finePointer && finePointer.matches)) return;
+        if (st.closeTimer) { clearTimeout(st.closeTimer); st.closeTimer = null; }
+        if (dd.classList.contains('open')) return;
+        if (dropdowns.some((d) => d !== dd && d.classList.contains('open'))) {
+          openDropdown(dd, 'hover');
+          return;
         }
+        if (!st.openTimer) {
+          st.openTimer = setTimeout(() => {
+            st.openTimer = null;
+            openDropdown(dd, 'hover');
+          }, HOVER_OPEN_DELAY);
+        }
+      });
+
+      dd.addEventListener('pointerleave', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        if (st.openTimer) { clearTimeout(st.openTimer); st.openTimer = null; }
+        if (!dd.classList.contains('open') || st.openedBy !== 'hover') return;
+        // Keyboard focus on a menu link keeps it open; focus left on the
+        // toggle by an earlier click does not.
+        const active = document.activeElement;
+        if (dd.contains(active) && active !== btn) return;
+        st.closeTimer = setTimeout(() => {
+          st.closeTimer = null;
+          closeDropdown(dd);
+        }, HOVER_CLOSE_DELAY);
+      });
+
+      dd.addEventListener('focusout', (e) => {
+        const next = e.relatedTarget;
+        if (next && !dd.contains(next)) closeDropdown(dd);
+      });
+
+      dd.addEventListener('keydown', (e) => {
+        const links = menuLinks(dd);
+        const idx = links.indexOf(document.activeElement);
+        let target = null;
+        if (e.key === 'ArrowDown') {
+          if (!dd.classList.contains('open')) openDropdown(dd, 'click');
+          target = links[idx < 0 ? 0 : Math.min(idx + 1, links.length - 1)];
+        } else if (e.key === 'ArrowUp' && idx >= 0) {
+          target = idx === 0 ? btn : links[idx - 1];
+        } else if (e.key === 'Home' && idx >= 0) {
+          target = links[0];
+        } else if (e.key === 'End' && idx >= 0) {
+          target = links[links.length - 1];
+        }
+        if (target) {
+          e.preventDefault();
+          try { target.focus({ preventScroll: true }); } catch { }
+        }
+      });
+
+      // Picking a destination closes the menu; the router keeps the shell.
+      dd.querySelectorAll('.dropdown-menu a[href]').forEach((link) => {
+        link.addEventListener('click', () => closeDropdown(dd));
       });
     });
 
-    // Light dismiss for dropdowns on outside click
+    // Light dismiss on outside click
     document.addEventListener('click', (e) => {
       dropdowns.forEach((dd) => {
-        if (!dd.contains(e.target)) {
-          const btn = dd.querySelector('.nav-dropdown-toggle');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
-          dd.classList.remove('open');
-        }
+        if (!dd.contains(e.target)) closeDropdown(dd);
       });
     });
 
-    // Close dropdowns on Global Escape
+    // Escape closes; focus inside the menu returns to its toggle
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        dropdowns.forEach((dd) => {
-          if (dd.classList.contains('open')) {
-            const btn = dd.querySelector('.nav-dropdown-toggle');
-            if (btn) {
-              btn.setAttribute('aria-expanded', 'false');
-              btn.focus({ preventScroll: true });
-            }
-            dd.classList.remove('open');
-          }
-        });
-      }
+      if (e.key === 'Escape') closeAllDropdowns();
     });
+
+    // Another popover (the sound panel) opened: step aside
+    window.addEventListener('nav:popover-open', (e) => {
+      if (!e.detail || e.detail.source !== 'nav') closeAllDropdowns();
+    });
+
+    // 2.1 Current page: aria-current on every nav link, and the gooey pill
+    // relocks onto the new page after a router swap.
+    const normalizePath = (href) => {
+      try {
+        let path = new URL(href, window.location.href).pathname;
+        path = path.replace(/index\.html$/, '').replace(/\.html$/, '');
+        if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1);
+        return path || '/';
+      } catch {
+        return href;
+      }
+    };
+    const syncCurrentPage = () => {
+      const current = normalizePath(window.location.href);
+      nav.querySelectorAll('a[href^="/"]').forEach((a) => {
+        if (normalizePath(a.getAttribute('href')) === current && a.id !== 'glassNavBrand') {
+          a.setAttribute('aria-current', 'page');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    };
+    syncCurrentPage();
+
+    window.addEventListener('page:ready', () => {
+      closeAllDropdowns();
+      syncCurrentPage();
+      if (window.relockGooeyNav) window.relockGooeyNav();
+    });
+    window.addEventListener('popstate', () => closeAllDropdowns());
 
     // 2.5 Gooey hover/active nav effect (desktop & mobile rails)
     loadGooeyEffect();

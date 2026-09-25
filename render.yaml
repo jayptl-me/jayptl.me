@@ -2,13 +2,15 @@
 # Pure static site deployment served by Render's global CDN (no cold starts, no server spin-down)
 services:
   - type: web
-    name: jayptl-portfolio
+    # Must match the live service name on the host dashboard so sync adopts it.
+    name: jayptl.me
     runtime: static
+    branch: main
+    autoDeployTrigger: commit
     # Build, minify, validate, then run the test suite against the minified output.
     # --frozen-lockfile installs exactly what the lockfile pins.
     buildCommand: bun install --frozen-lockfile && bun run test:deploy
     staticPublishPath: ./dist
-    pullRequestPreviewsEnabled: true
 
     headers:
       # Security headers: keep in sync with scripts/security-headers.js
@@ -100,19 +102,6 @@ services:
       - type: rewrite
         source: /projects/vini-tini
         destination: /projects/vini-tini/index.html
-      # Direct markdown file access
-      - type: rewrite
-        source: /about.md
-        destination: /about.md
-      - type: rewrite
-        source: /resume.md
-        destination: /resume.md
-      - type: rewrite
-        source: /privacy.md
-        destination: /privacy.md
-      - type: rewrite
-        source: /projects.md
-        destination: /projects.md
       # Legacy .html 301 redirects to clean URLs
       - type: redirect
         source: /about.html

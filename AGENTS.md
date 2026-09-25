@@ -12,6 +12,7 @@ Project-level brain. Global laws live in Hermes memory; only jayptl.me facts bel
 - Dark theme = glassmorphism TURQUOISE ramp (#00b8cc). NEVER blue in dark mode.
 - Zero emojis in deliverables.
 - Zero em dashes in deliverables. Use commas, colons, or periods instead.
+- No AI co-authors. Commits and PRs never carry `Co-authored-by` trailers for Claude or any other AI tool. Add a `Co-authored-by` trailer only for a real person who actually co-wrote the change.
 
 ## Theme Taste & Aesthetics Specification
 

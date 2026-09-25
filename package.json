@@ -17,7 +17,7 @@
     "test:deploy": "bun run deploy:prepare && node --test tests/*.test.mjs"
   },
   "devDependencies": {
-    "cssnano": "^7",
+    "cssnano": "^9",
     "html-minifier-terser": "^7.2.0",
     "postcss": "^8.5.28",
     "terser": "^5.51.2"

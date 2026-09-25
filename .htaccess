@@ -23,23 +23,16 @@
 
 # Security headers
 <IfModule mod_headers.c>
-    # X-Frame-Options
-    Header set X-Frame-Options "DENY"
-    
-    # X-Content-Type-Options
-    Header set X-Content-Type-Options "nosniff"
-    
-    # X-XSS-Protection
-    Header set X-XSS-Protection "1; mode=block"
-    
-    # Referrer-Policy
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # Permissions-Policy
-    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-    
-    # Strict-Transport-Security (HSTS)
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Keep in sync with scripts/security-headers.js
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "0"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "accelerometer=(), browsing-topics=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-site"
 </IfModule>
 
 # Compression

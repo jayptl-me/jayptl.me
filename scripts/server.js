@@ -66,14 +66,10 @@ const CACHE_CONTROL = [
   { prefix: '/sitemap.xml', value: 'public, max-age=3600' }
 ];
 
-// Security headers, matching the previous static-host configuration (_headers / render.yaml)
-const SECURITY_HEADERS = {
-  'X-Frame-Options': 'DENY',
-  'X-Content-Type-Options': 'nosniff',
-  'X-XSS-Protection': '1; mode=block',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
-};
+// Security headers shared with the build and render.yaml. HSTS is split out
+// and only sent on HTTPS requests (see the request handler).
+const { SECURITY_HEADERS: SHARED_SECURITY_HEADERS } = require('./security-headers');
+const { 'Strict-Transport-Security': HSTS, ...SECURITY_HEADERS } = SHARED_SECURITY_HEADERS;
 
 // Route mappings (clean URLs)
 const ROUTES = {
@@ -514,7 +510,7 @@ function createApp(options = {}) {
     // HSTS only makes sense over TLS; Render terminates TLS in front of us.
     // Set before any writeHead so it lands on every response.
     if (isHttps(req)) {
-      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+      res.setHeader('Strict-Transport-Security', HSTS);
     }
 
     // Content negotiation and JSON errors are GET/HEAD semantics; other

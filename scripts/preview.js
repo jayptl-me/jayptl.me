@@ -23,6 +23,8 @@ const colors = {
 };
 
 const PORT = process.env.PORT || 8000;
+// Loopback only by default; set HOST=0.0.0.0 to preview from another device.
+const HOST = process.env.HOST || '127.0.0.1';
 const DIST_DIR = path.join(process.cwd(), 'dist');
 
 // MIME types
@@ -52,8 +54,22 @@ const mimeTypes = {
 const server = http.createServer((req, res) => {
   // Parse URL pathname (stripping query string and hashes)
   const parsedUrl = new URL(req.url, 'http://localhost');
-  let cleanPath = decodeURIComponent(parsedUrl.pathname);
-  let filePath = path.join(DIST_DIR, cleanPath === '/' ? 'index.html' : cleanPath);
+  let cleanPath;
+  try {
+    cleanPath = decodeURIComponent(parsedUrl.pathname);
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('Bad request');
+    return;
+  }
+  let filePath = path.resolve(DIST_DIR, '.' + (cleanPath === '/' ? '/index.html' : cleanPath));
+
+  // Never serve anything outside dist/ (blocks ../ and encoded %2f traversal)
+  if (filePath !== DIST_DIR && !filePath.startsWith(DIST_DIR + path.sep)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
+    res.end('Forbidden');
+    return;
+  }
 
   // If path exists and is a directory, serve its index.html
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
@@ -97,10 +113,10 @@ const server = http.createServer((req, res) => {
 /**
  * Start server
  */
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`\n${colors.bright}${colors.green}Preview server running${colors.reset}\n`);
   console.log(`${colors.cyan}Local:${colors.reset}            http://localhost:${PORT}`);
-  console.log(`${colors.cyan}Network:${colors.reset}          http://$(hostname):${PORT}`);
+  console.log(`${colors.cyan}Bound to:${colors.reset}         ${HOST} (set HOST=0.0.0.0 to share on your network)`);
   console.log(`\n${colors.bright}Serving files from:${colors.reset} ${DIST_DIR}`);
   console.log(`\nPress ${colors.bright}Ctrl+C${colors.reset} to stop\n`);
 });

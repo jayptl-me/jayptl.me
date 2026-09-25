@@ -2,13 +2,16 @@
 # Pure static site deployment served by Render's global CDN (no cold starts, no server spin-down)
 services:
   - type: web
-    name: jayptl-portfolio
+    # Must match the existing Render service name, or a Blueprint sync creates a second site.
+    name: jayptl.me
     runtime: static
+    branch: main
+    autoDeployTrigger: commit
     # Build, minify, validate, then run the test suite against the minified output.
     # --frozen-lockfile installs exactly what the lockfile pins.
     buildCommand: bun install --frozen-lockfile && bun run test:deploy
     staticPublishPath: ./dist
-    pullRequestPreviewsEnabled: true
+    # PR previews stay off (omitting previews.generation disables them).
 
     headers:
       # Security headers: keep in sync with scripts/security-headers.js

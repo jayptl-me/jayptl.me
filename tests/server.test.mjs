@@ -197,12 +197,13 @@ test('robots.txt is served and allows AI agents', async () => {
 
 /* ------------------------- headers and routing -------------------------- */
 
-test('security headers match the previous static-host configuration', async () => {
+test('security headers match scripts/security-headers.js', async () => {
+  const { SECURITY_HEADERS } = require('../scripts/security-headers.js');
   const res = await get('/');
-  assert.equal(res.headers.get('x-frame-options'), 'DENY');
-  assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
-  assert.equal(res.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
-  assert.equal(res.headers.get('permissions-policy'), 'geolocation=(), microphone=(), camera=()');
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    if (name === 'Strict-Transport-Security') continue; // HTTPS only, tested below
+    assert.equal(res.headers.get(name), value, name);
+  }
 });
 
 test('HSTS is set for HTTPS requests and absent for plain HTTP', async () => {

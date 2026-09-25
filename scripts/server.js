@@ -16,7 +16,7 @@
  * - RFC 9110 Accept parsing: q-values, specificity tie-breaks, and 406
  *   when no representation can satisfy the header.
  *
- * Used as the Render web service start command and for local development.
+ * Used as the production web service start command and for local development.
  */
 
 const http = require('http');
@@ -507,7 +507,7 @@ function createApp(options = {}) {
       console.log(`${new Date().toISOString()} - ${req.method} ${requestPath}`);
     }
 
-    // HSTS only makes sense over TLS; Render terminates TLS in front of us.
+    // HSTS only makes sense over TLS; edge proxy terminates TLS in front of us.
     // Set before any writeHead so it lands on every response.
     if (isHttps(req)) {
       res.setHeader('Strict-Transport-Security', HSTS);

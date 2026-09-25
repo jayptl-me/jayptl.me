@@ -504,6 +504,62 @@ async function validateFreshness() {
 }
 
 /**
+ * Validate that source comments do not contain prohibited third-party vendor names
+ * in violation of AGENTS.md rules.
+ */
+async function validateSourceComments() {
+  log.info('Validating clean source comments (no third-party vendor branding)...');
+
+  const filesToCheck = [
+    'render.yaml',
+    '_headers',
+    '.htaccess',
+    'scripts/security-headers.js',
+    'scripts/server.js',
+    'scripts/build.js',
+    'scripts/preview.js',
+    'scripts/optimize.js'
+  ];
+
+  const forbiddenPatterns = [
+    /\bRender(?:'s)?\s+(?:blueprint|CDN|global|static|web|host|dashboard|service|deployment)\b/i,
+    /#\s*Render\b/i,
+    /\b(?:Google\s+Analytics|GA4)\b/i,
+    /\bCloudflare\s+Web\s+Analytics\b/i,
+    /\bNetlify\b/i
+  ];
+
+  for (const relPath of filesToCheck) {
+    const fullPath = path.join(process.cwd(), relPath);
+    try {
+      const content = await fs.readFile(fullPath, 'utf8');
+      const lines = content.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const commentMatch = line.match(/(?:\/\/|\/\*|\*|#)(.*)$/);
+        if (commentMatch) {
+          const commentText = commentMatch[1];
+          for (const pattern of forbiddenPatterns) {
+            if (pattern.test(commentText)) {
+              config.errors.push(
+                `Forbidden vendor name in comment: ${relPath}:${i + 1} matches ${pattern}`
+              );
+              log.error(`Forbidden vendor name in ${relPath}:${i + 1}`);
+            }
+          }
+        }
+      }
+    } catch {
+      // file might not exist or be accessible
+    }
+  }
+
+  if (!config.errors.some((e) => e.includes('Forbidden vendor name'))) {
+    log.success('Source comments are clean and vendor-neutral');
+  }
+}
+
+/**
  * Main validation function
  */
 async function validate() {
@@ -522,6 +578,9 @@ async function validate() {
     
     // Run validations
     await validateFreshness();
+    console.log('');
+
+    await validateSourceComments();
     console.log('');
 
     await validateRequiredFiles();

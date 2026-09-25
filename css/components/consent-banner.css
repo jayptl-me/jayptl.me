@@ -373,7 +373,7 @@ body.nav-open .consent-settings-toggle {
     width: 100%;
     max-height: 80vh;
     overflow-y: auto;
-    animation: dialogSlideIn 0.3s var(--ease-out);
+    animation: dialogSlideIn 0.3s var(--ease-snap);
 }
 
 @keyframes dialogSlideIn {
@@ -677,6 +677,10 @@ body.nav-open .consent-settings-toggle {
     .consent-settings-toggle-icon,
     .consent-status-indicator {
         transition: none;
+    }
+
+    .consent-settings-dialog-content {
+        animation: none;
     }
 
     .consent-settings-toggle:hover .consent-settings-toggle-icon {

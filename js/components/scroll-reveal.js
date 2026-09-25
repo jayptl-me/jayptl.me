@@ -1085,11 +1085,7 @@ class ScrollRevealComponent {
         this.container.classList.remove('liquid-exit');
         this.lockBodyScroll();
 
-        // Add a subtle spring bounce when the last item becomes active
-        if (atLast && !skipBounce) {
-            item.classList.add('bounce-in');
-        } else {
-            item.classList.remove('bounce-in');
+        if (!atLast || skipBounce) {
             this.releaseArmed = false;
         }
         this.updateStepper();
@@ -1117,7 +1113,6 @@ class ScrollRevealComponent {
         setTimeout(() => {
             if (item._hideSeq !== hideSeq) return; // re-revealed since: keep it
             item.classList.remove('revealed', 'active');
-            item.classList.remove('bounce-in');
 
             // Reset styles for next reveal (split state already reset by
             // pauseItemText so the next reveal replays from hidden)

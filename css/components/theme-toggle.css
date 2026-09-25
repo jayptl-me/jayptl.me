@@ -99,8 +99,8 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 /* Animations for icon transitions */
 @media (prefers-reduced-motion: no-preference) {
     .theme-toggle svg {
-        transition: opacity var(--duration-300) var(--ease-out),
-            transform var(--duration-500) var(--ease-out);
+        transition: opacity var(--theme-x-duration) var(--theme-x-ease),
+            transform var(--theme-x-duration) var(--theme-x-ease);
     }
 
     .theme-toggle .sun-icon,
@@ -155,6 +155,10 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
     .theme-toggle .lightsaber-glow {
         transition: none !important;
         filter: none !important;
+    }
+
+    .theme-toggle svg {
+        transition: none !important;
     }
 
     /* Ensure the glow is completely hidden in reduced-motion mode */

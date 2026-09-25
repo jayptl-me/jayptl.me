@@ -124,22 +124,18 @@
   transform: translateY(24px);
 }
 
-/* Liquid-like enter when overlay re-engages */
+/* Enter when overlay re-engages */
 .text-reveal-container.liquid-enter {
-  animation: liquidEnter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: liquidEnter 420ms var(--ease-snap) both;
 }
 
 @keyframes liquidEnter {
   0% {
-    transform: translateY(14px) scaleY(0.985);
-  }
-
-  55% {
-    transform: translateY(-6px) scaleY(1.01);
+    transform: translateY(14px);
   }
 
   100% {
-    transform: translateY(0) scaleY(1);
+    transform: translateY(0);
   }
 }
 
@@ -157,27 +153,19 @@
   transition: opacity 420ms var(--ease-out);
 }
 
-/* Liquid-like exit when releasing to native scroll */
+/* Exit when releasing to native scroll */
 .text-reveal-container.released.liquid-exit {
-  animation: liquidExit 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: liquidExit 200ms var(--ease-snap) both;
   background: transparent;
 }
 
 @keyframes liquidExit {
   0% {
-    transform: translateY(0) scaleY(1);
-  }
-
-  45% {
-    transform: translateY(-10px) scaleY(0.98);
-  }
-
-  80% {
-    transform: translateY(3px) scaleY(1.008);
+    transform: translateY(0);
   }
 
   100% {
-    transform: translateY(0) scaleY(1);
+    transform: translateY(-10px);
   }
 }
 
@@ -227,29 +215,6 @@
 
 .text-reveal-item.active {
   transform: translate(-50%, -50%) scale(1.05);
-}
-
-/* Subtle jelly bounce for the last item */
-.text-reveal-item.bounce-in {
-  animation: jellyIn var(--duration-700) cubic-bezier(0.2, 0.8, 0.2, 1) 50ms both;
-}
-
-@keyframes jellyIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0.98) translateY(6px);
-  }
-
-  35% {
-    transform: translate(-50%, -50%) scale(1.04) translateY(-4px);
-  }
-
-  65% {
-    transform: translate(-50%, -50%) scale(0.997) translateY(1px);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(1) translateY(0);
-  }
 }
 
 /* Bottom scroll indicator */
@@ -459,6 +424,11 @@
     filter: none !important;
   }
 
+  .stepper-scroll-hint .scroll-hint-chevron,
+  .stepper-scroll-hint.is-final {
+    transition: none !important;
+  }
+
   /* Maintain same brand blue in reduced motion */
   .text-reveal-item.active .gradient-text {
     color: var(--primary-600, var(--primary-500));
@@ -626,13 +596,11 @@ html[data-theme="dark"] .text-reveal-container::after {
   display: inline-block;
   opacity: 0.7;
   transition: transform var(--duration-200) var(--ease-smooth), opacity var(--duration-200) var(--ease-smooth);
-  animation: chevronBob 2.4s ease-in-out infinite;
 }
 
 .stepper-scroll-hint:hover .scroll-hint-chevron {
   opacity: 1;
   transform: translateY(1.5px);
-  animation-play-state: paused;
 }
 
 /* Final Step State: "SCROLL TO KNOW" */
@@ -643,27 +611,7 @@ html[data-theme="dark"] .text-reveal-container::after {
   border: none;
   box-shadow: none;
   text-shadow: 0 0 10px rgba(var(--accent-400-rgb, 38, 201, 216), 0.4);
-  animation: finalHintPulse 2.2s ease-in-out infinite;
-}
-
-@keyframes chevronBob {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(2px);
-  }
-}
-
-@keyframes finalHintPulse {
-  0%, 100% {
-    opacity: 0.85;
-    text-shadow: 0 0 8px rgba(var(--accent-400-rgb, 38, 201, 216), 0.25);
-  }
-  50% {
-    opacity: 1;
-    text-shadow: 0 0 14px rgba(var(--accent-400-rgb, 38, 201, 216), 0.55);
-  }
+  transition: opacity var(--duration-300) var(--ease-snap), text-shadow var(--duration-300) var(--ease-snap);
 }
 
 /* Option A: Liquid Glass Island Stepper Pill */

@@ -1,5 +1,5 @@
-# Render blueprint for jayptl.me
-# Pure static site deployment served by Render's global CDN (no cold starts, no server spin-down)
+# Blueprint deployment specification for jayptl.me
+# Pure static site deployment served by global edge CDN (no cold starts, no server spin-down)
 services:
   - type: web
     # Must match the live service name on the host dashboard so sync adopts it.

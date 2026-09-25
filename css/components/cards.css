@@ -43,7 +43,7 @@ html[data-theme="light"] .card-default:active,
 html[data-theme="light"] .card-interactive.card-default:active {
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode - Glass */
@@ -65,7 +65,7 @@ html[data-theme="dark"] .card-default:active,
 html[data-theme="dark"] .card-interactive.card-default:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -95,7 +95,7 @@ html[data-theme="light"] .card-elevated:hover {
 html[data-theme="light"] .card-elevated:active {
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode */
@@ -116,7 +116,7 @@ html[data-theme="dark"] .card-elevated:hover {
 html[data-theme="dark"] .card-elevated:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================
@@ -144,7 +144,7 @@ html[data-theme="light"] .card-glass:hover {
 html[data-theme="light"] .card-glass:active {
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 html[data-theme="light"] .card-glass .card-title {
@@ -178,7 +178,7 @@ html[data-theme="dark"] .card-glass:hover {
 html[data-theme="dark"] .card-glass:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 html[data-theme="dark"] .card-glass .card-title {
@@ -259,7 +259,7 @@ html[data-theme="light"] .card-accent:hover {
 html[data-theme="light"] .card-accent:active {
     box-shadow: var(--skeu-shadow-pressed-sm);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* Dark Mode - Glass Accent */
@@ -294,7 +294,7 @@ html[data-theme="dark"] .card-accent:hover {
 html[data-theme="dark"] .card-accent:active {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
     transform: scale(var(--press-scale-soft));
-    transition: transform 0.05s var(--ease-out), box-shadow 0.05s var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
 }
 
 /* ==========================================================================

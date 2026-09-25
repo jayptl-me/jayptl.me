@@ -128,6 +128,15 @@ None currently. All violators found in the 2026-09-20 audit were fixed
 
 ## 8. Rulings log
 
+- 2026-09-25 / nav hover intent (Jay picked "Calm hover"): desktop
+  dropdowns open on mouse hover after a 150ms rest and close 300ms after
+  the pointer leaves; moving to the other dropdown while one is open
+  switches at once. Mouse only (`(hover: hover) and (pointer: fine)`),
+  touch and keyboard keep click/tap. These are intent delays, not motion:
+  the 180ms snap dropdown animation is unchanged. Menus also close on
+  outside click, Escape, focus leaving, picking a link, a router page
+  swap, or about a screen of scrolling. Only one popover (Projects, More,
+  sound panel) is open at a time. Code: `js/components/navbar.js`.
 - 2026-09-25 / known violators fixed: `css/components/forms.css` checkbox/
   radio/toggle transitions and check-bounce/radio-pop keyframes moved to
   `--ease-snap`, overshoot removed. `css/components/buttons.css` and

@@ -140,6 +140,7 @@
   }
 
   const activeRepositioners = [];
+  const activeRelockers = [];
 
   function setupRail(rail, isMobile) {
     if (!rail || rail.dataset.gooeyReady === 'true') return;
@@ -356,6 +357,17 @@
 
     activeRepositioners.push(reposition);
 
+    // After a router page swap the shell stays, so the pill must move to
+    // the new page's item instead of returning to the old one.
+    activeRelockers.push(() => {
+      cancelRestore();
+      state.shown = null;
+      items.forEach((item) => item.classList.remove('gooey-active'));
+      state.locked = resolveLockedItem(rail);
+      if (state.locked) showOn(state.locked, 'glide');
+      else showOn(null);
+    });
+
     if (typeof ResizeObserver !== 'undefined') {
       new ResizeObserver(reposition).observe(rail);
     }
@@ -388,6 +400,12 @@
   window.initGooeyNav = init;
   window.repositionGooeyNav = () => {
     activeRepositioners.forEach((fn) => {
+      try { fn(); } catch { }
+    });
+  };
+
+  window.relockGooeyNav = () => {
+    activeRelockers.forEach((fn) => {
       try { fn(); } catch { }
     });
   };

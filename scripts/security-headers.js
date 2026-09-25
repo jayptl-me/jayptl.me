@@ -34,9 +34,11 @@ const CONTENT_SECURITY_POLICY = buildCsp(CSP_DIRECTIVES);
 // frame-ancestors is ignored in <meta> CSP, so leave it out of the tag.
 const META_CONTENT_SECURITY_POLICY = buildCsp(CSP_DIRECTIVES.filter(([name]) => name !== 'frame-ancestors'));
 
+// HSTS covers jayptl.me only. No includeSubDomains: several subdomains are
+// self-hosted services that may not all serve HTTPS to browsers.
 const SECURITY_HEADERS = {
   'Content-Security-Policy': CONTENT_SECURITY_POLICY,
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Strict-Transport-Security': 'max-age=31536000',
   'X-Frame-Options': 'DENY',
   'X-Content-Type-Options': 'nosniff',
   'X-XSS-Protection': '0',

@@ -117,6 +117,13 @@ async function validateHTML() {
     { path: 'pages/about.html', name: 'about.html' },
     { path: 'pages/privacy.html', name: 'privacy.html' },
     { path: 'pages/design-system.html', name: 'design-system.html' },
+    { path: 'pages/contact.html', name: 'contact.html' },
+    { path: 'pages/book.html', name: 'book.html' },
+    { path: 'pages/now.html', name: 'now.html' },
+    { path: 'pages/uses.html', name: 'uses.html' },
+    { path: 'pages/colophon.html', name: 'colophon.html' },
+    { path: 'pages/changelog.html', name: 'changelog.html' },
+    { path: 'pages/ai.html', name: 'ai.html' },
     { path: 'pages/404.html', name: '404.html' },
     { path: 'pages/500.html', name: '500.html' }
   ];
@@ -364,7 +371,14 @@ async function validateAgentReadiness() {
     'pages/projects/aviz-health.md',
     'pages/projects/swalook.md',
     'pages/projects/genuinest.md',
-    'pages/projects/vini-tini.md'
+    'pages/projects/vini-tini.md',
+    'pages/contact.md',
+    'pages/book.md',
+    'pages/now.md',
+    'pages/uses.md',
+    'pages/colophon.md',
+    'pages/changelog.md',
+    'pages/ai.md'
   ];
   for (const md of mdCompanions) {
     if (await fileExists(path.join(config.distDir, md))) {
@@ -437,7 +451,7 @@ function printSummary() {
   }
   
   if (config.errors.length > 0) {
-    console.log(`${colors.red}${colors.bright}❌ Validation failed - please fix errors before deploying${colors.reset}\n`);
+    console.log(`${colors.red}${colors.bright}Validation failed - please fix errors before deploying${colors.reset}\n`);
     return false;
   } else if (config.warnings.length > 0) {
     console.log(`${colors.yellow}${colors.bright}Validation passed with warnings - review before deploying${colors.reset}\n`);

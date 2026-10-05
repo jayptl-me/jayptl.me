@@ -1,0 +1,116 @@
+/* ==========================================================================
+   CONTROL DOCK (js/components/control-dock.js)
+   Desktop fine pointers from 861px. Shows after one screen: 240ms snap in,
+   140ms out, no lift. Sits above the Edge Blur band.
+   ========================================================================== */
+
+.control-dock {
+  position: fixed;
+  right: clamp(16px, 2.2vw, 28px);
+  bottom: clamp(16px, 2.2vw, 28px);
+  z-index: var(--z-overlay);
+  display: none;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--sf-pill);
+  -webkit-backdrop-filter: var(--sf-panel-blur);
+  backdrop-filter: var(--sf-panel-blur);
+  border: 1px solid var(--sf-border);
+  box-shadow: var(--sf-pill-shadow);
+  color: var(--sf-text-dim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms var(--ease-snap);
+}
+
+@media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+  .control-dock {
+    display: flex;
+  }
+}
+
+.control-dock.is-shown {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 240ms var(--ease-snap);
+}
+
+.dock-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-snap),
+              color var(--duration-fast) var(--ease-snap);
+}
+
+.dock-btn:hover,
+.dock-btn:focus-visible {
+  background: var(--sf-row-hover);
+  color: var(--sf-accent);
+}
+
+.dock-btn:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 2px;
+}
+
+.dock-btn > svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dock-sound .dock-wave { display: none; }
+.dock-sound.is-on .dock-wave { display: inline; }
+.dock-sound.is-on .dock-mute { display: none; }
+.dock-sound.is-on { color: var(--sf-accent); }
+
+.dock-top > .dock-ring {
+  position: absolute;
+  inset: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  rotate: -90deg;
+}
+
+.dock-ring-track,
+.dock-ring-fill {
+  fill: none;
+  stroke-width: 2;
+}
+
+.dock-ring-track {
+  stroke: var(--sf-border);
+}
+
+.dock-ring-fill {
+  stroke: var(--sf-accent);
+  stroke-linecap: round;
+}
+
+.dock-top > .dock-arrow {
+  width: 16px;
+  height: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control-dock,
+  .control-dock.is-shown,
+  .dock-btn {
+    transition: none;
+  }
+}
+
+@media print {
+  .control-dock {
+    display: none !important;
+  }
+}

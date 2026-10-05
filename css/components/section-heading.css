@@ -1,14 +1,15 @@
 /* ==========================================================================
    SECTION HEADINGS (Gate P redesign)
-   Numbered-section spine: "01  About" style wayfinding (dossier 01 §2.2 /
-   brittanychiang v4 grammar) with a hand-drawn underline accent.
+   Numbered-section spine: "01  About" style wayfinding (dossier 01 §2.2)
+   with a hand-drawn underline accent.
    ========================================================================== */
 
 .section-head {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: baseline;
-  gap: 14px;
+  column-gap: 14px;
+  row-gap: 0;
   margin: 0 0 var(--space-6);
 }
 
@@ -36,11 +37,13 @@
 }
 
 /* Hand-drawn underline accent under the heading */
+/* Sits right under the heading like an underline (2026-09-30: a floating
+   gap here read as broken spacing). */
 .section-head .doodle {
   grid-column: 2;
   width: min(180px, 60%);
   height: 0.42em;
-  margin-top: 2px;
+  margin-top: 1px;
   color: var(--doodle-line);
   justify-self: start;
 }

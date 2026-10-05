@@ -601,6 +601,7 @@ html[data-theme="dark"] .nav-cta-btn {
 }
 
 html[data-theme="dark"] .nav-cta-btn:hover {
+    color: var(--accent-300);
     background: rgba(0, 184, 204, 0.28);
     box-shadow: 0 0 16px rgba(0, 184, 204, 0.32);
     transform: translateY(-1px);
@@ -817,6 +818,7 @@ html[data-theme="light"] .nav-cta-btn {
 }
 
 html[data-theme="light"] .nav-cta-btn:hover {
+    color: #ffffff;
     box-shadow: 0 6px 16px rgba(33, 150, 243, 0.38),
                 inset 0 1px 1px rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
@@ -1023,6 +1025,7 @@ html[data-theme="light"] .nav-toggle:hover {
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(3) { opacity: 1; transform: translateY(0); --stagger-delay: 240ms; }
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(4) { opacity: 1; transform: translateY(0); --stagger-delay: 260ms; }
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(5) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(6) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
 
 /* Grid of Cards */
 .mobile-grid {

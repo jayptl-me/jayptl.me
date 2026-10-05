@@ -1,0 +1,94 @@
+/**
+ * Ink Status (UI system round, 2026-09-30). Brief: docs/motion-zen.md
+ * section 6b. The one loading, success and error mark on the site: a
+ * hand-drawn loop whose stroke travels while waiting, then closes and
+ * draws a check or a cross. Built by js/components/ink-status.js:
+ *
+ *   <svg class="ink-status is-loading" viewBox="0 0 24 24" aria-hidden="true">
+ *     <path class="ink-loop" pathLength="1" d="..."/>
+ *     <path class="ink-check" pathLength="1" d="..."/>
+ *     <path class="ink-cross" pathLength="1" d="..."/>
+ *   </svg>
+ *
+ * States: .is-loading, .is-ok, .is-bad (none = idle, drawn loop at rest).
+ * Always paired with a polite live-region message, so colour and motion
+ * are never the only signal.
+ *
+ * @file components/ink-status.css
+ */
+
+.ink-status {
+    display: inline-block;
+    flex: none;
+    width: 20px !important;
+    height: 20px !important;
+    overflow: visible;
+    color: currentColor;
+    vertical-align: middle;
+}
+
+.ink-status path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ink-status .ink-check,
+.ink-status .ink-cross {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+}
+
+.ink-status.is-loading .ink-loop {
+    stroke-dasharray: 0.62 0.38;
+    animation: ink-status-run 1.2s linear infinite;
+}
+
+.ink-status.is-ok .ink-loop,
+.ink-status.is-bad .ink-loop {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 240ms var(--ease-snap);
+}
+
+.ink-status.is-ok .ink-check,
+.ink-status.is-bad .ink-cross {
+    opacity: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 320ms var(--ease-snap) 240ms;
+}
+
+.ink-status.is-ok {
+    color: var(--sf-ok);
+}
+
+.ink-status.is-bad {
+    color: var(--sf-bad);
+}
+
+.ink-status--lg {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+@keyframes ink-status-run {
+    to {
+        stroke-dashoffset: -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ink-status.is-loading .ink-loop {
+        animation: none;
+        stroke-dasharray: none;
+    }
+
+    .ink-status .ink-loop,
+    .ink-status .ink-check,
+    .ink-status .ink-cross {
+        transition: none !important;
+    }
+}

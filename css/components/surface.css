@@ -1,0 +1,146 @@
+/* ==========================================================================
+   SHARED SURFACE TOKENS (chrome and components added 2026-09-28)
+   One place that maps each theme's material onto neutral names, so every
+   new component reads var(--sf-*) and never repeats theme selectors.
+   Light: porcelain clay on the blue ramp. Dark: liquid glass on the
+   turquoise ramp. Values mirror the navbar island and dropdowns.
+   ========================================================================== */
+
+:root,
+html[data-theme="light"] {
+  --sf-panel: rgba(250, 252, 255, 0.97);
+  --sf-panel-blur: blur(18px);
+  --sf-border: rgba(33, 150, 243, 0.22);
+  --sf-shadow: 0 20px 40px rgba(33, 150, 243, 0.16),
+               0 4px 14px rgba(0, 0, 0, 0.06),
+               inset 0 2px 1px rgba(255, 255, 255, 0.95),
+               inset 0 -2px 1px rgba(33, 150, 243, 0.08);
+  --sf-pill: rgba(244, 248, 252, 0.94);
+  --sf-pill-shadow: 0 12px 30px -6px rgba(33, 150, 243, 0.18),
+                    0 4px 12px rgba(0, 0, 0, 0.05),
+                    inset 0 2px 1px rgba(255, 255, 255, 0.95),
+                    inset 0 -2px 1px rgba(33, 150, 243, 0.10);
+  --sf-row-hover: rgba(33, 150, 243, 0.10);
+  --sf-row-active: rgba(33, 150, 243, 0.16);
+  --sf-text: var(--neutral-900);
+  --sf-text-dim: var(--neutral-600);
+  --sf-accent: var(--primary-600);
+  --sf-accent-rgb: var(--primary-500-rgb);
+  --sf-scrim: rgba(15, 30, 50, 0.28);
+  --sf-glow: 0 0 0 transparent;
+  --sf-fog: rgba(244, 248, 252, 0.55);
+  /* Pill family depth (UI system round 2026-09-30): hover deepens the clay,
+     press flattens it into the surface. */
+  --sf-pill-shadow-hover: 0 16px 34px -6px rgba(33, 150, 243, 0.26),
+                          0 6px 14px rgba(0, 0, 0, 0.06),
+                          inset 0 2px 1px rgba(255, 255, 255, 0.95),
+                          inset 0 -2px 1px rgba(33, 150, 243, 0.12);
+  --sf-pill-shadow-press: 0 2px 6px -2px rgba(33, 150, 243, 0.22),
+                          inset 0 2px 4px rgba(33, 150, 243, 0.16);
+  --sf-ok: var(--success-700);
+  --sf-bad: var(--danger-600, #dc2626);
+  /* Live-site screenshots: untouched on clay, eased down on glass so a
+     white page never glares out of a dark card. */
+  --sf-shot-filter: none;
+  --sf-bezel: #0b1119;
+}
+
+html[data-theme="dark"] {
+  --sf-panel: rgba(10, 16, 24, 0.94);
+  --sf-panel-blur: blur(24px) saturate(160%);
+  --sf-border: rgba(0, 184, 204, 0.28);
+  --sf-shadow: 0 20px 44px rgba(0, 0, 0, 0.75),
+               inset 0 1px 0 rgba(255, 255, 255, 0.14),
+               0 0 24px rgba(0, 184, 204, 0.15);
+  --sf-pill: linear-gradient(135deg, rgba(14, 22, 33, 0.78), rgba(8, 13, 20, 0.88));
+  --sf-pill-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.65),
+                    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+                    inset 0 -1px 1px 0 rgba(0, 184, 204, 0.2),
+                    0 0 20px -2px rgba(0, 184, 204, 0.12);
+  --sf-row-hover: rgba(0, 184, 204, 0.12);
+  --sf-row-active: rgba(0, 184, 204, 0.18);
+  --sf-text: var(--neutral-100);
+  --sf-text-dim: var(--neutral-400);
+  --sf-accent: var(--accent-300);
+  --sf-accent-rgb: var(--accent-500-rgb);
+  --sf-scrim: rgba(2, 6, 10, 0.55);
+  --sf-glow: 0 0 16px rgba(0, 184, 204, 0.32);
+  --sf-fog: rgba(8, 13, 20, 0.45);
+  --sf-pill-shadow-hover: 0 18px 38px -8px rgba(0, 0, 0, 0.7),
+                          inset 0 1px 1px 0 rgba(255, 255, 255, 0.28),
+                          inset 0 -1px 1px 0 rgba(0, 184, 204, 0.26),
+                          0 0 26px -2px rgba(0, 184, 204, 0.26);
+  --sf-pill-shadow-press: inset 0 2px 6px rgba(0, 0, 0, 0.5),
+                          0 0 12px -4px rgba(0, 184, 204, 0.22);
+  --sf-ok: var(--success-400);
+  --sf-bad: #ff8a80;
+  --sf-shot-filter: brightness(0.86) saturate(0.94);
+  --sf-bezel: #05080d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sf-panel: rgba(10, 16, 24, 0.94);
+    --sf-panel-blur: blur(24px) saturate(160%);
+    --sf-border: rgba(0, 184, 204, 0.28);
+    --sf-shadow: 0 20px 44px rgba(0, 0, 0, 0.75),
+                 inset 0 1px 0 rgba(255, 255, 255, 0.14),
+                 0 0 24px rgba(0, 184, 204, 0.15);
+    --sf-pill: linear-gradient(135deg, rgba(14, 22, 33, 0.78), rgba(8, 13, 20, 0.88));
+    --sf-pill-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.65),
+                      inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+                      inset 0 -1px 1px 0 rgba(0, 184, 204, 0.2),
+                      0 0 20px -2px rgba(0, 184, 204, 0.12);
+    --sf-row-hover: rgba(0, 184, 204, 0.12);
+    --sf-row-active: rgba(0, 184, 204, 0.18);
+    --sf-text: var(--neutral-100);
+    --sf-text-dim: var(--neutral-400);
+    --sf-accent: var(--accent-300);
+    --sf-accent-rgb: var(--accent-500-rgb);
+    --sf-scrim: rgba(2, 6, 10, 0.55);
+    --sf-glow: 0 0 16px rgba(0, 184, 204, 0.32);
+    --sf-fog: rgba(8, 13, 20, 0.45);
+  --sf-pill-shadow-hover: 0 18px 38px -8px rgba(0, 0, 0, 0.7),
+                          inset 0 1px 1px 0 rgba(255, 255, 255, 0.28),
+                          inset 0 -1px 1px 0 rgba(0, 184, 204, 0.26),
+                          0 0 26px -2px rgba(0, 184, 204, 0.26);
+  --sf-pill-shadow-press: inset 0 2px 6px rgba(0, 0, 0, 0.5),
+                          0 0 12px -4px rgba(0, 184, 204, 0.22);
+  --sf-ok: var(--success-400);
+  --sf-bad: #ff8a80;
+  --sf-shot-filter: brightness(0.86) saturate(0.94);
+  --sf-bezel: #05080d;
+  }
+}
+
+/* Keyboard hint caps used by the Command Deck, dock and hints. */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 1.6em;
+  padding: 1px 6px;
+  border: 1px solid var(--sf-border);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  color: var(--sf-text-dim);
+  background: transparent;
+}
+
+/* ==========================================================================
+   CARD FAMILY SURFACE (UI system round 2026-09-30)
+   One card material for every content card: clay on the blue ramp in light,
+   glass on the turquoise ramp in dark, 20px corners. Components add their
+   own layout and states on top (case-card, role cards, Beyond cards).
+   ========================================================================== */
+.sf-card {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--sf-border);
+  border-radius: 20px;
+  background: var(--sf-pill);
+  box-shadow: var(--sf-pill-shadow);
+}

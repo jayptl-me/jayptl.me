@@ -1,0 +1,395 @@
+/* ==========================================================================
+   SLASH PAGES: /contact, /book, /now, /uses, /colophon, /changelog, /ai
+   Layout comes from about.css (.about-page, .page-hero, .section-head);
+   this file adds the shared bits and the /book picker. Native scroll,
+   no motion of their own (docs/motion-zen.md section 6a).
+   ========================================================================== */
+
+/* Section spacing comes from about.css (.about-page > section), the same
+   rhythm as About and Resume; no extra top margin here. */
+
+.slash-page .page-hero .talk-chip {
+    margin-top: var(--space-5);
+}
+
+.slash-note {
+    margin: var(--space-5) 0 0;
+    color: var(--ink-hand);
+}
+
+.slash-note .ink--loop-arrow {
+    color: var(--doodle-line);
+    vertical-align: -0.6em;
+    rotate: 18deg;
+}
+
+.slash-updated {
+    margin: var(--space-4) 0 0;
+    font-size: 0.8125rem;
+    color: var(--theme-text-tertiary);
+}
+
+.slash-more {
+    margin: var(--space-4) 0 0;
+    font-size: 0.8125rem;
+}
+
+.slash-facts {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+}
+
+.slash-facts > div {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px dashed var(--sf-border);
+}
+
+.slash-facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sf-accent);
+    padding-top: 0.2em;
+}
+
+.slash-facts dd {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.slash-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    max-width: 70ch;
+    line-height: 1.6;
+}
+
+.slash-list .ink--check {
+    color: var(--doodle-line);
+    margin-right: 4px;
+}
+
+.slash-page .commit-field,
+.slash-page .skill-lanes,
+.slash-page .rack,
+.slash-page .change-feed {
+    margin-top: var(--space-4);
+}
+
+@media (max-width: 599.98px) {
+    .slash-facts > div {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+}
+
+/* ---- /book ----------------------------------------------------------- */
+.book {
+    max-width: 760px;
+}
+
+.book-off {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--sf-border);
+    border-radius: 18px;
+    background: var(--sf-pill);
+    box-shadow: var(--sf-pill-shadow);
+}
+
+.book-off-lead {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.slot-field {
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.slot-field legend {
+    margin-bottom: var(--space-3);
+}
+
+/* Days: phones swipe one row sideways (snapping per day); tablet and up
+   show the two weeks as two rows of seven. Times: a grid of thumb-sized
+   pills. */
+.slot-days {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(-1 * var(--page-gutter, 16px));
+    padding: 2px var(--page-gutter, 16px) 6px;
+}
+
+.slot-days::-webkit-scrollbar {
+    display: none;
+}
+
+.slot-days .day-pill {
+    scroll-snap-align: start;
+    flex: none;
+}
+
+@media (min-width: 600px) {
+    .slot-days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        overflow: visible;
+        margin-inline: 0;
+        padding: 0;
+    }
+
+    .slot-days .day-pill {
+        min-width: 0;
+    }
+}
+
+.slot-times {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 8px;
+}
+
+.slot-days input,
+.slot-times input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+.day-pill,
+.slot-pill {
+    --pick-h: 48px;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 2px;
+    min-height: var(--pick-h);
+    padding: 8px 12px;
+    border: 1px solid var(--sf-border);
+    border-radius: 14px;
+    background: var(--sf-pill);
+    color: var(--sf-text);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        background-color 180ms var(--ease-snap),
+        border-color 180ms var(--ease-snap),
+        transform 200ms var(--ease-snap);
+}
+
+@media (min-width: 600px) {
+    .day-pill,
+    .slot-pill {
+        --pick-h: 44px;
+    }
+}
+
+.day-pill {
+    min-width: 64px;
+}
+
+.day-name,
+.day-count,
+.slot-ist {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--sf-text-dim);
+}
+
+.day-date {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.slot-local {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .day-pill:hover,
+    .slot-pill:hover {
+        background: var(--sf-row-hover);
+    }
+}
+
+.day-pill:active,
+.slot-pill:active {
+    transform: scale(0.97);
+    transition-duration: 140ms;
+}
+
+input:checked + .day-pill,
+input:checked + .slot-pill {
+    border-color: var(--sf-accent);
+    background: var(--sf-row-active);
+}
+
+input:focus-visible + .day-pill,
+input:focus-visible + .slot-pill {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 2px;
+}
+
+input:disabled + .day-pill {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.slot-tz {
+    margin: 0 0 var(--space-3);
+    font-size: 0.8125rem;
+    color: var(--sf-text-dim);
+}
+
+.slot-empty {
+    margin: 0;
+    color: var(--sf-text-dim);
+}
+
+.book-form {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--sf-border);
+    border-radius: 18px;
+    background: var(--sf-pill);
+}
+
+.book-form .hud-label,
+.book-picked {
+    margin: 0;
+}
+
+.book-picked {
+    color: var(--sf-accent);
+}
+
+.book-label {
+    display: grid;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.book-label input,
+.book-label textarea {
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid var(--sf-border);
+    border-radius: 10px;
+    background: var(--theme-bg);
+    color: var(--sf-text);
+    font: inherit;
+}
+
+.book-label input:focus-visible,
+.book-label textarea:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 1px;
+}
+
+/* Error state: the field the message is about. */
+.book-label input[aria-invalid="true"] {
+    border-color: var(--sf-bad);
+}
+
+.book-label input[aria-invalid="true"]:focus-visible {
+    outline-color: var(--sf-bad);
+}
+
+@media (min-width: 600px) {
+    .book-label input {
+        min-height: 44px;
+    }
+}
+
+.book-optional {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--sf-text-dim);
+}
+
+/* Honeypot: off screen, never shown, never focused */
+.book-trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.book-form button[type="submit"] {
+    justify-self: start;
+}
+
+.book-fine {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--sf-text-dim);
+}
+
+.book-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    color: var(--sf-accent);
+}
+
+.book-done,
+.book-cancel {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid var(--sf-accent);
+    border-radius: 18px;
+    background: var(--sf-pill);
+}
+
+/* Every booking panel sets its own display, which beats the hidden
+   attribute, so each one needs its hidden state spelled out. */
+.book-off[hidden],
+.book-form[hidden],
+.book-done[hidden],
+.book-cancel[hidden] {
+    display: none;
+}
+
+.book-done p,
+.book-cancel p {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .day-pill,
+    .slot-pill {
+        transition: none;
+    }
+
+    .day-pill:active,
+    .slot-pill:active {
+        transform: none;
+    }
+}

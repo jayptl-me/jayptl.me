@@ -1,0 +1,213 @@
+/* ==========================================================================
+   ROLE LEDGER (js/components/role-ledger.js)
+   Experience rows on <details>. Open: space at once, then a 240ms snap
+   clip reveal with 30ms line steps. Close: 140ms fade, together.
+   ========================================================================== */
+
+.role-ledger {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.role {
+  border: 1px solid var(--sf-border);
+  border-radius: 16px;
+  background: var(--sf-pill);
+  box-shadow: var(--sf-pill-shadow);
+  color: var(--sf-text);
+}
+
+.role-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 4px 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: 16px;
+}
+
+.role-head::-webkit-details-marker {
+  display: none;
+}
+
+.role-head:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 2px;
+}
+
+/* Row states (UI system round 2026-09-30): hover on fine pointers, a
+   pressed dip while held, both on the snap curve. */
+.role-head {
+  transition: background-color 180ms var(--ease-snap), transform 180ms var(--ease-snap);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .role-head:hover {
+    background: var(--sf-row-hover);
+  }
+}
+
+.role-head:active {
+  background: var(--sf-row-active);
+  transform: scale(0.995);
+  transition-duration: 140ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-head,
+  .role-head:active {
+    transition: none;
+    transform: none;
+  }
+}
+
+.role-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--sf-border);
+  background: var(--sf-row-hover);
+  color: var(--sf-accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  grid-row: span 2;
+}
+
+.role-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.role-position {
+  font-weight: 500;
+  color: var(--sf-text-dim);
+}
+
+.role-when {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-text-dim);
+  white-space: nowrap;
+}
+
+.role-outcome {
+  grid-column: 2 / 4;
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--sf-text-dim);
+  line-height: 1.5;
+}
+
+.role-chevron {
+  width: 16px !important;
+  height: 16px !important;
+  grid-row: span 2;
+  color: var(--sf-text-dim);
+  transition: transform 180ms var(--ease-snap);
+}
+
+.role[open] .role-chevron {
+  transform: rotate(180deg);
+}
+
+.role-body {
+  padding: 0 16px 16px 68px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.role-body > ul {
+  margin: 0 0 10px;
+  padding-left: 1.1em;
+}
+
+.role-body > ul > li + li {
+  margin-top: 6px;
+}
+
+.role-body > p {
+  margin: 0 0 10px;
+}
+
+.role-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Reveal: clip the body open, lines follow 30ms apart. */
+.role.is-revealing .role-body {
+  animation: role-clip 240ms var(--ease-snap) both;
+}
+
+.role.is-revealing .role-body > *,
+.role.is-revealing .role-body > ul > li {
+  animation: role-line 180ms var(--ease-snap) both;
+  animation-delay: calc(var(--line, 0) * 30ms + 40ms);
+}
+
+.role.is-closing .role-body {
+  opacity: 0;
+  transition: opacity 140ms var(--ease-snap);
+}
+
+@keyframes role-clip {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes role-line {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .role-head {
+    grid-template-columns: auto 1fr auto;
+  }
+  .role-when {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .role-outcome {
+    grid-column: 1 / -1;
+  }
+  .role-body {
+    padding-left: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-chevron {
+    transition: none;
+  }
+  .role.is-revealing .role-body,
+  .role.is-revealing .role-body > *,
+  .role.is-revealing .role-body > ul > li {
+    animation: none;
+  }
+}
+
+@media print {
+  .role {
+    box-shadow: none;
+    background: none;
+  }
+  .role-chevron {
+    display: none;
+  }
+}

@@ -1,0 +1,265 @@
+/* ==========================================================================
+   PLAYFUL SET: Ink Spark, Sticker Peel, Lab Folder, Change Feed
+   Briefs: docs/motion-zen.md section 6a. Transform and opacity only.
+   ========================================================================== */
+
+/* ---- Ink Spark: strokes draw out 240ms, fade 140ms together ---------- */
+.ink-spark {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  width: 64px !important;
+  height: 64px !important;
+  margin: -32px 0 0 -32px;
+  pointer-events: none;
+  overflow: visible;
+  color: var(--doodle-line);
+  animation: ink-spark-fade 140ms var(--ease-snap) 260ms both;
+}
+
+.ink-spark path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ink-spark-draw 240ms var(--ease-snap) both;
+}
+
+@keyframes ink-spark-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes ink-spark-fade {
+  to { opacity: 0; }
+}
+
+/* ---- Sticker Peel -------------------------------------------------- */
+.sticker--peel {
+  position: relative;
+  cursor: grab;
+  translate: var(--sx, 0px) var(--sy, 0px);
+  transition: translate 240ms var(--ease-snap), rotate 240ms var(--ease-snap);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sticker--peel.is-dragging {
+  cursor: grabbing;
+  z-index: 2;
+  transition: rotate 120ms var(--ease-snap);
+}
+
+.sticker--peel.is-held {
+  z-index: 2;
+  outline: 2px dashed var(--sf-accent);
+  outline-offset: 4px;
+}
+
+.sticker--peel:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 4px;
+}
+
+/* The lifted corner: a folded triangle that scales in from the corner. */
+.sticker--peel::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 0 14px 0 6px;
+  background: linear-gradient(225deg, transparent 50%, var(--sf-row-active) 50%);
+  box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.08);
+  transform: scale(0);
+  transform-origin: top right;
+  transition: transform 180ms var(--ease-snap);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sticker--peel:hover::after,
+  .sticker--peel.is-dragging::after {
+    transform: scale(1);
+  }
+}
+
+/* ---- Lab Folder ---------------------------------------------------- */
+.lab-folder {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.lab-folder-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-card {
+  width: min(240px, 80vw);
+}
+
+.lab-folder.is-enhanced .lab-folder-cards {
+  order: -1;
+}
+
+.lab-folder.is-enhanced .lab-card {
+  opacity: 0;
+  transform: translateY(28px) rotate(0deg) scale(0.9);
+  transition: opacity 240ms var(--ease-snap) calc(var(--i, 0) * 60ms),
+              transform 240ms var(--ease-snap) calc(var(--i, 0) * 60ms);
+}
+
+.lab-folder.is-open .lab-card {
+  opacity: 1;
+  transform: translateY(0) rotate(var(--fan, 0deg)) scale(1);
+}
+
+.lab-folder.is-closing .lab-card {
+  opacity: 0;
+  transform: translateY(0) rotate(var(--fan, 0deg)) scale(1);
+  transition: opacity 140ms var(--ease-snap);
+}
+
+.lab-folder-tab {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 200px;
+  padding: 26px 16px 16px;
+  border: 1px solid var(--sf-border);
+  border-radius: 6px 18px 18px 18px;
+  background: var(--sf-pill);
+  box-shadow: var(--sf-pill-shadow);
+  color: var(--sf-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* The folder's tab ear */
+.lab-folder-tab::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -1px;
+  width: 78px;
+  height: 14px;
+  border: 1px solid var(--sf-border);
+  border-bottom: 0;
+  border-radius: 8px 12px 0 0;
+  background: var(--sf-pill);
+}
+
+/* The flap lifts when open */
+.lab-folder-tab::after {
+  content: "";
+  position: absolute;
+  inset: 8px 8px auto;
+  height: 10px;
+  border-radius: 4px;
+  background: var(--sf-row-active);
+  transform-origin: bottom;
+  transition: transform 240ms var(--ease-snap);
+}
+
+.lab-folder.is-open .lab-folder-tab::after {
+  transform: scaleY(1.8) translateY(-3px);
+}
+
+.lab-folder-tab:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 3px;
+}
+
+.lab-folder-label {
+  font-family: var(--font-hand);
+  font-size: 1.125rem;
+  color: var(--ink-hand);
+}
+
+.lab-folder-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--sf-text-dim);
+}
+
+/* ---- Change Feed --------------------------------------------------- */
+.change-feed {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.change-feed > li {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: 4px 18px;
+  align-items: baseline;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed var(--sf-border);
+}
+
+.change-feed > li:last-child {
+  border-bottom: 0;
+}
+
+.change-feed time {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-accent);
+}
+
+.change-feed > li > :not(time):not(.feed-new) {
+  grid-column: 2;
+  margin: 0;
+}
+
+.feed-new {
+  grid-column: 1;
+  font-size: 1rem;
+  color: var(--sf-accent);
+  rotate: -4deg;
+  justify-self: start;
+}
+
+.change-feed.is-waiting > li {
+  opacity: 0;
+}
+
+.change-feed.is-in > li {
+  opacity: 1;
+  transition: opacity 180ms var(--ease-snap) calc(min(var(--row, 0) * 30ms, 240ms) + 40ms);
+}
+
+@media (max-width: 640px) {
+  .change-feed > li {
+    grid-template-columns: 1fr;
+  }
+  .change-feed > li > :not(time):not(.feed-new) {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-spark { display: none; }
+  .sticker--peel,
+  .sticker--peel.is-dragging,
+  .sticker--peel::after,
+  .lab-folder.is-enhanced .lab-card,
+  .lab-folder.is-closing .lab-card,
+  .lab-folder-tab::after,
+  .change-feed.is-in > li {
+    transition: none;
+  }
+}

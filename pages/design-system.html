@@ -122,6 +122,28 @@
             margin: 0;
             line-height: 1.6;
         }
+        .ds-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .ds-row--ink {
+            color: var(--sf-accent);
+            gap: 18px;
+        }
+
+        .ds-card-sample {
+            margin: 10px 0;
+            padding: 16px;
+        }
+
+        .ds-card-sample p {
+            margin: 0;
+        }
+
         .ds-tile .token {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -206,6 +228,16 @@
             color: var(--theme-text-tertiary);
         }
 
+        /* Ink mark demo */
+        .ink-demo {
+            display: grid;
+            gap: var(--space-4);
+            font-size: 1.0625rem;
+        }
+        .ink-demo p {
+            margin: 0;
+        }
+
         /* Live sticker row */
         .sticker-row {
             display: flex;
@@ -252,6 +284,18 @@
             <symbol id="d-tape" viewBox="0 0 96 24"><title>Hand-drawn washi tape</title><path d="M8 22 L88 22 C 90 16 90 8 88 2 L8 2 C 6 8 6 16 8 22 Z M12 4 L84 4 M12 20 L84 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.7" pathLength="1"/></symbol>
             <symbol id="d-scissors" viewBox="0 0 96 24"><title>Hand-drawn scissors cut line</title><circle cx="18" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><circle cx="18" cy="17" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><path d="M22 12 L44 12 M46 6 L44 12 L46 18 M46 6 c 10 0 20 0 30 6 M46 18 c 10 0 20 0 30 -6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
             <symbol id="d-asterisk" viewBox="0 0 24 24"><title>Hand-drawn asterisk</title><path d="M12 3 L12 21 M4 7 L20 17 M20 7 L4 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-squiggle" viewBox="0 0 120 12"><title>Hand-drawn squiggle</title><path d="M3 7 C9 2 13 2 17 6 S25 11 30 6 S38 1 43 6 S51 11 56 6 S64 2 69 6 S77 10 82 6 S90 2 95 6 S103 10 108 6 S114 3 117 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-marker" viewBox="0 0 120 24"><title>Hand-drawn marker swipe</title><path d="M6 15 C30 12 62 14 88 11 C100 10 108 10 114 10" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-scribble-out" viewBox="0 0 120 24"><title>Hand-drawn scribble out</title><path d="M3 13 C12 6 18 18 26 11 C34 4 40 18 49 11 C58 4 64 18 73 11 C82 4 88 18 97 11 C104 6 110 14 117 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-loop-arrow" viewBox="0 0 72 40"><title>Hand-drawn loop arrow</title><path d="M4 30 C14 30 22 26 26 18 C30 10 24 4 19 8 C14 12 20 22 32 24 C44 26 54 22 64 17 M56 12 L64 17 L57 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-heart" viewBox="0 0 24 22"><title>Hand-drawn heart</title><path d="M12 20 C6 15 2 11 2.8 7 C3.6 3.4 8 2.4 10.4 5.2 C11.2 6.1 11.7 7 12 7.8 C12.6 6 14 3.8 16.6 3.4 C20 3 22 6 21.2 9 C20.2 13 16 16.4 12.4 20.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-check" viewBox="0 0 24 24"><title>Hand-drawn check</title><path d="M4 13 C6 14.5 8 16.5 9.5 19 C12 13 15.5 8 20.5 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-box" viewBox="0 0 100 40"><title>Hand-drawn box</title><path d="M5 6 C35 4 68 5 95 5 C96 15 96 26 95 35 C66 36 34 36 6 35 C4 25 4 14 6 4 L12 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-brace" viewBox="0 0 20 100"><title>Hand-drawn curly brace</title><path d="M16 3 C9 4 8 8 8 16 L8 40 C8 46 6 49 2 50 C6 51 8 54 8 60 L8 84 C8 92 9 96 16 97" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-burst" viewBox="0 0 64 64"><title>Hand-drawn starburst</title><path d="M32 1.5 L37.6 11.1 L46.7 6.6 L46.7 17.3 L58.3 16.8 L52.8 26.4 L61.2 32 L53.9 37.9 L58.6 47.4 L47 47 L46.9 57.9 L37.8 53.6 L32 63 L26.8 51.5 L16.8 58.4 L17.4 46.6 L5.1 47.5 L12.2 37.3 L1.3 32 L11.3 26.4 L6.4 17.2 L17.8 17.8 L16.1 4.4 L26.1 9.9 L32 1.5 L37.6 11.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-zigzag" viewBox="0 0 240 12"><title>Hand-drawn zigzag rule</title><path d="M2 7 L10 3 L17 9 L25 3 L33 9 L40 4 L48 9 L56 3 L63 8 L71 3 L79 9 L86 4 L94 9 L102 3 L109 8 L117 3 L125 9 L132 4 L140 9 L148 3 L155 8 L163 3 L171 9 L178 4 L186 9 L194 3 L201 8 L209 3 L217 9 L224 4 L232 8 L238 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-here" viewBox="0 0 80 48"><title>Hand-drawn you-are-here loop</title><path d="M52 8 C40 3 18 5 10 14 C3 22 8 34 24 38 C42 42 64 38 70 28 C75 19 66 10 52 8 C44 7 36 9 32 12 M70 31 C73 36 75 40 77 45" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-margin" viewBox="0 0 64 40"><title>Hand-drawn margin note arrow</title><path d="M4 6 C16 4 30 8 38 18 C44 25 48 30 57 32 M49 27 L57 32 L50 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
         </defs>
     </svg>
     <main class="ds-page">
@@ -358,6 +402,36 @@
                 <span class="item"><svg><use href="#d-tape"/></svg><span>d-tape</span></span>
                 <span class="item"><svg><use href="#d-scissors"/></svg><span>d-scissors</span></span>
                 <span class="item"><svg><use href="#d-asterisk"/></svg><span>d-asterisk</span></span>
+                <span class="item"><svg><use href="#d-squiggle"/></svg><span>d-squiggle</span></span>
+                <span class="item"><svg><use href="#d-marker"/></svg><span>d-marker</span></span>
+                <span class="item"><svg><use href="#d-scribble-out"/></svg><span>d-scribble-out</span></span>
+                <span class="item"><svg><use href="#d-loop-arrow"/></svg><span>d-loop-arrow</span></span>
+                <span class="item"><svg><use href="#d-heart"/></svg><span>d-heart</span></span>
+                <span class="item"><svg><use href="#d-check"/></svg><span>d-check</span></span>
+                <span class="item"><svg><use href="#d-box"/></svg><span>d-box</span></span>
+                <span class="item"><svg><use href="#d-brace"/></svg><span>d-brace</span></span>
+                <span class="item"><svg><use href="#d-burst"/></svg><span>d-burst</span></span>
+                <span class="item"><svg><use href="#d-zigzag"/></svg><span>d-zigzag</span></span>
+                <span class="item"><svg><use href="#d-here"/></svg><span>d-here</span></span>
+                <span class="item"><svg><use href="#d-margin"/></svg><span>d-margin</span></span>
+            </div>
+
+            <p class="ds-subhead">Ink marks, drawn on as they scroll in</p>
+            <p class="section-lede" style="margin-bottom:var(--space-4)">Write <code>&lt;span data-ink="squiggle"&gt;words&lt;/span&gt;</code>;
+                the Ink Mark helper adds the stroke and the draw-on. An empty span renders the mark on its own.</p>
+            <div class="ink-demo">
+                <p>Full-stack engineer who <span data-ink="squiggle">ships the whole story</span>.</p>
+                <p><span data-ink="marker">32 projects</span> shipped across five lanes.</p>
+                <p>They told me to <span data-ink="scribble-out">stop playing</span> keep building.</p>
+                <p>Got fifteen minutes? <span data-ink="loop-arrow"></span> Book a call.</p>
+                <p>Made with <span data-ink="heart"></span> and no frameworks.</p>
+                <p><span data-ink="check"></span> Shipped, live on Google Play.</p>
+                <p>Cut report time with <span data-ink="box">35+ endpoints</span>.</p>
+                <p><span data-ink="burst"></span> 1st place, FinTech track, 2025.</p>
+                <p>You are on <span data-ink="here">Design System</span>.</p>
+                <p><span data-ink="margin"></span> <span class="hand hand--sm">margin note, points at the line</span></p>
+                <div data-ink="brace"><p>Patient app</p><p>Doctor app</p><p>Admin panel</p><p class="hand hand--sm">same backend</p></div>
+                <span data-ink="zigzag"></span>
             </div>
 
             <p class="ds-subhead">Highlighter band</p>
@@ -443,20 +517,74 @@
 
             <div class="ds-grid">
                 <div class="ds-tile">
-                    <h4>Buttons</h4>
-                    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0">
-                        <button class="btn btn-primary" type="button">Primary</button>
-                        <button class="btn btn-outline" type="button">Outline</button>
-                        <button class="btn btn-ghost" type="button">Ghost</button>
+                    <h4>Pill family</h4>
+                    <p>The one button on the site: filled, outline, quiet. 48px on phones, 44px on tablets, 40px from laptops up.</p>
+                    <div class="ds-row">
+                        <button class="pill-btn pill-btn--filled" type="button">Filled</button>
+                        <button class="pill-btn pill-btn--outline" type="button">Outline</button>
+                        <button class="pill-btn pill-btn--quiet" type="button">Quiet <span class="arrow arrow--right" aria-hidden="true"></span></button>
                     </div>
-                    <span class="token">.btn .btn-primary</span>
+                    <span class="token">.pill-btn · --filled · --outline · --quiet</span>
                 </div>
                 <div class="ds-tile">
-                    <h4>Press / tap</h4>
-                    <p>Default tap flash is off globally; owned <code>:active</code> states carry feedback.
-                        Light presses into skeu inset, dark into glass inset, both scale to
-                        <code>0.97–0.98</code>. Tap targets use <code>manipulation</code> for instant response.</p>
-                    <span class="token">--tap-highlight · --press-scale · :active</span>
+                    <h4>Every state</h4>
+                    <p>Hover lifts on a mouse only. Press sinks to 97%, slide off or Escape cancels. Destructive actions need a 600ms hold. Loading swaps the label for the ink loop, then a check or a cross.</p>
+                    <div class="ds-row">
+                        <button class="pill-btn pill-btn--filled" type="button" data-demo-busy="ok">Try loading</button>
+                        <button class="pill-btn pill-btn--outline" type="button" data-demo-busy="bad">Try an error</button>
+                        <button class="pill-btn pill-btn--outline" type="button" data-hold-confirm data-demo-hold>Hold to confirm</button>
+                        <button class="pill-btn pill-btn--filled" type="button" aria-disabled="true">Disabled</button>
+                    </div>
+                    <span class="token">.is-pressed · [data-hold-confirm] · [aria-busy] · .is-ok · .is-bad</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Ink Status</h4>
+                    <p>The one loading mark: a loop that travels, then settles into a check or a cross. Always paired with spoken words.</p>
+                    <div class="ds-row ds-row--ink">
+                        <span data-ink-status="is-loading ink-status--lg"></span>
+                        <span data-ink-status="is-ok ink-status--lg"></span>
+                        <span data-ink-status="is-bad ink-status--lg"></span>
+                    </div>
+                    <span class="token">InkStatus.make · set · say</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Stretch Rail</h4>
+                    <p>A choice on real radios: the highlight stretches to the pick and settles. Drag it with a mouse; phones get a chip menu.</p>
+                    <div class="ds-row" data-component="stretch-rail">
+                        <fieldset class="stretch-rail">
+                            <legend class="sr-only">Sample choice</legend>
+                            <span class="stretch-rail-thumb" aria-hidden="true"></span>
+                            <input type="radio" name="ds-rail" id="ds-rail-a" value="a" checked><label for="ds-rail-a"><span class="stretch-rail-label">All</span> <span class="stretch-rail-count">32</span></label>
+                            <input type="radio" name="ds-rail" id="ds-rail-b" value="b"><label for="ds-rail-b"><span class="stretch-rail-label">Client</span> <span class="stretch-rail-count">13</span></label>
+                            <input type="radio" name="ds-rail" id="ds-rail-c" value="c"><label for="ds-rail-c"><span class="stretch-rail-label">Personal</span> <span class="stretch-rail-count">7</span></label>
+                        </fieldset>
+                    </div>
+                    <span class="token">.stretch-rail · data-component="stretch-rail"</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Drawn icons</h4>
+                    <p>Arrows and profile marks in the stack-chip stroke; they take the text colour and nudge on hover.</p>
+                    <div class="ds-row">
+                        <span class="arrow arrow--right" aria-hidden="true"></span>
+                        <span class="arrow arrow--up-right" aria-hidden="true"></span>
+                        <span class="arrow arrow--down" aria-hidden="true"></span>
+                        <span class="line-icon line-icon--mail" aria-hidden="true"></span>
+                        <span class="line-icon line-icon--globe" aria-hidden="true"></span>
+                        <span class="line-icon line-icon--code-host" aria-hidden="true"></span>
+                        <span class="line-icon line-icon--pro-network" aria-hidden="true"></span>
+                        <span class="line-icon line-icon--model-hub" aria-hidden="true"></span>
+                    </div>
+                    <span class="token">.arrow--right · --up-right · --down · .line-icon--*</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Card surface</h4>
+                    <div class="sf-card ds-card-sample"><p>Clay on the blue ramp in light, glass on the turquoise ramp in dark, 20px corners.</p></div>
+                    <span class="token">.sf-card</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Screen tiers</h4>
+                    <p>Phone under 600, tablet 600 to 1023, laptop 1024 to 1439, wide from 1440. A test fails any other width.</p>
+                    <span class="token">599.98 · 600 · 1023.98 · 1024 · 1439.98 · 1440</span>
                 </div>
                 <div class="ds-tile">
                     <h4>Tag run</h4>
@@ -473,11 +601,95 @@
                     <span class="token">.links-row</span>
                 </div>
                 <div class="ds-tile">
+                    <h4>Talk Chip</h4>
+                    <div class="talk-chip" style="margin:10px 0">
+                        <a class="talk-chip-book pill-btn pill-btn--filled" href="/book">Book 15 min</a>
+                        <button class="talk-chip-copy pill-btn pill-btn--outline" type="button" data-copy="hello@jayptl.me">Copy email</button>
+                    </div>
+                    <span class="token">.talk-chip · [data-copy]</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Command Deck</h4>
+                    <p>Pages, sections on this page, case studies, all 32 projects and actions, one keystroke away.</p>
+                    <button class="pill-btn pill-btn--outline" type="button" data-deck-open style="margin:10px 0">Open the deck</button>
+                    <span class="token">Cmd K · Ctrl K · [data-deck-open]</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Glide Wheel</h4>
+                    <p>Desktop mouse-wheel notches ease to a stop in about a second. Trackpads, touch and keys stay
+                        native; the stepper and scroll-stack keep their own control.</p>
+                    <span class="token">window.ScrollGlide.to(el)</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Edge Blur and Control Dock</h4>
+                    <p>The bottom band softly blurs content before the edge, never animated. The dock appears after
+                        one screen on desktop: deck, sound, back to top with a progress ring.</p>
+                    <span class="token">.edge-blur · .control-dock</span>
+                </div>
+                <div class="ds-tile">
                     <h4>Hand note</h4>
                     <p class="hand hand--md" style="margin:10px 0">five lanes, one garage</p>
                     <span class="token">.hand .hand--md</span>
+                    <div class="ds-tile">
+                    <h4>Stack Chip</h4>
+                    <p style="margin:10px 0">Ships in <span data-stack="flutter">Flutter</span>, <span data-stack="nextjs">Next.js</span> and <span data-stack="bun">Bun + Hono</span>.</p>
+                    <span class="token">&lt;span data-stack="flutter"&gt;</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Ship Status Line</h4>
+                    <p class="ship-line" style="margin:10px 0"><span class="ship-pill" data-status="live">Live</span><time datetime="2025-12">Dec 2025 to now</time><span class="ship-role">Full-stack developer</span></p>
+                    <p class="ship-line" style="margin:10px 0"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><span class="ship-role">Team lead</span></p>
+                    <span class="token">.ship-line · data-status live | shipped | building | archived</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Tally Roll</h4>
+                    <p class="metric" style="margin:10px 0"><b><span data-tally="35" data-tally-suffix="+">35+</span></b><span>endpoints</span></p>
+                    <span class="token">data-tally · 800ms snap, once</span>
+                </div>
+                <div class="ds-tile" data-glow>
+                    <h4>Glow Follow</h4>
+                    <p>Move the pointer over this tile: a soft light trails it and settles in about 150ms.</p>
+                    <span class="token">data-glow</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Clay Glare and Pull Button</h4>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:10px 0">
+                        <button class="pill-btn pill-btn--filled clay-glare" type="button">Clay Glare</button>
+                        <button class="pill-btn pill-btn--outline" type="button" data-pull>Pull Button</button>
+                    </div>
+                    <span class="token">.clay-glare · data-pull (max 6px)</span>
+                </div>
+                <div class="ds-tile">
+                    <h4>Ink Spark</h4>
+                    <button class="pill-btn pill-btn--quiet" type="button" data-spark style="margin:10px 0">Click me</button>
+                    <span class="token">data-spark · draw 240ms, fade 140ms</span>
                 </div>
             </div>
+
+            <p class="ds-subhead">Role Ledger</p>
+            <div class="role-ledger" data-component="role-ledger" style="max-width:720px">
+                <details class="role">
+                    <summary class="role-head">
+                        <span class="role-mark" aria-hidden="true">JP</span>
+                        <h3 class="role-title">Example role <span class="role-position">Position</span></h3>
+                        <span class="role-when">Jan 2026 to now</span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <p class="role-outcome">One line on the outcome, always visible.</p>
+                    </summary>
+                    <div class="role-body">
+                        <ul><li>Opens with a clip reveal, lines 30ms apart.</li><li>Closes with a 140ms fade, then collapses.</li></ul>
+                    </div>
+                </details>
+            </div>
+
+            <p class="ds-subhead">Commit Field</p>
+            <figure class="commit-field" data-component="commit-field"><figcaption>GitHub contributions, last 12 months.</figcaption></figure>
+
+            <p class="ds-subhead">Change Feed</p>
+            <ol class="change-feed" data-component="change-feed" style="max-width:720px">
+                <li><time datetime="2026-09-28">Sep 28, 2026</time><p>Command Deck, Glide Wheel, Edge Blur and the new ink marks.</p></li>
+                <li><time datetime="2026-09-27">Sep 27, 2026</time><p>Seven role-cut resume PDFs.</p></li>
+            </ol>
         </section>
 
         <!-- 07 · Motion law -->
@@ -505,6 +717,23 @@
         </footer>
     </main>
 
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
     <script defer src="/js/components/pixel-swap.js"></script>
@@ -516,6 +745,27 @@
     <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/stretch-rail.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/stack-chip.js"></script>
+    <script defer src="/js/components/role-ledger.js"></script>
+    <script defer src="/js/components/tally-roll.js"></script>
+    <script defer src="/js/components/commit-field.js"></script>
+    <script defer src="/js/components/pointer-play.js"></script>
+    <script defer src="/js/components/ink-spark.js"></script>
+    <script defer src="/js/components/change-feed.js"></script>
     <script defer src="/js/components/page-actions.js"></script>
 </body>
 

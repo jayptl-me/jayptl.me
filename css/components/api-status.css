@@ -1,0 +1,77 @@
+/* ==========================================================================
+   API STATUS (js/components/api-status.js, view-counter.js)
+   Footer dot and reads, /colophon uptime strip. Static, hidden while the
+   API is off.
+   ========================================================================== */
+
+.api-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.api-dot-light {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sf-text-dim);
+}
+
+.api-dot.is-up .api-dot-light {
+  background: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+
+.api-dot.is-down .api-dot-light {
+  background: #d97706;
+}
+
+html[data-theme="dark"] .api-dot.is-up .api-dot-light {
+  background: #2dd4bf;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .api-dot.is-up .api-dot-light {
+    background: #2dd4bf;
+  }
+}
+
+.uptime-strip {
+  display: grid;
+  gap: 10px;
+  margin-top: var(--space-4);
+}
+
+.uptime-head {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--sf-text-dim);
+}
+
+.uptime-bars {
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  align-items: end;
+  gap: 3px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uptime-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: rgba(var(--sf-accent-rgb), 0.85);
+  transform: scaleY(var(--u, 1));
+  transform-origin: bottom;
+}
+
+.uptime-bar.is-dip {
+  background: #d97706;
+}
+
+.uptime-bar.is-down {
+  background: #dc2626;
+}

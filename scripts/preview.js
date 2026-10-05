@@ -33,6 +33,7 @@ const mimeTypes = {
   '.css': 'text/css',
   '.js': 'application/javascript',
   '.json': 'application/json',
+  '.pdf': 'application/pdf',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -61,6 +62,10 @@ const server = http.createServer((req, res) => {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
     res.end('Bad request');
     return;
+  }
+  // Mirror the render.yaml rewrite: stable /resumes/<track>.pdf URLs live in assets/resumes/.
+  if (/^\/resumes\/[a-z0-9-]+\.pdf$/.test(cleanPath)) {
+    cleanPath = '/assets' + cleanPath;
   }
   let filePath = path.resolve(DIST_DIR, '.' + (cleanPath === '/' ? '/index.html' : cleanPath));
 

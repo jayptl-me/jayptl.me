@@ -1,6 +1,6 @@
 # Projects, Jay Patel
 
-> 32 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch. Full-stack, mobile, and applied AI. Featured case studies below; the full hangar is on the [homepage showcase](/index.md).
+> 31 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch. Full-stack, mobile, and applied AI. Featured case studies below; the full hangar is on the [homepage showcase](/index.md).
 
 ## Featured case studies
 
@@ -33,7 +33,7 @@ Full PG/hostel management platform in a Bun + Turborepo monorepo: Next.js 16 das
 
 ### Ai-Vestor
 
-First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 teams). An AI stock-prediction platform with 100+ trained LSTM models and a gamified investment LMS, live on Render.
+First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 teams). An AI stock-prediction platform with 100+ trained LSTM models and a gamified investment LMS; the frontend runs on Render, the backend on Oracle Cloud.
 
 ## Live sites
 
@@ -48,7 +48,7 @@ First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 te
 
 ## The archive
 
-23 more projects, newest first.
+22 more projects, newest first.
 
 - **Now, Self-Hosted AI Agent Stack**: Personal AI infrastructure: Ollama local inference, Hermes Agent with persistent memory, OpenClaude coding agent, n8n workflows with MCP connectors, and Qdrant/Chroma RAG over local corpora.
 - **2026, [Tenet PG Management](https://github.com/jayptl-me/tenet_management)**: Full PG/hostel management platform: Next.js 16 dashboard with four theme modes (including cartoon brutalist, because taste), Hono backend with SSE, UPI payments, PDF invoices, QR codes, and a documented Flutter phase.
@@ -60,7 +60,6 @@ First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 te
 - **2025, The Neural Networker**: Built AI-integrated web and mobile interfaces for algorithmic execution workflows, and tuned MongoDB compound indexes that sped analytical dashboards up by 30%.
 - **2025, Product-X, Stock Prediction ML**: Time-series forecasting platform: LSTM neural networks consuming real-time Upstox market data, served through Hono with interactive React + Vite dashboards.
 - **2025, HMS, Hospital Management System**: Hospital management frontend with TanStack Query data layers, React Hook Form, and Recharts dashboards over a Zod-validated Bun + Hono backend.
-- **2025, All Socials**: Flutter mobile app with a hacker-themed UI, real-time chat system, and biometric/password protection. Because security dashboards deserve style too.
 - **2025, [NutriSnack](https://github.com/jayptl-me/nutrisnack)**: AI-powered food calorie analyzer with image analysis, auth, and a dashboard, full Radix UI component suite over a Zod-validated Hono API.
 - **2025, [EV Charging Project](https://github.com/jayptl-me/ev-charging-project)**: Full-stack EV charging-station management with a real-time interactive map and geospatial capabilities.
 - **2025, [Medicare](https://github.com/jayptl-me/medicare)**: Healthcare management system with patient registration, login, appointment booking, and schedule management on PHP + Supabase.
@@ -69,10 +68,10 @@ First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 te
 - **2025, [DriveNotes](https://github.com/jayptl-me/drivenotes)**: Secure notes app storing CRUD notes in your own Google Drive, feature-based architecture, your data stays yours.
 - **2025, Cross Suite**: The Cross ecosystem: Cross-Check-Web (TypeScript), cross-net-extension (Chrome extension), and the cross-access mobile app, one concept across web, browser, and pocket.
 - **2024, Niti Health**: Healthcare ERP with three Flutter apps (Patient, Doctor, Clinic) on an Express backend running MongoDB, MySQL, Redis, Cassandra, Apollo GraphQL, and BullMQ, all Dockerized.
-- **2024, Zchat**: Real-time chat application in Flutter with Firebase Firestore message synchronization.
 - **2023, Huselk**: Led a squad shipping an enterprise clothing e-commerce app, Firebase suite, Razorpay checkout, cached imagery, plus a companion admin panel, translating Figma/XD systems into modular Flutter components.
 - **2023, Dpizza Time**: End-to-end food ordering and management app with a companion real-time admin panel, Firebase auth, Firestore sync, push notifications, and GetIt-wired architecture.
 - **2023, Donman**: Flutter app with Provider state management built for a service-marketplace concept.
+- **2021, Zchat**: Real-time chat application in Flutter with Firebase Firestore message synchronization.
 
 ## More
 

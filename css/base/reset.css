@@ -175,8 +175,16 @@ button,
   touch-action: manipulation;
 }
 
+/* The hidden attribute always wins (2026-09-30). Components set their own
+   display (flex, grid), which silently beat the browser's hidden rule: the
+   /book fallback and the filtered project cards both stayed on screen.
+   Every component that uses hidden means "gone", so say it once here. */
+[hidden] {
+  display: none !important;
+}
+
 /* Long-press callout off for press-only controls (text stays selectable) */
-.btn,
+.pill-btn,
 .nav-toggle,
 .theme-toggle,
 .mobile-card,
@@ -211,11 +219,15 @@ html {
 }
 
 /* Ensure images and media are always responsive */
+/* Inline SVG is left out of this forced rule on purpose (2026-09-30): an
+   SVG that draws a sprite symbol has no size box of its own, so a forced
+   height: auto dropped it to the browser's 150px default and overrode every
+   component's own height (the About heading doodle gap). SVG still gets
+   max-width: 100% and height: auto above, without !important. */
 img,
 picture,
 video,
 canvas,
-svg,
 iframe,
 embed,
 object {

@@ -171,7 +171,7 @@ img.icon>.icon-mono {
    ========================================================================== */
 
 /* Icons on buttons */
-.btn .icon,
+.pill-btn .icon,
 button .icon,
 .icon-on-button {
     width: 18px;
@@ -208,7 +208,7 @@ button .icon,
    ========================================================================== */
 
 /* Colored buttons - use white monochrome icons */
-.btn-primary img.icon,
+.pill-btn--filled img.icon,
 .btn-success img.icon,
 .btn-warning img.icon,
 .btn-danger img.icon,
@@ -218,7 +218,7 @@ button .icon,
 }
 
 /* Hide gradients on colored buttons, show monochrome */
-.btn-primary .icon-gradient,
+.pill-btn--filled .icon-gradient,
 .btn-success .icon-gradient,
 .btn-warning .icon-gradient,
 .btn-danger .icon-gradient,
@@ -227,7 +227,7 @@ button .icon,
     display: none !important;
 }
 
-.btn-primary .icon-mono,
+.pill-btn--filled .icon-mono,
 .btn-success .icon-mono,
 .btn-warning .icon-mono,
 .btn-danger .icon-mono,
@@ -259,7 +259,7 @@ button .icon,
 
 /* On buttons, ensure white icons on colored backgrounds */
 button .icon-mono,
-.btn-primary .icon-mono,
+.pill-btn--filled .icon-mono,
 .btn-success .icon-mono,
 .btn-warning .icon-mono,
 .btn-danger .icon-mono,
@@ -323,7 +323,7 @@ button .icon-mono,
 }
 
 /* Button icon hover */
-.btn:hover .icon,
+.pill-btn:hover .icon,
 button:hover .icon {
     transform: scale(1.05);
 }

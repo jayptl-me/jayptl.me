@@ -57,15 +57,16 @@
     <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <main class="case-study-page">
         <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="/projects">← All projects</a>
+            <a class="pill-btn pill-btn--quiet" href="/projects"><span class="arrow arrow--left" aria-hidden="true"></span> All projects</a>
         </nav>
 
-        <header class="case-hero">
+        <header class="case-hero" data-morph-target>
             <p class="page-hero-kicker hud-label">Enterprise SaaS · In Production</p>
             <h1>Swalook CRM</h1>
             <p class="case-hero-tagline">Some CRMs are built. Swalook was rebuilt, a ground-up architectural overhaul
                 of a salon-management platform serving real merchants with real concurrent workloads, where "the
                 dashboard is slow" is a business problem, not a vibe.</p>
+            <p class="ship-line case-ship"><span class="ship-pill" data-status="live">Live</span><time datetime="2026-01">Jan 2026 to now</time><span class="ship-role">Full-stack developer</span><span class="case-reads" data-component="view-count" data-scope="page" hidden><span data-odometer></span> reads</span></p>
             <div class="badge-row">
                 <span class="tag tag-status">In Production</span>
                 <span class="tag">5 Repos → 1 Platform</span>
@@ -75,7 +76,7 @@
             </div>
         </header>
 
-        <section class="tldr-card" aria-label="Summary">
+        <section class="tldr-card sf-card" aria-label="Summary">
             <h2>The 60-second version</h2>
             <dl class="tldr-grid">
                 <div>
@@ -103,6 +104,10 @@
                     <dd>v1.90 tagged and shipping at v2.swalook.in</dd>
                 </div>
                 <div>
+                    <dt>Live site</dt>
+                    <dd><a href="https://swalook.in/" target="_blank" rel="noopener">swalook.in</a></dd>
+                </div>
+                <div>
                     <dt>Killer features</dt>
                     <dd>Recharts dashboards · ML Kit AR hair previews · multi-tenant RBAC
                         command center</dd>
@@ -110,10 +115,8 @@
             </dl>
         </section>
 
-        <figure class="case-figure">
-            <div class="showcase-image-placeholder case-hero-media">
-                <span class="showcase-placeholder-label">Swalook CRM, Product Preview</span>
-            </div>
+        <figure class="case-figure" data-tilt>
+            <img class="case-hero-media" src="/assets/case-studies/swalook-crm/hero.jpg" srcset="/assets/case-studies/swalook-crm/card-cover.jpg 720w, /assets/case-studies/swalook-crm/hero.jpg 1400w" sizes="(min-width: 1024px) 796px, calc(100vw - 48px)" width="1400" height="879" alt="Swalook CRM billing screen with demo invoices" decoding="async">
             <figcaption class="fig-caption"><b>FIG 1</b>, dashboard, booking flow, and AR preview screens.</figcaption>
         </figure>
 
@@ -181,7 +184,7 @@
 
                     <li><strong>Backend:</strong> Bun + Hono + TypeScript, migrated from MySQL to PostgreSQL on Aiven
                         with Drizzle ORM, Redis caching (ioredis) on hot reads, and BullMQ job queues for background
-                        processing. 35+ REST endpoints documented end-to-end with OpenAPI/Scalar.</li>
+                        processing. <span data-ink="box">35+ REST endpoints</span> documented end-to-end with OpenAPI/Scalar.</li>
                     <li><strong>Multi-tenancy:</strong> the super-admin console gives platform operators role-based
                         access control across tenants, onboarding, permissions, and oversight in one Next.js 16
                         command center.</li>
@@ -222,11 +225,35 @@
             </section>
         </article>
 
+        <aside class="case-talk" aria-label="Get in touch">
+            <p class="case-talk-title">Building something like this?</p>
+            <div class="talk-chip">
+                <a class="talk-chip-book pill-btn pill-btn--filled" href="/book">Book 15 min</a>
+                <button class="talk-chip-copy pill-btn pill-btn--outline" type="button" data-copy="hello@jayptl.me">Copy email</button>
+            </div>
+        </aside>
         <nav class="case-next" aria-label="More case studies">
-            <p class="hand">up next</p><a href="/projects/genuinest" class="card-link card-link-primary">Next case
-                study: Genuinest DevOps →</a>
+            <p class="hand">up next</p><a href="/projects/genuinest" class="pill-btn pill-btn--quiet">Next case
+                study: Genuinest DevOps <span class="arrow arrow--right" aria-hidden="true"></span></a>
         </nav>
     </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
@@ -239,6 +266,20 @@
     <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/pointer-play.js"></script>
 </body>
 
 </html>

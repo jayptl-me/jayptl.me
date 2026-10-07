@@ -6,7 +6,8 @@
  * - Pod 1: Identity with profile avatar & live availability status indicator
  * - Pod 2: Desktop navigation rail with rich "Projects" case-study dropdown, direct links, and "More" dropdown
  *           plus the GooeyNav hover/active pill effect (js/components/gooey-nav.js, lazy-loaded)
- * - Pod 3: Quick "Let's Talk" CTA + inline Lightsaber theme toggle + responsive Dynamic Island toggle
+ * - Pod 3: Command Deck chip, Talk Chip ("Book 15 min" + copy email), inline Lightsaber theme toggle,
+ *           responsive Dynamic Island toggle
  * - Mobile Dynamic Island Morph: Top capsule fluidly expands into an interactive mini-hub with touch-driven
  *   Gooey metaball rail, featured work, and quick resources with zero background clipping.
  *
@@ -35,7 +36,10 @@
 
     const githubHref = 'https://github.com/jayptl-me';
     const linkedinHref = 'https://www.linkedin.com/in/jayptl-rq/';
-    const emailHref = 'mailto:connect@jayptl.me';
+    const emailHref = 'mailto:hello@jayptl.me';
+    const email = 'hello@jayptl.me';
+    const bookHref = '/book';
+    const contactHref = '/contact';
     const avatarSrc = '/assets/logo-512.png';
 
     return `
@@ -54,7 +58,7 @@
               </div>
               <div class="nav-identity-copy">
                 <span class="nav-brand-name">Jay Patel</span>
-                <span class="nav-brand-role">Product Engineer</span>
+                <span class="nav-brand-role">Software Engineer</span>
               </div>
             </a>
 
@@ -99,7 +103,7 @@
                       </div>
                       <div class="dropdown-card-info">
                         <div class="dropdown-card-title">Vini-Tini</div>
-                        <div class="dropdown-card-desc">Event mixology platform</div>
+                        <div class="dropdown-card-desc">Small language models</div>
                       </div>
                     </a>
 
@@ -135,6 +139,35 @@
                   </svg>
                 </button>
                 <div class="dropdown-menu" id="moreMenu">
+                  <a href="/now" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                    <span>Now</span>
+                  </a>
+                  <a href="/uses" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+                    <span>Uses</span>
+                  </a>
+                  <a href="/ai" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
+                    <span>AI</span>
+                  </a>
+                  <a href="/colophon" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2zM8 7h6M8 11h6"/></svg>
+                    <span>Colophon</span>
+                  </a>
+                  <a href="/changelog" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+                    <span>Changelog</span>
+                  </a>
+                  <a href="/contact" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                    <span>Contact</span>
+                  </a>
+                  <a href="/book" class="dropdown-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+                    <span>Book a call</span>
+                  </a>
+                  <div class="dropdown-divider"></div>
                   <a href="${designSystemHref}" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
                     <span>Design System</span>
@@ -158,9 +191,19 @@
 
             <!-- Right Pod: Quick Actions & Controls -->
             <div class="nav-controls">
-              <a href="${emailHref}" class="nav-cta-btn" aria-label="Let's Talk - Email Jay Patel">
-                <span>Let's Talk</span>
-              </a>
+              <button class="nav-deck-chip" type="button" data-deck-open aria-haspopup="dialog" aria-expanded="false" aria-controls="commandDeck" aria-label="Open command deck">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="kbd nav-deck-keys"></span>
+              </button>
+
+              <div class="talk-chip talk-chip--nav">
+                <a href="${bookHref}" class="nav-cta-btn talk-chip-book-nav" aria-label="Book a 15 minute call with Jay">
+                  <span>Book 15 min</span>
+                </a>
+                <button class="talk-chip-copy" type="button" data-copy="${email}" aria-label="Copy email ${email}">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
 
               <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" tabindex="0">
                 <svg class="lightsaber" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 24" aria-hidden="true" focusable="false">
@@ -189,7 +232,7 @@
                 <a href="${projectsHref}" class="nav-link mobile-rail-link"><span class="nav-text">Projects</span></a>
                 <a href="${aboutHref}" class="nav-link mobile-rail-link"><span class="nav-text">About</span></a>
                 <a href="${resumeHref}" class="nav-link mobile-rail-link"><span class="nav-text">Resume</span></a>
-                <a href="${emailHref}" class="nav-link mobile-rail-link"><span class="nav-text">Contact</span></a>
+                <a href="${contactHref}" class="nav-link mobile-rail-link"><span class="nav-text">Contact</span></a>
               </nav>
             </div>
 
@@ -223,7 +266,7 @@
                   </div>
                   <div class="mobile-card-content">
                     <div class="mobile-card-title">Vini-Tini</div>
-                    <div class="mobile-card-desc">Mixology Platform</div>
+                    <div class="mobile-card-desc">Small Language Models</div>
                   </div>
                 </a>
 
@@ -239,7 +282,7 @@
               </div>
 
               <a href="${projectsHref}" class="mobile-all-projects">
-                <span>Explore All 10+ Projects</span>
+                <span>Explore all 32 projects</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
 
@@ -261,10 +304,14 @@
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                   <span>Privacy</span>
                 </a>
-                <a href="${emailHref}" class="mobile-social-pill highlight">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                  <span>Let's Talk</span>
+                <a href="${bookHref}" class="mobile-social-pill highlight">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+                  <span>Book 15 min</span>
                 </a>
+                <button type="button" class="mobile-social-pill" data-copy="${email}" aria-label="Copy email ${email}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  <span>Copy email</span>
+                </button>
               </div>
             </div>
           </div>
@@ -362,6 +409,13 @@
     const nav = document.getElementById("glassNav");
     if (!nav) return;
     insertSkipLink();
+
+    // Command Deck chip shows the platform's shortcut.
+    const deckKeys = nav.querySelector('.nav-deck-keys');
+    if (deckKeys) {
+      const mac = /mac|iphone|ipad/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '');
+      deckKeys.textContent = mac ? '\u2318K' : 'Ctrl K';
+    }
 
     // 1. Setup Dynamic Island mobile toggle
     const toggle = document.getElementById("navToggle");

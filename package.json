@@ -9,12 +9,13 @@
     "build": "bun scripts/build.js",
     "optimize": "bun scripts/optimize.js",
     "validate": "bun scripts/validate.js",
-    "deploy:prepare": "bun run build && bun run optimize && bun run validate",
+    "deploy:prepare": "bun run commits:refresh && bun run build && bun run optimize && bun run validate",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
     "deploy": "bun run deploy:prepare && bun scripts/deploy.js",
     "serve:dist": "node scripts/server.js",
-    "test": "rm -rf dist && node scripts/build.js && node --test tests/*.test.mjs",
-    "test:deploy": "bun run deploy:prepare && node --test tests/*.test.mjs"
+    "test": "rm -rf dist && node scripts/build.js && node --test tests/*.test.mjs services/api/test/*.test.mjs",
+    "test:deploy": "bun run deploy:prepare && node --test tests/*.test.mjs services/api/test/*.test.mjs",
+    "commits:refresh": "node scripts/fetch-commits.js"
   },
   "devDependencies": {
     "cssnano": "^9",

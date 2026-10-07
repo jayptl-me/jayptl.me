@@ -1,0 +1,110 @@
+/* ==========================================================================
+   POINTER PLAY (js/components/pointer-play.js) and CLAY GLARE
+   Glow Follow, Tilt Cover, Pull Button: eased follow, 240ms snap return.
+   Clay Glare: one 480ms snap sweep per hover. Transform and opacity only.
+   ========================================================================== */
+
+/* ---- Glow Follow --------------------------------------------------- */
+/* Zero specificity: a host that positions itself (the scroll-stack cards
+   are absolute) keeps its own position and overflow. */
+:where(.glow-follow) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.glow-spot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  margin: -140px 0 0 -140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--sf-accent-rgb), 0.16), rgba(var(--sf-accent-rgb), 0) 68%);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(var(--gx, 0), var(--gy, 0));
+  transition: opacity 240ms var(--ease-snap);
+}
+
+.glow-follow.is-following > .glow-spot {
+  opacity: 1;
+}
+
+/* ---- Tilt Cover ---------------------------------------------------- */
+.tilt-cover {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+}
+
+.tilt-cover.is-returning {
+  transition: transform 240ms var(--ease-snap);
+}
+
+/* ---- Pull Button --------------------------------------------------- */
+/* The pull rides the individual translate property, so it composes with
+   the pill family's own hover and press transforms instead of fighting
+   them for transform. */
+.pull-button {
+  translate: var(--pull-x, 0px) var(--pull-y, 0px);
+}
+
+.pull-button.is-returning {
+  transition: translate 240ms var(--ease-snap), transform 200ms var(--ease-snap), box-shadow 200ms var(--ease-snap);
+}
+
+/* ---- Clay Glare: a single specular sweep across a pill ------------- */
+.clay-glare {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.clay-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(255, 255, 255, 0.1) 56%,
+    transparent 70%);
+  transform: translateX(-110%);
+}
+
+html[data-theme="dark"] .clay-glare::after {
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(178, 244, 248, 0.22) 48%,
+    rgba(0, 184, 204, 0.06) 56%,
+    transparent 70%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .clay-glare::after {
+    background: linear-gradient(105deg,
+      transparent 30%,
+      rgba(178, 244, 248, 0.22) 48%,
+      rgba(0, 184, 204, 0.06) 56%,
+      transparent 70%);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clay-glare:hover::after,
+  .clay-glare:focus-visible::after {
+    transform: translateX(110%);
+    transition: transform 480ms var(--ease-snap);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-spot { display: none; }
+  .tilt-cover,
+  .pull-button { translate: none; }
+  .clay-glare::after { display: none; }
+}

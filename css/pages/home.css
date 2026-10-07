@@ -292,7 +292,14 @@
 .home-fig {
   margin: 0;
 }
+/* The frame reuses the work-card placeholder class for its mono caption
+   voice, but that class is absolute + inset: 0 for covers that sit in a
+   positioned parent. Here the figure is static, so the containing block
+   would jump to the whole section (and the 4:3 ratio would size it to
+   full-bleed width), painting the panel over the closing band and the
+   footer. Keep it in flow in its own grid column. */
 .home-fig-frame {
+  position: static;
   aspect-ratio: 4 / 3;
   border-radius: var(--rounded-xl);
   border: 1px dashed var(--theme-border-strong);
@@ -364,4 +371,132 @@
   .now-rail .metric {
     flex: 1 1 130px;
   }
+}
+
+/* Shared footer (2026-09-28): zigzag rule, sign-off and contact on the
+   left, updated date, reads and API status on the right; stacks on phones. */
+.site-footer-rule {
+  margin-bottom: var(--space-4);
+  color: var(--doodle-line);
+}
+.site-footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4) var(--space-8);
+  width: 100%;
+  text-align: left;
+}
+.site-footer-left,
+.site-footer-right {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.site-footer-right {
+  justify-items: end;
+  text-align: right;
+  font-size: 0.8125rem;
+  color: var(--theme-text-tertiary);
+}
+.site-footer-left p,
+.site-footer-right p {
+  margin: 0;
+}
+.site-footer-right a {
+  color: var(--theme-primary);
+  text-decoration: none;
+}
+.site-footer-right a:hover {
+  text-decoration: underline;
+}
+.site-footer-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0 10px;
+}
+.site-footer-status:not(:has(> :not([hidden]))) {
+  display: none;
+}
+.site-footer-status > :not([hidden]) ~ :not([hidden])::before {
+  content: "\00b7";
+  margin-right: 10px;
+}
+@media (max-width: 640px) {
+  .site-footer-grid {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .site-footer-right {
+    justify-items: center;
+    text-align: center;
+  }
+  .site-footer-status {
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   2026-09-28 build: intro chips, Experience ledger, cadence, Say hi band
+   ========================================================================== */
+.home-intro-talk {
+  margin-top: var(--space-6);
+}
+.home-socials {
+  margin: var(--space-4) 0 0;
+}
+.now-footnote a {
+  color: var(--theme-primary);
+}
+.now-rail .metric .ink--burst > .ink-svg {
+  height: 0.7em !important;
+}
+.now-rail .metric .ink--burst {
+  vertical-align: 0.1em;
+}
+#experience .role-ledger {
+  margin-top: var(--space-6);
+  max-width: 880px;
+}
+.home-more {
+  margin: var(--space-4) 0 0;
+  font-size: 0.8125rem;
+}
+.home-more a {
+  color: var(--theme-primary);
+}
+#cadence .commit-field {
+  margin-top: var(--space-6);
+}
+.home-closing-inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+.home-closing-lede {
+  max-width: 52ch;
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--theme-text-secondary);
+}
+.home-closing-note {
+  margin: var(--space-4) 0 0;
+  color: var(--ink-hand);
+}
+.home-closing-note .ink--loop-arrow {
+  color: var(--doodle-line);
+  vertical-align: -0.6em;
+  margin-left: 4px;
+  rotate: 18deg;
+}
+.home-closing-chip {
+  justify-content: center;
+}
+.work-card .ship-line {
+  margin: 6px 0 2px;
 }

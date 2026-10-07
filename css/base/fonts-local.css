@@ -76,7 +76,7 @@
   src: url('/assets/fonts/plex-mono-600.woff2') format('woff2');
 }
 
-/* Audiowide, hero reveal + preloader only (locked hero surface) */
+/* Audiowide, hero reveal only (locked hero surface) */
 @font-face {
   font-family: 'audiowide';
   font-style: normal;

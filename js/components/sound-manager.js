@@ -895,7 +895,7 @@
             try {
                 if (!window.SoundManager || !window.SoundManager.prefs.master) return;
                 var target = event.target && event.target.closest
-                    ? event.target.closest('.btn')
+                    ? event.target.closest('.btn, .pill-btn')
                     : null;
                 if (!target || target.disabled) return;
                 if (window.SoundManager.prefersReducedMotion()) return;

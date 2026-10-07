@@ -4,6 +4,8 @@
 
 *Enterprise SaaS · In production.*
 
+*Live site: [swalook.in](https://swalook.in/).*
+
 Some CRMs are built. Swalook was rebuilt, a ground-up architectural overhaul of a salon-management platform serving real merchants with real concurrent workloads, where "the dashboard is slow" is a business problem, not a vibe.
 
 ## The problem, and who felt it

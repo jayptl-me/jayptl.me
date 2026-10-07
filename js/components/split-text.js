@@ -1,7 +1,7 @@
 /**
  * SplitText, vanilla split-stagger text reveal (Gate P, S1).
- * Custom vanilla split-stagger text reveal with zero external dependencies
- * (no GSAP): splitType chars/words, per-letter delay, duration, threshold,
+ * Custom vanilla split-stagger text reveal with zero external dependencies:
+ * splitType chars/words, per-letter delay, duration, threshold,
  * rootMargin, once, and a completion signal. Runs on CSS transitions
  * (opacity/transform only) driven by an IntersectionObserver.
  *

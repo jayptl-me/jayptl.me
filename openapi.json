@@ -3,7 +3,7 @@
   "info": {
     "title": "jayptl.me",
     "version": "1.1.0",
-    "description": "Public HTTP interface of jayptl.me, the personal portfolio of Jay Patel (Software Developer, UI/UX Designer, Product Manager, Creative Director, Video Editor).\n\nThis is a content site, so the API surface consists of content pages, agent-facing resources, and a small JSON service:\n\n- Every HTML page is also available as Markdown via content negotiation: send `Accept: text/markdown` to the same URL, or fetch the `.md` companion path directly. Negotiated responses carry `Vary: Accept`.\n- Requests that cannot be satisfied (unknown API path, unsupported Accept header, wrong method) receive structured JSON errors with `error.code`, `error.message`, and `error.hint` fields.\n- `/api/health` is a liveness probe intended for monitors and deploy health checks.",
+    "description": "Public HTTP interface of jayptl.me, the personal portfolio of Jay Patel (Software Engineer: Full-Stack, Mobile and Applied AI).\n\nThis is a content site, so the API surface consists of content pages, agent-facing resources, and a small JSON service:\n\n- Every HTML page is also available as Markdown via content negotiation: send `Accept: text/markdown` to the same URL, or fetch the `.md` companion path directly. Negotiated responses carry `Vary: Accept`.\n- Requests that cannot be satisfied (unknown API path, unsupported Accept header, wrong method) receive structured JSON errors with `error.code`, `error.message`, and `error.hint` fields.\n- `/api/health` is a liveness probe intended for monitors and deploy health checks.",
     "contact": {
       "name": "Jay Patel",
       "email": "hello@jayptl.me",

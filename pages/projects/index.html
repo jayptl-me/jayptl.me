@@ -8,7 +8,7 @@
     <link rel="canonical" href="https://jayptl.me/projects" />
     <link rel="alternate" type="text/markdown" href="/projects.md" title="Markdown version of the projects page" />
     <meta name="description"
-        content="33 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch. Developer, designer, product mind." />
+        content="32 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch. Full-stack, mobile, and applied AI." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -22,7 +22,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Projects, Jay Patel" />
     <meta name="twitter:description"
-        content="33 shipped projects. One engineer who does design, product, and DevOps." />
+        content="32 shipped projects. One engineer across full-stack, mobile, applied AI, and DevOps." />
     <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
 
     <!-- Favicon -->
@@ -43,7 +43,7 @@
             "@id": "https://jayptl.me/projects#webpage",
             "url": "https://jayptl.me/projects",
             "name": "Projects, Jay Patel",
-            "description": "33 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch.",
+            "description": "32 shipped projects by Jay Patel, healthcare platforms, enterprise CRMs, self-hosted infrastructure, and AI models trained from scratch.",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://jayptl.me/#website" },
             "author": { "@id": "https://jayptl.me/#person" },
@@ -66,650 +66,603 @@
         <header class="page-hero">
             <p class="page-hero-kicker hud-label">The Hangar</p>
             <h1>Every suit I've built.</h1>
-            <p class="page-hero-lead">Thirty-three projects shipped across healthcare, commerce, fintech, and AI,
+            <p class="page-hero-lead">Thirty-two projects shipped across healthcare, commerce, fintech, and AI,
                 designed, engineered, deployed, and in most cases talked off the ledge at 2 AM. Filter by how you want
                 to know me.</p>
         </header>
 
-        <section class="case-study-callout" aria-label="Featured case studies">
-            <p class="hud-label">Start with the deep dives</p>
-            <div class="case-study-callout-links">
-                <a href="/projects/aviz-health" class="chip chip-primary">Aviz Health</a>
-                <a href="/projects/swalook" class="chip">Swalook CRM</a>
-                <a href="/projects/genuinest" class="chip">Genuinest DevOps</a>
-                <a href="/projects/vini-tini" class="chip">Vini &amp; Tini AI</a>
-            </div>
-        </section>
-
-        <div class="project-filters" role="group" aria-label="Filter projects by category">
-            <button class="filter-btn active" data-filter="all" aria-pressed="true">All <span
-                    class="filter-count">33</span></button>
-            <button class="filter-btn" data-filter="client" aria-pressed="false">Client Work <span
-                    class="filter-count">13</span></button>
-            <button class="filter-btn" data-filter="personal" aria-pressed="false">Personal <span
-                    class="filter-count">8</span></button>
-            <button class="filter-btn" data-filter="aiml" aria-pressed="false">AI / ML <span
-                    class="filter-count">3</span></button>
-            <button class="filter-btn" data-filter="opensource" aria-pressed="false">Open Source <span
-                    class="filter-count">9</span></button>
+        <div class="project-filter" data-component="stretch-rail project-filter" data-rail-target="projectWork">
+            <fieldset class="stretch-rail">
+                <legend class="sr-only">Filter projects by kind</legend>
+                <span class="stretch-rail-thumb" aria-hidden="true"></span>
+                <input type="radio" name="project-filter" id="pf-all" value="all" checked><label for="pf-all"><span class="stretch-rail-label">All</span> <span class="stretch-rail-count">32</span></label>
+                <input type="radio" name="project-filter" id="pf-client" value="client"><label for="pf-client"><span class="stretch-rail-label">Client work</span> <span class="stretch-rail-count">13</span></label>
+                <input type="radio" name="project-filter" id="pf-personal" value="personal"><label for="pf-personal"><span class="stretch-rail-label">Personal</span> <span class="stretch-rail-count">7</span></label>
+                <input type="radio" name="project-filter" id="pf-aiml" value="aiml"><label for="pf-aiml"><span class="stretch-rail-label">AI / ML</span> <span class="stretch-rail-count">3</span></label>
+                <input type="radio" name="project-filter" id="pf-opensource" value="opensource"><label for="pf-opensource"><span class="stretch-rail-label">Open source</span> <span class="stretch-rail-count">9</span></label>
+            </fieldset>
+            <p class="filter-readout hud-readout" id="filterReadout" aria-live="polite">Showing 32 of 32</p>
         </div>
 
-        <section class="project-grid" id="projectGrid" aria-label="All projects">
+        <div class="project-work" id="projectWork">
+            <section class="work-section" aria-labelledby="liveWorkHead">
+                <div class="section-head"><span class="section-no">01</span><h2 id="liveWorkHead">Live work</h2><svg class="doodle" aria-hidden="true" focusable="false"><use href="/assets/doodle-sprite.svg#d-underline"/></svg></div>
+                <p class="work-count hud-readout" data-count-for="feature-grid">9 projects</p>
+                <div class="feature-grid" id="featureGrid">
+                <article class="case-card feature-card sf-card clay-glare" id="project-aviz-health" data-category="client" data-featured="true" data-morph data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/case-studies/aviz-health/cover-desktop.jpg" srcset="/assets/case-studies/aviz-health/cover-desktop-480.jpg 480w, /assets/case-studies/aviz-health/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="eager" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/case-studies/aviz-health/cover-phone.jpg" width="300" height="649" alt="" loading="eager" decoding="async">
+                    </div>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Case study · Live on Play · v2.0</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="/projects/aviz-health">Aviz Health<span class="sr-only">, read the case study</span></a></h3><span class="feature-when"><time datetime="2025-12">Dec 2025 to now</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span class="ship-role">Full-stack developer</span></p>
+                        <p class="case-card-pitch">Digital healthcare ecosystem connecting patients, verified doctors, labs, pharmacies, and ground crews, three Flutter apps, a Next.js 16 mission-control dashboard, and zero-lag ambulance SOS dispatch. My hero project.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Next.js 16</li><li class="tag">Bun + Hono</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--filled" href="/projects/aviz-health">Case study <span class="arrow arrow--right" aria-hidden="true"></span></a> <a class="pill-btn pill-btn--outline" href="https://avizhealthcare.com/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                    </div>
+                </article>
 
-            <!-- ============ CLIENT WORK ============ -->
-            <article class="project-card" data-category="client" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Aviz Health,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Live on Play · v2.0</span>
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Next.js 16</span>
-                        <span class="tag">Bun + Hono</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-swalook-crm" data-category="client" data-featured="true" data-morph data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/case-studies/swalook-crm/cover-desktop.jpg" srcset="/assets/case-studies/swalook-crm/cover-desktop-480.jpg 480w, /assets/case-studies/swalook-crm/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="602" alt="" loading="eager" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/case-studies/swalook-crm/cover-phone.jpg" width="300" height="649" alt="" loading="eager" decoding="async">
                     </div>
-                    <h3>Aviz Health</h3>
-                    <p>Digital healthcare ecosystem connecting patients, verified doctors, labs, pharmacies, and ground
-                        crews, three Flutter apps, a Next.js 16 mission-control dashboard, and zero-lag ambulance SOS
-                        dispatch. My hero project.</p>
-                    <div class="project-card-links">
-                        <a href="/projects/aviz-health" class="card-link card-link-primary">Read the case study →</a>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Case study · In Production</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="/projects/swalook">Swalook CRM<span class="sr-only">, read the case study</span></a></h3><span class="feature-when"><time datetime="2026-01">Jan 2026 to now</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span class="ship-role">Full-stack developer</span></p>
+                        <p class="case-card-pitch">Ground-up architectural overhaul of an enterprise salon-management platform: monorepo frontend, 35+ documented REST endpoints, Redis caching, BullMQ queues, and a Flutter consumer app with ML Kit AR previews.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">Next.js 16</li><li class="tag">Turborepo</li><li class="tag">PostgreSQL</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--filled" href="/projects/swalook">Case study <span class="arrow arrow--right" aria-hidden="true"></span></a> <a class="pill-btn pill-btn--outline" href="https://swalook.in/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="project-card" data-category="client" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Swalook CRM,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">In Production</span>
-                        <span class="tag">Next.js 16</span>
-                        <span class="tag">Turborepo</span>
-                        <span class="tag">PostgreSQL</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-genuinest" data-category="client" data-featured="true" data-morph data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/case-studies/genuinest/cover-desktop.jpg" srcset="/assets/case-studies/genuinest/cover-desktop-480.jpg 480w, /assets/case-studies/genuinest/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/case-studies/genuinest/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>Swalook CRM</h3>
-                    <p>Ground-up architectural overhaul of an enterprise salon-management platform: monorepo frontend,
-                        35+ documented REST endpoints, Redis caching, BullMQ queues, and a Flutter consumer app with
-                        ML Kit AR previews.</p>
-                    <div class="project-card-links">
-                        <a href="/projects/swalook" class="card-link card-link-primary">Read the case study →</a>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Case study · Founding Engineer (Contract)</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="/projects/genuinest">Genuinest<span class="sr-only">, read the case study</span></a></h3><span class="feature-when"><time datetime="2026-01">Jan 2026 to now</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><span class="ship-role">Founding engineer (contract)</span></p>
+                        <p class="case-card-pitch">Built the core product as Founding Engineer (Contract), then migrated the whole company off expensive cloud services to self-hosted Docker, Coolify, and Traefik, with a 20TB S3-compatible storage cluster that erased the monthly bill.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter + Riverpod</li><li class="tag">Docker · Coolify</li><li class="tag">20TB MinIO</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--filled" href="/projects/genuinest">Case study <span class="arrow arrow--right" aria-hidden="true"></span></a> <a class="pill-btn pill-btn--outline" href="https://genuinest.com/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="project-card" data-category="client" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Genuinest, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Founding Engineer</span>
-                        <span class="tag">Flutter + Riverpod</span>
-                        <span class="tag">Docker · Coolify</span>
-                        <span class="tag">20TB MinIO</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-vini-tini" data-category="aiml" data-featured="true" data-morph data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/case-studies/vini-tini/cover-desktop.jpg" srcset="/assets/case-studies/vini-tini/cover-desktop-480.jpg 480w, /assets/case-studies/vini-tini/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="532" alt="" loading="lazy" decoding="async"></div>
                     </div>
-                    <h3>Genuinest</h3>
-                    <p>Built the core product as Founding Engineer, then migrated the whole company off expensive cloud
-                        services to self-hosted Docker, Coolify, and Traefik, with a 20TB S3-compatible storage
-                        cluster that erased the monthly bill.</p>
-                    <div class="project-card-links">
-                        <a href="/projects/genuinest" class="card-link card-link-primary">Read the case study →</a>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Case study · Research</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="/projects/vini-tini">Vini &amp; Tini<span class="sr-only">, read the case study</span></a></h3></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><span class="ship-role">Research</span></p>
+                        <p class="case-card-pitch">Two small language models trained from scratch: Vini, a ~50M BitNet b1.58 edge assistant whose model card and configs are public on Hugging Face; Tini, an ~85M dense TypeScript coding model, trained and evaluated, weights not public yet.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">BitNet b1.58</li><li class="tag">PyTorch</li><li class="tag">HuggingFace</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--filled" href="/projects/vini-tini">Case study <span class="arrow arrow--right" aria-hidden="true"></span></a> <a class="pill-btn pill-btn--outline" href="https://huggingface.co/jayptl-rq" target="_blank" rel="noopener">Hugging Face <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Thhiya, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Private Client</span>
-                        <span class="tag">React 19</span>
-                        <span class="tag">Puppeteer</span>
-                        <span class="tag">Gemini AI</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-thhiya" data-category="client" data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/projects/thhiya/cover-desktop.jpg" srcset="/assets/projects/thhiya/cover-desktop-480.jpg 480w, /assets/projects/thhiya/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/projects/thhiya/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>Thhiya</h3>
-                    <p>Global partner-discovery and workforce-management platform. Engineered stealth-scraping
-                        pipelines aggregating corporate regulations for 195 countries, with Gemini-powered provider
-                        matching and a 20% latency reduction.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Live site</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="https://www.thhiya.com/#home" target="_blank" rel="noopener">Thhiya<span class="sr-only">, visit the site, opens in a new tab</span></a></h3><span class="feature-when"><time datetime="2026-06">Nov 2025 to Jun 2026</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><span class="ship-role">Full stack developer</span></p>
+                        <p class="case-card-pitch">Global partner-discovery and workforce-management platform. Engineered stealth-scraping pipelines aggregating corporate regulations for 195 countries, with Gemini-powered provider matching and a 20% latency reduction.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">React 19</li><li class="tag">Puppeteer</li><li class="tag">Gemini AI</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--outline" href="https://www.thhiya.com/#home" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                    </div>
+                </article>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">BhawBhaw / Wocofy,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Private Client</span>
-                        <span class="tag">React Native</span>
-                        <span class="tag">Next.js 14 ×2</span>
-                        <span class="tag">Razorpay</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-bhawbhaw-wocofy" data-category="client" data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/projects/bhawbhaw/cover-desktop.jpg" srcset="/assets/projects/bhawbhaw/cover-desktop-480.jpg 480w, /assets/projects/bhawbhaw/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/projects/bhawbhaw/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>BhawBhaw / Wocofy</h3>
-                    <p>Pet-services marketplace spanning four products: user and vendor React Native apps plus customer
-                        and admin Next.js web apps, maps, payments, charts, document pipelines, and speech-enabled
-                        search included.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Live site</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="https://www.bhawbhaw.com/" target="_blank" rel="noopener">BhawBhaw / Wocofy<span class="sr-only">, visit the site, opens in a new tab</span></a></h3><span class="feature-when"><time datetime="2025">2024 to 2025</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><span class="ship-role">Contract developer</span></p>
+                        <p class="case-card-pitch">Pet-services marketplace spanning four products: user and vendor React Native apps plus customer and admin Next.js web apps, maps, payments, charts, document pipelines, and speech-enabled search included.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">React Native</li><li class="tag">Next.js 14 ×2</li><li class="tag">Razorpay</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--outline" href="https://www.bhawbhaw.com/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                    </div>
+                </article>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Aorta Rooms,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Live, aortarooms.com</span>
-                        <span class="tag">Next.js 15</span>
-                        <span class="tag">Prisma</span>
-                        <span class="tag">AWS S3</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-school-of-hatha-yoga" data-category="client" data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/projects/hatha-yoga/cover-desktop.jpg" srcset="/assets/projects/hatha-yoga/cover-desktop-480.jpg 480w, /assets/projects/hatha-yoga/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/projects/hatha-yoga/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>Aorta Rooms</h3>
-                    <p>Hotel booking platform with a Framer-Motion-polished Next.js 15 frontend and a Bun-compatible
-                        Hono backend, room inventory, booking flows, Twilio SMS, ZeptoMail, and Firebase push.</p>
-                    <div class="project-card-links">
-                        <a href="https://aortarooms.com" target="_blank" rel="noopener" class="card-link">Visit site
-                            ↗</a>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Live site</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="https://schoolofhathayoga.org/" target="_blank" rel="noopener">School Of Hatha Yoga<span class="sr-only">, visit the site, opens in a new tab</span></a></h3><span class="feature-when"><time datetime="2025-02">Aug 2024 to Feb 2025</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span class="ship-role">Web developer</span></p>
+                        <p class="case-card-pitch">Modern corporate web ecosystem: React 18 + Shadcn UI + Framer Motion frontend over a JWT-authenticated Hono API with Zod validation, responsive, themed, and deployed via Render.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">React 18</li><li class="tag">Shadcn UI</li><li class="tag">Hono API</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--outline" href="https://schoolofhathayoga.org/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Niti Health,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Private Client</span>
-                        <span class="tag">Flutter ×3</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">GraphQL</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-ambica-impex-platform" data-category="personal" data-linked>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/projects/ambica-impex/cover-desktop.jpg" srcset="/assets/projects/ambica-impex/cover-desktop-480.jpg 480w, /assets/projects/ambica-impex/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/projects/ambica-impex/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>Niti Health</h3>
-                    <p>Healthcare ERP with three Flutter apps (Patient, Doctor, Clinic) on an Express backend running
-                        MongoDB, MySQL, Redis, Cassandra, Apollo GraphQL, and BullMQ, all Dockerized.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">Live site</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="https://ambicaimpex.in/" target="_blank" rel="noopener">Ambica Impex Platform<span class="sr-only">, visit the site, opens in a new tab</span></a></h3><span class="feature-when"><time datetime="2026">2026</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span class="ship-role">Solo developer</span></p>
+                        <p class="case-card-pitch">Export/import business ERP as a monorepo: customer-facing site with Three.js postprocessing and GSAP, an admin dashboard with ExcelJS exports, and a Hono backend with server-side PDF generation.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">Bun Turborepo</li><li class="tag">Next.js 16 ×2</li><li class="tag">Three.js</li><li class="tag">GSAP</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--outline" href="https://ambicaimpex.in/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                    </div>
+                </article>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">School Of Hatha Yoga,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Deployed on Render</span>
-                        <span class="tag">React 18</span>
-                        <span class="tag">Shadcn UI</span>
-                        <span class="tag">Hono API</span>
+                <article class="case-card feature-card sf-card clay-glare" id="project-ai-vestor" data-category="personal" data-featured="true" data-linked data-wide>
+                    <div class="feature-cover" aria-hidden="true">
+                        <div class="feature-frame"><span class="feature-frame-bar"><i></i><i></i><i></i></span><img class="feature-shot" src="/assets/projects/ai-vestor/cover-desktop.jpg" srcset="/assets/projects/ai-vestor/cover-desktop-480.jpg 480w, /assets/projects/ai-vestor/cover-desktop.jpg 960w" sizes="(min-width: 1440px) 600px, (min-width: 600px) 50vw, 100vw" width="960" height="600" alt="" loading="lazy" decoding="async"></div>
+                        <img class="feature-phone" src="/assets/projects/ai-vestor/cover-phone.jpg" width="300" height="649" alt="" loading="lazy" decoding="async">
                     </div>
-                    <h3>School Of Hatha Yoga</h3>
-                    <p>Modern corporate web ecosystem: React 18 + Shadcn UI + Framer Motion frontend over a
-                        JWT-authenticated Hono API with Zod validation, responsive, themed, and deployed via Render.
-                    </p>
+                    <div class="case-card-body">
+                        <p class="case-card-kicker hud-label">1st Place, FinTech</p>
+                        <div class="feature-head"><h3 class="case-card-title"><a class="case-card-link" href="https://ai-vestor-frontend.onrender.com/" target="_blank" rel="noopener">Ai-Vestor<span class="sr-only">, visit the site, opens in a new tab</span></a></h3><span class="feature-when"><time datetime="2025">2025</time></span></div>
+                        <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><span class="ship-role">Team lead</span></p>
+                        <p class="case-card-pitch">AI stock-prediction platform that took first place in the FinTech track at CHARUSAT-Odoo Hackathon 2025, 650+ applicants, 75 teams. 90% prediction accuracy, gamified investment LMS, live on Render.</p>
+                        <ul class="case-card-tags" aria-label="Built with"><li class="tag">100+ LSTM Models</li><li class="tag">FastAPI</li><li class="tag">Render</li></ul>
+                        <p class="feature-actions"><a class="pill-btn pill-btn--outline" href="https://ai-vestor-frontend.onrender.com/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                    </div>
+                </article>
+                </div>
+            </section>
 
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+            <section class="work-section" aria-labelledby="archiveHead">
+                <div class="section-head"><span class="section-no">02</span><h2 id="archiveHead">The archive</h2><svg class="doodle" aria-hidden="true" focusable="false"><use href="/assets/doodle-sprite.svg#d-underline"/></svg></div>
+                <p class="work-count hud-readout" data-count-for="archive">23 projects, newest first. Open any row for the full story.</p>
+                <div class="archive-cols" aria-hidden="true"><span>Year</span><span>Project</span><span>Role</span><span>Built with</span><span>Status</span></div>
+                <div class="archive role-ledger" id="archiveList" data-component="role-ledger archive-peek">
+                <details class="role arch-row" id="project-self-hosted-ai-agent-stack" data-category="aiml">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">Now</span>
+                        <span class="arch-name"><span class="arch-title">Self-Hosted AI Agent Stack</span><span class="arch-kicker">Infrastructure</span></span>
+                        <span class="arch-role">Builder</span>
+                        <span class="arch-stack">Ollama · n8n + LangChain · Qdrant / Chroma</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="live">Live</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M38.1 36.4L197.5 36.6Q201.8 35.6 201.8 38.9L202.3 71.5Q202.0 74.4 198.3 73.8L38.7 74.4Q34.1 75.0 33.2 71.3L34.3 40.1Q34.4 36.1 37.7 35.8ZM97.2 55.4Q144.5 56.4 192.0 54.2M38.3 80.5L198.9 79.7Q201.7 80.8 202.7 85.4L201.0 115.8Q201.7 119.4 198.7 119.7L39.1 118.7Q33.8 119.8 34.8 114.9L34.6 85.0Q34.4 80.8 37.5 79.5ZM96.9 101.2Q145.9 99.9 192.2 101.0M38.3 125.1L197.6 125.2Q201.9 125.9 203.0 130.0L201.3 160.0Q202.3 163.6 196.9 164.0L37.3 163.1Q34.5 164.1 33.8 159.8L34.0 129.8Q33.6 125.6 37.4 125.3ZM98.8 145.2Q144.0 143.6 192.7 143.7M222.8 79.5Q239.4 78.2 257.6 76.5M221.8 78.9Q238.9 87.7 256.3 92.2M220.9 79.2Q238.9 94.4 256.6 109.8M221.1 79.9Q239.5 104.9 257.0 128.9M221.2 103.2Q240.2 89.0 256.8 75.5M222.6 101.7Q239.6 97.4 256.5 92.1M220.8 101.8Q239.5 106.8 256.2 110.8M220.9 101.1Q240.0 116.2 255.8 128.9M222.9 123.1Q240.0 101.0 258.0 76.0M222.7 123.9Q239.4 109.3 257.6 93.2M222.8 125.2Q240.8 116.3 256.6 111.8M222.0 124.8Q238.1 125.2 257.2 127.6M256.5 76.4Q275.3 80.9 292.0 87.2M256.1 75.9Q274.1 96.0 292.9 115.6M256.2 93.9Q274.2 91.0 293.0 87.7M258.1 93.6Q273.5 106.2 290.9 116.1M256.1 110.6Q275.1 99.8 291.7 88.0M256.2 110.6Q274.8 114.6 292.4 116.8M258.0 127.4Q274.4 109.1 292.6 88.3M257.2 129.0Q273.5 123.3 291.8 116.2M216.4 80.1C216.7 77.4 219.7 75.5 221.6 75.5S227.3 77.6 226.6 80.5S225.3 84.7 221.6 85.1S217.0 82.4 216.7 80.0M217.0 101.9C216.9 99.8 219.5 96.9 222.3 96.4S226.8 99.4 227.6 102.1S225.3 107.1 222.0 106.6S216.4 105.0 217.2 102.4M217.1 123.7C217.0 120.7 219.8 118.8 222.5 119.3S226.8 121.8 227.4 123.9S224.3 128.7 222.1 128.5S217.3 126.7 216.8 123.5M252.0 75.9C252.5 72.7 254.2 70.2 257.3 70.2S262.2 72.8 262.3 75.8S260.0 80.1 257.0 80.7S252.2 77.9 252.4 75.6M251.6 93.5C251.8 90.2 254.1 88.6 256.8 88.1S262.1 90.4 261.9 93.6S260.1 97.7 257.3 98.1S252.3 95.4 252.5 93.5M252.0 111.3C252.1 108.3 253.8 105.4 256.8 105.4S262.2 107.7 261.7 110.6S260.1 116.2 257.1 116.2S251.8 113.1 251.5 110.5M251.9 128.0C251.8 126.0 253.7 123.5 257.6 123.1S262.3 125.7 262.1 128.1S260.0 133.8 256.7 133.5S251.7 131.6 251.8 128.4M286.7 87.0C286.7 84.6 288.8 82.8 292.0 82.4S297.1 84.6 297.2 87.5S295.0 92.4 291.6 92.0S286.5 90.5 286.7 87.7M286.8 117.2C287.6 114.4 288.9 112.1 292.6 111.9S296.7 113.6 296.5 116.6S295.0 121.1 291.7 121.5S287.0 119.0 286.6 116.7M202.9 125.6C209.8 108.9 208.4 111.4 209.0 96.8"/><path class="bp-dot" d="M41.4 55.0C41.2 53.8 42.9 53.7 43.6 53.0S46.7 54.0 46.4 55.7S45.1 57.0 43.8 57.3S41.9 56.5 41.4 55.7M49.8 55.8C50.3 54.7 50.2 53.5 52.5 53.1S54.3 53.9 54.6 55.2S52.7 58.0 52.0 57.0S49.6 56.4 50.2 54.9M41.5 99.8C41.6 98.5 42.4 98.3 43.7 97.8S46.1 98.5 45.7 99.5S45.3 101.8 44.6 102.5S42.3 101.6 41.7 99.6M50.3 100.4C49.8 99.1 50.5 97.5 52.2 97.4S54.3 98.3 53.8 99.7S53.8 102.0 52.5 101.9S50.1 101.7 50.2 99.8M41.4 144.3C41.8 143.9 42.3 142.9 43.6 142.4S45.8 143.4 46.2 144.1S45.0 147.3 44.0 147.0S41.3 145.8 42.0 144.6M50.3 145.0C50.1 143.2 50.9 142.0 52.3 142.7S54.8 143.6 54.2 144.3S53.4 146.9 52.4 147.2S50.2 146.3 49.6 144.6"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Personal AI infrastructure: Ollama local inference, Hermes Agent with persistent memory, OpenClaude coding agent, n8n workflows with MCP connectors, and Qdrant/Chroma RAG over local corpora.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span class="ship-role">Builder</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Ollama</li><li class="tag">n8n + LangChain</li><li class="tag">Qdrant / Chroma</li></ul>
+                        </div>
+                    </div>
+                </details>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Huselk, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Team Lead</span>
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Firebase</span>
-                        <span class="tag">Razorpay</span>
+                <details class="role arch-row" id="project-tenet-pg-management" data-category="personal">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2026</span>
+                        <span class="arch-name"><span class="arch-title">Tenet PG Management</span><span class="arch-kicker">Personal Product</span></span>
+                        <span class="arch-role">Solo developer</span>
+                        <span class="arch-stack">Bun Turborepo · Next.js 16 · Playwright + Vitest</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="building">Building</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M41.5 36.0L196.1 34.9Q201.9 35.5 201.0 42.2L201.8 158.1Q201.8 164.3 195.3 164.9L41.4 164.0Q33.8 163.6 34.6 157.0L33.3 42.2Q34.5 36.3 40.7 35.9ZM34.5 50.5Q117.0 48.8 203.2 49.7M45.0 59.0L81.0 58.2Q85.5 58.3 85.0 62.3L85.0 152.6Q85.4 155.6 81.1 155.6L45.7 157.0Q42.0 155.9 41.0 153.2L41.3 62.8Q42.0 57.7 47.1 58.8ZM96.5 57.0L189.0 57.4Q193.9 57.8 193.2 61.6L193.9 97.3Q193.8 101.1 189.6 100.3L98.5 102.0Q93.8 101.3 92.7 96.0L93.6 61.9Q93.6 57.6 98.8 57.4ZM92.6 117.9Q132.6 117.0 173.1 117.1M92.7 133.4Q121.3 135.0 148.8 134.1M217.0 57.7L297.2 58.1Q300.0 58.6 301.0 62.6L300.5 78.4Q299.8 83.2 295.5 83.6L218.0 83.0Q213.5 82.9 215.1 80.2L215.0 61.7Q214.1 57.5 218.7 56.8ZM247.6 71.7Q268.0 70.3 288.9 71.3M218.4 90.0L296.6 89.5Q300.3 89.0 299.7 93.2L300.1 110.0Q299.5 114.7 295.9 115.0L217.9 114.4Q213.6 114.2 213.9 111.4L212.9 93.7Q213.9 89.2 219.1 90.3ZM247.4 102.6Q267.2 102.2 291.2 101.3M218.0 120.5L295.3 121.3Q300.0 121.3 300.1 124.3L299.2 140.8Q300.0 145.9 296.0 146.0L218.1 145.7Q213.6 146.1 214.6 142.9L213.1 123.7Q213.7 121.0 217.0 120.7ZM247.5 133.1Q269.3 132.1 290.4 133.8M203.9 124.5C205.7 109.8 211.1 108.0 209.6 96.6"/><path class="bp-dot" d="M40.5 42.7C40.0 41.7 41.3 40.7 42.2 40.6S44.3 42.5 43.8 43.5S42.5 45.0 42.6 45.0S39.7 44.0 40.1 43.4M47.0 42.9C46.9 42.2 47.9 41.3 49.1 40.9S50.6 42.6 50.2 42.5S49.9 44.7 48.5 44.2S47.1 44.4 47.7 42.6M54.6 43.4C54.5 42.5 55.4 41.5 55.6 41.0S57.7 42.2 57.9 43.3S56.5 45.2 56.3 44.3S53.6 44.2 54.4 43.5M222.1 70.3C221.3 69.6 222.8 68.2 224.2 68.4S226.6 69.9 225.8 70.5S225.2 73.1 224.0 73.2S222.3 72.4 221.4 70.2M230.4 70.5C229.8 69.6 230.2 68.8 232.4 68.6S234.2 69.1 233.7 70.5S232.7 73.0 231.6 72.9S230.1 72.1 229.8 71.1M221.8 102.4C221.7 100.4 223.1 99.8 223.7 99.6S226.0 100.9 226.2 101.5S225.2 104.0 223.7 104.5S222.0 103.0 221.7 101.5M230.1 101.5C229.8 100.7 231.3 99.4 231.9 99.3S234.5 100.7 234.7 102.2S233.8 104.6 232.3 104.4S230.3 103.7 229.8 101.9M221.5 133.2C221.8 132.5 222.2 131.7 223.6 131.6S226.7 132.4 226.6 133.6S225.1 135.9 224.5 136.0S222.2 134.6 222.1 133.1M230.2 133.3C229.7 131.7 230.4 131.6 232.0 130.8S234.4 131.5 234.0 132.9S233.2 135.6 232.1 135.3S230.1 134.6 229.9 133.1"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Full PG/hostel management platform: Next.js 16 dashboard with four theme modes (including cartoon brutalist, because taste), Hono backend with SSE, UPI payments, PDF invoices, QR codes, and a documented Flutter phase.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><span class="ship-role">Solo developer</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Bun Turborepo</li><li class="tag">Next.js 16</li><li class="tag">Playwright + Vitest</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/tenet_management" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>Huselk</h3>
-                    <p>Led a squad shipping an enterprise clothing e-commerce app, Firebase suite, Razorpay checkout,
-                        cached imagery, plus a companion admin panel, translating Figma/XD systems into modular
-                        Flutter components.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">The Neural Networker,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Internship</span>
-                        <span class="tag">Next.js</span>
-                        <span class="tag">React Native</span>
-                        <span class="tag">MongoDB</span>
+                <details class="role arch-row" id="project-whyknot-live" data-category="personal">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2026</span>
+                        <span class="arch-name"><span class="arch-title">Whyknot.live (y-knot)</span><span class="arch-kicker">Launch teaser</span></span>
+                        <span class="arch-role">Personal build</span>
+                        <span class="arch-stack">Astro · React Islands · Hono</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><img src="/assets/projects/whyknot/card-cover.jpg" width="720" height="450" alt="" loading="lazy" decoding="async"></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Astro-based waitlist marketing site with React islands, a Hono backend on MongoDB + Redis, email via Resend/Nodemailer, an Astro admin panel, and DOMPurify sanitization.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Astro</li><li class="tag">React Islands</li><li class="tag">Hono</li><li class="tag">Resend</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://www.whyknot.live/" target="_blank" rel="noopener">Live site <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>The Neural Networker</h3>
-                    <p>Built AI-integrated web and mobile interfaces for algorithmic execution workflows, and tuned
-                        MongoDB compound indexes that sped analytical dashboards up by 30%.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Dpizza Time,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Firebase</span>
-                        <span class="tag">GoRouter</span>
-                        <span class="tag">Lottie</span>
+                <details class="role arch-row" id="project-jayptl-me" data-category="personal">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2026</span>
+                        <span class="arch-name"><span class="arch-title">jayptl.me, This Site</span><span class="arch-kicker">You Are Here</span></span>
+                        <span class="arch-role">Solo</span>
+                        <span class="arch-stack">Vanilla JS · Custom Build Pipeline · Zero Frameworks</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="live">Live</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M40.8 36.5L195.2 35.0Q202.4 35.8 202.4 43.6L202.7 157.0Q201.5 163.6 194.7 165.0L41.5 164.4Q34.2 164.6 33.3 157.9L33.6 43.7Q33.5 35.6 41.0 36.5ZM33.6 49.5Q117.5 50.5 202.6 49.8M46.0 57.7L80.7 58.8Q85.2 58.2 85.3 62.1L86.6 152.6Q85.2 156.5 81.4 154.9L46.2 155.7Q41.9 156.0 40.9 152.6L42.9 62.0Q41.5 57.7 45.6 57.3ZM97.5 57.8L190.4 57.8Q194.0 58.6 193.6 61.6L194.3 98.2Q193.8 101.4 190.1 100.6L96.8 101.2Q93.8 100.7 93.6 98.2L93.3 61.6Q94.1 57.9 97.4 58.8ZM93.8 117.9Q133.3 116.4 173.5 115.8M93.9 135.6Q121.3 134.5 148.9 135.2M270.0 68.7C226 62 220 126.0 255.7 130.0C292 134.0 292 70.0 259.8 73.4M286.0 121.6Q289.4 131.5 295.3 142.1M202.8 124.9C215.4 113.9 213.0 115.9 222.4 97.6"/><path class="bp-dot" d="M40.1 43.1C39.6 42.3 40.4 41.7 41.8 41.3S43.3 42.5 44.2 43.3S42.6 44.3 41.7 44.3S40.0 44.2 39.9 43.3M46.9 42.6C47.1 41.9 48.3 41.7 49.0 41.5S50.2 41.8 50.8 42.5S50.4 45.1 48.9 44.9S47.1 44.2 47.1 43.4M53.6 42.6C53.6 41.7 54.7 40.7 56.2 40.9S57.2 41.5 57.9 43.0S57.0 44.8 55.8 45.4S54.6 43.6 54.2 42.9"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">The portfolio itself: hand-rolled HTML/CSS/JS with a scroll-reveal narrative engine, WebAudio sound design, skeuomorphic/glassmorphic theme duality, and a Bun-powered minify-and-deploy pipeline. No frameworks were harmed.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><span>You are here</span><span class="ship-role">Solo</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Vanilla JS</li><li class="tag">Custom Build Pipeline</li><li class="tag">Zero Frameworks</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/jayptl.me" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>Dpizza Time</h3>
-                    <p>End-to-end food ordering and management app with a companion real-time admin panel, Firebase
-                        auth, Firestore sync, push notifications, and GetIt-wired architecture.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Zchat, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Firebase Firestore</span>
+                <details class="role arch-row" id="project-nds-services" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2026</span>
+                        <span class="arch-name"><span class="arch-title">NDS Services</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Monorepo · Next.js · Bun + Hono</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M40.4 36.8L195.6 36.2Q202.3 36.4 202.6 42.8L203.1 157.1Q202.0 163.4 194.9 164.9L41.5 165.0Q34.4 163.5 34.6 157.4L33.1 43.1Q33.7 35.4 41.2 36.3ZM33.4 50.2Q118.0 49.3 201.2 51.2M46.7 58.8L81.9 58.3Q86.1 58.4 85.3 61.1L86.8 151.2Q86.1 155.7 82.8 156.6L46.7 155.2Q41.7 156.1 41.4 151.6L42.5 61.7Q42.6 57.5 46.4 57.2ZM96.5 58.2L189.5 57.3Q193.7 58.1 193.3 62.3L195.0 98.1Q194.4 101.1 189.1 101.1L98.1 100.2Q94.1 101.3 94.0 97.5L93.8 61.3Q93.8 57.7 98.1 57.2ZM93.5 116.7Q134.0 117.3 173.7 115.7M93.8 135.4Q121.3 134.8 148.0 134.9M236.7 43.2L280.8 42.9Q289.3 43.6 288.7 53.8L288.3 151.2Q289.6 159.7 281.2 160.3L237.4 159.7Q228.7 159.5 229.2 150.9L229.8 52.6Q229.2 43.8 238.9 43.0ZM252.7 51.2Q259.9 49.9 266.8 50.2M236.2 66.0Q253.1 65.0 269.7 65.1M235.0 77.3Q246.2 77.1 258.5 78.7M234.7 89.9Q249.3 88.8 265.7 91.1M239.4 108.9L278.6 108.9Q281.6 108.1 281.3 112.8L282.3 130.8Q281.8 135.1 278.1 135.7L240.9 134.6Q235.8 135.6 236.2 131.8L236.3 112.3Q235.4 107.8 239.8 109.0ZM203.6 125.5C217.8 110.8 217.8 109.0 223.6 95.6"/><path class="bp-dot" d="M39.9 43.5C40.0 42.5 40.4 40.6 42.3 41.6S43.6 42.3 44.0 42.9S42.7 44.4 41.4 45.2S40.0 44.0 39.9 42.6M47.0 42.6C47.3 41.4 48.4 40.7 48.9 41.2S51.2 42.5 50.9 42.5S50.6 44.3 49.2 44.5S47.8 44.2 47.4 42.8M54.1 42.9C53.7 42.4 55.4 40.7 56.0 41.4S57.9 42.1 58.4 43.5S56.5 44.2 55.9 45.1S53.9 44.2 54.3 43.0M256.5 152.2C257.1 151.0 258.1 149.9 259.0 149.4S260.8 151.2 261.4 152.4S259.6 154.7 259.6 154.0S257.3 153.7 256.6 151.5"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Multi-service monorepo combining a Next.js admin shell, Bun + Hono API, and a Flutter mobile notes app, with Render deployment config baked in.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Monorepo</li><li class="tag">Next.js</li><li class="tag">Bun + Hono</li><li class="tag">Flutter</li></ul>
+                        </div>
                     </div>
-                    <h3>Zchat</h3>
-                    <p>Real-time chat application in Flutter with Firebase Firestore message synchronization.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="client">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Donman, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Provider</span>
+                <details class="role arch-row" id="project-within" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2026</span>
+                        <span class="arch-name"><span class="arch-title">Within</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Flutter · Social</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M88.3 27.0L144.8 28.1Q153.9 27.5 152.4 37.0L154.2 163.2Q153.8 172.3 144.6 171.6L86.4 172.6Q78.7 171.9 77.6 163.9L77.8 36.3Q78.8 27.6 86.6 27.5ZM106.3 35.8Q117.2 35.4 126.1 35.9M85.3 50.8Q106.4 50.8 129.0 49.3M85.5 62.4Q99.9 61.1 114.9 61.8M85.2 73.5Q104.6 73.7 123.7 74.8M89.9 106.7L142.2 108.0Q146.8 106.9 147.6 111.5L146.2 136.7Q146.7 142.0 141.8 141.8L89.9 142.7Q85.2 142.1 85.2 137.3L84.5 110.0Q85.2 106.7 90.0 106.5ZM237.2 62.6L262.4 61.0Q273.4 62.1 274.0 71.0L273.0 82.5Q274.0 91.9 262.6 92.5L235.3 93.3Q226.3 92.4 225.6 83.0L226.6 70.9Q226.4 61.6 235.3 61.3ZM236.9 91.9Q236.0 97.5 232.4 101.4M253.9 108.0L282.9 105.9Q291.9 106.9 292.7 117.8L291.8 126.7Q292.3 135.9 280.9 134.8L254.6 134.8Q244.2 135.4 243.7 126.7L245.5 117.3Q244.8 106.2 253.7 105.9ZM187.2 129.5C205.7 115.0 204.1 113.0 221.0 99.1"/><path class="bp-dot" d="M113.2 164.1C114.2 162.3 114.7 161.7 115.9 162.4S118.3 163.3 118.3 164.3S117.7 165.8 115.8 166.5S113.8 165.8 113.8 164.4M257.5 121.0C257.3 120.1 258.4 119.6 259.2 119.4S260.9 119.6 260.4 120.7S260.2 123.2 259.5 123.7S257.1 122.1 256.4 121.1M265.2 120.9C264.7 120.2 265.4 119.3 267.5 119.5S268.7 119.9 268.5 121.8S268.4 122.9 267.4 123.2S264.9 122.0 265.5 121.7M273.2 121.2C273.1 120.5 273.8 119.8 275.4 119.0S276.5 120.5 277.2 121.5S276.5 122.8 275.0 123.6S273.2 122.7 272.3 120.8"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Social connection app in Flutter with a full app/backend/frontend/testing structure.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Social</li></ul>
+                        </div>
                     </div>
-                    <h3>Donman</h3>
-                    <p>Flutter app with Provider state management built for a service-marketplace concept.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private client build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <!-- ============ PERSONAL ============ -->
-            <article class="project-card" data-category="personal" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Tenet PG, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Personal Product</span>
-                        <span class="tag">Bun Turborepo</span>
-                        <span class="tag">Next.js 16</span>
-                        <span class="tag">Playwright + Vitest</span>
+                <details class="role arch-row" id="project-aorta-rooms" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Aorta Rooms</span><span class="arch-kicker">Private Client</span></span>
+                        <span class="arch-role">Contract developer</span>
+                        <span class="arch-stack">Next.js 15 · Prisma · AWS S3</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="shipped">Shipped</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M39.9 36.0L195.0 37.0Q202.1 36.0 202.6 43.4L202.2 155.9Q202.5 163.9 193.9 164.1L40.4 164.3Q34.2 163.4 33.3 158.0L34.7 43.7Q34.3 36.4 40.5 34.9ZM33.3 50.3Q119.4 50.4 202.0 49.2M46.2 56.8L81.4 58.4Q85.9 57.4 84.6 62.2L86.6 151.4Q86.1 156.0 81.5 155.4L46.8 156.0Q41.7 156.2 42.9 151.3L41.7 60.9Q41.9 58.0 45.9 57.9ZM97.8 58.0L190.9 58.2Q194.5 57.6 194.8 62.4L194.6 96.5Q194.2 101.7 189.2 101.1L97.1 101.4Q93.8 101.2 94.1 97.0L93.2 62.8Q93.4 58.5 96.6 57.2ZM94.7 117.2Q132.8 116.7 174.2 117.9M94.2 133.6Q120.7 134.5 148.3 134.3M232.4 67.1L285.5 68.0Q291.6 68.4 291.9 74.0L292.9 135.7Q292.1 141.9 285.6 141.0L231.9 141.1Q226.0 142.0 225.8 135.8L226.1 73.2Q225.5 67.9 231.5 67.0ZM226.8 82.8Q258.6 83.0 293.1 83.0M245.2 62.4Q245.4 66.9 245.2 73.0M271.4 61.6Q273.5 69.3 272.3 74.2M203.4 125.0C214.1 111.1 215.6 113.0 220.9 98.9"/><path class="bp-dot" d="M39.6 43.2C40.2 42.5 41.4 41.8 42.5 41.3S43.4 42.1 43.9 42.9S42.7 44.6 42.4 44.2S40.5 44.1 40.0 43.3M47.0 43.3C46.8 42.3 47.4 40.8 48.8 40.8S50.4 42.3 50.8 42.8S49.6 44.3 49.4 44.4S47.3 43.6 47.3 42.5M54.5 43.1C54.5 41.6 55.6 41.8 55.8 40.9S57.4 41.9 58.1 42.7S56.7 44.6 56.3 45.2S53.6 43.7 54.5 43.2M240.4 96.6C240.0 95.0 241.8 94.2 242.3 93.0S245.4 94.1 244.7 95.7S243.8 98.7 242.1 99.0S240.2 97.8 239.9 96.4M256.3 95.8C257.2 94.5 258.1 93.2 258.8 94.1S261.1 95.0 261.9 95.7S260.8 98.8 259.4 97.8S256.9 97.7 256.1 95.9M273.2 96.0C273.3 94.4 274.0 93.3 275.9 93.2S278.2 94.3 277.9 95.6S276.6 98.1 275.7 98.3S272.6 97.1 273.0 95.6M240.4 114.1C239.7 113.0 240.9 112.0 242.1 111.7S244.6 112.4 244.7 114.2S244.4 116.4 242.6 116.1S239.6 115.0 240.0 114.8M257.0 114.3C256.0 112.3 258.2 111.9 259.5 111.6S260.8 112.4 261.4 114.1S260.8 117.1 258.6 116.7S256.2 116.0 256.1 113.7M273.6 113.9C273.6 113.0 274.7 111.5 275.8 111.2S278.0 113.1 278.5 114.2S276.3 116.4 275.0 117.1S272.7 115.0 273.3 114.2"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Hotel booking platform with a Framer-Motion-polished Next.js 15 frontend and a Bun-compatible Hono backend, room inventory, booking flows, Twilio SMS, ZeptoMail, and Firebase push.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><time datetime="2025">2024 to 2025</time><span class="ship-role">Contract developer</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Next.js 15</li><li class="tag">Prisma</li><li class="tag">AWS S3</li></ul>
+                        </div>
                     </div>
-                    <h3>Tenet PG Management</h3>
-                    <p>Full PG/hostel management platform: Next.js 16 dashboard with four theme modes (including cartoon
-                        brutalist, because taste), Hono backend with SSE, UPI payments, PDF invoices, QR codes, and a
-                        documented Flutter phase.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/tenet_management" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Ai-Vestor, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">1st Place, FinTech</span>
-                        <span class="tag">100+ LSTM Models</span>
-                        <span class="tag">FastAPI</span>
-                        <span class="tag">Oracle Cloud</span>
+                <details class="role arch-row" id="project-the-neural-networker" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">The Neural Networker</span><span class="arch-kicker">Internship</span></span>
+                        <span class="arch-role">Intern</span>
+                        <span class="arch-stack">Next.js · React Native · MongoDB</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="shipped">Shipped</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M41.5 35.5L195.6 35.9Q202.0 36.3 203.1 42.1L202.4 157.6Q202.4 164.3 194.4 164.5L40.2 163.3Q34.3 164.5 33.4 157.7L34.4 43.0Q34.0 35.9 40.0 35.0ZM34.5 50.8Q116.9 51.4 201.6 49.5M46.1 59.1L80.8 59.2Q85.3 58.2 85.9 61.9L86.4 151.6Q85.9 156.0 81.7 156.2L47.0 156.4Q41.6 156.3 41.0 150.8L41.0 61.6Q41.6 58.0 46.2 57.2ZM98.6 58.3L189.5 58.7Q193.7 58.3 194.3 60.8L194.3 96.5Q194.4 101.6 191.1 101.9L98.5 101.1Q93.7 101.6 93.1 97.5L92.8 62.2Q93.7 57.4 98.8 57.3ZM93.1 117.9Q134.0 115.7 173.4 116.8M93.1 133.7Q121.7 135.6 149.7 133.3M239.0 44.5L279.3 43.7Q289.6 43.8 288.8 53.1L290.2 151.0Q289.2 160.6 280.3 159.2L237.1 159.8Q228.4 160.0 228.6 150.5L227.7 52.6Q228.9 44.5 237.3 43.6ZM250.6 50.4Q260.3 50.3 267.3 50.3M234.9 66.9Q252.3 66.8 269.4 66.6M236.9 79.1Q247.4 77.7 258.1 78.4M234.8 90.5Q248.8 91.3 264.7 89.8M240.7 106.9L278.0 108.2Q281.7 107.3 282.5 110.8L282.6 132.5Q282.4 135.1 279.1 135.9L240.7 135.7Q235.6 135.1 234.9 131.4L236.8 111.5Q236.1 107.3 240.9 107.7ZM204.8 126.1C213.3 112.0 217.6 107.1 223.8 96.3"/><path class="bp-dot" d="M39.9 42.6C39.8 41.7 41.4 41.2 42.1 40.7S43.2 41.5 43.5 43.4S43.1 44.3 42.2 45.2S39.8 44.4 39.8 43.2M47.5 43.2C46.9 42.0 47.9 40.7 49.3 41.2S50.9 42.2 50.7 42.9S50.6 45.1 48.4 44.3S47.1 44.3 47.2 43.5M54.1 43.5C53.7 41.9 54.8 41.3 55.9 40.9S58.3 41.5 58.0 43.3S57.2 44.3 56.1 44.6S53.9 44.0 53.9 42.8M256.9 151.5C256.8 151.3 257.7 149.2 258.5 149.9S261.8 151.2 261.2 151.9S260.2 153.8 259.2 154.0S256.4 153.0 256.4 152.1"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Built AI-integrated web and mobile interfaces for algorithmic execution workflows, and tuned MongoDB compound indexes that sped analytical dashboards up by 30%.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><time datetime="2025-11">Jun 2025 to Nov 2025</time><span class="ship-role">Intern</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Next.js</li><li class="tag">React Native</li><li class="tag">MongoDB</li></ul>
+                        </div>
                     </div>
-                    <h3>Ai-Vestor</h3>
-                    <p>AI stock-prediction platform that took first place in the FinTech track at CHARUSAT-Odoo
-                        Hackathon 2025, 650+ applicants, 75 teams. 90% prediction accuracy, gamified investment LMS,
-                        deployed on Oracle Cloud.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Hackathon build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="aiml">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Product-X, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">TensorFlow / Keras</span>
-                        <span class="tag">LSTM</span>
-                        <span class="tag">Upstox API</span>
-                        <span class="tag">Hono</span>
+                <details class="role arch-row" id="project-product-x" data-category="aiml">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Product-X, Stock Prediction ML</span><span class="arch-kicker">Private research build</span></span>
+                        <span class="arch-role">Private research build</span>
+                        <span class="arch-stack">TensorFlow / Keras · LSTM · Upstox API</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M71.0 36.9Q70.4 99.7 71.2 160.8M69.6 162.8Q159.7 162.0 250.1 161.7M78.0 120.68020216425847L104.8 142.9L133.4 125.0L159.7 100.4L187.8 72.8L214.5 55.6L242.5 55.7"/><path class="bp-dot" d="M238.7 56.5C239.4 54.7 240.1 53.4 242.0 54.2S245.5 55.0 245.0 56.4S244.2 59.5 242.3 60.0S239.0 58.8 238.7 56.7"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Time-series forecasting platform: LSTM neural networks consuming real-time Upstox market data, served through Hono with interactive React + Vite dashboards.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">TensorFlow / Keras</li><li class="tag">LSTM</li><li class="tag">Upstox API</li><li class="tag">Hono</li></ul>
+                        </div>
                     </div>
-                    <h3>Product-X, Stock Prediction ML</h3>
-                    <p>Time-series forecasting platform: LSTM neural networks consuming real-time Upstox market data,
-                        served through Hono with interactive React + Vite dashboards.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Private research build</span></div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Whyknot.live,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Astro</span>
-                        <span class="tag">React Islands</span>
-                        <span class="tag">Hono</span>
-                        <span class="tag">Resend</span>
+                <details class="role arch-row" id="project-hms" data-category="personal">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">HMS, Hospital Management System</span><span class="arch-kicker">Personal build</span></span>
+                        <span class="arch-role">Personal build</span>
+                        <span class="arch-stack">React + Vite · Shadcn UI · TanStack Query</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M77.6 38.3L244.0 37.8Q249.4 37.5 250.6 46.2L251.2 155.2Q250.0 162.5 243.9 161.1L76.4 162.4Q70.4 162.2 70.1 154.1L69.3 46.2Q70.3 38.0 76.4 38.9ZM70.7 52.2Q160.5 50.8 248.8 51.9M82.0 60.1L121.5 59.2Q124.7 59.5 123.7 64.2L125.4 149.7Q124.4 153.8 119.6 154.8L81.7 153.5Q77.9 153.6 79.0 149.6L77.6 64.6Q78.5 59.6 82.9 60.5ZM136.8 60.4L237.7 58.9Q241.8 59.5 240.9 64.7L242.8 97.1Q241.9 101.1 238.8 100.3L137.3 102.5Q132.3 101.3 133.2 97.4L133.7 64.3Q133.1 59.7 136.6 60.3ZM132.4 117.5Q176.8 117.1 219.3 115.7M131.8 132.7Q162.3 133.7 192.3 134.0"/><path class="bp-dot" d="M76.1 45.4C75.7 44.5 76.8 43.3 77.7 43.1S79.6 43.6 79.9 44.8S78.8 46.9 78.2 47.1S76.7 46.1 76.2 44.9M83.4 44.7C82.7 43.7 83.9 42.9 85.6 42.8S86.7 44.4 87.4 45.5S85.5 47.2 84.9 46.7S83.4 46.1 83.4 45.1M90.5 44.7C90.7 43.5 90.6 42.9 91.8 43.3S94.1 43.4 93.7 45.4S92.7 47.2 92.2 46.2S89.8 45.7 90.2 44.7"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Hospital management frontend with TanStack Query data layers, React Hook Form, and Recharts dashboards over a Zod-validated Bun + Hono backend.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">React + Vite</li><li class="tag">Shadcn UI</li><li class="tag">TanStack Query</li><li class="tag">Bun + Hono</li></ul>
+                        </div>
                     </div>
-                    <h3>Whyknot.live (y-knot)</h3>
-                    <p>Astro-based waitlist marketing site with React islands, a Hono backend on MongoDB + Redis,
-                        email via Resend/Nodemailer, an Astro admin panel, and DOMPurify sanitization.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub
-                            ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">HMS, Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">React + Vite</span>
-                        <span class="tag">Shadcn UI</span>
-                        <span class="tag">TanStack Query</span>
-                        <span class="tag">Bun + Hono</span>
+                <details class="role arch-row" id="project-all-socials" data-category="personal">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">All Socials</span><span class="arch-kicker">Personal build</span></span>
+                        <span class="arch-role">Personal build</span>
+                        <span class="arch-stack">Flutter · Real-time Chat · Biometric Auth</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M87.4 27.8L144.0 27.1Q153.8 27.4 152.8 37.1L153.4 163.8Q153.2 171.7 145.3 172.2L87.0 172.5Q78.3 172.1 78.7 162.7L79.0 37.1Q78.1 28.5 87.0 28.0ZM107.0 35.9Q116.2 33.6 125.5 33.8M84.7 50.6Q106.8 49.0 129.7 49.2M85.1 61.6Q100.5 63.1 114.9 62.1M84.6 73.9Q105.5 72.6 124.0 73.9M90.0 107.5L143.0 107.8Q146.9 107.1 145.6 111.5L146.1 137.9Q146.6 141.3 143.3 140.8L90.7 143.0Q85.5 141.7 84.5 138.4L84.9 110.7Q85.5 107.6 88.4 107.9ZM236.7 63.0L263.8 61.3Q273.5 61.6 273.2 73.1L273.8 83.2Q273.2 92.7 263.5 92.8L236.4 93.4Q226.1 92.5 226.0 82.1L226.1 72.6Q225.6 62.0 236.3 60.9ZM238.4 91.9Q233.8 98.3 231.2 102.2M253.5 107.4L282.1 107.6Q292.4 106.4 291.1 117.1L291.4 125.1Q291.4 135.5 283.1 136.7L255.6 136.6Q244.8 136.0 245.4 126.0L244.2 115.9Q244.1 106.8 254.1 107.1ZM188.6 129.4C204.4 113.0 210.5 112.8 223.1 98.5"/><path class="bp-dot" d="M113.8 164.2C113.3 163.1 114.8 162.1 115.5 162.3S117.6 162.6 118.1 164.5S117.4 165.7 115.7 165.6S113.8 165.3 113.6 164.0M257.5 120.9C256.6 120.5 257.5 119.4 259.4 119.8S260.5 120.5 261.0 120.7S259.7 123.6 259.5 122.8S256.6 122.6 256.8 120.9M264.9 121.2C264.3 119.9 265.8 119.3 267.1 119.0S268.4 120.0 268.9 120.6S268.5 122.9 266.8 122.9S264.4 122.7 265.2 120.7M272.3 121.6C273.1 120.0 273.8 119.1 274.4 119.5S277.0 119.7 277.0 121.4S276.4 122.7 274.4 123.4S273.0 122.1 273.3 120.7"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Flutter mobile app with a hacker-themed UI, real-time chat system, and biometric/password protection. Because security dashboards deserve style too.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Real-time Chat</li><li class="tag">Biometric Auth</li></ul>
+                        </div>
                     </div>
+                </details>
 
-                    <h3>HMS, Hospital Management System</h3>
-                    <p>Hospital management frontend with TanStack Query data layers, React Hook Form, and Recharts
-                        dashboards over a Zod-validated Bun + Hono backend.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub
-                            ↗</a>
+                <details class="role arch-row" id="project-nutrisnack" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">NutriSnack</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">React · Hono · Radix UI</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M77.4 38.4L243.8 38.3Q250.0 38.2 250.2 46.2L250.5 154.2Q250.2 161.9 243.4 163.0L76.5 163.0Q70.2 162.5 70.5 154.0L69.2 45.3Q70.5 38.4 77.4 37.6ZM69.6 53.1Q159.6 53.0 249.6 52.7M83.0 59.5L120.8 60.2Q124.5 60.0 125.1 64.7L124.8 149.9Q124.6 153.5 121.1 154.7L83.0 154.0Q78.3 153.9 78.3 149.2L78.0 64.7Q78.5 59.9 81.2 60.0ZM136.9 60.2L236.9 58.9Q242.0 60.4 242.7 63.9L242.6 98.1Q241.5 101.5 238.8 100.6L136.5 100.5Q132.3 101.6 132.5 96.6L131.8 63.3Q132.5 59.7 136.8 59.8ZM132.2 115.8Q177.5 115.8 220.2 116.0M131.7 134.5Q161.5 132.5 193.7 133.3"/><path class="bp-dot" d="M75.6 45.3C75.8 43.8 76.8 43.8 77.6 43.2S80.3 43.5 80.3 45.2S79.3 47.0 78.3 47.3S75.8 46.5 76.5 44.8M83.7 45.3C83.4 43.8 84.3 43.2 85.4 43.2S87.3 43.7 86.6 44.8S85.7 46.9 84.5 46.2S83.7 46.5 82.9 44.4M89.6 45.5C90.5 44.2 91.6 43.0 92.3 43.6S93.7 44.5 93.7 45.5S93.0 46.2 92.4 47.0S89.8 46.1 90.4 44.4"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">AI-powered food calorie analyzer with image analysis, auth, and a dashboard, full Radix UI component suite over a Zod-validated Hono API.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">React</li><li class="tag">Hono</li><li class="tag">Radix UI</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/nutrisnack" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">All Socials,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Real-time Chat</span>
-                        <span class="tag">Biometric Auth</span>
+                <details class="role arch-row" id="project-ev-charging-project" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">EV Charging Project</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Node.js · Real-time Maps · Geospatial</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M160.0 125.8C130.0 84.0 140.8 40 160.0 40C179.2 40 190.0 84.0 160.0 125.8ZM153.2 73.2C152.8 69.2 156.3 65.7 159.5 65.4S167.2 69.1 167.5 72.9S164.0 80.8 160.5 80.8S152.2 76.9 152.3 72.7M99.1 144.0C160.8 127.8 165.8 149.0 219.2 137.0"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Full-stack EV charging-station management with a real-time interactive map and geospatial capabilities.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Node.js</li><li class="tag">Real-time Maps</li><li class="tag">Geospatial</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/ev-charging-project" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>All Socials</h3>
-                    <p>Flutter mobile app with a hacker-themed UI, real-time chat system, and biometric/password
-                        protection. Because security dashboards deserve style too.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub
-                            ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">SixthAiPatcher,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Bun / Node.js</span>
-                        <span class="tag">AI Automation</span>
+                <details class="role arch-row" id="project-medicare" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Medicare</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">PHP · Supabase</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M39.9 37.2L196.1 36.7Q202.3 36.3 201.9 42.5L201.6 157.6Q202.5 164.4 195.6 164.7L41.0 163.1Q34.0 164.4 33.1 157.8L33.5 42.8Q34.5 35.9 40.5 36.1ZM33.3 50.6Q117.1 49.6 202.6 50.5M47.1 58.4L81.5 59.0Q86.0 57.6 85.6 62.9L85.6 152.4Q85.4 155.7 81.4 156.0L45.7 155.9Q41.6 155.6 42.7 152.9L42.3 62.1Q42.6 58.4 47.0 59.1ZM97.2 58.9L189.2 57.6Q194.4 58.5 194.9 61.9L193.4 96.0Q194.2 101.5 189.2 101.0L98.2 101.5Q93.8 101.3 93.4 96.0L93.9 60.8Q93.9 57.5 98.3 58.2ZM94.3 117.6Q132.6 117.4 175.1 116.7M93.0 134.8Q121.0 133.8 148.2 134.0M226.2 102.5C226.1 83.9 240.6 68.9 258.8 69.6S292.0 84.3 292.0 101.5S277.0 135.0 259.0 135.2S225.7 120.2 226.4 101.7M259.3 82.1Q259.9 102.1 258.0 121.6M242.7 102.4Q258.3 102.6 275.6 101.6M204.2 125.7C218.9 111.7 207.2 111.6 222.2 98.0"/><path class="bp-dot" d="M39.7 43.3C40.0 42.2 41.2 41.6 42.3 41.2S43.5 42.4 44.1 43.2S42.5 44.2 41.9 44.8S40.4 43.7 40.5 43.1M47.2 42.4C47.2 42.2 47.7 41.1 49.1 41.3S51.2 42.6 50.7 43.6S50.5 44.4 48.5 45.0S46.7 44.1 46.8 42.9M54.1 43.3C53.8 41.5 55.6 41.6 56.1 41.7S57.6 42.1 57.9 43.5S57.4 44.5 55.7 44.8S54.7 44.0 54.2 43.0"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Healthcare management system with patient registration, login, appointment booking, and schedule management on PHP + Supabase.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">PHP</li><li class="tag">Supabase</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/medicare" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>SixthAiPatcher</h3>
-                    <p>AI automation maintenance and UI patching framework, keeping AI-assisted interfaces honest,
-                        automatically.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me" target="_blank" rel="noopener" class="card-link">GitHub
-                            ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">jayptl.me, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">You Are Here</span>
-                        <span class="tag">Vanilla JS</span>
-                        <span class="tag">Custom Build Pipeline</span>
-                        <span class="tag">Zero Frameworks</span>
+                <details class="role arch-row" id="project-campus-cultural-platform" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Campus Cultural Platform</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Angular · Express · PostgreSQL</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M41.7 35.4L195.0 34.9Q202.3 35.5 201.0 44.1L201.9 157.3Q201.9 164.4 194.5 163.9L40.2 163.4Q33.8 164.1 34.0 158.1L34.0 42.8Q33.4 36.1 39.9 35.7ZM33.8 51.0Q119.3 48.8 202.4 49.7M46.3 57.1L80.8 57.3Q85.1 57.7 84.9 61.8L86.8 152.2Q85.3 155.6 82.6 155.3L46.8 156.8Q42.0 155.4 41.9 152.4L42.2 61.6Q42.6 57.9 46.3 57.5ZM97.3 57.5L190.7 57.9Q193.6 57.7 194.4 61.8L193.2 97.7Q193.8 100.5 189.4 101.9L97.0 102.0Q93.2 101.2 93.2 98.1L92.7 62.8Q93.3 58.0 98.9 58.7ZM93.3 116.1Q133.0 117.2 174.1 115.7M92.8 135.5Q122.1 134.2 148.1 133.6M231.8 66.8L285.3 67.4Q292.4 67.7 291.4 73.3L292.6 135.0Q291.9 142.0 286.2 140.9L232.9 142.6Q226.5 141.7 226.7 135.6L227.1 74.0Q226.5 67.7 232.2 68.7ZM226.7 83.6Q258.5 84.8 293.1 84.7M246.9 60.9Q246.8 68.5 246.5 75.2M272.0 61.5Q272.4 68.1 272.9 74.3M203.0 125.4C210.9 111.1 210.4 115.6 221.2 98.9"/><path class="bp-dot" d="M40.6 43.2C39.9 42.2 41.4 41.4 42.2 41.0S43.6 42.3 44.1 43.3S43.3 44.7 42.3 44.4S39.8 44.2 39.9 42.5M47.2 42.5C47.3 41.7 48.5 41.7 49.0 40.9S51.3 42.0 51.0 42.5S50.5 45.3 49.5 44.8S47.0 44.4 47.3 43.5M54.3 43.2C54.2 42.1 54.9 41.2 55.5 41.4S57.4 42.4 57.5 42.8S56.8 45.2 56.5 44.3S53.9 44.1 54.8 43.0M239.5 95.9C239.7 94.4 241.4 93.3 242.2 93.9S244.7 94.6 245.0 96.2S244.4 98.8 242.8 98.2S239.9 97.6 240.0 95.7M256.3 95.7C256.9 94.9 258.0 94.1 258.9 94.2S261.9 94.9 261.3 96.5S260.6 98.6 259.4 98.1S256.5 97.9 256.3 96.1M273.2 95.6C273.4 94.2 273.7 94.1 275.4 93.1S277.8 94.9 278.5 96.5S276.2 98.7 275.6 97.8S273.0 97.8 273.6 95.8M239.6 114.5C240.1 113.1 241.2 112.0 242.7 112.2S245.4 112.4 245.3 114.5S243.5 116.7 242.9 116.9S240.3 114.9 240.1 114.7M256.7 113.7C256.3 112.4 258.0 112.3 259.0 111.4S261.0 113.4 261.9 114.2S260.4 116.5 259.1 117.2S256.1 115.1 256.7 114.6M273.1 114.2C273.2 112.4 273.9 112.1 275.0 112.1S277.6 113.1 277.4 114.0S276.2 117.0 275.9 116.5S272.7 115.9 273.7 114.0"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Multi-module Angular application with an Express server and PostgreSQL, built for campus cultural events.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Angular</li><li class="tag">Express</li><li class="tag">PostgreSQL</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/campus_cultural_platform" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>jayptl.me, This Site</h3>
-                    <p>The portfolio itself: hand-rolled HTML/CSS/JS with a scroll-reveal narrative engine, WebAudio
-                        sound design, skeuomorphic/glassmorphic theme duality, and a Bun-powered minify-and-deploy
-                        pipeline. No frameworks were harmed.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/jayptl.me" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="personal">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Ambica Impex,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Bun Turborepo</span>
-                        <span class="tag">Next.js 16 ×2</span>
-                        <span class="tag">Three.js</span>
-                        <span class="tag">GSAP</span>
+                <details class="role arch-row" id="project-event-booking" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Event Booking</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Flutter · Multi-platform</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M88.0 27.5L145.5 29.1Q153.7 28.1 154.1 38.2L152.6 162.4Q152.9 172.1 144.5 171.5L87.1 171.2Q78.3 172.5 79.4 162.6L79.1 35.8Q78.3 28.1 88.0 28.1ZM107.4 35.8Q116.1 34.0 124.6 33.9M85.0 50.3Q106.7 51.2 129.0 50.9M84.8 61.6Q102.1 63.2 117.0 61.4M84.6 73.8Q103.0 74.2 124.2 74.8M90.6 106.9L141.7 106.3Q147.0 107.4 146.6 110.7L145.4 136.6Q146.1 142.2 141.9 140.6L89.6 141.2Q85.3 142.1 84.6 136.9L85.4 110.9Q85.6 107.7 90.4 107.9ZM231.3 67.7L285.2 67.6Q292.5 68.0 291.2 74.5L292.4 136.3Q292.1 142.3 286.8 141.3L230.8 141.6Q226.3 141.8 226.5 135.3L226.4 73.7Q225.7 67.8 231.1 68.7ZM226.4 84.4Q260.2 84.6 291.5 83.3M246.8 62.7Q246.2 67.2 246.6 74.5M272.1 62.4Q272.0 69.2 272.3 75.2M189.0 129.9C210.2 117.7 205.9 110.2 221.4 98.4"/><path class="bp-dot" d="M113.4 163.9C114.0 162.8 114.2 161.6 115.6 161.3S118.0 162.4 118.6 164.5S116.6 166.5 115.7 166.0S114.1 165.1 113.5 164.6M240.4 95.4C240.4 94.8 241.7 93.0 243.0 93.2S244.8 94.2 244.9 96.1S243.2 98.0 242.1 98.9S240.5 97.5 239.6 96.1M256.9 96.5C256.2 94.2 257.9 93.0 258.5 94.0S261.2 95.1 260.8 96.3S259.9 98.3 258.7 98.4S256.5 96.8 256.2 96.6M273.2 96.2C273.1 95.2 274.8 94.2 275.3 93.7S278.4 94.1 278.0 96.4S276.5 98.4 275.9 98.0S272.5 97.8 273.2 95.4M240.1 114.1C240.2 112.5 241.2 111.4 242.6 112.2S245.4 112.7 244.4 113.7S243.9 116.5 242.6 116.5S239.9 115.6 239.5 113.7M256.1 114.3C256.7 112.7 257.1 111.2 259.5 112.2S261.7 113.2 261.6 113.7S260.7 116.3 259.5 116.6S256.3 115.4 256.2 114.6M273.5 114.7C273.1 113.2 273.6 111.5 275.3 112.0S277.9 112.3 278.3 114.6S276.5 116.7 274.9 116.4S272.6 115.2 272.7 113.9"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Event booking system with admin, client, and customer apps, one Flutter codebase targeting Android, iOS, Linux, macOS, Windows, and web.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Multi-platform</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/event_booking" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>Ambica Impex Platform</h3>
-                    <p>Export/import business ERP as a monorepo: customer-facing site with Three.js postprocessing and
-                        GSAP, an admin dashboard with ExcelJS exports, and a Hono backend with server-side PDF
-                        generation.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/ambica_web" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <!-- ============ AI / ML ============ -->
-            <article class="project-card" data-category="aiml" data-featured="true">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Vini &amp; Tini,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Research</span>
-                        <span class="tag">BitNet b1.58</span>
-                        <span class="tag">PyTorch</span>
-                        <span class="tag">HuggingFace</span>
+                <details class="role arch-row" id="project-drivenotes" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">DriveNotes</span><span class="arch-kicker">Open source</span></span>
+                        <span class="arch-role">Open source</span>
+                        <span class="arch-stack">Flutter · Google Drive API</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M86.8 28.6L145.6 28.6Q152.9 27.4 154.1 37.6L152.6 162.5Q153.1 171.6 145.6 173.0L87.1 170.9Q78.0 172.5 78.9 161.9L78.9 37.5Q78.4 28.3 88.0 28.4ZM106.1 36.1Q114.7 35.1 124.0 36.2M86.6 49.0Q106.9 50.6 130.0 49.6M86.3 62.3Q100.2 63.2 116.3 61.9M86.0 73.4Q104.9 74.8 122.5 73.2M90.1 106.9L141.6 106.7Q146.3 107.1 147.0 110.5L146.2 138.2Q146.8 141.2 142.0 142.6L89.3 141.7Q86.1 142.3 85.1 137.9L85.7 110.5Q86.0 106.6 89.8 106.1ZM230.1 61.1L287.6 62.7Q292.5 61.6 290.9 67.6L291.4 136.6Q291.6 142.2 288.2 141.5L230.6 142.1Q226.6 141.6 225.8 137.8L225.7 66.5Q225.6 62.5 231.2 61.9ZM278.2 61.6Q284.6 68.8 293.1 76.2M234.5 78.9Q258.5 79.5 284.8 80.1M234.7 90.5Q253.0 90.2 273.6 90.4M234.5 101.3Q258.9 101.0 285.1 101.7M234.6 113.4Q252.9 111.8 275.2 112.7M188.0 128.6C205.1 113.1 200.1 113.0 222.7 97.0"/><path class="bp-dot" d="M114.0 164.0C113.9 163.0 114.5 162.2 115.8 162.2S118.0 162.8 118.8 163.5S116.6 165.9 115.6 166.2S113.4 164.7 114.2 164.0"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Secure notes app storing CRUD notes in your own Google Drive, feature-based architecture, your data stays yours.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Google Drive API</li></ul>
+                            <p class="arch-links"><a class="pill-btn pill-btn--outline" href="https://github.com/jayptl-me/drivenotes" target="_blank" rel="noopener">View on GitHub <span class="arrow arrow--up-right" aria-hidden="true"></span><span class="sr-only">, opens in a new tab</span></a></p>
+                        </div>
                     </div>
-                    <h3>Vini &amp; Tini</h3>
-                    <p>Two small language models trained from scratch on the BitNet b1.58 ternary architecture, Vini,
-                        an edge-first personal assistant; Tini, a TypeScript coding model published on HuggingFace
-                        under Apache 2.0.</p>
-                    <div class="project-card-links">
-                        <a href="/projects/vini-tini" class="card-link card-link-primary">Read the case study →</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="aiml">
-                <div class="project-card-media"><span class="project-card-placeholder-label">AI Agent Stack,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag tag-status">Infrastructure</span>
-                        <span class="tag">Ollama</span>
-                        <span class="tag">n8n + LangChain</span>
-                        <span class="tag">Qdrant / Chroma</span>
+                <details class="role arch-row" id="project-cross-suite" data-category="opensource">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2025</span>
+                        <span class="arch-name"><span class="arch-title">Cross Suite</span><span class="arch-kicker">Experimental builds</span></span>
+                        <span class="arch-role">Experimental builds</span>
+                        <span class="arch-stack">TypeScript · Chrome Extension · Web + Mobile</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M41.1 35.9L194.2 35.4Q202.4 36.3 202.3 42.6L201.7 158.0Q201.9 163.5 194.0 163.8L42.1 164.8Q33.5 164.2 33.6 157.0L34.5 41.8Q33.8 35.5 40.2 35.3ZM34.1 51.0Q117.5 50.9 202.5 48.9M46.8 58.5L82.2 56.9Q85.5 58.0 85.2 61.5L84.7 152.8Q85.4 155.6 80.5 156.4L46.0 155.6Q42.2 156.1 41.9 153.2L43.1 62.6Q41.8 58.2 46.8 57.7ZM97.4 58.3L189.6 59.0Q194.4 57.4 194.7 62.5L194.4 97.5Q194.3 100.7 191.1 100.1L96.6 100.0Q94.1 100.9 94.9 96.1L92.6 63.1Q93.2 58.2 98.0 58.4ZM94.1 117.1Q132.6 116.0 172.8 116.7M93.9 135.5Q122.3 133.5 149.2 133.3M229.9 71.0L287.7 69.3Q291.4 70.1 291.0 75.7L291.6 137.4Q291.4 141.9 287.0 141.8L232.0 142.1Q225.7 141.7 226.9 138.1L225.8 75.2Q225.8 70.1 230.2 70.5ZM251.4 69.8C251.8 66.2 255.3 63.1 259.6 62.8S266.4 65.9 266.4 70.3S262.5 76.8 259.2 76.5S251.9 73.5 251.4 70.1M203.2 125.3C208.2 111.4 210.6 108.3 221.2 98.4"/><path class="bp-dot" d="M40.1 42.9C40.8 42.3 41.4 41.0 42.3 40.6S44.3 41.8 44.2 42.9S43.2 44.4 42.5 44.9S40.1 44.4 39.8 43.1M47.4 42.6C47.8 42.6 48.5 41.4 48.4 41.2S50.9 41.8 50.4 42.5S50.5 45.3 49.3 45.0S46.8 43.7 46.6 43.5M54.4 43.0C54.1 41.5 54.7 40.9 55.5 41.3S58.3 41.6 57.3 43.2S56.7 44.4 55.8 44.9S53.7 44.1 53.8 43.3"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">The Cross ecosystem: Cross-Check-Web (TypeScript), cross-net-extension (Chrome extension), and the cross-access mobile app, one concept across web, browser, and pocket.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">TypeScript</li><li class="tag">Chrome Extension</li><li class="tag">Web + Mobile</li></ul>
+                        </div>
                     </div>
-                    <h3>Self-Hosted AI Agent Stack</h3>
-                    <p>Personal AI infrastructure: Ollama local inference, Hermes Agent with persistent memory,
-                        OpenClaude coding agent, n8n workflows with MCP connectors, and Qdrant/Chroma RAG over local
-                        corpora.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Self-hosted, not public</span></div>
-                </div>
-            </article>
+                </details>
 
-            <!-- ============ OPEN SOURCE & SMALLER ============ -->
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">NutriSnack, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">React</span>
-                        <span class="tag">Hono</span>
-                        <span class="tag">Radix UI</span>
+                <details class="role arch-row" id="project-niti-health" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2024</span>
+                        <span class="arch-name"><span class="arch-title">Niti Health</span><span class="arch-kicker">Private Client</span></span>
+                        <span class="arch-role">Contract developer</span>
+                        <span class="arch-stack">Flutter ×3 · Node.js · GraphQL</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="shipped">Shipped</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M54.1 27.8L76.1 29.1Q85.1 28.4 84.0 37.1L84.4 156.1Q84.1 163.5 75.8 162.9L54.5 164.6Q46.1 164.3 47.2 154.3L46.4 36.9Q45.8 27.7 55.7 28.9ZM60.5 35.7Q65.3 35.8 69.7 34.5M53.9 49.8Q63.2 51.0 71.4 49.7M52.8 62.0Q60.0 63.2 64.8 62.1M53.4 74.4Q61.3 73.6 68.3 72.9M57.3 103.6L74.1 102.6Q78.2 102.8 78.8 107.9L77.8 130.5Q77.8 135.5 73.8 135.1L57.4 134.5Q53.5 135.1 52.5 132.2L52.8 107.5Q52.4 102.5 58.0 102.4ZM106.4 37.0L127.0 35.0Q135.2 36.3 134.3 46.0L134.2 163.4Q135.5 172.1 125.6 172.5L106.3 170.9Q96.4 172.5 95.5 162.8L95.6 45.1Q97.1 35.4 106.3 36.0ZM110.6 42.3Q115.2 43.5 121.7 43.2M102.6 57.1Q112.9 57.8 122.5 57.7M103.0 69.4Q110.3 70.1 115.8 71.2M104.5 82.0Q110.0 82.3 118.8 81.0M106.7 111.3L123.5 110.6Q128.4 110.8 129.0 115.4L127.4 139.4Q127.9 143.4 123.4 144.5L108.2 144.3Q103.1 143.0 102.7 138.9L103.2 115.5Q103.9 110.9 107.8 111.7ZM157.1 27.6L177.7 28.7Q185.9 27.6 186.6 38.0L185.2 153.9Q185.8 163.9 175.8 164.2L157.3 164.0Q146.9 164.2 148.0 155.9L146.7 37.8Q146.7 28.1 156.2 28.5ZM162.1 36.1Q165.7 35.3 170.8 34.6M154.2 49.6Q164.6 51.1 171.6 51.2M153.9 61.5Q161.5 62.2 166.1 62.3M154.7 74.0Q161.9 74.4 169.8 74.6M157.5 103.2L176.2 103.1Q179.2 102.2 178.6 106.8L179.6 130.4Q179.0 135.8 175.1 135.1L157.2 134.8Q154.1 135.7 155.0 131.1L154.9 106.7Q154.3 102.6 158.5 102.8ZM219.0 58.9L296.8 59.1Q299.8 58.4 299.2 61.5L299.2 78.6Q300.0 83.9 297.0 82.4L216.9 82.7Q214.2 83.2 213.2 80.4L213.8 62.1Q213.5 57.6 217.3 58.6ZM247.5 71.2Q269.6 71.3 288.9 69.5M218.4 89.2L295.7 88.9Q300.2 89.9 300.3 93.8L299.4 110.6Q300.4 115.1 295.5 115.6L216.9 115.1Q214.0 114.4 213.6 110.1L213.5 94.1Q214.6 89.4 217.7 88.2ZM246.9 100.8Q267.9 101.9 289.7 103.1M217.0 119.6L295.1 121.4Q300.2 120.8 300.3 124.1L301.1 141.6Q300.2 146.2 295.8 145.7L218.8 146.1Q214.4 146.5 213.2 142.2L214.4 124.3Q213.7 120.9 217.6 121.5ZM246.5 133.6Q267.6 134.5 289.2 134.4M188.9 129.3C196.5 112.4 203.8 108.6 209.1 97.1"/><path class="bp-dot" d="M62.8 155.5C63.1 155.3 63.8 153.5 65.0 154.2S67.2 154.9 67.9 155.6S66.1 157.6 65.8 158.5S62.7 156.7 63.3 156.5M113.5 164.2C113.5 163.3 114.8 162.0 116.3 162.3S117.7 163.3 117.9 163.5S116.7 166.6 116.5 166.3S113.8 165.1 113.3 164.3M164.1 156.0C165.0 154.7 165.4 154.3 167.0 153.7S168.5 154.3 168.5 156.2S168.3 157.7 166.7 158.1S164.1 157.2 164.2 156.3M221.5 70.9C221.3 69.5 222.6 68.8 223.7 68.5S226.5 69.8 226.6 70.4S225.2 72.8 224.0 73.0S221.3 71.6 221.7 70.6M229.8 71.1C229.4 70.1 231.0 68.7 231.8 68.8S234.1 69.3 234.4 70.3S233.1 73.3 231.5 73.1S229.3 72.0 229.3 71.0M221.7 101.4C221.3 100.8 222.9 99.5 223.7 100.3S226.7 100.5 226.1 102.5S225.3 104.8 224.1 104.2S221.6 103.3 221.9 102.6M229.3 102.5C229.4 100.2 231.3 99.6 231.4 100.0S234.1 100.9 233.8 102.5S233.2 104.0 232.2 104.7S229.8 103.4 229.5 102.4M221.4 133.5C222.0 132.0 222.8 131.1 223.5 130.9S225.8 132.3 226.4 133.2S225.1 135.6 223.7 135.1S221.5 134.3 221.8 133.0M229.8 133.8C230.1 132.7 231.3 130.6 232.1 131.1S233.6 132.6 233.9 133.6S233.4 135.0 232.1 135.8S229.4 134.2 230.1 133.1"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Healthcare ERP with three Flutter apps (Patient, Doctor, Clinic) on an Express backend running MongoDB, MySQL, Redis, Cassandra, Apollo GraphQL, and BullMQ, all Dockerized.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><time datetime="2024">2024</time><span class="ship-role">Contract developer</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter ×3</li><li class="tag">Node.js</li><li class="tag">GraphQL</li></ul>
+                        </div>
                     </div>
-                    <h3>NutriSnack</h3>
-                    <p>AI-powered food calorie analyzer with image analysis, auth, and a dashboard, full Radix UI
-                        component suite over a Zod-validated Hono API.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/nutrisnack" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">NDS Services,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Monorepo</span>
-                        <span class="tag">Next.js</span>
-                        <span class="tag">Bun + Hono</span>
-                        <span class="tag">Flutter</span>
+                <details class="role arch-row" id="project-zchat" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2024</span>
+                        <span class="arch-name"><span class="arch-title">Zchat</span><span class="arch-kicker">Private client build</span></span>
+                        <span class="arch-role">Private client build</span>
+                        <span class="arch-stack">Flutter · Firebase Firestore</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M88.7 26.9L144.2 28.8Q153.0 28.3 154.5 38.1L152.6 163.7Q153.6 172.0 145.4 171.9L88.5 171.3Q79.0 172.3 77.7 162.8L78.8 36.1Q78.7 28.6 88.4 27.6ZM106.8 34.9Q116.3 36.0 125.1 35.0M86.4 50.6Q106.5 51.1 129.5 48.9M86.4 62.7Q100.4 62.4 117.0 62.7M86.1 74.3Q104.5 75.3 122.3 75.0M89.4 107.9L141.7 106.6Q146.4 107.3 146.1 110.1L146.2 138.0Q146.0 142.1 142.5 141.4L89.7 141.7Q85.3 142.0 86.7 138.9L86.5 111.0Q86.0 107.6 89.8 107.1ZM236.4 61.0L264.5 62.8Q273.1 62.1 272.7 72.3L274.4 83.2Q273.3 93.0 264.7 93.6L234.8 92.5Q226.0 92.1 224.9 82.3L224.8 72.8Q225.9 61.4 236.0 61.4ZM238.8 91.7Q236.2 97.6 230.8 102.1M253.8 106.2L281.5 107.8Q292.3 106.7 291.5 116.3L291.9 124.4Q291.6 135.6 282.1 136.3L254.9 134.9Q243.9 135.4 245.0 126.1L244.4 116.8Q244.9 106.2 253.7 107.4ZM187.4 128.6C205.6 111.4 203.6 112.6 222.9 97.4"/><path class="bp-dot" d="M114.0 163.6C113.4 163.4 114.8 162.2 115.9 161.7S117.8 163.0 118.7 163.6S117.6 165.7 116.3 166.5S113.6 165.7 114.1 164.6M256.5 120.9C256.9 119.9 258.2 119.7 259.3 119.0S260.6 120.4 261.6 121.4S260.6 122.7 258.7 122.8S257.4 122.6 257.3 121.6M265.5 121.7C265.5 120.0 265.4 119.8 267.3 119.0S268.7 120.5 269.3 121.1S268.3 123.0 266.9 123.4S265.5 122.7 265.2 121.1M273.3 121.3C272.4 120.5 273.5 119.2 274.3 119.3S276.6 119.9 276.6 121.8S276.0 123.4 274.3 123.2S273.3 122.6 272.5 120.9"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Real-time chat application in Flutter with Firebase Firestore message synchronization.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Firebase Firestore</li></ul>
+                        </div>
                     </div>
-                    <h3>NDS Services</h3>
-                    <p>Multi-service monorepo combining a Next.js admin shell, Bun + Hono API, and a Flutter mobile
-                        notes app, with Render deployment config baked in.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/nds_services" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">EV Charging,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Node.js</span>
-                        <span class="tag">Real-time Maps</span>
-                        <span class="tag">Geospatial</span>
+                <details class="role arch-row" id="project-huselk" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2023</span>
+                        <span class="arch-name"><span class="arch-title">Huselk</span><span class="arch-kicker">Team Lead</span></span>
+                        <span class="arch-role">Team lead</span>
+                        <span class="arch-stack">Flutter · Firebase · Razorpay</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="shipped">Shipped</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M86.1 29.8L136.4 30.4Q145.8 29.7 147.0 39.2L147.0 152.6Q145.8 162.6 138.5 161.9L86.1 162.8Q77.2 161.9 78.4 153.9L78.4 38.1Q77.7 29.8 86.1 30.9ZM103.6 36.6Q111.1 36.1 119.6 36.2M85.8 52.7Q104.4 52.1 124.8 51.7M84.1 63.7Q97.6 64.2 112.8 63.8M85.8 76.3Q102.4 77.3 119.0 75.4M88.6 102.4L134.3 103.1Q139.2 102.9 139.0 106.4L138.4 129.6Q139.6 134.0 134.9 133.5L88.8 134.2Q84.5 133.7 84.7 131.0L84.3 107.1Q85.1 102.9 87.5 101.7ZM182.9 37.8L232.2 36.8Q242.5 38.4 243.0 46.7L242.1 160.0Q242.5 170.6 232.3 169.7L183.7 169.7Q173.2 169.8 172.9 159.9L174.8 46.4Q173.2 38.0 183.3 37.8ZM199.9 43.9Q207.6 45.7 215.9 44.6M181.6 60.1Q201.1 60.7 220.2 59.5M180.9 72.1Q194.2 73.3 208.8 71.6M181.2 83.9Q196.3 85.2 213.5 82.8M184.3 109.6L231.7 110.1Q235.7 110.3 235.1 115.0L234.6 138.3Q234.9 142.0 230.6 141.4L184.3 141.8Q180.7 142.4 181.5 137.5L181.5 113.9Q181.3 110.9 184.2 110.3Z"/><path class="bp-dot" d="M109.2 154.4C109.3 153.2 110.6 151.8 111.5 151.8S114.2 152.4 114.4 153.6S113.1 155.7 111.8 156.4S109.4 155.3 110.4 153.6M205.3 162.3C205.2 160.2 206.3 160.0 207.8 159.7S210.7 161.2 209.8 162.1S208.7 164.4 208.3 164.1S206.0 163.1 206.3 162.3"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Led a squad shipping an enterprise clothing e-commerce app, Firebase suite, Razorpay checkout, cached imagery, plus a companion admin panel, translating Figma/XD systems into modular Flutter components.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><time datetime="2023-04">Feb 2022 to Apr 2023</time><span class="ship-role">Team lead</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Firebase</li><li class="tag">Razorpay</li></ul>
+                        </div>
                     </div>
-                    <h3>EV Charging Project</h3>
-                    <p>Full-stack EV charging-station management with a real-time interactive map and geospatial
-                        capabilities.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/ev-charging-project" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Medicare, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">PHP</span>
-                        <span class="tag">Supabase</span>
+                <details class="role arch-row" id="project-dpizza-time" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2023</span>
+                        <span class="arch-name"><span class="arch-title">Dpizza Time</span></span>
+                        <span class="arch-role">Contract developer</span>
+                        <span class="arch-stack">Flutter · Firebase · GoRouter</span>
+                        <span class="arch-status"><span class="ship-pill" data-status="shipped">Shipped</span></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M87.4 27.9L143.9 28.5Q153.7 28.0 154.6 36.3L153.3 163.6Q153.3 171.5 144.6 172.5L87.2 171.7Q78.1 172.2 77.5 163.8L78.4 37.9Q79.1 28.1 87.9 27.1ZM107.8 35.1Q115.8 35.6 124.5 35.9M86.7 48.9Q107.1 48.8 128.7 49.4M86.6 62.6Q101.1 63.3 116.4 61.1M86.2 73.4Q103.2 73.5 124.1 73.0M88.8 107.5L142.1 106.3Q146.7 107.7 146.5 112.3L147.0 137.1Q147.0 141.3 143.2 141.1L90.5 141.2Q85.9 142.2 85.8 138.5L85.2 112.2Q85.8 106.9 90.2 108.1ZM259.0 124.4C226.0 94.0 237.88 62 259.0 62C280.12 62 292.0 94.0 259.0 124.4ZM250.5 85.6C251.2 81.5 254.2 78.5 258.7 78.3S266.8 82.2 267.3 86.6S263.3 94.4 258.5 93.3S250.5 90.6 250.7 85.6M197.2 137.7C260.6 122.8 264.5 143.5 322.8 133.2M188.3 129.7C202.8 114.5 202.1 109.6 222.9 96.9"/><path class="bp-dot" d="M113.8 164.4C114.1 162.6 114.7 162.3 115.9 161.5S118.2 162.5 117.8 163.8S117.0 166.0 116.5 166.6S114.2 165.7 113.4 163.6"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">End-to-end food ordering and management app with a companion real-time admin panel, Firebase auth, Firestore sync, push notifications, and GetIt-wired architecture.</p>
+                            <p class="ship-line"><span class="ship-pill" data-status="shipped">Shipped <span data-ink="check"></span></span><time datetime="2023-08">Jun 2023 to Aug 2023</time><span class="ship-role">Contract developer</span></p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Firebase</li><li class="tag">GoRouter</li><li class="tag">Lottie</li></ul>
+                        </div>
                     </div>
-                    <h3>Medicare</h3>
-                    <p>Healthcare management system with patient registration, login, appointment booking, and schedule
-                        management on PHP + Supabase.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/medicare" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+                </details>
 
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Campus Cultural,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Angular</span>
-                        <span class="tag">Express</span>
-                        <span class="tag">PostgreSQL</span>
+                <details class="role arch-row" id="project-donman" data-category="client">
+                    <summary class="role-head arch-head">
+                        <span class="arch-year">2023</span>
+                        <span class="arch-name"><span class="arch-title">Donman</span><span class="arch-kicker">Private client build</span></span>
+                        <span class="arch-role">Private client build</span>
+                        <span class="arch-stack">Flutter · Provider</span>
+                        <span class="arch-status"></span>
+                        <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <div class="role-body arch-body">
+                        <div class="arch-cover" aria-hidden="true"><svg class="case-card-blueprint" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="bp-ink" d="M132.7 29.6L186.7 31.0Q195.9 29.7 197.5 39.4L195.3 161.9Q196.9 170.3 187.4 170.4L131.9 169.1Q124.1 169.5 122.6 161.7L123.0 39.0Q123.0 30.1 132.4 30.1ZM151.6 36.4Q160.3 37.4 167.9 37.6M131.7 50.8Q152.4 53.3 172.1 52.5M131.5 63.3Q144.2 64.0 160.6 65.1M130.8 76.6Q148.7 76.7 167.4 76.3M135.7 107.4L185.9 107.9Q188.9 107.6 188.8 110.9L190.4 135.8Q189.0 140.4 185.8 141.1L135.2 140.0Q130.5 141.1 129.4 137.1L131.0 109.9Q130.5 106.9 134.9 106.6Z"/><path class="bp-dot" d="M157.3 162.0C158.2 160.6 159.0 159.4 159.5 159.9S161.9 160.5 162.0 161.9S161.5 164.2 160.3 164.3S158.3 162.8 158.3 162.1"/></svg></div>
+                        <div class="arch-detail">
+                            <p class="arch-pitch">Flutter app with Provider state management built for a service-marketplace concept.</p>
+                            <ul class="case-card-tags" aria-label="Built with"><li class="tag">Flutter</li><li class="tag">Provider</li></ul>
+                        </div>
                     </div>
-                    <h3>Campus Cultural Platform</h3>
-                    <p>Multi-module Angular application with an Express server and PostgreSQL, built for campus
-                        cultural events.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/campus_cultural_platform" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
+                </details>
                 </div>
-            </article>
-
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Within, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Social</span>
-                    </div>
-                    <h3>Within</h3>
-                    <p>Social connection app in Flutter with a full app/backend/frontend/testing structure.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/within" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Event Booking,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Multi-platform</span>
-                    </div>
-                    <h3>Event Booking</h3>
-                    <p>Event booking system with admin, client, and customer apps, one Flutter codebase targeting
-                        Android, iOS, Linux, macOS, Windows, and web.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/event_booking" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">DriveNotes, Preview</span>
-                </div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">Flutter</span>
-                        <span class="tag">Google Drive API</span>
-                    </div>
-                    <h3>DriveNotes</h3>
-                    <p>Secure notes app storing CRUD notes in your own Google Drive, feature-based architecture, your
-                        data stays yours.</p>
-                    <div class="project-card-links">
-                        <a href="https://github.com/jayptl-me/drivenotes" target="_blank" rel="noopener"
-                            class="card-link">View on GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="project-card" data-category="opensource">
-                <div class="project-card-media"><span class="project-card-placeholder-label">Cross Suite,
-                        Preview</span></div>
-                <div class="project-card-body">
-                    <div class="project-card-tags">
-                        <span class="tag">TypeScript</span>
-                        <span class="tag">Chrome Extension</span>
-                        <span class="tag">Web + Mobile</span>
-                    </div>
-                    <h3>Cross Suite</h3>
-                    <p>The Cross ecosystem: Cross-Check-Web (TypeScript), cross-net-extension (Chrome extension), and
-                        the cross-access mobile app, one concept across web, browser, and pocket.</p>
-                    <div class="project-card-links"><span class="card-link-muted">Experimental builds</span></div>
-                </div>
-            </article>
-
-        </section>
+            </section>
+        </div>
 
         <p class="projects-empty" id="projectsEmpty" hidden>No suits match that filter. Try another category.</p>
 
@@ -717,6 +670,23 @@
             <p class="hand hand--lg">Want the story behind any of these? <a href="/about">Meet Jay</a></p>
         </footer>
     </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
@@ -729,7 +699,24 @@
     <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/pointer-play.js"></script>
+    <script defer src="/js/components/stretch-rail.js"></script>
+    <script defer src="/js/components/role-ledger.js"></script>
     <script defer src="/js/components/projects-filter.js"></script>
+    <script defer src="/js/components/archive-peek.js"></script>
 </body>
 
 </html>

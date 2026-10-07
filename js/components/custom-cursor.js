@@ -154,7 +154,7 @@ class CustomCursor {
                 }
                 // One closest() pass for both states (no layout reads).
                 const interactive = t.closest
-                    ? t.closest('a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close')
+                    ? t.closest('a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .pill-btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close')
                     : null;
                 if (interactive) {
                     this.setHoverState(true);
@@ -216,7 +216,7 @@ class CustomCursor {
     isInteractiveElement(element) {
         // Check if element is interactive, guard against non-Elements and walk up DOM
         if (!(element instanceof Element)) return false;
-        const selector = 'a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close';
+        const selector = 'a, button, [role="button"], .clickable, input[type="button"], input[type="submit"], .btn, .pill-btn, .consent-btn, .consent-dialog-btn, .consent-settings-toggle, .consent-settings-dialog-close';
         return !!element.closest(selector);
     }
 

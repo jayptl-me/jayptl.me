@@ -1,0 +1,46 @@
+/* ==========================================================================
+   SKILL LANES: grouped Stack Chips (resume skills, /uses). Static.
+   ========================================================================== */
+
+.skill-lanes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.skill-lane {
+  padding: var(--space-4);
+  border: 1px solid var(--sf-border);
+  border-radius: 16px;
+  background: var(--sf-pill);
+}
+
+.skill-lane h3 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sf-accent);
+}
+
+.skill-lane ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.skill-lane li:not(:has(.stack-chip)) {
+  padding: 0 0.42em;
+  border-radius: 7px;
+  border: 1px dashed var(--sf-border);
+  line-height: 1.45;
+}
+
+.skill-lane li + li {
+  margin-top: 0;
+}

@@ -337,14 +337,15 @@
         return chain;
     }
 
-    function swapBody(doc) {
+    function swapBody(doc, visible) {
         var freshMain = doc.querySelector('main');
         var liveMain = document.querySelector('main');
         if (!freshMain || !liveMain) return false;
         var imported = document.importNode(freshMain, true);
         try {
-            // Fresh content starts hidden for the staged entry.
-            imported.classList.add('pt-swapped');
+            // Fresh content starts hidden for the staged entry, except under
+            // a card-to-cover morph, whose snapshot must see the page.
+            if (!visible) imported.classList.add('pt-swapped');
         } catch (e) { /* noop */ }
         liveMain.parentNode.replaceChild(imported, liveMain);
         try {
@@ -529,6 +530,76 @@
         return Promise.resolve();
     }
 
+    /* ---- Card to Cover (docs/motion-zen.md section 6a, 520ms) ----------
+       A project card with data-morph grows into the case study's hero
+       ([data-morph-target]) through a same-document view transition, and
+       its title morphs into the page title. Every other navigation, and
+       every browser without view transitions, keeps the pixel veil. */
+    var MORPH_NAMES = ['case-cover', 'case-title'];
+
+    function canMorph() {
+        return typeof document.startViewTransition === 'function' && !reduceMotion();
+    }
+
+    function morphSource(anchor) {
+        try {
+            var card = anchor.closest('[data-morph]');
+            if (!card) return null;
+            return { card: card, title: card.querySelector('h3, [data-morph-title]') };
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function nameMorph(parts) {
+        if (!parts) return;
+        if (parts.card) parts.card.style.viewTransitionName = MORPH_NAMES[0];
+        if (parts.title) parts.title.style.viewTransitionName = MORPH_NAMES[1];
+    }
+
+    function clearMorph(parts) {
+        if (!parts) return;
+        if (parts.card) parts.card.style.viewTransitionName = '';
+        if (parts.title) parts.title.style.viewTransitionName = '';
+    }
+
+    function morphSwap(doc, source) {
+        var html = document.documentElement;
+        html.classList.add('pt-morphing');
+        nameMorph(source);
+        var target = null;
+        var vt = document.startViewTransition(function () {
+            if (isHomeDocument(document)) teardownHome();
+            if (!swapBody(doc, true)) throw new Error('no-main');
+            var hero = document.querySelector('[data-morph-target]');
+            if (hero) {
+                target = { card: hero, title: hero.querySelector('h1') };
+                nameMorph(target);
+            }
+            syncHead(doc);
+            try { window.scrollTo(0, 0); } catch (e) { /* noop */ }
+            return syncPageStyles(doc).then(function () {
+                return loadMissingScripts(doc);
+            });
+        });
+        vt.finished.then(function () {
+            clearMorph(target);
+            html.classList.remove('pt-morphing');
+        }, function () {
+            clearMorph(target);
+            html.classList.remove('pt-morphing');
+        });
+        return vt.updateCallbackDone.then(function () { return doc; });
+    }
+
+    function settleMorphEntry() {
+        var html = document.documentElement;
+        html.classList.remove('pt-exiting', 'pt-covering', 'pt-entering', 'pt-uncovering');
+        html.classList.add('pt-entered');
+        var sw = document.querySelector('main.pt-swapped');
+        if (sw) sw.classList.remove('pt-swapped');
+    }
+
     function navigate(url, opts) {
         opts = opts || {};
         var push = opts.push !== false;
@@ -537,11 +608,14 @@
             window.location.assign(url);
             return Promise.resolve(false);
         }
+        var hash = '';
+        try { hash = new URL(url, window.location.href).hash || ''; } catch (e) { hash = ''; }
         if (navigating) return Promise.resolve(false);
         navigating = true;
         currentUrl = key;
 
-        var coverPromise = push ? cover() : Promise.resolve();
+        var morph = push && opts.morph && canMorph() ? opts.morph : null;
+        var coverPromise = push && !morph ? cover() : Promise.resolve();
         // Fetch starts immediately, in parallel with the cover, so hover-
         // prefetched (cached) destinations swap the moment the veil lands.
         var fetchPromise = fetchDocument(key);
@@ -550,6 +624,7 @@
             var doc = parseDocument(text);
             if (!doc) throw new Error('unparseable');
             if (isHomeDocument(doc)) throw new Error('home-entry');
+            if (morph) return morphSwap(doc, morph);
             if (isHomeDocument(document)) teardownHome();
             if (!swapBody(doc)) throw new Error('no-main');
             syncHead(doc);
@@ -561,7 +636,7 @@
         }).then(function (doc) {
             if (push) {
                 try {
-                    history.pushState({ router: true, y: 0 }, '', key);
+                    history.pushState({ router: true, y: 0 }, '', key + hash);
                 } catch (e) { /* noop */ }
             } else if (typeof opts.y === 'number') {
                 // popstate restores after paint
@@ -572,7 +647,16 @@
             try {
                 window.scrollTo(0, push ? 0 : (typeof opts.y === 'number' ? opts.y : 0));
             } catch (e) { /* noop */ }
-            stageEntry();
+            // Deep links (Command Deck project jumps) land on their target
+            // while the veil still covers the page.
+            if (push && hash.length > 1) {
+                try {
+                    var landing = document.getElementById(decodeURIComponent(hash.slice(1)));
+                    if (landing) landing.scrollIntoView({ block: 'start', behavior: 'instant' });
+                } catch (e) { /* noop */ }
+            }
+            if (morph) settleMorphEntry();
+            else stageEntry();
             focusContent(key);
             trackPageView(key);
             try {
@@ -607,7 +691,7 @@
                 state.y = window.scrollY || 0;
                 history.replaceState(state, '');
             } catch (err) { /* noop */ }
-            navigate(anchor.href, { push: true });
+            navigate(anchor.href, { push: true, morph: morphSource(anchor) });
         }, true);
     }
 

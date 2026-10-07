@@ -1,0 +1,80 @@
+/**
+ * Drawn line icons (UI system round, 2026-09-30). Brief: docs/motion-zen.md
+ * section 6b "Drawn Arrow".
+ *
+ * One stroke style for every arrow and link mark on the site: 1.8 stroke,
+ * round caps and joins, the same hand as the stack-chip icons. Each icon is
+ * a mask over currentColor, so it follows the text colour in both themes
+ * and needs no markup beyond an empty span:
+ *
+ *   <span class="arrow arrow--right" aria-hidden="true"></span>
+ *   <span class="line-icon line-icon--code-host" aria-hidden="true"></span>
+ *
+ * Arrows nudge along their own direction on hover (see buttons.css and the
+ * outside-link rule in base/typography.css). Reduced motion: static.
+ *
+ * @file components/line-icons.css
+ */
+
+.arrow,
+.line-icon {
+    display: inline-block;
+    flex: none;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    background-color: currentColor;
+    -webkit-mask: var(--icon-mask) center / contain no-repeat;
+            mask: var(--icon-mask) center / contain no-repeat;
+}
+
+.pill-btn .arrow,
+.pill-btn .line-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.arrow--right {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h9.5M8.5 4l4 4-4 4'/%3E%3C/svg%3E");
+}
+
+.arrow--up-right {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 11l6.5-6.5M6 4.5h5.5V10'/%3E%3C/svg%3E");
+}
+
+.arrow--down {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v9.5M4 8.5l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+.arrow--left {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 8H3.5M7.5 4l-4 4 4 4'/%3E%3C/svg%3E");
+}
+
+/* Profile marks, drawn in the same line hand. Neutral names by repo rule. */
+.line-icon--code-host {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 13.2c-3 .9-3-1.4-4.1-1.7M10 14.6v-2.3c0-.7.1-1.1-.3-1.5 1.9-.2 3.8-.9 3.8-4.1 0-.9-.3-1.6-.9-2.2.1-.2.4-1.1-.1-2.2 0 0-.7-.2-2.3.9a7.6 7.6 0 0 0-4 0C4.6 2.1 3.9 2.3 3.9 2.3c-.5 1.1-.2 2-.1 2.2-.6.6-.9 1.3-.9 2.2 0 3.2 1.9 3.9 3.8 4.1-.3.3-.4.7-.4 1.3v2.5'/%3E%3C/svg%3E");
+}
+
+.line-icon--pro-network {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2.2' y='2.2' width='11.6' height='11.6' rx='2.4'/%3E%3Cpath d='M5.2 7.2v4M5.2 5v.1M7.9 11.2V7.2M7.9 9c0-1.1.8-1.8 1.8-1.8s1.6.7 1.6 1.8v2.2'/%3E%3C/svg%3E");
+}
+
+.line-icon--model-hub {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M5.7 6.6v.2M10.3 6.6v.2M5.3 9.4c.7 1 1.6 1.5 2.7 1.5s2-.5 2.7-1.5'/%3E%3C/svg%3E");
+}
+
+.line-icon--mail {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='1.8' y='3.4' width='12.4' height='9.2' rx='1.6'/%3E%3Cpath d='M2.4 4.6 8 8.6l5.6-4'/%3E%3C/svg%3E");
+}
+
+.line-icon--globe {
+    --icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M2 8h12M8 2c1.7 1.8 2.5 3.8 2.5 6S9.7 12.2 8 14C6.3 12.2 5.5 10.2 5.5 8S6.3 3.8 8 2z'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arrow {
+        transition: none !important;
+        transform: none !important;
+    }
+}

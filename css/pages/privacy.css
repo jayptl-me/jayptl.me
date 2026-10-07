@@ -167,11 +167,13 @@
 }
 
 /* Privacy Actions */
+/* Card family material (matches .sf-card in components/surface.css). */
 .privacy-actions {
-    background: var(--theme-surface);
-    border: 1px solid var(--theme-border);
-    border-radius: var(--rounded-lg);
-    padding: var(--space-8);
+    background: var(--sf-pill);
+    border: 1px solid var(--sf-border);
+    border-radius: 20px;
+    box-shadow: var(--sf-pill-shadow);
+    padding: var(--space-6);
     margin-bottom: var(--space-12);
     max-width: 780px;
     margin-left: auto;
@@ -188,59 +190,16 @@
 
 .privacy-actions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--space-4);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
 }
 
-/* Footer */
-.privacy-footer {
-    background: var(--theme-surface);
-    border-top: 1px solid var(--theme-border);
-    padding: var(--space-8) 0;
-    margin-top: var(--space-12);
+.privacy-actions-grid .pill-btn {
+    width: 100%;
 }
 
-.privacy-footer-container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 var(--space-4);
-    text-align: center;
-}
-
-.privacy-footer .hand {
-    font-size: 1.25rem;
-    margin: 0 0 var(--space-2) 0;
-}
-
-.privacy-footer p {
-    color: var(--theme-text-secondary);
-    font-size: var(--text-sm);
-    margin: 0 0 var(--space-2) 0;
-    line-height: var(--leading-relaxed);
-}
-
-.privacy-footer p:last-child {
-    margin-bottom: 0;
-}
-
-.privacy-footer .hud-readout {
-    font-size: 0.8125rem;
-}
-
-.privacy-footer a {
-    text-decoration: none;
-    color: var(--theme-primary);
-    transition: color var(--duration-200) var(--ease-out);
-}
-
-.privacy-footer a:hover,
-.privacy-footer a:focus {
-    color: var(--theme-primary-hover);
-    text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Phones */
+@media (max-width: 599.98px) {
     .privacy-container {
         padding: var(--space-6) var(--space-4) var(--space-8);
     }

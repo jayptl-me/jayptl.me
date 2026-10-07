@@ -214,6 +214,20 @@ async function createHtaccess() {
     RewriteRule ^projects/genuinest$ pages/projects/genuinest.md [T=text/markdown; charset=utf-8,L]
     RewriteCond %{HTTP:Accept} text/markdown
     RewriteRule ^projects/vini-tini$ pages/projects/vini-tini.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^contact$ pages/contact.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^book$ pages/book.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^now$ pages/now.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^uses$ pages/uses.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^colophon$ pages/colophon.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^changelog$ pages/changelog.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^ai$ pages/ai.md [T=text/markdown; charset=utf-8,L]
 
     # Clean URLs - Rewrite to pages folder
     RewriteRule ^about$ /pages/about.html [L]
@@ -225,6 +239,13 @@ async function createHtaccess() {
   RewriteRule ^projects/swalook$ /pages/projects/swalook.html [L]
   RewriteRule ^projects/genuinest$ /pages/projects/genuinest.html [L]
   RewriteRule ^projects/vini-tini$ /pages/projects/vini-tini.html [L]
+  RewriteRule ^contact$ /pages/contact.html [L]
+  RewriteRule ^book$ /pages/book.html [L]
+  RewriteRule ^now$ /pages/now.html [L]
+  RewriteRule ^uses$ /pages/uses.html [L]
+  RewriteRule ^colophon$ /pages/colophon.html [L]
+  RewriteRule ^changelog$ /pages/changelog.html [L]
+  RewriteRule ^ai$ /pages/ai.html [L]
   
   # Legacy redirects
   RewriteRule ^about\\.html$ /pages/about.html [R=301,L]
@@ -341,6 +362,13 @@ async function createLlmsFull() {
     'pages/projects/swalook.md',
     'pages/projects/genuinest.md',
     'pages/projects/vini-tini.md',
+    'pages/contact.md',
+    'pages/book.md',
+    'pages/now.md',
+    'pages/uses.md',
+    'pages/colophon.md',
+    'pages/changelog.md',
+    'pages/ai.md',
     'pages/privacy.md'
   ];
 

@@ -8,6 +8,7 @@ body {
     margin: 0;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: var(--space-8);
@@ -52,7 +53,7 @@ body {
     max-width: 46ch;
 }
 
-.error-page .btn {
+.error-page .pill-btn {
     margin-bottom: var(--space-8);
 }
 
@@ -79,4 +80,24 @@ body {
 .error-doodle .doodle {
     width: 64px;
     height: 48px;
+}
+
+/* 2026-09-28: deck hint, you-are-here note, shared footer */
+.error-page .error-deck {
+    margin-left: var(--space-2);
+}
+
+.error-deck .kbd {
+    margin-left: 6px;
+}
+
+.error-page > p.error-here:not(.error-code):not(.error-footnote) {
+    margin: 0 0 var(--space-6);
+    font-size: 1.125rem;
+    color: var(--ink-hand);
+}
+
+body > .site-footer {
+    align-self: stretch;
+    margin: var(--space-10) calc(var(--space-8) * -1) calc(var(--space-8) * -1);
 }

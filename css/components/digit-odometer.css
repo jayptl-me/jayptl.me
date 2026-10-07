@@ -1,0 +1,38 @@
+/* ==========================================================================
+   DIGIT ODOMETER (js/components/digit-odometer.js) and TALLY ROLL
+   Mono tabular digits; reels roll with transform, 800ms snap.
+   ========================================================================== */
+
+.tally,
+.odometer {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.odo-face {
+  display: inline-flex;
+  vertical-align: bottom;
+}
+
+.odo-col {
+  display: inline-block;
+  height: 1.25em;
+  line-height: 1.25em;
+  overflow: hidden;
+}
+
+.odo-reel {
+  display: flex;
+  flex-direction: column;
+  transition: transform 800ms var(--ease-snap);
+}
+
+.odo-reel > span {
+  height: 1.25em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odo-reel {
+    transition: none;
+  }
+}

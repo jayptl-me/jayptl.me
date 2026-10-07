@@ -1,0 +1,91 @@
+/* ==========================================================================
+   SHIP STATUS LINE
+   One honest line on a project: status pill, date, and role. Static.
+
+   <p class="ship-line">
+     <span class="ship-pill" data-status="live">Live</span>
+     <time datetime="2025-12">Dec 2025 to now</time>
+     <span class="ship-role">Full-stack developer</span>
+   </p>
+
+   Statuses: live, shipped, building, archived. "Shipped" may carry the
+   hand check ink mark: <span data-ink="check"></span>.
+   ========================================================================== */
+
+.ship-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-text-dim);
+}
+
+.ship-line > * + *:not(.ship-pill)::before {
+  content: "·";
+  margin-right: 10px;
+  color: var(--sf-border);
+}
+
+.ship-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--sf-border);
+  color: var(--sf-text);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.ship-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sf-text-dim);
+}
+
+.ship-pill[data-status="live"]::before {
+  background: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+
+.ship-pill[data-status="shipped"]::before {
+  background: var(--sf-accent);
+}
+
+.ship-pill[data-status="building"]::before {
+  background: #d97706;
+}
+
+.ship-pill[data-status="archived"] {
+  color: var(--sf-text-dim);
+}
+
+html[data-theme="dark"] .ship-pill[data-status="live"]::before {
+  background: #2dd4bf;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18);
+}
+
+html[data-theme="dark"] .ship-pill[data-status="building"]::before {
+  background: #fbbf24;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ship-pill[data-status="live"]::before {
+    background: #2dd4bf;
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18);
+  }
+  :root:not([data-theme="light"]) .ship-pill[data-status="building"]::before {
+    background: #fbbf24;
+  }
+}
+
+.ship-line .ink--check {
+  margin-left: -4px;
+}

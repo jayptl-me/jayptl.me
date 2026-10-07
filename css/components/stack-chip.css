@@ -1,0 +1,84 @@
+/* ==========================================================================
+   STACK CHIP (js/components/stack-chip.js)
+   Inline tech name plus glyph. Hover lifts 1px; tooltip 180ms snap.
+   ========================================================================== */
+
+.stack-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0 0.42em;
+  margin: 0 0.06em;
+  border-radius: 7px;
+  background: var(--sf-row-hover);
+  color: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  vertical-align: baseline;
+  line-height: 1.45;
+  transition: transform var(--duration-fast) var(--ease-snap),
+              background var(--duration-fast) var(--ease-snap);
+}
+
+.stack-chip-icon {
+  width: 0.95em !important;
+  height: 0.95em !important;
+  flex: none;
+  color: var(--sf-accent);
+}
+
+.stack-chip[tabindex]:hover,
+.stack-chip[tabindex]:focus-visible {
+  transform: translateY(-1px);
+  background: var(--sf-row-active);
+}
+
+.stack-chip:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 2px;
+}
+
+.stack-chip-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: var(--z-tooltip);
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: var(--sf-panel);
+  border: 1px solid var(--sf-border);
+  box-shadow: var(--sf-shadow);
+  color: var(--sf-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 140ms var(--ease-snap);
+}
+
+.stack-chip:hover > .stack-chip-tip,
+.stack-chip:focus-visible > .stack-chip-tip {
+  opacity: 1;
+  transition: opacity 180ms var(--ease-snap);
+}
+
+.stack-chip.is-tip-dismissed > .stack-chip-tip {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-chip,
+  .stack-chip-tip,
+  .stack-chip:hover > .stack-chip-tip {
+    transition: none;
+  }
+  .stack-chip[tabindex]:hover,
+  .stack-chip[tabindex]:focus-visible {
+    transform: none;
+  }
+}

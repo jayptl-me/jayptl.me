@@ -81,7 +81,14 @@ const ROUTES = {
   '/projects/aviz-health': '/pages/projects/aviz-health.html',
   '/projects/swalook': '/pages/projects/swalook.html',
   '/projects/genuinest': '/pages/projects/genuinest.html',
-  '/projects/vini-tini': '/pages/projects/vini-tini.html'
+  '/projects/vini-tini': '/pages/projects/vini-tini.html',
+  '/contact': '/pages/contact.html',
+  '/book': '/pages/book.html',
+  '/now': '/pages/now.html',
+  '/uses': '/pages/uses.html',
+  '/colophon': '/pages/colophon.html',
+  '/changelog': '/pages/changelog.html',
+  '/ai': '/pages/ai.html'
 };
 
 // Legacy URLs, direct file paths, and uncanonical extensions -> 301 permanent redirect
@@ -119,7 +126,35 @@ const PERMANENT_REDIRECTS = {
   '/pages/projects/aviz-health.md': '/projects/aviz-health.md',
   '/pages/projects/swalook.md': '/projects/swalook.md',
   '/pages/projects/genuinest.md': '/projects/genuinest.md',
-  '/pages/projects/vini-tini.md': '/projects/vini-tini.md'
+  '/pages/projects/vini-tini.md': '/projects/vini-tini.md',
+  '/contact.html': '/contact',
+  '/pages/contact.html': '/contact',
+  '/pages/contact': '/contact',
+  '/pages/contact.md': '/contact.md',
+  '/book.html': '/book',
+  '/pages/book.html': '/book',
+  '/pages/book': '/book',
+  '/pages/book.md': '/book.md',
+  '/now.html': '/now',
+  '/pages/now.html': '/now',
+  '/pages/now': '/now',
+  '/pages/now.md': '/now.md',
+  '/uses.html': '/uses',
+  '/pages/uses.html': '/uses',
+  '/pages/uses': '/uses',
+  '/pages/uses.md': '/uses.md',
+  '/colophon.html': '/colophon',
+  '/pages/colophon.html': '/colophon',
+  '/pages/colophon': '/colophon',
+  '/pages/colophon.md': '/colophon.md',
+  '/changelog.html': '/changelog',
+  '/pages/changelog.html': '/changelog',
+  '/pages/changelog': '/changelog',
+  '/pages/changelog.md': '/changelog.md',
+  '/ai.html': '/ai',
+  '/pages/ai.html': '/ai',
+  '/pages/ai': '/ai',
+  '/pages/ai.md': '/ai.md'
 };
 
 function getCanonicalRedirect(pathname) {
@@ -148,7 +183,14 @@ const MD_ROUTES = {
   '/projects/aviz-health.md': '/pages/projects/aviz-health.md',
   '/projects/swalook.md': '/pages/projects/swalook.md',
   '/projects/genuinest.md': '/pages/projects/genuinest.md',
-  '/projects/vini-tini.md': '/pages/projects/vini-tini.md'
+  '/projects/vini-tini.md': '/pages/projects/vini-tini.md',
+  '/contact.md': '/pages/contact.md',
+  '/book.md': '/pages/book.md',
+  '/now.md': '/pages/now.md',
+  '/uses.md': '/pages/uses.md',
+  '/colophon.md': '/pages/colophon.md',
+  '/changelog.md': '/pages/changelog.md',
+  '/ai.md': '/pages/ai.md'
 };
 
 const AGENT_DOCS_URL = 'https://jayptl.me/llms.txt';

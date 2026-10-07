@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Colophon: how jayptl.me is made | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/colophon" />
+    <link rel="alternate" type="text/markdown" href="/colophon.md" title="Markdown version of this page" />
+    <meta name="description" content="How jayptl.me is built: hand-written HTML, CSS and JS with no frameworks, two themes, one motion law, synthesized sound, a strict CSP, and a tiny API." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/colophon" />
+    <meta property="og:title" content="Colophon, jayptl.me" />
+    <meta property="og:description" content="How jayptl.me is built: hand-written HTML, CSS and JS with no frameworks, two themes, one motion law, synthesized sound, a strict CSP, and a tiny API." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Colophon, jayptl.me" />
+    <meta name="twitter:description" content="How jayptl.me is built: hand-written HTML, CSS and JS with no frameworks, two themes, one motion law, synthesized sound, a strict CSP, and a tiny API." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts are self-hosted; loaded via /css/main.css (fonts-local.css) -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/about.css" />
+    <link rel="stylesheet" href="/css/pages/slash.css" />
+
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
+    <script src="/js/theme-detection.js"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://jayptl.me/colophon#webpage",
+            "url": "https://jayptl.me/colophon",
+            "name": "Colophon: how jayptl.me is made | jayptl.me",
+            "description": "How jayptl.me is built: hand-written HTML, CSS and JS with no frameworks, two themes, one motion law, synthesized sound, a strict CSP, and a tiny API.",
+            "inLanguage": "en",
+            "isPartOf": {
+                "@id": "https://jayptl.me/#website"
+            },
+            "about": {
+                "@id": "https://jayptl.me/#person"
+            }
+        }
+    </script>
+</head>
+
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
+    <main class="about-page slash-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker hud-label">Colophon</p>
+            <h1>How this site is made.</h1>
+            <p class="page-hero-lead">Jay Patel's site, and every line of its HTML, CSS and JavaScript is <span data-ink="marker">hand-written</span>.
+                No framework, no UI kit, no CDN script. The design system page shows every token and component.</p>
+        </header>
+
+        <section aria-labelledby="colBuild">
+            <div class="section-head"><span class="section-no">01</span><h2 id="colBuild">Built with</h2></div>
+            <dl class="slash-facts">
+                <div><dt>Code</dt><dd>Plain HTML, CSS and JavaScript. Each component is one CSS file and one script, mounted again after every page swap.</dd></div>
+                <div><dt>Build</dt><dd>A small Node script copies the sources, minifies them, and writes one clean URL folder per page. The deploy fails if the build is older than any source file.</dd></div>
+                <div><dt>Type</dt><dd>Space Grotesk for display, IBM Plex Sans for reading, IBM Plex Mono for every number, Architects Daughter for the hand notes. All self-hosted.</dd></div>
+                <div><dt>Themes</dt><dd>Light is porcelain clay on a blue ramp; dark is liquid glass on a turquoise ramp. They never share a color.</dd></div>
+                <div><dt>Motion</dt><dd>One snap curve for everything. Exits are faster than entries, only transform and opacity move, and reduced motion always shows the finished page.</dd></div>
+                <div><dt>Sound</dt><dd>Every effect, the saber swoosh included, is synthesized live with the Web Audio API. Zero audio files. Off until you switch it on.</dd></div>
+                <div><dt>Privacy</dt><dd>A strict Content Security Policy with no inline scripts. Analytics load only after you say yes. The view counter needs no cookies.</dd></div>
+                <div><dt>Hosting</dt><dd>A static site on Render's CDN. A separate small API, written with no dependencies, counts views and books calls.</dd></div>
+                <div><dt>For machines</dt><dd>Every page has a markdown twin, plus <a href="/llms.txt">llms.txt</a>, <a href="/openapi.json">openapi.json</a> and <a href="/humans.txt">humans.txt</a>.</dd></div>
+            </dl>
+        </section>
+
+        <section id="uptime" aria-labelledby="colUptime">
+            <div class="section-head"><span class="section-no">02</span><h2 id="colUptime">API uptime</h2></div>
+            <p>The API's own health, measured once a minute, shown whenever the API is reachable.</p>
+            <div class="uptime-strip" data-component="uptime-strip" hidden></div>
+        </section>
+
+        <section aria-labelledby="colCadence">
+            <div class="section-head"><span class="section-no">03</span><h2 id="colCadence">Shipping cadence</h2></div>
+            <figure class="commit-field" data-component="commit-field">
+                <figcaption>GitHub contributions over the last 12 months, saved when the site was built.</figcaption>
+            </figure>
+        </section>
+
+        <section aria-labelledby="colLatest">
+            <div class="section-head"><span class="section-no">04</span><h2 id="colLatest">Latest changes</h2></div>
+            <ol class="change-feed" data-component="change-feed">
+                <li><time datetime="2026-09-28">Sep 28, 2026</time><p>Command Deck (Cmd K), eased mouse-wheel scrolling, the bottom blur band, twelve new ink marks, and seven new pages.</p></li>
+                <li><time datetime="2026-09-27">Sep 27, 2026</time><p>Seven role-cut resume PDFs, and the hero's opening and closing lines locked.</p></li>
+                <li><time datetime="2026-09-25">Sep 25, 2026</time><p>Calmer hover menus in the navbar, and every leftover animation moved onto the one motion curve.</p></li>
+            </ol>
+            <p class="slash-more hud-readout"><a href="/changelog">Full changelog</a></p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
+    <script defer src="/js/components/page-router.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/sound-manager.js"></script>
+    <script defer src="/js/components/audio-toggle.js"></script>
+    <script defer src="/js/components/audio-score.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/tally-roll.js"></script>
+    <script defer src="/js/components/commit-field.js"></script>
+    <script defer src="/js/components/change-feed.js"></script>
+</body>
+
+</html>

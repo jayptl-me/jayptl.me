@@ -1,0 +1,99 @@
+/* ==========================================================================
+   EDGE BLUR (js/components/edge-blur.js)
+   Static bottom band: five layers with doubling blur, each masked to its
+   own slice, so the blur ramps toward the edge. The one allowed filter
+   (motion-zen ruling 2026-09-28): never animated, only faded away.
+   Height steps by breakpoint, capped at 10vh.
+   ========================================================================== */
+
+.edge-blur {
+  --edge-h: 48px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(var(--edge-h), 10vh);
+  z-index: var(--z-sticky);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 180ms var(--ease-snap);
+}
+
+@media (min-width: 600px)  { .edge-blur { --edge-h: 60px; } }
+@media (min-width: 861px)  { .edge-blur { --edge-h: 72px; } }
+@media (min-width: 1441px) { .edge-blur { --edge-h: 88px; } }
+@media (min-width: 1921px) { .edge-blur { --edge-h: 96px; } }
+
+.edge-blur.is-away {
+  opacity: 0;
+}
+
+.edge-blur-layer,
+.edge-blur-tint {
+  position: absolute;
+  inset: 0;
+}
+
+/* Layer i covers slices i..i+2 of six, blur doubles each step:
+   0.5, 1, 2, 4, 8px. */
+.edge-blur-layer {
+  --step: calc(100% / 6);
+  -webkit-backdrop-filter: blur(calc(0.5px * pow(2, var(--i))));
+  backdrop-filter: blur(calc(0.5px * pow(2, var(--i))));
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent calc(var(--step) * var(--i)),
+    #000 calc(var(--step) * (var(--i) + 1)),
+    #000 calc(var(--step) * (var(--i) + 2)),
+    transparent calc(var(--step) * (var(--i) + 3)));
+  mask-image: linear-gradient(to bottom,
+    transparent calc(var(--step) * var(--i)),
+    #000 calc(var(--step) * (var(--i) + 1)),
+    #000 calc(var(--step) * (var(--i) + 2)),
+    transparent calc(var(--step) * (var(--i) + 3)));
+}
+
+/* Browsers without pow(): fixed values per layer. */
+@supports not (width: calc(1px * pow(2, 1))) {
+  .edge-blur-layer:nth-child(1) { -webkit-backdrop-filter: blur(0.5px); backdrop-filter: blur(0.5px); }
+  .edge-blur-layer:nth-child(2) { -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }
+  .edge-blur-layer:nth-child(3) { -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+  .edge-blur-layer:nth-child(4) { -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .edge-blur-layer:nth-child(5) { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+}
+
+/* The last layer reaches the edge at full strength. */
+.edge-blur-layer:nth-child(5) {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 66%, #000 83%);
+  mask-image: linear-gradient(to bottom, transparent 66%, #000 83%);
+}
+
+/* Porcelain fog in light, glass tint in dark. */
+.edge-blur-tint {
+  background: linear-gradient(to bottom, transparent, var(--sf-fog));
+}
+
+/* Touch devices: three layers are enough and cheaper. */
+@media (pointer: coarse) {
+  .edge-blur-layer:nth-child(1),
+  .edge-blur-layer:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .edge-blur {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge-blur {
+    transition: none;
+  }
+}
+
+@media print {
+  .edge-blur {
+    display: none;
+  }
+}

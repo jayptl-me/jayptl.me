@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Book a 15 minute call with Jay Patel | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/book" />
+    <link rel="alternate" type="text/markdown" href="/book.md" title="Markdown version of this page" />
+    <meta name="description" content="Pick a 15 minute slot on Jay Patel's calendar. The Google Meet link arrives by email 15 minutes before the call." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/book" />
+    <meta property="og:title" content="Book a call with Jay Patel" />
+    <meta property="og:description" content="Pick a 15 minute slot on Jay Patel's calendar. The Google Meet link arrives by email 15 minutes before the call." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Book a call with Jay Patel" />
+    <meta name="twitter:description" content="Pick a 15 minute slot on Jay Patel's calendar. The Google Meet link arrives by email 15 minutes before the call." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts are self-hosted; loaded via /css/main.css (fonts-local.css) -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/about.css" />
+    <link rel="stylesheet" href="/css/pages/slash.css" />
+
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
+    <script src="/js/theme-detection.js"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://jayptl.me/book#webpage",
+            "url": "https://jayptl.me/book",
+            "name": "Book a 15 minute call with Jay Patel | jayptl.me",
+            "description": "Pick a 15 minute slot on Jay Patel's calendar. The Google Meet link arrives by email 15 minutes before the call.",
+            "inLanguage": "en",
+            "isPartOf": {
+                "@id": "https://jayptl.me/#website"
+            },
+            "about": {
+                "@id": "https://jayptl.me/#person"
+            }
+        }
+    </script>
+</head>
+
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
+    <main class="about-page slash-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker hud-label">Book a call</p>
+            <h1>Fifteen minutes, <span data-ink="squiggle">no slides</span>.</h1>
+            <p class="page-hero-lead">Pick a slot and leave your name and email. Google sends the invite right away,
+                and the Meet link lands in your inbox 15 minutes before we start.</p>
+        </header>
+
+        <section class="book" id="bookPage" data-component="slot-picker" aria-labelledby="bookTitle">
+            <h2 class="sr-only" id="bookTitle">Pick a time</h2>
+
+            <div class="book-off">
+                <p class="book-off-lead">Online booking opens soon. Until then, email
+                    <a href="mailto:hello@jayptl.me?subject=15%20minute%20call">hello@jayptl.me</a> with two or three
+                    times that suit you, and your time zone.</p>
+                <div class="talk-chip">
+                    <a class="talk-chip-book pill-btn pill-btn--filled" href="mailto:hello@jayptl.me?subject=15%20minute%20call">Email to book</a>
+                    <button class="talk-chip-copy pill-btn pill-btn--outline" type="button" data-copy="hello@jayptl.me">Copy email</button>
+                </div>
+            </div>
+
+            <div class="book-on" hidden>
+                <fieldset class="slot-field">
+                    <legend class="hud-label">1 · Pick a day</legend>
+                    <div class="slot-days"></div>
+                </fieldset>
+                <fieldset class="slot-field">
+                    <legend class="hud-label">2 · Pick a time</legend>
+                    <p class="slot-tz hud-readout"></p>
+                    <div class="slot-times"></div>
+                </fieldset>
+
+                <form class="book-form" hidden novalidate>
+                    <p class="hud-label">3 · Who is coming</p>
+                    <p class="book-picked hand hand--md"></p>
+                    <label class="book-label">Name <input name="name" type="text" autocomplete="name" required maxlength="80" /></label>
+                    <label class="book-label">Email <input name="email" type="email" autocomplete="email" required maxlength="120" /></label>
+                    <label class="book-label">What should we talk about? <span class="book-optional">optional</span>
+                        <textarea name="note" rows="3" maxlength="500"></textarea></label>
+                    <div class="book-trap" aria-hidden="true"><label>Company <input name="company" type="text" tabindex="-1" autocomplete="off" /></label></div>
+                    <button class="pill-btn pill-btn--filled clay-glare" type="submit">Book it</button>
+                    <p class="book-fine hud-readout">Your details are kept until 30 days after the call, then deleted. <a href="/privacy#booking">Privacy</a></p>
+                </form>
+            </div>
+
+            <p class="book-status" role="status" aria-live="polite"></p>
+
+            <div class="book-done" hidden tabindex="-1">
+                <p class="hud-label">Booked <span data-ink="check"></span></p>
+                <p class="book-when-line">See you <strong class="book-when"></strong>.</p>
+                <p>Google has emailed you the invite. The Meet link follows 15 minutes before the start.</p>
+                <p class="book-fine hud-readout">Plans changed? <a class="book-cancel-link" href="/book">Cancel this call</a>. The same link is in your invite.</p>
+            </div>
+
+            <div class="book-cancel" hidden>
+                <p class="book-cancel-msg">Cancel your call? The invite disappears from both calendars.</p>
+                <button class="pill-btn pill-btn--outline" type="button" data-hold-confirm>Hold to cancel it</button>
+            </div>
+        </section>
+
+        <section aria-labelledby="bookHow">
+            <div class="section-head"><span class="section-no">01</span><h2 id="bookHow">How it works</h2></div>
+            <ol class="slash-list">
+                <li><strong>Pick a slot.</strong> Open times come straight from Jay Patel's calendar, two weeks ahead, with at least two hours' notice.</li>
+                <li><strong>Leave a name and email.</strong> Google sends you a calendar invite right away.</li>
+                <li><strong>Get the link.</strong> The Google Meet link lands in your inbox, as an updated invite, 15 minutes before the start.</li>
+                <li><strong>Plans change.</strong> Cancel from the link in your invite or on your confirmation screen, or just decline the invite.</li>
+            </ol>
+            <p>Prefer email? Write to <a href="mailto:hello@jayptl.me">hello@jayptl.me</a>. Your booking details are deleted 30 days after the call; see <a href="/privacy#booking">privacy</a>.</p>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
+    <script defer src="/js/components/page-router.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/sound-manager.js"></script>
+    <script defer src="/js/components/audio-toggle.js"></script>
+    <script defer src="/js/components/audio-score.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/slot-picker.js"></script>
+</body>
+
+</html>

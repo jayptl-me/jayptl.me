@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Changelog | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/changelog" />
+    <link rel="alternate" type="text/markdown" href="/changelog.md" title="Markdown version of this page" />
+    <meta name="description" content="Dated updates to jayptl.me: new pages, components, motion and design rulings." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/changelog" />
+    <meta property="og:title" content="Changelog, jayptl.me" />
+    <meta property="og:description" content="Dated updates to jayptl.me: new pages, components, motion and design rulings." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Changelog, jayptl.me" />
+    <meta name="twitter:description" content="Dated updates to jayptl.me: new pages, components, motion and design rulings." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts are self-hosted; loaded via /css/main.css (fonts-local.css) -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/about.css" />
+    <link rel="stylesheet" href="/css/pages/slash.css" />
+
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
+    <script src="/js/theme-detection.js"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://jayptl.me/changelog#webpage",
+            "url": "https://jayptl.me/changelog",
+            "name": "Changelog | jayptl.me",
+            "description": "Dated updates to jayptl.me: new pages, components, motion and design rulings.",
+            "inLanguage": "en",
+            "isPartOf": {
+                "@id": "https://jayptl.me/#website"
+            },
+            "about": {
+                "@id": "https://jayptl.me/#person"
+            }
+        }
+    </script>
+</head>
+
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
+    <main class="about-page slash-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker hud-label">Changelog</p>
+            <h1>What changed, and when.</h1>
+            <p class="page-hero-lead">Updates to Jay Patel's site, newest first. The design decisions behind them live in the
+                <a href="/design-system">design system</a>.</p>
+        </header>
+
+        <section aria-labelledby="clList">
+            <h2 class="sr-only" id="clList">Updates</h2>
+            <ol class="change-feed" data-component="change-feed">
+                <li><time datetime="2026-09-28">Sep 28, 2026</time>
+                    <p><strong>The big one.</strong> A Command Deck on Cmd K, eased mouse-wheel scrolling, a static blur band at the bottom edge, a desktop control dock, and twelve new hand-drawn ink marks.</p>
+                    <p>New pages: <a href="/contact">contact</a>, <a href="/book">book a call</a>, <a href="/now">now</a>, <a href="/uses">uses</a>, <a href="/colophon">colophon</a>, <a href="/ai">AI</a>, and this changelog.</p>
+                    <p>Experience rows you can open, a year of commits as a grid, status lines on the project cards I can vouch for, and a few toys on the About page.</p></li>
+                <li><time datetime="2026-09-27">Sep 27, 2026</time>
+                    <p>Seven one-page resume PDFs, one per role. The hero reveal's first and last lines are locked for good.</p></li>
+                <li><time datetime="2026-09-25">Sep 25, 2026</time>
+                    <p>Navbar menus open on a calm hover and close when you move on. Every leftover animation moved onto the single snap curve; bouncy and infinite loops removed.</p></li>
+                <li><time datetime="2026-09-20">Sep 20, 2026</time>
+                    <p>The motion law: one curve, exits faster than entries, content swaps only while hidden, reduced motion shows the finished page.</p></li>
+                <li><time datetime="2026-09-16">Sep 16, 2026</time>
+                    <p>The redesign's taste written down: two themes that never mix, four type voices, hand-drawn doodles with HUD accents, and analytics only with consent.</p></li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
+    <script defer src="/js/components/page-router.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/sound-manager.js"></script>
+    <script defer src="/js/components/audio-toggle.js"></script>
+    <script defer src="/js/components/audio-score.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/change-feed.js"></script>
+</body>
+
+</html>

@@ -102,6 +102,50 @@ services:
       - type: rewrite
         source: /projects/vini-tini
         destination: /projects/vini-tini/index.html
+      - type: rewrite
+        source: /contact
+        destination: /contact/index.html
+      - type: rewrite
+        source: /book
+        destination: /book/index.html
+      - type: rewrite
+        source: /now
+        destination: /now/index.html
+      - type: rewrite
+        source: /uses
+        destination: /uses/index.html
+      - type: rewrite
+        source: /colophon
+        destination: /colophon/index.html
+      - type: rewrite
+        source: /changelog
+        destination: /changelog/index.html
+      - type: rewrite
+        source: /ai
+        destination: /ai/index.html
+      # Stable public resume URLs (/resumes/<track>.pdf) served from assets/resumes/.
+      # Explicit per-track rewrites: static hosting does not run scripts/server.js.
+      - type: rewrite
+        source: /resumes/fde.pdf
+        destination: /assets/resumes/fde.pdf
+      - type: rewrite
+        source: /resumes/fullstack.pdf
+        destination: /assets/resumes/fullstack.pdf
+      - type: rewrite
+        source: /resumes/frontend.pdf
+        destination: /assets/resumes/frontend.pdf
+      - type: rewrite
+        source: /resumes/backend.pdf
+        destination: /assets/resumes/backend.pdf
+      - type: rewrite
+        source: /resumes/mobile.pdf
+        destination: /assets/resumes/mobile.pdf
+      - type: rewrite
+        source: /resumes/ai.pdf
+        destination: /assets/resumes/ai.pdf
+      - type: rewrite
+        source: /resumes/web3.pdf
+        destination: /assets/resumes/web3.pdf
       # Legacy .html 301 redirects to clean URLs
       - type: redirect
         source: /about.html
@@ -118,6 +162,27 @@ services:
       - type: redirect
         source: /projects.html
         destination: /projects
+      - type: redirect
+        source: /contact.html
+        destination: /contact
+      - type: redirect
+        source: /book.html
+        destination: /book
+      - type: redirect
+        source: /now.html
+        destination: /now
+      - type: redirect
+        source: /uses.html
+        destination: /uses
+      - type: redirect
+        source: /colophon.html
+        destination: /colophon
+      - type: redirect
+        source: /changelog.html
+        destination: /changelog
+      - type: redirect
+        source: /ai.html
+        destination: /ai
       # Direct /pages/ path redirects to canonical clean URLs
       - type: redirect
         source: /pages/about.html
@@ -146,3 +211,24 @@ services:
       - type: redirect
         source: /pages/projects/vini-tini.html
         destination: /projects/vini-tini
+      - type: redirect
+        source: /pages/contact.html
+        destination: /contact
+      - type: redirect
+        source: /pages/book.html
+        destination: /book
+      - type: redirect
+        source: /pages/now.html
+        destination: /now
+      - type: redirect
+        source: /pages/uses.html
+        destination: /uses
+      - type: redirect
+        source: /pages/colophon.html
+        destination: /colophon
+      - type: redirect
+        source: /pages/changelog.html
+        destination: /changelog
+      - type: redirect
+        source: /pages/ai.html
+        destination: /ai

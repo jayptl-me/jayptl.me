@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>How Jay Patel works with AI | jayptl.me</title>
+    <link rel="canonical" href="https://jayptl.me/ai" />
+    <link rel="alternate" type="text/markdown" href="/ai.md" title="Markdown version of this page" />
+    <meta name="description" content="Jay Patel builds small language models from scratch and uses AI assistants daily, with clear lines on what AI never touches." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayptl.me/ai" />
+    <meta property="og:title" content="AI, Jay Patel" />
+    <meta property="og:description" content="Jay Patel builds small language models from scratch and uses AI assistants daily, with clear lines on what AI never touches." />
+    <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AI, Jay Patel" />
+    <meta name="twitter:description" content="Jay Patel builds small language models from scratch and uses AI assistants daily, with clear lines on what AI never touches." />
+    <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+    <!-- Fonts are self-hosted; loaded via /css/main.css (fonts-local.css) -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/pages/about.css" />
+    <link rel="stylesheet" href="/css/pages/slash.css" />
+
+    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
+    <script src="/js/theme-detection.js"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://jayptl.me/ai#webpage",
+            "url": "https://jayptl.me/ai",
+            "name": "How Jay Patel works with AI | jayptl.me",
+            "description": "Jay Patel builds small language models from scratch and uses AI assistants daily, with clear lines on what AI never touches.",
+            "inLanguage": "en",
+            "isPartOf": {
+                "@id": "https://jayptl.me/#website"
+            },
+            "about": {
+                "@id": "https://jayptl.me/#person"
+            }
+        }
+    </script>
+</head>
+
+<body data-transition="pixels">
+    <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
+    <main class="about-page slash-page">
+        <header class="page-hero">
+            <p class="page-hero-kicker hud-label">AI</p>
+            <h1>I build it, and I use it.</h1>
+            <p class="page-hero-lead">Two halves of the same habit: training small models to understand how they work,
+                and using assistants every day without letting them own the decisions.</p>
+        </header>
+
+        <section aria-labelledby="aiBuild">
+            <div class="section-head"><span class="section-no">01</span><h2 id="aiBuild">What I build</h2></div>
+            <ul class="slash-list">
+                <li><strong>Vini</strong>, a ~50M BitNet b1.58 edge assistant, pretrained from scratch on ~1.05B tokens; instruction tuning in progress.</li>
+                <li><strong>Tini</strong>, an ~85M dense TypeScript model trained for about 46 hours on a single T4; weights not public yet. Vini's model card is on <a href="https://huggingface.co/jayptl-rq" target="_blank" rel="noopener noreferrer">Hugging Face</a>.</li>
+                <li><strong>A self-hosted agent stack</strong>: local inference, n8n workflows wired to MCP tool servers, and RAG over Qdrant and Chroma.</li>
+                <li><strong>AI inside client products</strong>, like provider matching and compliance insights at Thhiya.</li>
+            </ul>
+            <p><a href="/projects/vini-tini">Read the Vini and Tini case study</a></p>
+        </section>
+
+        <section aria-labelledby="aiUse">
+            <div class="section-head"><span class="section-no">02</span><h2 id="aiUse">How I use it</h2></div>
+            <p>Assistants are in my editor and terminal every day. They are good at first drafts, repetitive
+                refactors, test scaffolding, reading unfamiliar code with me, and research I then verify.</p>
+        </section>
+
+        <section aria-labelledby="aiNever">
+            <div class="section-head"><span class="section-no">03</span><h2 id="aiNever">What I never hand to it</h2></div>
+            <ul class="slash-list">
+                <li><span data-ink="check"></span> <strong>Client data and secrets.</strong> Keys, tokens, customer records and private code stay out of any tool that is not cleared for them.</li>
+                <li><span data-ink="check"></span> <strong>Architecture sign-off.</strong> An assistant can argue a design with me; the decision and its trade-offs are mine.</li>
+                <li><span data-ink="check"></span> <strong>Security calls.</strong> Auth, permissions and payment flows get human review, line by line.</li>
+                <li><span data-ink="check"></span> <strong>Code I have not read.</strong> Nothing ships under my name that I could not explain in a review.</li>
+                <li><span data-ink="check"></span> <strong>Claims I cannot back.</strong> Numbers on this site and my resume are ones I can show.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load universal navbar and components -->
+    <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/pixel-swap.js"></script>
+    <script defer src="/js/components/page-transition.js"></script>
+    <script defer src="/js/components/page-router.js"></script>
+    <script defer src="/js/components/theme-toggle.js"></script>
+    <script defer src="/js/components/sound-manager.js"></script>
+    <script defer src="/js/components/audio-toggle.js"></script>
+    <script defer src="/js/components/audio-score.js"></script>
+    <script defer src="/js/components/custom-cursor.js"></script>
+    <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+</body>
+
+</html>

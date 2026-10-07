@@ -1,492 +1,309 @@
 /**
- * Button Components
- * Skeuomorphic (light) / Glassmorphic (dark) button system
- * 
+ * Pill family: the one button component (UI system round, 2026-09-30).
+ * Grown from the "Book 15 min" pill. Brief: docs/motion-zen.md section 6b.
+ *
+ *   <a class="pill-btn pill-btn--filled" href="/book">Book 15 min</a>
+ *   <button class="pill-btn pill-btn--outline" type="button">Copy email</button>
+ *   <a class="pill-btn pill-btn--quiet" href="/projects/genuinest">
+ *     Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
+ *
+ * Heights by tier: 48 phone (< 600), 44 tablet (600 to 1023),
+ * 40 laptop and wide (1024+).
+ * States: hover (fine pointers only), pressed and held (.is-pressed from
+ * js/components/press-state.js, :active as the no-script fallback),
+ * focus-visible, disabled (:disabled or aria-disabled), loading
+ * (aria-busy, width locked by script), success (.is-ok), error (.is-bad),
+ * hold to confirm ([data-hold-confirm]). Materials come from the shared
+ * surface tokens, so light is clay on the blue ramp and dark is glass on
+ * the turquoise ramp without theme selectors here, except the filled look.
+ *
  * @file components/buttons.css
  */
 
-/* ==========================================================================
-   BASE BUTTON
-   ========================================================================== */
-.btn {
-    /* Layout */
+.pill-btn {
+    --pill-h: 48px;
+    --pill-font: 1rem;
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
-
-    /* Sizing */
-    padding: var(--space-3) var(--space-6);
-    min-height: 44px;
-
-    /* Typography */
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    text-decoration: none;
+    gap: 8px;
+    min-height: var(--pill-h);
+    padding: 0 calc(var(--pill-h) * 0.4);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: var(--pill-font);
+    font-weight: 600;
+    line-height: 1.1;
     text-align: center;
+    text-decoration: none;
     white-space: nowrap;
-
-    /* Visual */
-    border-radius: var(--rounded-lg);
-    border: none;
     cursor: pointer;
-
-    /* Skewed/tilted in default state for premium look */
-    transform: skew(-1deg, -1deg);
-
-    /* Animation - smooth transitions for all properties */
-    transition:
-        transform var(--duration-200) var(--ease-snap),
-        box-shadow var(--duration-200) var(--ease-smooth),
-        background var(--duration-200) var(--ease-smooth),
-        border-color var(--duration-200) var(--ease-smooth);
-
-    /* Faster transition for active state */
-    will-change: transform;
-
-    /* Prevent text selection */
     user-select: none;
     -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        transform 200ms var(--ease-snap),
+        box-shadow 200ms var(--ease-snap),
+        background-color 200ms var(--ease-snap),
+        border-color 200ms var(--ease-snap),
+        color 200ms var(--ease-snap);
 }
 
-/* Hover - straighten out the button */
-.btn:hover {
-    transform: skew(0deg, 0deg);
-}
-
-.btn:focus-visible {
-    outline: 2px solid var(--theme-primary);
-    outline-offset: 2px;
-}
-
-.btn:disabled,
-.btn[aria-disabled="true"] {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-/* ==========================================================================
-   PRIMARY BUTTON
-   Light: Skeuomorphic raised gradient
-   Dark: Glass gradient with glow
-   ========================================================================== */
-.btn-primary {
-    color: white;
-    position: relative;
-}
-
-/* Light Mode - Skeuomorphic */
-html[data-theme="light"] .btn-primary {
-    background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
-    box-shadow: var(--skeu-shadow-raised-sm);
-}
-
-html[data-theme="light"] .btn-primary:hover {
-    background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
-    box-shadow: var(--skeu-shadow-raised);
-    color: white;
-}
-
-html[data-theme="light"] .btn-primary:active {
-    box-shadow: var(--skeu-shadow-pressed-sm);
-    transform: scale(0.97);
-    color: white;
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* Dark Mode - Glass with Glow */
-html[data-theme="dark"] .btn-primary {
-    background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
-    box-shadow: var(--glass-shadow);
-}
-
-html[data-theme="dark"] .btn-primary:hover {
-    background: linear-gradient(135deg, var(--accent-400), var(--accent-300));
-    box-shadow: var(--glass-shadow-elevated), var(--glass-glow-accent);
-    color: white;
-}
-
-html[data-theme="dark"] .btn-primary:active {
-    box-shadow: var(--glass-shadow);
-    transform: scale(0.97);
-    color: white;
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* ==========================================================================
-   SECONDARY BUTTON
-   Light: Skeuomorphic raised surface
-   Dark: Glass surface
-   ========================================================================== */
-.btn-secondary {
-    position: relative;
-}
-
-/* Light Mode - Skeuomorphic */
-html[data-theme="light"] .btn-secondary {
-    background: var(--skeu-bg-elevated);
-    color: var(--neutral-700);
-    box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
-    border: 1px solid var(--skeu-border);
-}
-
-html[data-theme="light"] .btn-secondary:hover {
-    color: var(--primary-600);
-    box-shadow: var(--skeu-shadow-raised), var(--skeu-highlight);
-    border-color: rgba(var(--primary-500-rgb), 0.2);
-}
-
-html[data-theme="light"] .btn-secondary:active {
-    box-shadow: var(--skeu-shadow-pressed-sm), inset 0 2px 3px rgba(0, 0, 0, 0.1);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* Dark Mode - Glass */
-html[data-theme="dark"] .btn-secondary {
-    background: var(--glass-bg-surface);
-    backdrop-filter: blur(var(--glass-blur-sm));
-    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
-    color: var(--neutral-200);
-    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
-    border: 1px solid var(--glass-border);
-}
-
-html[data-theme="dark"] .btn-secondary:hover {
-    color: var(--accent-400);
-    border-color: var(--glass-border-accent);
-    box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
-}
-
-html[data-theme="dark"] .btn-secondary:active {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* ==========================================================================
-   OUTLINE BUTTON
-   Light: Skeuomorphic border with fill on hover
-   Dark: Glass border with glow on hover
-   ========================================================================== */
-.btn-outline {
-    background: transparent;
-    border: 2px solid currentColor;
-}
-
-/* Light Mode */
-html[data-theme="light"] .btn-outline {
-    color: var(--primary-600);
-    box-shadow: var(--skeu-shadow-flat);
-}
-
-html[data-theme="light"] .btn-outline:hover {
-    background: var(--primary-600);
-    border-color: var(--primary-600);
-    color: white;
-    box-shadow: var(--skeu-shadow-raised-sm);
-}
-
-html[data-theme="light"] .btn-outline:active {
-    box-shadow: var(--skeu-shadow-pressed-sm-accent), inset 0 2px 3px rgba(0, 0, 0, 0.15);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* Dark Mode */
-html[data-theme="dark"] .btn-outline {
-    color: var(--accent-400);
-    box-shadow: 0 0 0 1px rgba(var(--accent-400-rgb), 0.1);
-}
-
-html[data-theme="dark"] .btn-outline:hover {
-    background: var(--accent-500);
-    border-color: var(--accent-500);
-    color: white;
-    box-shadow: var(--glass-shadow), var(--glass-glow-accent);
-}
-
-html[data-theme="dark"] .btn-outline:active {
-    box-shadow: var(--glass-shadow);
-    transform: scale(0.97);
-    color: white;
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* ==========================================================================
-   GHOST BUTTON
-   Light: Subtle skeuomorphic hover
-   Dark: Glass hover
-   ========================================================================== */
-.btn-ghost {
-    background: transparent;
-    color: var(--theme-text-secondary);
-    border: none;
-}
-
-/* Light Mode */
-html[data-theme="light"] .btn-ghost:hover {
-    background: var(--skeu-bg);
-    color: var(--primary-600);
-    box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
-}
-
-html[data-theme="light"] .btn-ghost:active {
-    box-shadow: var(--skeu-shadow-pressed-sm), inset 0 2px 3px rgba(0, 0, 0, 0.1);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* Dark Mode */
-html[data-theme="dark"] .btn-ghost:hover {
-    background: var(--glass-bg-subtle);
-    backdrop-filter: blur(var(--glass-blur-sm));
-    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
-    color: var(--accent-400);
-    box-shadow: var(--glass-inner-glow);
-}
-
-html[data-theme="dark"] .btn-ghost:active {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* ==========================================================================
-   GLASS BUTTON
-   Light: Skeuomorphic raised button (no glass)
-   Dark: Full glassmorphism button
-   ========================================================================== */
-.btn-glass {
-    position: relative;
-}
-
-/* Light Mode - Skeuomorphic (Pure Skeu, no glass effects) */
-html[data-theme="light"] .btn-glass {
-    background: linear-gradient(180deg, var(--white) 0%, var(--neutral-100) 100%);
-    color: var(--neutral-700);
-    box-shadow: var(--skeu-shadow-raised-sm),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--skeu-border);
-}
-
-html[data-theme="light"] .btn-glass:hover {
-    background: linear-gradient(180deg, var(--white) 0%, var(--neutral-50) 100%);
-    box-shadow: var(--skeu-shadow-raised),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    border-color: rgba(var(--primary-500-rgb), 0.3);
-    color: var(--primary-600);
-}
-
-html[data-theme="light"] .btn-glass:active {
-    background: linear-gradient(180deg, var(--neutral-100) 0%, var(--neutral-200) 100%);
-    box-shadow: var(--skeu-shadow-pressed-sm);
-    transform: scale(0.97);
-    transition: transform var(--duration-fast) var(--ease-snap), box-shadow var(--duration-fast) var(--ease-snap);
-}
-
-/* Dark Mode - Glass */
-html[data-theme="dark"] .btn-glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow), var(--glass-inner-glow);
-    color: white;
-}
-
-html[data-theme="dark"] .btn-glass:hover {
-    background: var(--glass-bg-elevated);
-    border-color: var(--glass-border-accent);
-    box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
-}
-
-html[data-theme="dark"] .btn-glass:active {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    transform: scale(0.98);
-}
-
-/* ==========================================================================
-   GRADIENT TEXT LINK
-   ========================================================================== */
-.btn-text-gradient {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) 0;
-    font-weight: var(--weight-semibold);
-    text-decoration: none;
-    background: var(--theme-gradient-text);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: opacity var(--duration-200) var(--ease-out);
-}
-
-.btn-text-gradient:hover {
-    opacity: 0.8;
-}
-
-/* ==========================================================================
-   BUTTON SIZES
-   ========================================================================== */
-.btn-sm {
-    padding: var(--space-2) var(--space-4);
-    font-size: var(--text-xs);
-    min-height: 36px;
-}
-
-.btn-lg {
-    padding: var(--space-4) var(--space-8);
-    font-size: var(--text-base);
-    min-height: 52px;
-}
-
-/* ==========================================================================
-   ICON BUTTON
-   ========================================================================== */
-.btn-icon {
-    padding: var(--space-3);
-    min-width: 44px;
-    aspect-ratio: 1;
-}
-
-.btn-icon svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* ==========================================================================
-   BUTTON WITH ICON
-   ========================================================================== */
-.btn svg {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-}
-
-/* ==========================================================================
-   FULL WIDTH BUTTON
-   ========================================================================== */
-.btn-block {
-    width: 100%;
-}
-
-/* ==========================================================================
-   SYSTEM PREFERENCE FALLBACKS (when no data-theme attribute)
-   ========================================================================== */
-@media (prefers-color-scheme: light) {
-    .btn-primary:not([data-theme]) {
-        background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
-        box-shadow: var(--skeu-shadow-raised-sm);
+@media (min-width: 600px) {
+    .pill-btn {
+        --pill-h: 44px;
+        --pill-font: 0.9375rem;
     }
+}
 
-    .btn-primary:not([data-theme]):hover {
-        background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
-        box-shadow: var(--skeu-shadow-raised);
-        color: white;
+@media (min-width: 1024px) {
+    .pill-btn {
+        --pill-h: 40px;
+        --pill-font: 0.875rem;
     }
+}
 
-    .btn-secondary:not([data-theme]) {
-        background: var(--skeu-bg-elevated);
-        color: var(--neutral-700);
-        box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
-        border: 1px solid var(--skeu-border);
-    }
+/* ---- Looks ------------------------------------------------------------ */
 
-    .btn-outline:not([data-theme]) {
-        color: var(--primary-600);
-        box-shadow: var(--skeu-shadow-flat);
-    }
+.pill-btn.pill-btn--filled {
+    --pill-ink: var(--sf-panel);
+    background: var(--sf-accent);
+    color: var(--sf-panel);
+    box-shadow: var(--sf-pill-shadow);
+}
 
-    .btn-outline:not([data-theme]):hover {
-        color: white;
-    }
-
-    .btn-ghost:not([data-theme]):hover {
-        background: var(--skeu-bg);
-        color: var(--primary-600);
-        box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
-    }
-
-    .btn-glass:not([data-theme]) {
-        background: var(--skeu-bg-elevated);
-        color: var(--neutral-700);
-        box-shadow: var(--skeu-shadow-raised-sm), var(--skeu-highlight);
-        border: 1px solid var(--skeu-border);
-    }
+html[data-theme="dark"] .pill-btn.pill-btn--filled {
+    --pill-ink: var(--accent-300);
+    background: linear-gradient(135deg, rgba(0, 184, 204, 0.28), rgba(0, 184, 204, 0.12));
+    color: var(--accent-300);
+    border-color: rgba(0, 184, 204, 0.35);
 }
 
 @media (prefers-color-scheme: dark) {
-    .btn-primary:not([data-theme]) {
-        background: linear-gradient(135deg, var(--accent-500), var(--accent-400));
-        box-shadow: var(--glass-shadow);
-    }
-
-    .btn-primary:not([data-theme]):hover {
-        background: linear-gradient(135deg, var(--accent-400), var(--accent-300));
-        box-shadow: var(--glass-shadow-elevated), var(--glass-glow-accent);
-        color: white;
-    }
-
-    .btn-secondary:not([data-theme]) {
-        background: var(--glass-bg-surface);
-        backdrop-filter: blur(var(--glass-blur-sm));
-        -webkit-backdrop-filter: blur(var(--glass-blur-sm));
-        color: var(--neutral-200);
-        box-shadow: var(--glass-shadow), var(--glass-inner-glow);
-        border: 1px solid var(--glass-border);
-    }
-
-    .btn-outline:not([data-theme]) {
-        color: var(--accent-400);
-        box-shadow: 0 0 0 1px rgba(var(--accent-400-rgb), 0.1);
-    }
-
-    .btn-outline:not([data-theme]):hover {
-        background: var(--accent-500);
-        border-color: var(--accent-500);
-        color: white;
-        box-shadow: var(--glass-shadow), var(--glass-glow-accent);
-    }
-
-    .btn-ghost:not([data-theme]):hover {
-        background: var(--glass-bg-subtle);
-        backdrop-filter: blur(var(--glass-blur-sm));
-        -webkit-backdrop-filter: blur(var(--glass-blur-sm));
-        color: var(--accent-400);
-        box-shadow: var(--glass-inner-glow);
-    }
-
-    .btn-glass:not([data-theme]) {
-        background: var(--glass-bg);
-        backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-        border: 1px solid var(--glass-border);
-        box-shadow: var(--glass-shadow), var(--glass-inner-glow);
-        color: white;
-    }
-
-    .btn-glass:not([data-theme]):hover {
-        background: var(--glass-bg-elevated);
-        border-color: var(--glass-border-accent);
-        box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
+    :root:not([data-theme="light"]) .pill-btn.pill-btn--filled {
+        --pill-ink: var(--accent-300);
+        background: linear-gradient(135deg, rgba(0, 184, 204, 0.28), rgba(0, 184, 204, 0.12));
+        color: var(--accent-300);
+        border-color: rgba(0, 184, 204, 0.35);
     }
 }
 
-/* ==========================================================================
-   REDUCED MOTION
-   ========================================================================== */
+.pill-btn.pill-btn--outline {
+    --pill-ink: var(--sf-text);
+    background: var(--sf-pill);
+    color: var(--sf-text);
+    border-color: var(--sf-border);
+    box-shadow: var(--sf-pill-shadow);
+}
+
+.pill-btn.pill-btn--quiet {
+    --pill-ink: var(--sf-accent);
+    min-height: var(--pill-h);
+    padding: 0 4px;
+    background: transparent;
+    color: var(--sf-accent);
+    box-shadow: none;
+}
+
+/* Page link rules (a, a:hover, .page-footer a) must never recolour a pill:
+   the look selectors carry two classes, and link states one more. */
+a.pill-btn.pill-btn--filled:hover,
+a.pill-btn.pill-btn--filled:focus-visible {
+    color: var(--sf-panel);
+}
+
+html[data-theme="dark"] a.pill-btn.pill-btn--filled:hover,
+html[data-theme="dark"] a.pill-btn.pill-btn--filled:focus-visible {
+    color: var(--accent-300);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) a.pill-btn.pill-btn--filled:hover,
+    :root:not([data-theme="light"]) a.pill-btn.pill-btn--filled:focus-visible {
+        color: var(--accent-300);
+    }
+}
+
+a.pill-btn.pill-btn--outline:hover,
+a.pill-btn.pill-btn--outline:focus-visible {
+    color: var(--sf-text);
+}
+
+a.pill-btn.pill-btn--quiet:hover,
+a.pill-btn.pill-btn--quiet:focus-visible {
+    color: var(--sf-accent);
+}
+
+/* The global a:active dims links; pills show their own pressed state. */
+a.pill-btn:active {
+    opacity: 1;
+}
+
+/* ---- Hover: fine pointers only, so touch never sticks in hover --------- */
+
+@media (hover: hover) and (pointer: fine) {
+    .pill-btn:not(.pill-btn--quiet):not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):hover {
+        transform: translateY(-1px);
+        box-shadow: var(--sf-pill-shadow-hover);
+        transition-duration: 180ms;
+    }
+
+    .pill-btn--quiet:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+    }
+
+    .pill-btn:hover .arrow--right {
+        transform: translateX(2px);
+    }
+
+    .pill-btn:hover .arrow--up-right {
+        transform: translate(2px, -2px);
+    }
+
+    .pill-btn:hover .arrow--down {
+        transform: translateY(2px);
+    }
+}
+
+/* ---- Pressed and held ------------------------------------------------- */
+
+.pill-btn.is-pressed:not(:disabled):not([aria-disabled="true"]),
+.pill-btn:not(.is-press-managed):active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.97);
+    box-shadow: var(--sf-pill-shadow-press);
+    transition-duration: 140ms;
+}
+
+.pill-btn--quiet.is-pressed,
+.pill-btn--quiet:not(.is-press-managed):active {
+    box-shadow: none;
+}
+
+/* ---- Focus ------------------------------------------------------------ */
+
+.pill-btn:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+}
+
+/* ---- Disabled ---------------------------------------------------------- */
+
+.pill-btn:disabled,
+.pill-btn[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ---- Loading, success, error (Ink Status in the icon slot) ------------- */
+
+.pill-btn[aria-busy="true"] {
+    cursor: progress;
+}
+
+/* The pill keeps its exact size (width locked by press-state.js) and the
+   ink mark takes the label's place, centred; the label returns when the
+   result has shown. The live region carries the words. */
+.pill-btn > .ink-status {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -10px 0 0 -10px;
+    color: var(--pill-ink);
+}
+
+.pill-btn[aria-busy="true"],
+.pill-btn.is-ok,
+.pill-btn.is-bad {
+    color: transparent !important;
+}
+
+.pill-btn[aria-busy="true"] > .ink-status,
+.pill-btn.is-ok > .ink-status,
+.pill-btn.is-bad > .ink-status {
+    display: block;
+}
+
+.pill-btn--outline.is-ok > .ink-status,
+.pill-btn--quiet.is-ok > .ink-status {
+    color: var(--sf-ok);
+}
+
+.pill-btn--outline.is-bad > .ink-status,
+.pill-btn--quiet.is-bad > .ink-status {
+    color: var(--sf-bad);
+}
+
+/* ---- Hold to confirm (destructive actions) ---------------------------- */
+
+.pill-btn .pill-hold {
+    position: absolute;
+    inset: -4px;
+    width: calc(100% + 8px) !important;
+    height: calc(100% + 8px) !important;
+    max-width: none !important;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.pill-btn .pill-hold rect {
+    fill: none;
+    stroke: var(--sf-bad);
+    stroke-width: 2;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    vector-effect: non-scaling-stroke;
+}
+
+.pill-btn.is-holding .pill-hold rect {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 600ms linear;
+}
+
+/* ---- Icons inside pills ------------------------------------------------ */
+
+.pill-btn svg:not(.pill-hold):not(.ink-status),
+.pill-btn .icon {
+    width: 16px !important;
+    height: 16px !important;
+    flex: none;
+}
+
+.pill-btn .arrow {
+    transition: transform 180ms var(--ease-snap);
+}
+
+/* ---- Full width (phone stacks) ---------------------------------------- */
+
+.pill-btn--block {
+    width: 100%;
+}
+
+/* ---- Reduced motion ---------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
-    .btn {
+    .pill-btn,
+    .pill-btn .arrow {
         transition: none;
     }
 
-    .btn:active {
+    .pill-btn.is-pressed,
+    .pill-btn:active,
+    .pill-btn:hover {
+        transform: none !important;
+    }
+
+    .pill-btn:hover .arrow {
         transform: none;
+    }
+
+    .pill-btn.is-holding .pill-hold rect {
+        transition: none;
     }
 }

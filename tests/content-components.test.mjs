@@ -73,7 +73,7 @@ test('stack chip: adds a glyph, and a described tooltip only when the count is r
   const flutter = document.querySelector('[data-stack="flutter"]');
   assert.ok(flutter.querySelector('svg.stack-chip-icon[aria-hidden="true"]'));
   const tip = document.getElementById(flutter.getAttribute('aria-describedby'));
-  assert.match(tip.textContent, /In 12 of 32 projects/);
+  assert.match(tip.textContent, /In 11 of 31 projects/);
   assert.equal(flutter.getAttribute('tabindex'), '0');
   const ts = document.querySelector('[data-stack="typescript"]');
   assert.equal(ts.hasAttribute('aria-describedby'), false, 'no tooltip for a single project');

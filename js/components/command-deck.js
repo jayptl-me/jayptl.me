@@ -28,7 +28,7 @@
 
     var PAGES = [
         { label: 'Home', href: '/', hint: 'Start here', keys: 'index landing' },
-        { label: 'Projects', href: '/projects', hint: 'All 32 builds', keys: 'work portfolio' },
+        { label: 'Projects', href: '/projects', hint: 'All 31 builds', keys: 'work portfolio' },
         { label: 'About', href: '/about', hint: 'Who is Jay', keys: 'bio beyond code' },
         { label: 'Resume', href: '/resume', hint: 'Roles, skills, PDFs', keys: 'cv experience' },
         { label: 'Design System', href: '/design-system', hint: 'Tokens, doodles, motion', keys: 'components style' },

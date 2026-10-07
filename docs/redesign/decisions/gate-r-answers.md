@@ -142,3 +142,23 @@ Research: docs/redesign/projects-cards-audit-and-options-2026-09-30.md
   approval.
 - Gate P: APPROVED "build it" (2026-09-30). Deep-dives strip: REMOVE.
   Whyknot: ARCHIVE WITH ITS LINK (8 feature cards).
+
+## Live links and honesty fixes (Jay, 2026-10-07, chat)
+- Thhiya links to https://www.thhiya.com/#home (site back online; full
+  gallery recaptured, replacing the 900px recovered frames).
+- School Of Hatha Yoga is live at https://schoolofhathayoga.org/ (agent
+  had wrongly called it unrelated): now a feature card with a gallery;
+  9 feature cards, the ninth spans the row.
+- Ai-Vestor: "live on Render" (was "deployed on Oracle Cloud").
+- Model hub profile is jayptl-rq; only jayptl-rq/vini-pico is public, so
+  every "Tini is published" claim was corrected and the profile linked.
+- Committed and pushed to main on Jay's request (commit 49f8c07). The
+  staged removal of AGENTS.md from git (local exclude) was left as found,
+  not committed: Jay to decide.
+- Follow-ups (Jay, 2026-10-08, question tool): AGENTS.md STAYS ON GITHUB
+  (staged removal undone; the local exclude line stays, it only covers
+  untracked copies). NDS Services and Within MOVE TO PERSONAL (private
+  repos). Zchat is a PERSONAL PROJECT FROM 2021. ALL SOCIALS REMOVED from
+  the site (31 projects). Donman 2023, Product-X 2025, HMS 2025, Ambica
+  2026 confirmed. Ai-Vestor: frontend on Render, backend on Oracle Cloud;
+  the resume keeps Oracle Cloud.

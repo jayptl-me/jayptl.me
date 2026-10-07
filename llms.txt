@@ -1,6 +1,6 @@
 # jayptl.me
 
-> Jay Patel's personal portfolio. Jay is a software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity, with 32 shipped projects spanning mobile, web, backend, and self-hosted infrastructure. Headline: Software Engineer: Full-Stack, Mobile and Applied AI. Contact: hello@jayptl.me.
+> Jay Patel's personal portfolio. Jay is a software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity, with 31 shipped projects spanning mobile, web, backend, and self-hosted infrastructure. Headline: Software Engineer: Full-Stack, Mobile and Applied AI. Contact: hello@jayptl.me.
 
 Every page is also available as Markdown by sending `Accept: text/markdown` (e.g. `curl -H "Accept: text/markdown" https://jayptl.me/projects`) or by fetching the `.md` URLs listed below.
 
@@ -21,7 +21,7 @@ Every page is also available as Markdown by sending `Accept: text/markdown` (e.g
 
 ## Projects
 
-- [Projects index](https://jayptl.me/projects.md): All 32 shipped projects with featured case-study links.
+- [Projects index](https://jayptl.me/projects.md): All 31 shipped projects with featured case-study links.
 - [Aviz Health case study](https://jayptl.me/projects/aviz-health.md): Digital healthcare ecosystem, three Flutter apps, Next.js 16 admin console, Bun + Hono backend, live on Google Play v2.0.
 - [Swalook CRM case study](https://jayptl.me/projects/swalook.md): Enterprise salon-management SaaS overhaul, Next.js 16 Turborepo, 35+ OpenAPI-documented endpoints, ML Kit AR previews.
 - [Genuinest case study](https://jayptl.me/projects/genuinest.md): Founding Engineer (Contract) work, Flutter product plus migration to self-hosted Docker/Coolify/Traefik with 20TB MinIO.

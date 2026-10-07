@@ -1,6 +1,6 @@
 # Jay Patel, Software Engineer: Full-Stack, Mobile and Applied AI
 
-> Homepage of Jay Patel's portfolio (jayptl.me). Jay is a software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity, with 32 shipped projects spanning mobile, web, and backend. This page introduces what he builds and his featured projects; full case studies live under /projects.
+> Homepage of Jay Patel's portfolio (jayptl.me). Jay is a software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity, with 31 shipped projects spanning mobile, web, and backend. This page introduces what he builds and his featured projects; full case studies live under /projects.
 
 Jay builds production apps in Flutter, React Native, Next.js, Angular, and Astro, backed by Bun + Hono APIs running on infrastructure he migrated off big cloud bills onto Docker, Coolify, and Traefik himself. On the research side he trains small language models from scratch for edge deployment. One of them is published on HuggingFace.
 
@@ -28,7 +28,7 @@ Full history: [resume](/resume.md).
 5. **Tenet PG Management**, Full PG/hostel management platform in a Bun + Turborepo monorepo: Next.js 16 dashboard, Hono backend with SSE and UPI payments, PDF invoices, shipped with Playwright and Vitest coverage.
 6. **Ai-Vestor**, First place, FinTech track, CHARUSAT-Odoo Hackathon 2025, out of 650+ applicants and 75 teams. An AI stock-prediction platform with 100+ trained LSTM models and a gamified investment LMS.
 
-The full catalog of 32 shipped projects is on the [projects page](/projects.md).
+The full catalog of 31 shipped projects is on the [projects page](/projects.md).
 
 ## Say hi
 

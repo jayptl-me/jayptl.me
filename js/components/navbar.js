@@ -282,7 +282,7 @@
               </div>
 
               <a href="${projectsHref}" class="mobile-all-projects">
-                <span>Explore all 32 projects</span>
+                <span>Explore all 31 projects</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
 

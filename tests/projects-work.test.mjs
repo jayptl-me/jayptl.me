@@ -15,11 +15,11 @@ const features = [...html.matchAll(/<article class="case-card feature-card[\s\S]
 const rows = [...html.matchAll(/<details class="role arch-row"[\s\S]*?<\/details>/g)].map((m) => m[0]);
 const idOf = (s) => s.match(/id="(project-[^"]+)"/)[1];
 
-test('projects: 9 feature cards and 23 archive rows, 32 unique projects', () => {
+test('projects: 9 feature cards and 22 archive rows, 31 unique projects', () => {
   assert.equal(features.length, 9);
-  assert.equal(rows.length, 23);
+  assert.equal(rows.length, 22);
   const ids = features.concat(rows).map(idOf);
-  assert.equal(new Set(ids).size, 32);
+  assert.equal(new Set(ids).size, 31);
   assert.doesNotMatch(html, /case-study-callout/, 'the deep-dives strip is gone');
 });
 
@@ -72,7 +72,8 @@ test('projects: claims match what is actually public', () => {
   assert.match(html, /href="https:\/\/huggingface\.co\/jayptl-rq"/, 'Vini and Tini links the profile');
   assert.match(html, /href="https:\/\/www\.thhiya\.com\/#home"/);
   assert.match(html, /href="https:\/\/schoolofhathayoga\.org\/"/);
-  assert.doesNotMatch(html, /Oracle Cloud/, 'Ai-Vestor is live on Render');
+  assert.match(html, /the frontend runs on Render, the backend on Oracle Cloud/, 'Ai-Vestor names both hosts');
+  assert.doesNotMatch(html, /All Socials/, 'All Socials is retired');
 });
 
 test('projects: the page loads the ledger, filter and peek scripts', () => {
@@ -142,8 +143,8 @@ test('filter: a section with nothing to show hides, counts follow the filter', (
   const [live, archive] = doc.querySelectorAll('.work-section');
   assert.equal(live.hidden, true, 'no open-source feature cards');
   assert.equal(archive.hidden, false);
-  assert.match(archive.querySelector('.work-count').textContent, /^9 projects/);
-  assert.match(doc.getElementById('filterReadout').textContent, /Showing 9 of 32/);
+  assert.match(archive.querySelector('.work-count').textContent, /^7 projects/);
+  assert.match(doc.getElementById('filterReadout').textContent, /Showing 7 of 31/);
   pick(window, 'all');
   assert.equal(live.hidden, false);
   assert.equal(live.querySelector('.work-count').textContent, '9 projects');

@@ -4,7 +4,7 @@
  * Markup stays readable without JS: <span class="stack-chip"
  * data-stack="flutter">Flutter</span>. The helper prepends the glyph and,
  * when the name appears on at least two project cards, a tooltip such as
- * "In 12 of 32 projects" (also read out through visually hidden text).
+ * "In 11 of 31 projects" (also read out through visually hidden text).
  *
  * The counts below are checked against the project cards' tags by
  * tests/content-components.test.mjs, so they cannot drift.
@@ -18,12 +18,12 @@
     'use strict';
 
     var SVG_NS = 'http://www.w3.org/2000/svg';
-    var TOTAL = 32;
+    var TOTAL = 31;
 
     /* Glyphs are 24x24 strokes in currentColor. `match` is the tag
        pattern the test uses to recount projects. */
     var STACK = {
-        flutter: { projects: 12, match: 'flutter', d: 'M13 3 4 12l3 3M13 11l-5 5 5 5h5l-5-5 5-5M18 3h-5' },
+        flutter: { projects: 11, match: 'flutter', d: 'M13 3 4 12l3 3M13 11l-5 5 5 5h5l-5-5 5-5M18 3h-5' },
         nextjs: { projects: 8, match: 'next\\.js', d: 'M3.5 5.5h17v13h-17zM3.5 9.5h17M7 13l2.5 2.5L7 18' },
         react: { projects: 5, match: '\\breact\\b(?! native)', d: 'M12 12m-1.4 0a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0M12 7.5c5 0 9 2 9 4.5s-4 4.5-9 4.5-9-2-9-4.5 4-4.5 9-4.5zM8.1 9.75c2.5-4.3 6.2-6.9 8.4-5.6s1.9 5.8-.6 10.1-6.2 6.9-8.4 5.6-1.9-5.8.6-10.1zM15.9 9.75c2.5 4.3 2.8 8.8.6 10.1s-5.9-1.3-8.4-5.6-2.8-8.8-.6-10.1 5.9 1.3 8.4 5.6z' },
         'react-native': { projects: 2, match: 'react native', d: 'M7.5 2.5h9a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V4a1.5 1.5 0 0 1 1.5-1.5zM10.5 18.5h3' },

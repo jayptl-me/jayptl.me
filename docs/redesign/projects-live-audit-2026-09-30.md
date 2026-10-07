@@ -31,7 +31,9 @@ Notes:
 - Thhiya answered 200 at the start of the audit, then its host suspended
   the service minutes later (HTTP 503, "Service Suspended"). The full-size
   set was lost (deleted before the retake, agent error); three 900px frames
-  were recovered from the session transcript. Recapture when the site is back.
+  were recovered from the session transcript. Recaptured in full on
+  2026-10-07 once the site was back (8 desktop, 5 phone); links use
+  https://www.thhiya.com/#home.
 - Ambica: the "connected routes" map section shows the site's own
   "API KEY REQUIRED" error, so that frame was dropped.
 - Ai-Vestor runs on a free Render service, so the first visit can take a
@@ -44,7 +46,7 @@ Notes:
 | Aorta Rooms | aortarooms.com and api.aortarooms.com no longer resolve (no DNS). The card claimed "Live" and linked out; now "Private Client", "Shipped", no link. |
 | Niti Health | niti.nexuserp.co.in and healthka.live from the repo do not resolve. |
 | Tenet PG Management | tenetpg.com (in the repo) does not resolve. Card still links to GitHub. |
-| School Of Hatha Yoga | hathayoga.com (in the repo) is an "under construction" page; schoolofhathayoga.org is an unrelated school. Card still says "Deployed on Render" and "Live", unverified. |
+| School Of Hatha Yoga | Corrected 2026-10-07: live at https://schoolofhathayoga.org/ (Jay confirmed; the audit wrongly called it unrelated). Now a feature card with a gallery in `assets/projects/hatha-yoga/gallery/`. |
 | Everything else | No domain found in the repo or by name; personal and open-source cards keep their GitHub links. |
 
 Not taken: aivestor.com and crosscheck.app answered but are not Jay's

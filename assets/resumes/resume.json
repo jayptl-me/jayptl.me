@@ -1,1 +1,327 @@
-{"$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json", "basics": {"email": "hello@jayptl.me", "image": "https://jayptl.me/assets/logo-1024.png", "label": "Software Developer and Product Builder", "location": {"address": "", "city": "Anand", "countryCode": "IN", "postalCode": "", "region": "Gujarat"}, "name": "Jay Patel", "phone": "", "profiles": [{"network": "GitHub", "url": "https://github.com/jayptl-me", "username": "jayptl-me"}, {"network": "HuggingFace", "url": "https://huggingface.co/jayptl-rq", "username": "jayptl-rq"}, {"network": "Instagram", "url": "https://instagram.com/jayptl.me", "username": "jayptl.me"}, {"network": "DEV", "url": "https://dev.to/jayptl_rq", "username": "jayptl_rq"}, {"network": "Website", "url": "https://jayptl.me/", "username": "jayptl.me"}], "summary": "Founding-engineer-grade full-stack developer from Anand, Gujarat, India. AI, Full Stack, Mobile, UI/UX. 4+ years, 30+ shipped products across TypeScript, Dart/Flutter, Python, and Solidity.", "url": "https://jayptl.me/", "website": "https://jayptl.me/resume"}, "education": [{"area": "Information Technology", "courses": [], "endDate": "", "institution": "A.D. Patel Institute of Technology", "score": "", "startDate": "", "studyType": "B.Tech"}], "meta": {"canonical": "https://jayptl.me/resume", "lastModified": "2026-09-11", "version": "1.0.0"}, "projects": [{"description": "Three Flutter apps, Next.js 16 admin console, Bun + Hono backend. Live on Google Play v2.0.", "endDate": "", "entity": "Aviz Health", "highlights": ["Flutter x3", "Next.js 16", "Bun + Hono", "MongoDB"], "keywords": ["Flutter", "Next.js", "Bun", "Hono"], "name": "Aviz Health", "roles": ["Architect", "Developer"], "startDate": "", "url": "https://jayptl.me/projects/aviz-health"}, {"description": "Enterprise salon-management SaaS overhaul: Next.js 16 Turborepo, 35+ OpenAPI endpoints, Redis, Flutter + ML Kit AR.", "endDate": "", "entity": "Swalook CRM", "highlights": ["Next.js 16", "Bun + Hono", "Redis", "Flutter"], "keywords": ["Next.js", "Hono", "Redis"], "name": "Swalook CRM", "roles": ["Developer"], "startDate": "", "url": "https://jayptl.me/projects/swalook"}, {"description": "Founding Engineer: Flutter product plus migration to Docker/Coolify/Traefik with 20TB MinIO.", "endDate": "", "entity": "Genuinest", "highlights": ["Flutter + Riverpod", "Docker", "Coolify"], "keywords": ["Flutter", "Docker"], "name": "Genuinest", "roles": ["Founding Engineer"], "startDate": "", "url": "https://jayptl.me/projects/genuinest"}, {"description": "Two small language models trained from scratch on BitNet b1.58 for edge deployment.", "endDate": "", "entity": "Vini and Tini", "highlights": ["PyTorch", "BitNet b1.58", "HuggingFace"], "keywords": ["PyTorch", "LLM"], "name": "Vini and Tini", "roles": ["Research", "Training"], "startDate": "", "url": "https://jayptl.me/projects/vini-tini"}], "skills": [{"keywords": ["Flutter", "Riverpod", "React Native", "ML Kit"], "level": "", "name": "Mobile"}, {"keywords": ["Next.js 16", "TypeScript", "Bun", "Hono", "Redis", "MongoDB"], "level": "", "name": "Web"}, {"keywords": ["Python", "PyTorch", "BitNet b1.58", "HuggingFace", "RAG"], "level": "", "name": "AI"}, {"keywords": ["Docker", "Coolify", "Traefik", "MinIO"], "level": "", "name": "Infrastructure"}], "work": []}
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Jay Patel",
+    "label": "Software Engineer: Full-Stack, Mobile and Applied AI",
+    "image": "https://jayptl.me/assets/logo-1024.png",
+    "email": "hello@jayptl.me",
+    "url": "https://jayptl.me/",
+    "summary": "Software engineer shipping client systems end to end since 2022: Flutter apps on Google Play, Next.js and Bun + Hono platforms with documented APIs, self-hosted Docker, Coolify and Traefik infrastructure, and small language models trained from scratch. Integration-heavy work across payments (Cashfree, Razorpay, UPI), KYC (Surepass, Digilocker), real-time video (Agora RTC), maps, and LLM features.",
+    "location": {
+      "city": "Anand",
+      "region": "Gujarat",
+      "countryCode": "IN"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "url": "https://github.com/jayptl-me",
+        "username": "jayptl-me"
+      },
+      {
+        "network": "HuggingFace",
+        "url": "https://huggingface.co/jayptl-rq",
+        "username": "jayptl-rq"
+      },
+      {
+        "network": "Instagram",
+        "url": "https://instagram.com/jayptl.me",
+        "username": "jayptl.me"
+      },
+      {
+        "network": "DEV",
+        "url": "https://dev.to/jayptl_rq",
+        "username": "jayptl_rq"
+      },
+      {
+        "network": "Website",
+        "url": "https://jayptl.me/",
+        "username": "jayptl.me"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "jayptl-rq",
+        "url": "https://www.linkedin.com/in/jayptl-rq"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Independent Software Engineer",
+      "position": "Freelance and contract engineering for startups and SMBs",
+      "url": "https://jayptl.me/projects",
+      "startDate": "2022-06",
+      "summary": "Contract and freelance delivery across healthcare, CRM, marketplace, and infrastructure clients.",
+      "highlights": [
+        "Genuinest, Founding Engineer (Contract), Jan 2026 to present: built the core Flutter app (Riverpod, GoRouter, Hive/SQLite) and a Bun + Hono API with Zod validation, JWT rotation, and OpenAPI docs; led the move off high-cost cloud to Docker, Coolify, Traefik, and Tailscale with a 20TB MinIO cluster; integrated Surepass KYC, OpenTelemetry + SigNoz, and PostHog.",
+        "Swalook CRM, Full-Stack Developer, Jan 2026 to present: ground-up overhaul into a Next.js 16 Turborepo; Bun + Hono + Drizzle backend on PostgreSQL with Redis and BullMQ; 35+ REST endpoints documented with OpenAPI/Scalar; multi-tenant super-admin with role-based access; Flutter app with ML Kit face-mesh AR previews.",
+        "Aviz Health, Full-Stack Developer, Dec 2025 to present: three Flutter apps (patient, partner, ground staff) and a Next.js 16 admin console on a Bun + Hono + MongoDB backend with Redis; Google Maps, Agora RTC video, Cashfree payments, Firebase Auth, ambulance SOS dispatch. Live on Google Play (v2.0).",
+        "Aorta, 2024 to 2025: hotel booking platform, Next.js 15 frontend and Hono + Prisma backend with AWS S3, Twilio SMS, and push notifications.",
+        "BhawBhaw (Wocofy), 2024 to 2025: pet-services marketplace with two React Native (Expo) apps and two Next.js 14 web apps, Razorpay and Google Maps.",
+        "Niti Health, 2024: three Flutter apps (patient, doctor, clinic) on a Node.js/Express, MongoDB, Redis, BullMQ, and GraphQL backend in Docker.",
+        "Dpizza Time, Jun 2023 to Aug 2023: Flutter food-ordering app and admin panel on Firebase."
+      ]
+    },
+    {
+      "name": "Thhiya",
+      "position": "Full Stack Developer",
+      "url": "https://thhiya.com",
+      "startDate": "2025-11",
+      "endDate": "2026-06",
+      "summary": "Global partner-discovery and workforce compliance platform.",
+      "highlights": [
+        "Built the platform from scratch: React 19, Vite, TypeScript, TanStack Query frontend on a Bun + Hono + Mongoose backend.",
+        "Engineered Puppeteer scraping pipelines that seeded compliance data for 195 countries across payroll, benefits, tax, and entity formation.",
+        "Integrated Google Gemini for provider matching and compliance insights.",
+        "Cut API latency by 20% with session token validation, Prometheus metrics, and Zod request validation; shipped consent-aware GA4 analytics."
+      ]
+    },
+    {
+      "name": "The Neural Networker",
+      "position": "Web Development and React Native Intern",
+      "startDate": "2025-06",
+      "endDate": "2025-11",
+      "highlights": [
+        "Built AI-integrated web and mobile interfaces with Next.js and React Native.",
+        "Tuned MongoDB compound indexes for a 30% speedup on analytical reporting dashboards."
+      ]
+    },
+    {
+      "name": "School Of Hatha Yoga",
+      "position": "Web Developer",
+      "startDate": "2024-08",
+      "endDate": "2025-02",
+      "highlights": [
+        "Built the site in React 18, TypeScript, Vite, and Framer Motion on a Hono API with JWT auth, Zod validation, and bcrypt."
+      ]
+    },
+    {
+      "name": "Huselk",
+      "position": "Associate Software Developer (Team Lead)",
+      "startDate": "2022-02",
+      "endDate": "2023-04",
+      "highlights": [
+        "Led a squad shipping a clothing e-commerce Flutter app with Firebase and Razorpay, plus a Flutter admin panel for inventory and orders."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "A.D. Patel Institute of Technology, Charutar Vidya Mandal University",
+      "area": "Information Technology",
+      "studyType": "B.Tech",
+      "startDate": "2022",
+      "endDate": "2026"
+    }
+  ],
+  "awards": [
+    {
+      "title": "1st Place, FinTech track, CHARUSAT-Odoo Hackathon 2025",
+      "date": "2025",
+      "awarder": "CHARUSAT x Odoo",
+      "summary": "Ai-Vestor: 90% accuracy with 100+ LSTM models on Yahoo Finance data, FastAPI on Oracle Cloud. 650+ applicants, 75 teams."
+    },
+    {
+      "title": "Technical Leadership Award",
+      "date": "2025-04",
+      "summary": "Excellence in technical communication and agile team coordination."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Associate Cloud Engineer",
+      "issuer": "Google Cloud"
+    },
+    {
+      "name": "Certified Cloud Practitioner",
+      "issuer": "AWS"
+    },
+    {
+      "name": "Certified Node.js Developer",
+      "issuer": "MongoDB"
+    },
+    {
+      "name": "Front-End Developer",
+      "issuer": "Meta"
+    },
+    {
+      "name": "SQL Associate",
+      "issuer": "DataCamp",
+      "date": "2025-03"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Vini",
+      "description": "~50M BitNet b1.58 edge assistant trained from scratch in PyTorch; pretrained on ~1.05B tokens, instruction tuning in progress.",
+      "highlights": [
+        "Model card and training configs on Hugging Face (jayptl-rq/vini-pico)"
+      ],
+      "keywords": [
+        "PyTorch",
+        "BitNet b1.58",
+        "Quantization-aware training"
+      ],
+      "roles": [
+        "Research",
+        "Training"
+      ],
+      "url": "https://huggingface.co/jayptl-rq/vini-pico"
+    },
+    {
+      "name": "Tini",
+      "description": "~85M dense TypeScript coding model trained from scratch (RoPE, SwiGLU, GQA); 46h on a T4, validation loss 1.31.",
+      "highlights": [
+        "Weights not public yet; Vini's model card is public at jayptl-rq/vini-pico"
+      ],
+      "keywords": [
+        "PyTorch",
+        "SentencePiece",
+        "Hugging Face"
+      ],
+      "roles": [
+        "Research",
+        "Training"
+      ],
+      "url": "https://huggingface.co/jayptl-rq"
+    },
+    {
+      "name": "Self-Hosted AI Agent Stack",
+      "description": "Personal AI infrastructure: local LLM inference, n8n workflows with MCP tool servers, and RAG pipelines over Qdrant and Chroma.",
+      "keywords": [
+        "Ollama",
+        "n8n",
+        "MCP",
+        "Qdrant",
+        "RAG"
+      ],
+      "roles": [
+        "Builder",
+        "Operator"
+      ]
+    },
+    {
+      "name": "Tenet PG Management",
+      "description": "PG and hostel management platform: Next.js 16 dashboard and Hono backend in a Bun Turborepo with SSE, UPI payments, WhatsApp Cloud API, PDF invoices, Playwright and Vitest.",
+      "keywords": [
+        "Next.js",
+        "Hono",
+        "Bun",
+        "SSE",
+        "Playwright"
+      ],
+      "roles": [
+        "Solo developer"
+      ]
+    },
+    {
+      "name": "Ai-Vestor",
+      "description": "Hackathon-winning stock prediction platform with 100+ LSTM models and a gamified investment LMS.",
+      "keywords": [
+        "TensorFlow",
+        "LSTM",
+        "FastAPI"
+      ],
+      "roles": [
+        "Team lead"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": [
+        "TypeScript",
+        "JavaScript",
+        "Dart",
+        "Python",
+        "SQL",
+        "Solidity"
+      ]
+    },
+    {
+      "name": "Full-Stack",
+      "keywords": [
+        "Next.js 16",
+        "React 19",
+        "Bun",
+        "Hono",
+        "Node.js",
+        "REST",
+        "OpenAPI",
+        "SSE",
+        "WebSocket",
+        "Turborepo"
+      ]
+    },
+    {
+      "name": "Mobile",
+      "keywords": [
+        "Flutter",
+        "Riverpod",
+        "React Native",
+        "Firebase",
+        "ML Kit",
+        "Agora RTC"
+      ]
+    },
+    {
+      "name": "Data",
+      "keywords": [
+        "PostgreSQL",
+        "MongoDB",
+        "MySQL",
+        "Redis",
+        "BullMQ",
+        "Drizzle",
+        "Prisma"
+      ]
+    },
+    {
+      "name": "Applied AI",
+      "keywords": [
+        "PyTorch",
+        "BitNet b1.58",
+        "Quantization",
+        "Hugging Face",
+        "RAG",
+        "MCP",
+        "Qdrant",
+        "Ollama",
+        "Gemini API",
+        "TensorFlow"
+      ]
+    },
+    {
+      "name": "Infrastructure",
+      "keywords": [
+        "Docker",
+        "Coolify",
+        "Traefik",
+        "Tailscale",
+        "MinIO",
+        "AWS",
+        "GCP",
+        "OpenTelemetry",
+        "SigNoz"
+      ]
+    },
+    {
+      "name": "Integrations",
+      "keywords": [
+        "Cashfree",
+        "Razorpay",
+        "UPI",
+        "Surepass KYC",
+        "WhatsApp Cloud API",
+        "Twilio",
+        "Google Maps"
+      ]
+    }
+  ],
+  "meta": {
+    "canonical": "https://jayptl.me/resume",
+    "version": "2.0.0",
+    "lastModified": "2026-09-27"
+  }
+}

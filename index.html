@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>Jay Patel, Software Developer & Product Builder | Gujarat, India | jayptl.me</title>
+    <title>Jay Patel, Software Engineer: Full-Stack, Mobile &amp; Applied AI | Gujarat, India | jayptl.me</title>
     <link rel="canonical" href="https://jayptl.me/" />
     <link rel="manifest" href="/site.webmanifest">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
@@ -14,19 +14,19 @@
 
     <!-- SEO & Social Sharing -->
     <meta name="description"
-        content="Jay Patel is a founding-grade software developer and product builder from Anand, Gujarat, India. 30+ shipped products across mobile (Flutter), full-stack web (Next.js/TypeScript/Bun), AI, and backend systems.">
-    <meta property="og:title" content="Jay Patel, Software Developer & Product Builder | Gujarat, India">
+        content="Jay Patel is a software engineer from Anand, Gujarat, India, working across full-stack, mobile, and applied AI. 32 shipped projects across mobile (Flutter), full-stack web (Next.js/TypeScript/Bun), AI, and backend systems.">
+    <meta property="og:title" content="Jay Patel, Software Engineer: Full-Stack, Mobile &amp; Applied AI | Gujarat, India">
     <meta property="og:description"
-        content="Founding-grade software developer from Anand, Gujarat, India. 30+ shipped products across Flutter, Next.js, AI, and backend systems.">
+        content="Software engineer from Anand, Gujarat, India: full-stack, mobile, and applied AI. 32 shipped projects across Flutter, Next.js, AI, and backend systems.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://jayptl.me/">
     <meta property="og:site_name" content="Jay Patel">
     <meta property="og:image" content="https://jayptl.me/assets/logo-1024.png">
     <meta property="og:image:alt" content="Jay Patel Portfolio Logo">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Jay Patel, Software Developer & Product Builder | Gujarat, India">
+    <meta name="twitter:title" content="Jay Patel, Software Engineer: Full-Stack, Mobile &amp; Applied AI | Gujarat, India">
     <meta name="twitter:description"
-        content="Founding-grade software developer from Anand, Gujarat, India. 30+ shipped products across Flutter, Next.js, AI, and backend systems.">
+        content="Software engineer from Anand, Gujarat, India: full-stack, mobile, and applied AI. 32 shipped projects across Flutter, Next.js, AI, and backend systems.">
     <meta name="twitter:image" content="https://jayptl.me/assets/logo-1024.png">
 
     <!-- Google Search Console Verification -->
@@ -260,132 +260,88 @@
             }
         }
 
-        /* Preloader Styles - Critical CSS */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: var(--theme-bg);
-            z-index: var(--z-preloader, 60);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        /* Ink Loop Preloader (UI system round 2026-09-30, docs/motion-zen.md
+           section 6b and ruling "preloader mask exception"). No text, no
+           fonts, no images. Plays in CSS from the first frame and removes
+           itself with no script: 0-420ms the loop draws, 420-560ms it closes
+           into a dot, 560-880ms the dot opens as a circle onto the page. The
+           page underneath is fully drawn the whole time. js/preloader.js only
+           skips it on repeat visits and under reduced motion. */
+        @property --pl-r {
+            syntax: "<length>";
+            inherits: false;
+            initial-value: 0px;
         }
 
-        /* No-JS fallback: hide preloader immediately so content is accessible */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-preloader, 60);
+            display: grid;
+            place-items: center;
+            background-color: var(--theme-bg);
+            color: var(--primary-600, #1e88e5);
+            -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--pl-r), #000 calc(var(--pl-r) + 1px));
+                    mask: radial-gradient(circle at 50% 50%, transparent var(--pl-r), #000 calc(var(--pl-r) + 1px));
+            animation:
+                pl-open 320ms cubic-bezier(0.16, 1, 0.3, 1) 560ms forwards,
+                pl-gone 1ms linear 900ms forwards;
+        }
+
+        html[data-theme="dark"] .preloader {
+            color: var(--accent-400, #26c9d8);
+        }
+
+        .preloader-ink {
+            width: clamp(64px, 14vmin, 104px) !important;
+            height: clamp(64px, 14vmin, 104px) !important;
+            overflow: visible;
+        }
+
+        .preloader-loop {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+            transform-box: fill-box;
+            transform-origin: center;
+            animation:
+                pl-draw 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                pl-close 140ms cubic-bezier(0.16, 1, 0.3, 1) 420ms forwards;
+        }
+
+        .preloader-dot {
+            fill: currentColor;
+            transform-box: fill-box;
+            transform-origin: center;
+            transform: scale(0);
+            animation: pl-dot 140ms cubic-bezier(0.16, 1, 0.3, 1) 420ms forwards;
+        }
+
+        @keyframes pl-draw { to { stroke-dashoffset: 0; } }
+        @keyframes pl-close { to { opacity: 0; transform: scale(0.2); } }
+        @keyframes pl-dot { to { transform: scale(1); } }
+        @keyframes pl-open { from { --pl-r: 0px; } to { --pl-r: 150vmax; } }
+        @keyframes pl-gone { to { visibility: hidden; pointer-events: none; } }
+
+        /* Repeat visit in this session, reduced motion, or no script: never paints. */
+        html.no-preloader .preloader,
         html.no-js .preloader {
             display: none !important;
         }
 
-        .preloader.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .preloader-progress {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background-color: rgba(var(--theme-bg-rgb), 0.1);
-            backdrop-filter: blur(5px);
-            overflow: hidden;
-            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .preloader-progress-bar {
-            height: 100%;
-            width: 0%;
-            /* Solid blue bar */
-            background: var(--primary-600, var(--primary-500));
-            transition: width 0.3s ease-out;
-            border-radius: 2px;
-        }
-
-        .preloader-percentage {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-family: var(--font-display);
-            font-size: var(--text-xl);
-            font-weight: var(--weight-normal);
-            color: var(--theme-text);
-            /* Semi-transparent surface adapts to theme background */
-            background: rgba(var(--theme-bg-rgb), 0.85);
-            padding: var(--space-2) var(--space-4);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(var(--primary-500-rgb), 0.25);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Pulse animation while waiting for real load before simulating progress */
-        .preloader-percentage.pulsing {
-            animation: preloaderPulse 1.1s ease-in-out infinite;
-        }
-
-        @keyframes preloaderPulse {
-
-            0%,
-            100% {
-                opacity: .55;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.08);
+        @media (prefers-reduced-motion: reduce) {
+            .preloader {
+                display: none !important;
             }
         }
 
-        .preloader-logo {
-            font-family: var(--font-audiowide);
-            font-size: var(--text-5xl);
-            font-weight: var(--weight-normal);
-            /* Solid blue text instead of gradient */
-            background: none;
-            color: var(--primary-600, var(--primary-500));
-            -webkit-background-clip: initial;
-            background-clip: initial;
-            -webkit-text-fill-color: currentColor;
-            margin-bottom: var(--space-8);
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.2s forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* Prevent scroll and veil all content during preloader phase */
+        /* Lock scroll while the preloader plays. Content is never hidden:
+           the page is fully drawn under the overlay from first paint. */
         body.preloading {
             overflow: hidden;
-        }
-
-        body.preloading > *:not(.preloader):not(#doodleSprite) {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        html.no-js body.preloading > *:not(.preloader):not(#doodleSprite) {
-            opacity: 1 !important;
-            visibility: visible !important;
-            pointer-events: auto !important;
         }
 
         .hero,
@@ -402,46 +358,6 @@
             pointer-events: none !important;
         }
 
-        @media (max-width: 768px) {
-            .preloader-logo {
-                font-size: var(--text-3xl);
-            }
-
-            .preloader-percentage {
-                font-size: var(--text-lg);
-                bottom: 15px;
-                right: 15px;
-                padding: var(--space-1) var(--space-2);
-            }
-        }
-
-        /* Light mode explicit overrides - Blue/Primary */
-        html[data-theme="light"] .preloader-logo {
-            color: var(--primary-600, #1e88e5);
-        }
-
-        html[data-theme="light"] .preloader-progress-bar {
-            background: var(--primary-600, #1e88e5);
-        }
-
-        /* Dark mode overrides - use turquoise/accent colors */
-        html[data-theme="dark"] .preloader-logo {
-            color: var(--accent-400, #26c9d8);
-        }
-
-        html[data-theme="dark"] .preloader-progress-bar {
-            background: var(--accent-400, #26c9d8);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .preloader-logo {
-                color: var(--accent-400, #26c9d8);
-            }
-
-            .preloader-progress-bar {
-                background: var(--accent-400, #26c9d8);
-            }
-        }
     </style>
 
     <!-- Theme color for light and dark -->
@@ -468,7 +384,7 @@
                     "@type": "ProfilePage",
                     "@id": "https://jayptl.me/#profilepage",
                     "url": "https://jayptl.me/",
-                    "name": "Jay Patel, Software Developer & Product Builder | Gujarat, India",
+                    "name": "Jay Patel, Software Engineer: Full-Stack, Mobile & Applied AI | Gujarat, India",
                     "isPartOf": { "@id": "https://jayptl.me/#website" },
                     "mainEntity": { "@id": "https://jayptl.me/#person" }
                 },
@@ -485,16 +401,13 @@
                     ],
                     "url": "https://jayptl.me/",
                     "image": "https://jayptl.me/assets/logo-1024.png",
-                    "description": "Founding-engineer-grade full-stack developer and product builder from Anand, Gujarat, India with 4+ years across TypeScript, Dart/Flutter, Python, and Solidity. 30+ shipped products spanning mobile, web, backend, and self-hosted infrastructure.",
+                    "description": "Software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity. 32 shipped projects spanning mobile, web, backend, and self-hosted infrastructure.",
                     "email": "mailto:hello@jayptl.me",
                     "jobTitle": [
-                        "Software Developer",
-                        "Product Builder",
+                        "Software Engineer",
                         "Full Stack Engineer",
-                        "AI Engineer",
-                        "UI/UX Designer",
-                        "Product Manager",
-                        "Creative Director"
+                        "Mobile Developer",
+                        "Applied AI Engineer"
                     ],
                     "address": {
                         "@type": "PostalAddress",
@@ -544,7 +457,7 @@
                     "url": "https://jayptl.me/",
                     "name": "Jay Patel",
                     "alternateName": "jayptl.me",
-                    "description": "Jay Patel's portfolio showcasing software development, UI/UX, product management, and creative direction.",
+                    "description": "Jay Patel's portfolio: full-stack, mobile, and applied AI engineering.",
                     "inLanguage": "en",
                     "publisher": { "@id": "https://jayptl.me/#person" }
                 }
@@ -567,20 +480,31 @@
             <symbol id="d-tape" viewBox="0 0 96 24"><title>Hand-drawn washi tape</title><path d="M8 22 L88 22 C 90 16 90 8 88 2 L8 2 C 6 8 6 16 8 22 Z M12 4 L84 4 M12 20 L84 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.7" pathLength="1"/></symbol>
             <symbol id="d-scissors" viewBox="0 0 96 24"><title>Hand-drawn scissors cut line</title><circle cx="18" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><circle cx="18" cy="17" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><path d="M22 12 L44 12 M46 6 L44 12 L46 18 M46 6 c 10 0 20 0 30 6 M46 18 c 10 0 20 0 30 -6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
             <symbol id="d-asterisk" viewBox="0 0 24 24"><title>Hand-drawn asterisk</title><path d="M12 3 L12 21 M4 7 L20 17 M20 7 L4 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
+            <symbol id="d-squiggle" viewBox="0 0 120 12"><title>Hand-drawn squiggle</title><path d="M3 7 C9 2 13 2 17 6 S25 11 30 6 S38 1 43 6 S51 11 56 6 S64 2 69 6 S77 10 82 6 S90 2 95 6 S103 10 108 6 S114 3 117 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-marker" viewBox="0 0 120 24"><title>Hand-drawn marker swipe</title><path d="M6 15 C30 12 62 14 88 11 C100 10 108 10 114 10" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-scribble-out" viewBox="0 0 120 24"><title>Hand-drawn scribble out</title><path d="M3 13 C12 6 18 18 26 11 C34 4 40 18 49 11 C58 4 64 18 73 11 C82 4 88 18 97 11 C104 6 110 14 117 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-loop-arrow" viewBox="0 0 72 40"><title>Hand-drawn loop arrow</title><path d="M4 30 C14 30 22 26 26 18 C30 10 24 4 19 8 C14 12 20 22 32 24 C44 26 54 22 64 17 M56 12 L64 17 L57 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-heart" viewBox="0 0 24 22"><title>Hand-drawn heart</title><path d="M12 20 C6 15 2 11 2.8 7 C3.6 3.4 8 2.4 10.4 5.2 C11.2 6.1 11.7 7 12 7.8 C12.6 6 14 3.8 16.6 3.4 C20 3 22 6 21.2 9 C20.2 13 16 16.4 12.4 20.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-check" viewBox="0 0 24 24"><title>Hand-drawn check</title><path d="M4 13 C6 14.5 8 16.5 9.5 19 C12 13 15.5 8 20.5 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-box" viewBox="0 0 100 40"><title>Hand-drawn box</title><path d="M5 6 C35 4 68 5 95 5 C96 15 96 26 95 35 C66 36 34 36 6 35 C4 25 4 14 6 4 L12 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-brace" viewBox="0 0 20 100"><title>Hand-drawn curly brace</title><path d="M16 3 C9 4 8 8 8 16 L8 40 C8 46 6 49 2 50 C6 51 8 54 8 60 L8 84 C8 92 9 96 16 97" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-burst" viewBox="0 0 64 64"><title>Hand-drawn starburst</title><path d="M32 1.5 L37.6 11.1 L46.7 6.6 L46.7 17.3 L58.3 16.8 L52.8 26.4 L61.2 32 L53.9 37.9 L58.6 47.4 L47 47 L46.9 57.9 L37.8 53.6 L32 63 L26.8 51.5 L16.8 58.4 L17.4 46.6 L5.1 47.5 L12.2 37.3 L1.3 32 L11.3 26.4 L6.4 17.2 L17.8 17.8 L16.1 4.4 L26.1 9.9 L32 1.5 L37.6 11.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-zigzag" viewBox="0 0 240 12"><title>Hand-drawn zigzag rule</title><path d="M2 7 L10 3 L17 9 L25 3 L33 9 L40 4 L48 9 L56 3 L63 8 L71 3 L79 9 L86 4 L94 9 L102 3 L109 8 L117 3 L125 9 L132 4 L140 9 L148 3 L155 8 L163 3 L171 9 L178 4 L186 9 L194 3 L201 8 L209 3 L217 9 L224 4 L232 8 L238 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-here" viewBox="0 0 80 48"><title>Hand-drawn you-are-here loop</title><path d="M52 8 C40 3 18 5 10 14 C3 22 8 34 24 38 C42 42 64 38 70 28 C75 19 66 10 52 8 C44 7 36 9 32 12 M70 31 C73 36 75 40 77 45" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-margin" viewBox="0 0 64 40"><title>Hand-drawn margin note arrow</title><path d="M4 6 C16 4 30 8 38 18 C44 25 48 30 57 32 M49 27 L57 32 L50 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
         </defs>
     </svg>
     <!-- Preloader -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-logo">Loading...</div>
-        <div class="preloader-progress">
-            <div class="preloader-progress-bar" id="progressBar"></div>
-        </div>
-        <div class="preloader-percentage" id="progressText">0%</div>
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <svg class="preloader-ink" viewBox="0 0 100 100" focusable="false">
+            <path class="preloader-loop" pathLength="1" d="M50 16c19-1 34 13 33 31-1 20-17 35-36 34-18-1-31-15-30-33 1-17 14-30 30-31 11-1 20 4 25 13"/>
+            <circle class="preloader-dot" cx="50" cy="50" r="7"/>
+        </svg>
     </div>
 
     <!-- Main Content -->
     <main id="main-content" aria-label="Jay Patel Portfolio">
-        <h1 class="sr-only">Jay Patel, Software Developer, UI/UX Designer, Product Manager, Creative Director & Video Editor</h1>
+        <h1 class="sr-only">Jay Patel, Software Engineer: Full-Stack, Mobile and Applied AI</h1>
         <!-- Hero Section -->
         <section id="home" class="hero" aria-labelledby="heroTitle">
             <h2 id="heroTitle" class="sr-only">Welcome to Jay Patel’s Portfolio</h2>
@@ -605,25 +529,24 @@
                                 </div>
                             </div>
                             <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="CROSS PLATFORM DEV">
+                            <div class="text-reveal-item" data-role="THE FULL-STACK DEV?">
                                 <!-- Reveal 2 · SplitText (vanilla, zero deps). Plain text;
-                                     js/components/split-text.js splits + staggers at runtime. -->
-                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="Cross platform dev">CROSS PLATFORM DEV</p>
+                                     js/components/split-text.js splits + staggers at runtime.
+                                     Bookends are locked: "LOOKING FOR JAY?" first, "Ahhhh, Just Jay!"
+                                     last. Only these middle words ever change. -->
+                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The full-stack dev?">THE FULL-STACK DEV?</p>
                             </div>
-                            <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="UI & UX DESIGNER">
-                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="UI and UX designer">UI &amp; UX DESIGNER</p>
+                            <div class="text-reveal-item" data-role="THE FLUTTER NERD?">
+                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The Flutter nerd?">THE FLUTTER NERD?</p>
                             </div>
-                            <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="PRODUCT MANAGER">
-                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="Product manager">PRODUCT MANAGER</p>
+                            <div class="text-reveal-item" data-role="THAT AI GUY?">
+                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="That AI guy?">THAT AI GUY?</p>
                             </div>
-                            <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="CREATIVE DIRECTOR">
-                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="Creative director">CREATIVE DIRECTOR</p>
+                            <div class="text-reveal-item" data-role="THE INFRA ENGINEER?">
+                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The infra engineer?">THE INFRA ENGINEER?</p>
                             </div>
-                            <div class="text-reveal-item" data-role="VIDEO EDITOR">
-                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="Video editor">VIDEO EDITOR</p>
+                            <div class="text-reveal-item" data-role="THE WEB3 GEEK?">
+                                <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The Web3 geek?">THE WEB3 GEEK?</p>
                             </div>
                             <!-- Final: Ahhhh, Just Jay! -->
                             <div class="text-reveal-item final" data-role="JUST JAY">
@@ -646,9 +569,18 @@
             <div class="container home-intro-grid">
                 <div class="home-intro-copy">
                     <p class="hud-label">01 · <span class="sr-only">About</span></p>
-                    <h2 id="introHeading" class="section-title">Software developer, designer, product mind, one engineer who ships the whole story.</h2>
-                    <p class="home-intro-lead">I'm a founding-engineer-grade full-stack developer from Anand, Gujarat. Over 4+ years I've shipped 30+ products across TypeScript, Dart/Flutter, Python, and Solidity, mobile, web, backend, and self-hosted infrastructure I run like a homelab aquarium.</p>
+                    <h2 id="introHeading" class="section-title">Full-stack, mobile, and applied AI, one engineer who <span data-ink="squiggle">ships the whole story</span>.</h2>
+                    <p class="home-intro-lead">I'm a full-stack engineer from Anand, Gujarat. I've shipped 32 projects across <span data-stack="typescript">TypeScript</span>, <span data-stack="flutter">Dart/Flutter</span>, <span data-stack="python">Python</span>, and <span data-stack="solidity">Solidity</span>, mobile, web, backend, and self-hosted infrastructure I run like a homelab aquarium.</p>
                     <p class="home-intro-more">If it ships, I can build it, design it, plan it, film it, and make the launch trailer for it.</p>
+                    <div class="talk-chip home-intro-talk">
+                        <a class="talk-chip-book pill-btn pill-btn--filled" href="/book">Book 15 min</a>
+                        <button class="talk-chip-copy pill-btn pill-btn--outline" type="button" data-copy="hello@jayptl.me">Copy email</button>
+                    </div>
+                    <ul class="links-row home-socials" aria-label="Elsewhere">
+                        <li><a href="https://github.com/jayptl-me" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/jayptl-rq/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                        <li><a href="https://huggingface.co/jayptl-rq" target="_blank" rel="noopener noreferrer">Hugging Face</a></li>
+                    </ul>
                 </div>
                 <aside class="home-note" aria-label="A note from Jay">
                     <svg class="doodle doodle-note-arrow" aria-hidden="true"><use href="#d-arrow"/></svg>
@@ -663,24 +595,100 @@
                 <p class="hud-label">02 · <span class="sr-only">Now</span></p>
                 <h2 id="nowHeading" class="sr-only">What I'm working on now</h2>
                 <div class="now-rail" role="list" aria-label="Real numbers from shipped work">
-                    <div class="metric" role="listitem"><b>30+</b><span>products shipped</span></div>
-                    <div class="metric" role="listitem"><b>3</b><span>apps on Google Play</span></div>
-                    <div class="metric" role="listitem"><b>4</b><span>apps, 1 backend, Aviz</span></div>
-                    <div class="metric" role="listitem"><b>35+</b><span>API endpoints, Swalook</span></div>
-                    <div class="metric" role="listitem"><b>1st</b><span>CHARUSAT FinTech 2025</span></div>
+                    <div class="metric" role="listitem"><b><span data-ink="marker"><span data-tally="32">32</span></span></b><span>projects shipped</span></div>
+                    <div class="metric" role="listitem"><b><span data-tally="3">3</span></b><span>apps on Google Play</span></div>
+                    <div class="metric" role="listitem"><b><span data-tally="4">4</span></b><span>apps, 1 backend, Aviz</span></div>
+                    <div class="metric" role="listitem"><b><span data-tally="35" data-tally-suffix="+">35+</span></b><span>API endpoints, Swalook</span></div>
+                    <div class="metric" role="listitem"><b>1st <span data-ink="burst"></span></b><span>CHARUSAT FinTech 2025</span></div>
                 </div>
-                <p class="now-footnote hud-readout">SITE.STATUS: hand-written HTML/CSS/JS, no frameworks · analytics only with consent</p>
+                <p class="now-footnote hud-readout">SITE.STATUS: hand-written HTML/CSS/JS, no frameworks · analytics only with consent · <a href="/now">what I am on now</a></p>
             </div>
         </section>
 
-        <!-- 03 · Selected work (Bespoke Horizontal Scroll Stack) -->
+        <!-- 03 · Experience (Role Ledger) -->
+        <section id="experience" class="home-section" aria-labelledby="experienceHeading">
+            <div class="container">
+                <p class="hud-label">03 · <span class="sr-only">Experience</span></p>
+                <h2 id="experienceHeading" class="section-title">Where I've shipped lately</h2>
+                <div class="role-ledger" data-component="role-ledger">
+                    <details class="role">
+                        <summary class="role-head">
+                            <span class="role-mark" aria-hidden="true">JP</span>
+                            <h3 class="role-title">Independent Software Engineer <span class="role-position">Freelance and contract</span></h3>
+                            <span class="role-when">Jun 2022 to present</span>
+                            <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <p class="role-outcome">Client systems end to end: Genuinest, Swalook CRM, Aviz Health, and earlier clients.</p>
+                        </summary>
+                        <div class="role-body">
+                            <ul>
+                                <li><strong>Genuinest, Founding Engineer (Contract)</strong>, Jan 2026 to present. Core Flutter app and a Bun + Hono API with JWT rotation and OpenAPI docs; led the move off high-cost cloud to Docker, Coolify, Traefik, and a 20TB MinIO cluster. <a href="/projects/genuinest">Case study</a></li>
+                                <li><strong>Swalook CRM, Full-Stack Developer</strong>, Jan 2026 to present. Ground-up overhaul into a Next.js 16 Turborepo; Bun + Hono + Drizzle on PostgreSQL with Redis and BullMQ; 35+ REST endpoints documented with OpenAPI. <a href="/projects/swalook">Case study</a></li>
+                                <li><strong>Aviz Health, Full-Stack Developer</strong>, Dec 2025 to present. Three Flutter apps and a Next.js 16 admin console on Bun + Hono + MongoDB; Agora video, Cashfree payments, Google Maps, ambulance SOS dispatch. Live on Google Play. <a href="/projects/aviz-health">Case study</a></li>
+                                <li><strong>Earlier clients</strong>: Aorta (hotel booking, 2024 to 2025), BhawBhaw (pet-services marketplace, 2024 to 2025), Niti Health (healthcare ERP, 2024), Dpizza Time (food ordering, 2023).</li>
+                            </ul>
+                            <ul class="role-stack" aria-label="Stack">
+                                <li><span data-stack="flutter">Flutter</span></li>
+                                <li><span data-stack="nextjs">Next.js</span></li>
+                                <li><span data-stack="bun">Bun + Hono</span></li>
+                                <li><span data-stack="homelab">Self-hosted infra</span></li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="role">
+                        <summary class="role-head">
+                            <span class="role-mark" aria-hidden="true">TH</span>
+                            <h3 class="role-title">Thhiya <span class="role-position">Full Stack Developer</span></h3>
+                            <span class="role-when">Nov 2025 to Jun 2026</span>
+                            <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <p class="role-outcome">A partner-discovery and workforce-compliance platform, built from scratch.</p>
+                        </summary>
+                        <div class="role-body">
+                            <ul>
+                                <li>Built the platform from scratch: React 19, Vite, TypeScript, TanStack Query frontend on a Bun + Hono + Mongoose backend.</li>
+                                <li>Engineered Puppeteer scraping pipelines that seeded compliance data for 195 countries across payroll, benefits, tax, and entity formation.</li>
+                                <li>Integrated Google Gemini for provider matching and compliance insights.</li>
+                                <li>Cut API latency by 20% with session token validation, Prometheus metrics, and Zod request validation; shipped consent-aware GA4 analytics.</li>
+                            </ul>
+                            <ul class="role-stack" aria-label="Stack">
+                                <li><span data-stack="react">React 19</span></li>
+                                <li><span data-stack="typescript">TypeScript</span></li>
+                                <li><span data-stack="bun">Bun + Hono</span></li>
+                                <li><span data-stack="ai">Gemini</span></li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="role">
+                        <summary class="role-head">
+                            <span class="role-mark" aria-hidden="true">NN</span>
+                            <h3 class="role-title">The Neural Networker <span class="role-position">Web Development and React Native Intern</span></h3>
+                            <span class="role-when">Jun 2025 to Nov 2025</span>
+                            <svg class="role-chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <p class="role-outcome">AI-integrated web and mobile interfaces, and a 30% faster reporting dashboard.</p>
+                        </summary>
+                        <div class="role-body">
+                            <ul>
+                                <li>Built AI-integrated web and mobile interfaces with Next.js and React Native.</li>
+                                <li>Tuned MongoDB compound indexes for a 30% speedup on analytical reporting dashboards.</li>
+                            </ul>
+                            <ul class="role-stack" aria-label="Stack">
+                                <li><span data-stack="nextjs">Next.js</span></li>
+                                <li><span data-stack="react-native">React Native</span></li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+                <p class="home-more hud-readout"><a href="/resume#resumeExp">Full history on the resume</a></p>
+            </div>
+        </section>
+
+        <!-- 04 · Selected work (Bespoke Horizontal Scroll Stack) -->
         <section id="selected-work" class="home-section home-section--scroll-stack" aria-labelledby="workHeading">
             <div class="scroll-stack-container" id="scrollStackContainer">
                 <div class="scroll-stack-stage" id="scrollStackStage">
                     <div class="container scroll-stack-header-wrap">
                         <div class="scroll-stack-header">
                             <div>
-                                <p class="hud-label">03 · <span class="sr-only">Selected work</span></p>
+                                <p class="hud-label">04 · <span class="sr-only">Selected work</span></p>
                                 <h2 id="workHeading" class="section-title">Selected work</h2>
                             </div>
                             <div class="scroll-stack-hud" id="scrollStackHud" aria-live="polite">
@@ -701,7 +709,7 @@
                     <div class="scroll-stack-viewport" id="scrollStackViewport">
                         <div class="scroll-stack-track" id="scrollStackTrack">
                             <!-- Aviz Health -->
-                            <article class="scroll-stack-card work-card" data-project="Aviz Health" style="--card-index: 0;">
+                            <article class="scroll-stack-card work-card" data-project="Aviz Health" style="--card-index: 0;" data-morph>
                                 <a class="scroll-stack-card-cover work-card-cover" href="/projects/aviz-health" aria-label="Aviz Health case study">
                                     <span class="scroll-stack-badge work-badge">Live on Play</span>
                                     <div class="scroll-stack-cover-visual">
@@ -713,6 +721,7 @@
                                 <div class="scroll-stack-card-body work-card-body">
                                     <div class="scroll-stack-card-main">
                                         <span class="scroll-stack-card-num">PROJECT // 01</span>
+                                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><time datetime="2025-12">Dec 2025 to now</time><span class="ship-role">Full-stack developer</span></p>
                                         <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/aviz-health">Aviz Health</a></h3>
                                         <p class="scroll-stack-card-desc work-card-desc">A connected healthcare ecosystem, three Flutter apps, a Next.js 16 mission control, and a Bun + Hono backend firing zero-lag bookings and ambulance SOS dispatch.</p>
                                         <ul class="tag-row" aria-label="Technologies used">
@@ -721,15 +730,14 @@
                                     </div>
                                     <div class="scroll-stack-card-footer">
                                         <div class="scroll-stack-actions">
-                                            <a class="scroll-stack-btn-primary" href="/projects/aviz-health">Case Study</a>
-                                            <a class="scroll-stack-link-secondary" href="#">Live Preview</a>
+                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/aviz-health">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </article>
 
                             <!-- Swalook CRM -->
-                            <article class="scroll-stack-card work-card" data-project="Swalook CRM" style="--card-index: 1;">
+                            <article class="scroll-stack-card work-card" data-project="Swalook CRM" style="--card-index: 1;" data-morph>
                                 <a class="scroll-stack-card-cover work-card-cover" href="/projects/swalook" aria-label="Swalook CRM case study">
                                     <span class="scroll-stack-badge work-badge">In Production</span>
                                     <div class="scroll-stack-cover-visual">
@@ -741,6 +749,7 @@
                                 <div class="scroll-stack-card-body work-card-body">
                                     <div class="scroll-stack-card-main">
                                         <span class="scroll-stack-card-num">PROJECT // 02</span>
+                                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><time datetime="2026-01">Jan 2026 to now</time><span class="ship-role">Full-stack developer</span></p>
                                         <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/swalook">Swalook CRM</a></h3>
                                         <p class="scroll-stack-card-desc work-card-desc">Ground-up overhaul of an enterprise salon-management platform: a Next.js 16 monorepo, 35+ documented API endpoints, Redis caching, and a Flutter app with ML Kit AR previews.</p>
                                         <ul class="tag-row" aria-label="Technologies used">
@@ -749,17 +758,16 @@
                                     </div>
                                     <div class="scroll-stack-card-footer">
                                         <div class="scroll-stack-actions">
-                                            <a class="scroll-stack-btn-primary" href="/projects/swalook">Case Study</a>
-                                            <a class="scroll-stack-link-secondary" href="#">Live Preview</a>
+                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/swalook">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </article>
 
                             <!-- Genuinest -->
-                            <article class="scroll-stack-card work-card" data-project="Genuinest" style="--card-index: 2;">
+                            <article class="scroll-stack-card work-card" data-project="Genuinest" style="--card-index: 2;" data-morph>
                                 <a class="scroll-stack-card-cover work-card-cover" href="/projects/genuinest" aria-label="Genuinest case study">
-                                    <span class="scroll-stack-badge work-badge">Founding Engineer</span>
+                                    <span class="scroll-stack-badge work-badge">Founding Engineer (Contract)</span>
                                     <div class="scroll-stack-cover-visual">
                                         <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
                                         <span class="scroll-stack-cover-title">Genuinest</span>
@@ -769,44 +777,44 @@
                                 <div class="scroll-stack-card-body work-card-body">
                                     <div class="scroll-stack-card-main">
                                         <span class="scroll-stack-card-num">PROJECT // 03</span>
+                                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><time datetime="2026-01">Jan 2026 to now</time><span class="ship-role">Founding engineer (contract)</span></p>
                                         <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/genuinest">Genuinest</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">As Founding Engineer: a Flutter product on Bun + Hono, then the fun part, migrating off big cloud bills to Docker, Coolify, Traefik, and a 20TB self-hosted MinIO cluster.</p>
+                                        <p class="scroll-stack-card-desc work-card-desc">As Founding Engineer (Contract): a Flutter product on Bun + Hono, then the fun part, migrating off big cloud bills to Docker, Coolify, Traefik, and a 20TB self-hosted MinIO cluster.</p>
                                         <ul class="tag-row" aria-label="Technologies used">
                                             <li>Flutter + Riverpod</li><li>Bun + Hono</li><li>Docker</li><li>Coolify</li>
                                         </ul>
                                     </div>
                                     <div class="scroll-stack-card-footer">
                                         <div class="scroll-stack-actions">
-                                            <a class="scroll-stack-btn-primary" href="/projects/genuinest">Case Study</a>
-                                            <a class="scroll-stack-link-secondary" href="#">Live Preview</a>
+                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/genuinest">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </article>
 
                             <!-- Vini & Tini -->
-                            <article class="scroll-stack-card work-card" data-project="Vini and Tini" style="--card-index: 3;">
+                            <article class="scroll-stack-card work-card" data-project="Vini and Tini" style="--card-index: 3;" data-morph>
                                 <a class="scroll-stack-card-cover work-card-cover" href="/projects/vini-tini" aria-label="Vini and Tini case study">
                                     <span class="scroll-stack-badge work-badge">On HuggingFace</span>
                                     <div class="scroll-stack-cover-visual">
                                         <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
                                         <span class="scroll-stack-cover-title">Vini &amp; Tini</span>
-                                        <span class="scroll-stack-cover-tagline">Ternary Small Language Models</span>
+                                        <span class="scroll-stack-cover-tagline">Small Language Models, From Scratch</span>
                                     </div>
                                 </a>
                                 <div class="scroll-stack-card-body work-card-body">
                                     <div class="scroll-stack-card-main">
                                         <span class="scroll-stack-card-num">PROJECT // 04</span>
+                                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><span class="ship-role">Research, Vini is on Hugging Face</span></p>
                                         <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/vini-tini">Vini &amp; Tini</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">Two small language models trained from scratch on the BitNet b1.58 ternary architecture, one personal assistant, one TypeScript coder, built to run on the edge.</p>
+                                        <p class="scroll-stack-card-desc work-card-desc">Two small language models trained from scratch: Vini, a BitNet b1.58 edge assistant, and Tini, a dense TypeScript coder. Built to learn what an LLM really takes.</p>
                                         <ul class="tag-row" aria-label="Technologies used">
                                             <li>PyTorch</li><li>BitNet b1.58</li><li>HuggingFace</li>
                                         </ul>
                                     </div>
                                     <div class="scroll-stack-card-footer">
                                         <div class="scroll-stack-actions">
-                                            <a class="scroll-stack-btn-primary" href="/projects/vini-tini">Case Study</a>
-                                            <a class="scroll-stack-link-secondary" href="#">Live Preview</a>
+                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/vini-tini">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -839,14 +847,25 @@
             </div>
         </section>
 
-        <!-- 05 · About / journey teaser -->
+        <!-- 05 · Shipping cadence (Commit Field) -->
+        <section id="cadence" class="home-section" aria-labelledby="cadenceHeading">
+            <div class="container">
+                <p class="hud-label">05 · <span class="sr-only">Shipping cadence</span></p>
+                <h2 id="cadenceHeading" class="section-title">Shipping cadence</h2>
+                <figure class="commit-field" data-component="commit-field">
+                    <figcaption>GitHub contributions over the last 12 months, from <a href="https://github.com/jayptl-me" target="_blank" rel="noopener noreferrer">github.com/jayptl-me</a>, saved when the site was built.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 06 · About / journey teaser -->
         <section id="about-teaser" class="home-section" aria-labelledby="aboutTeaserHeading">
             <div class="container home-about-grid">
                 <div class="home-about-copy">
-                    <p class="hud-label">05 · <span class="sr-only">About</span></p>
+                    <p class="hud-label">06 · <span class="sr-only">About</span></p>
                     <h2 id="aboutTeaserHeading" class="section-title">Games taught me systems thinking before any textbook did.</h2>
                     <p class="home-about-text">I don't just play them, I dissect them. Economies, feedback loops, difficulty curves, why players quit. It's market research my product sense benefits from. Building games keeps my UX instincts honest: nothing exposes bad interaction design faster than a player rage-quitting your menu.</p>
-                    <a class="btn btn-primary" href="/about">Read the longer version</a>
+                    <a class="pill-btn pill-btn--filled" href="/about">Read the longer version</a>
                 </div>
                 <figure class="fig home-fig">
                     <div class="work-cover-placeholder home-fig-frame">[ a candid desk photo lands here ]</div>
@@ -854,13 +873,37 @@
                 </figure>
             </div>
         </section>
+
+        <!-- 07 · Say hi (closing band) -->
+        <section id="say-hi" class="home-section home-closing" aria-labelledby="sayHiHeading">
+            <div class="container home-closing-inner">
+                <p class="hud-label">07 · <span class="sr-only">Contact</span></p>
+                <h2 id="sayHiHeading" class="section-title">Say hi</h2>
+                <p class="home-closing-lede">Open to full-time roles, contract builds, and forward deployed engineering. Based in Anand, India, working in IST.</p>
+                <p class="hand hand--md home-closing-note">fifteen minutes, no slides <span data-ink="loop-arrow"></span></p>
+                <div class="talk-chip home-closing-chip">
+                    <a class="talk-chip-book pill-btn pill-btn--filled clay-glare" href="/book" data-pull>Book 15 min</a>
+                    <button class="talk-chip-copy pill-btn pill-btn--outline" type="button" data-copy="hello@jayptl.me">Copy email</button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
     <footer class="site-footer">
         <div class="container site-footer-inner">
-            <p class="site-footer-signoff hand hand--md">Hand-written HTML/CSS/JS, no frameworks. Analytics only with your consent.</p>
-            <p class="site-footer-meta hud-readout">Updated <time id="footerUpdated">recently</time> · <a href="mailto:hi@jayptl.me">hi@jayptl.me</a> · <button class="reset-stickers" id="resetStickers" type="button">Reset stickers</button> · <a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><button class="reset-stickers" id="resetStickers" type="button" data-spark>Reset stickers</button> · <a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -883,6 +926,26 @@
     <script defer src="/js/components/featured-work.js"></script>
     <script defer src="/js/components/scroll-stack.js"></script>
     <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
+    <script defer src="/js/components/stack-chip.js"></script>
+    <script defer src="/js/components/role-ledger.js"></script>
+    <script defer src="/js/components/tally-roll.js"></script>
+    <script defer src="/js/components/commit-field.js"></script>
+    <script defer src="/js/components/pointer-play.js"></script>
+    <script defer src="/js/components/sticker-peel.js"></script>
+    <script defer src="/js/components/ink-spark.js"></script>
     <script defer src="/js/main.js"></script>
 </body>
 

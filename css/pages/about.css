@@ -1,6 +1,9 @@
 /* ==========================================================================
-   ABOUT PAGE (/about)
-   Uses existing design tokens + theme duality. No new palette.
+   ABOUT PAGE (/about), UI system round 2026-09-30
+   Four tiers: phone < 600, tablet 600 to 1023, laptop 1024 to 1439,
+   wide 1440+. Brief: docs/motion-zen.md section 6b "About page, Phase 2".
+   Cards use the shared card surface (.sf-card, components/surface.css);
+   buttons are the pill family (components/buttons.css).
    ========================================================================== */
 
 body {
@@ -10,9 +13,38 @@ body {
 }
 
 .about-page {
+    --page-gutter: 16px;
+    --section-gap: 56px;
     max-width: 960px;
     margin: 0 auto;
-    padding: calc(var(--space-24) + var(--space-8)) var(--space-6) var(--space-16);
+    padding: calc(var(--space-24) + var(--space-4)) var(--page-gutter) var(--space-16);
+}
+
+@media (min-width: 600px) {
+    .about-page {
+        --page-gutter: 24px;
+        --section-gap: 72px;
+        padding-top: calc(var(--space-24) + var(--space-8));
+    }
+}
+
+@media (min-width: 1024px) {
+    .about-page {
+        --page-gutter: 32px;
+        --section-gap: 96px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .about-page {
+        max-width: 1120px;
+    }
+}
+
+/* One rhythm between every section on the page. */
+.about-page > header,
+.about-page > section {
+    margin: 0 0 var(--section-gap);
 }
 
 /* ---- Page hero ------------------------------------------------------------ */
@@ -24,15 +56,14 @@ body {
     margin: 0 0 var(--space-3);
 }
 
+/* Solid ramp ink: gradient text is retired (docs/taste.md section 3). */
 .page-hero h1 {
     font-family: var(--font-display);
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.08;
     margin: 0 0 var(--space-4);
-    background: var(--theme-gradient-text);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--sf-accent);
+    text-wrap: balance;
 }
 
 .page-hero-lead {
@@ -43,55 +74,108 @@ body {
     margin: 0;
 }
 
-/* ---- Roles grid -------------------------------------------------------------- */
-.about-roles {
-    margin: var(--space-12) 0;
+/* "stop playing" crossed out, "keep building" written above it */
+.ink-swap {
+    position: relative;
+    display: inline-block;
 }
 
+.ink-swap .ink--over > .ink-svg {
+    color: var(--ink-hand);
+    opacity: 0.8;
+}
+
+.ink-above {
+    display: inline-block;
+    margin-left: 0.2em;
+    rotate: -4deg;
+    white-space: nowrap;
+    font-size: 0.62em;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--sf-accent);
+    pointer-events: none;
+}
+
+/* Laptop and wide: the correction sits above the crossed-out words. */
+@media (min-width: 1024px) {
+    .ink-above {
+        position: absolute;
+        left: 50%;
+        bottom: 88%;
+        margin: 0;
+        translate: -50% 0;
+        font-size: 0.5em;
+    }
+}
+
+/* ---- Section headings on this page --------------------------------------- */
+.about-page .section-head {
+    margin: 0 0 var(--space-5);
+}
+
+/* ---- 01 What I build: role cards ------------------------------------------ */
+/* 1 column phone, 2x2 tablet and laptop, 4 across wide: never a lone card. */
 .role-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.role-grid li {
-    background: var(--theme-surface-bg);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-lg);
-    box-shadow: var(--theme-surface-shadow-sm);
-    backdrop-filter: blur(var(--theme-surface-blur));
-    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
-    padding: var(--space-5);
+@media (min-width: 600px) {
+    .role-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .role-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+    }
+}
+
+.role-card {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    padding: 18px;
 }
 
-.role-grid strong {
+@media (min-width: 1024px) {
+    .role-card {
+        padding: 20px 22px;
+    }
+}
+
+.role-card strong {
     font-family: var(--font-display);
-    font-size: var(--text-base);
-    font-weight: 400;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--sf-text);
 }
 
-.role-grid span {
-    font-size: var(--text-sm);
-    line-height: 1.55;
+.role-card > span {
+    font-size: 0.9375rem;
+    line-height: 1.6;
     color: var(--theme-text-secondary);
 }
 
-/* ---- Story ---------------------------------------------------------------------- */
-.about-story {
-    margin-bottom: var(--space-16);
-    max-width: 68ch;
+/* Handwritten aside under the roles grid */
+.about-note {
+    margin: var(--space-4) 0 0;
+    text-align: right;
+    font-size: 1.125rem;
 }
 
-.about-story h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 3vw, 1.75rem);
-    margin: 0 0 var(--space-5);
+/* ---- 02 The short version -------------------------------------------------- */
+.about-story {
+    max-width: 68ch;
 }
 
 .about-story p {
@@ -100,43 +184,56 @@ body {
     margin: 0 0 var(--space-4);
 }
 
-/* ---- Beyond the Code ---------------------------------------------------------------- */
-.beyond-code,
-.creative-lab {
-    margin-bottom: var(--space-16);
+.about-story p:last-child {
+    margin-bottom: 0;
 }
 
-.beyond-code h2,
-.creative-lab h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 3vw, 1.75rem);
-    margin: 0 0 var(--space-2);
+/* ---- 03 Timeline ------------------------------------------------------------- */
+.about-timeline .role-ledger {
+    margin-top: var(--space-4);
 }
 
-.case-section-no {
-    font-family: var(--font-display);
-}
-
+/* ---- 04 Beyond the Code ------------------------------------------------------- */
 .beyond-lede {
     font-size: var(--text-base);
     color: var(--theme-text-secondary);
     margin: 0 0 var(--space-6);
 }
 
+.beyond-code .beyond-lede.hand,
+.creative-lab .beyond-lede.hand {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-6);
+}
+
+/* 1 column phone, 2x2 from tablet up (the toys need the width). */
 .beyond-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 600px) {
+    .beyond-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .beyond-grid {
+        gap: 24px;
+    }
 }
 
 .beyond-card {
-    background: var(--theme-surface-bg);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-xl);
-    box-shadow: var(--theme-surface-shadow-sm);
-    backdrop-filter: blur(var(--theme-surface-blur));
-    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
-    padding: var(--space-5);
+    padding: 18px;
+}
+
+@media (min-width: 1024px) {
+    .beyond-card {
+        padding: 22px;
+    }
 }
 
 .beyond-icon {
@@ -148,37 +245,165 @@ body {
 
 .beyond-card h3 {
     font-family: var(--font-display);
-    font-size: var(--text-base);
+    font-size: 1.0625rem;
+    font-weight: 600;
     line-height: 1.3;
     margin: 0 0 var(--space-2);
 }
 
 .beyond-card p {
-    font-size: var(--text-sm);
+    font-size: 0.9375rem;
     line-height: 1.6;
     color: var(--theme-text-secondary);
     margin: 0;
 }
 
-/* ---- Creative Lab --------------------------------------------------------------------- */
-.lab-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--space-4);
+.now-playing {
+    margin: var(--space-3) 0 0;
+    font-size: 1.0625rem;
+    color: var(--sf-accent);
 }
 
+/* Toys: two canvases side by side from tablet up, stacked on phones. */
+.toy-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+@media (min-width: 600px) {
+    .toy-pair {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.toy {
+    display: grid;
+    gap: 6px;
+}
+
+.toy-canvas {
+    display: block;
+    width: 100% !important;
+    height: 140px !important;
+    max-width: 100% !important;
+    border-radius: 12px;
+    border: 1px dashed var(--sf-border);
+    color: var(--sf-accent);
+    cursor: grab;
+    touch-action: none;
+}
+
+.toy-canvas:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+}
+
+.toy-hint {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--sf-text-dim);
+}
+
+/* The Play pill sits beside the score readout. */
+.toy-hint--controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.toy-listen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+}
+
+.toy-note {
+    font-size: 1rem;
+    color: var(--sf-accent);
+}
+
+/* Homelab rack readout */
+.rack {
+    display: grid;
+    gap: 6px;
+    margin: var(--space-4) 0 0;
+    padding: 10px 12px;
+    list-style: none;
+    border: 1px solid var(--sf-border);
+    border-radius: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+}
+
+.rack li {
+    display: grid;
+    grid-template-columns: auto 7.5rem 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.rack-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sf-accent);
+    box-shadow: 0 0 0 3px rgba(var(--sf-accent-rgb), 0.18);
+}
+
+.rack-role {
+    color: var(--sf-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.6875rem;
+}
+
+.rack b {
+    font-weight: 600;
+    color: var(--sf-text);
+}
+
+.rack-more {
+    margin: var(--space-2) 0 0;
+    font-size: 0.8125rem;
+}
+
+.rack-more a {
+    color: var(--sf-accent);
+}
+
+/* ---- 05 Hills I will die on -------------------------------------------------- */
+.hills {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding-left: 1.4em;
+    max-width: 70ch;
+}
+
+.hills li::marker {
+    font-family: var(--font-mono);
+    color: var(--sf-accent);
+}
+
+/* ---- 06 Creative Lab --------------------------------------------------------- */
 .lab-slot {
     margin: 0;
 }
 
 .showcase-image-placeholder.lab-media {
     aspect-ratio: 16 / 10;
+    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-lg);
-    background: var(--theme-gradient-glow);
+    border: 1px solid var(--sf-border);
+    border-radius: 14px;
+    background: var(--sf-fog);
 }
 
 .showcase-placeholder-label {
@@ -189,16 +414,14 @@ body {
     color: var(--theme-text-muted);
 }
 
-.lab-slot figcaption {
+.lab-slot .fig-caption {
     margin-top: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--theme-text-muted);
     text-align: center;
 }
 
-/* ---- Footer ------------------------------------------------------------------------------ */
+/* ---- Footer -------------------------------------------------------------------- */
 .page-footer {
-    margin-top: var(--space-16);
+    margin-top: 0;
     text-align: center;
     font-size: var(--text-lg);
 }
@@ -206,48 +429,18 @@ body {
 .page-footer .hand {
     margin: 0;
 }
-.page-footer a {
+
+.page-footer a:not(.pill-btn) {
     color: var(--theme-primary);
     text-decoration: none;
     font-weight: 600;
 }
-.page-footer a:hover {
+
+.page-footer a:not(.pill-btn):hover {
     text-decoration: underline;
 }
 
-/* ---- Gate P: section headings, notes, fig captions -------------------------------------- */
-.about-page .section-head {
-    margin: 0 0 var(--space-4);
-}
-
-/* Handwritten aside under the roles grid */
-.about-note {
-    margin: var(--space-4) 0 0;
-    text-align: right;
-    font-size: 1.125rem;
-}
-
-/* Ledes that are now handwritten garnish stay readable + on-brand */
-.beyond-code .beyond-lede.hand,
-.creative-lab .beyond-lede.hand {
-    font-size: 1.25rem;
-    margin-bottom: var(--space-6);
-}
-
-/* Lab figure captions use the shared FIG grammar */
-.lab-slot .fig-caption {
-    margin-top: var(--space-2);
-    text-align: center;
-}
-
-/* Doodle underline inside section-head sits on its own row */
-.section-head .doodle {
-    margin-top: 6px;
-}
-
-/* ---- Responsive ---------------------------------------------------------------------------- */
-@media (max-width: 640px) {
-    .about-page {
-        padding-inline: var(--space-4);
-    }
+.about-talk {
+    margin-top: var(--space-4);
+    justify-content: center;
 }

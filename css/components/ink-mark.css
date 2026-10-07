@@ -1,0 +1,114 @@
+/* ==========================================================================
+   INK MARK (js/components/ink-mark.js)
+   Hand-drawn strokes placed on real content. Same laws as the doodle
+   system: currentColor strokes, round caps, annotate content, never
+   wallpaper. Draw-on timing comes from doodle.css (.doodle-draw).
+   Sizes carry !important because the reset forces svg height:auto and
+   max-width:100% with !important (css/base/reset.css).
+   ========================================================================== */
+
+.ink {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+}
+
+.ink > .ink-svg {
+  position: absolute;
+  overflow: visible;
+  max-width: none !important;
+  pointer-events: none;
+  color: var(--doodle-line);
+}
+
+/* Under: a stroke below the words */
+.ink--under > .ink-svg {
+  left: -2%;
+  width: 104% !important;
+  bottom: -0.38em;
+  height: 0.46em !important;
+}
+
+/* Behind: highlighter swipe under the glyphs */
+.ink--behind {
+  isolation: isolate;
+}
+.ink--behind > .ink-svg {
+  z-index: -1;
+  left: -4%;
+  width: 108% !important;
+  top: 12%;
+  height: 84% !important;
+  color: var(--marker-band);
+}
+
+/* Over: crossed out */
+.ink--over > .ink-svg {
+  left: -3%;
+  width: 106% !important;
+  top: 18%;
+  height: 66% !important;
+}
+
+/* Around: box or loop drawn around the words */
+.ink--around > .ink-svg {
+  left: -0.5em;
+  top: -0.4em;
+  width: calc(100% + 1em) !important;
+  height: calc(100% + 0.8em) !important;
+}
+
+/* Side: a brace down the left edge of a block */
+.ink--side {
+  display: block;
+  padding-left: 1.4em;
+}
+.ink--side > .ink-svg {
+  left: 0;
+  top: 0;
+  width: 0.9em !important;
+  height: 100% !important;
+}
+
+/* Solo: an inline mark on its own (heart, check, arrows) */
+.ink--solo {
+  display: inline-block;
+  line-height: 0;
+  vertical-align: -0.18em;
+}
+.ink--solo > .ink-svg {
+  position: static;
+  width: auto !important;
+  height: 1.15em !important;
+}
+.ink--loop-arrow > .ink-svg,
+.ink--margin > .ink-svg,
+.ink--burst > .ink-svg {
+  height: 1.6em !important;
+}
+.ink--burst {
+  vertical-align: -0.4em;
+}
+
+/* Block: hand-drawn divider, at most one per viewport */
+.ink--block {
+  display: block;
+  width: min(100%, 320px);
+  height: 12px;
+  margin-inline: auto;
+}
+.ink--block > .ink-svg {
+  position: static;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (forced-colors: active) {
+  .ink > .ink-svg {
+    color: CanvasText;
+  }
+  .ink--behind > .ink-svg {
+    display: none;
+  }
+}

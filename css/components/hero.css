@@ -603,11 +603,6 @@ html[data-theme="dark"] .project-card {
     padding: 0 var(--space-2);
   }
 
-  .intro-ctas .btn {
-    width: 100%;
-    text-align: center;
-    padding: var(--space-3) var(--space-4);
-  }
 
   .intro-flair {
     margin-top: var(--space-4);
@@ -653,10 +648,6 @@ html[data-theme="dark"] .project-card {
     padding: 0 var(--space-3);
   }
 
-  .intro-ctas .btn {
-    flex: 1;
-    max-width: 200px;
-  }
 }
 
 /* Large tablet to small desktop */

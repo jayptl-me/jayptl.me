@@ -1,6 +1,6 @@
 # jayptl.me
 
-> Jay Patel's personal portfolio. Jay is a founding-engineer-grade full-stack developer from Anand, Gujarat, India with 4+ years across TypeScript, Dart/Flutter, Python, and Solidity, 30+ shipped products spanning mobile, web, backend, and self-hosted infrastructure. Roles: Software Developer, UI/UX Designer, Product Manager, Creative Director, Video Editor. Contact: hello@jayptl.me.
+> Jay Patel's personal portfolio. Jay is a software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity, with 32 shipped projects spanning mobile, web, backend, and self-hosted infrastructure. Headline: Software Engineer: Full-Stack, Mobile and Applied AI. Contact: hello@jayptl.me.
 
 Every page is also available as Markdown by sending `Accept: text/markdown` (e.g. `curl -H "Accept: text/markdown" https://jayptl.me/projects`) or by fetching the `.md` URLs listed below.
 
@@ -9,13 +9,23 @@ Every page is also available as Markdown by sending `Accept: text/markdown` (e.g
 - [About Jay Patel](https://jayptl.me/about.md): Roles, background, hackathon wins, certifications, and what Jay builds outside client work.
 - [Resume](https://jayptl.me/resume.md): Canonical HTML resume as Markdown, summary, skills, selected work, education, tailored PDF slots, and machine-readable resume.json.
 
+## Pages
+
+- [Contact](https://jayptl.me/contact.md): Email, time zone, what Jay is open to (full-time, contract, forward deployed engineering).
+- [Book a call](https://jayptl.me/book.md): Pick a 15 minute slot; the Google Meet link arrives by email 15 minutes before.
+- [Now](https://jayptl.me/now.md): What Jay is building and training this month.
+- [Uses](https://jayptl.me/uses.md): Languages and frameworks by lane, and the homelab.
+- [AI](https://jayptl.me/ai.md): What Jay builds with AI, how he uses assistants, and what he never hands to them.
+- [Colophon](https://jayptl.me/colophon.md): How this site is made.
+- [Changelog](https://jayptl.me/changelog.md): Dated site updates.
+
 ## Projects
 
-- [Projects index](https://jayptl.me/projects.md): All 33 shipped projects with featured case-study links.
+- [Projects index](https://jayptl.me/projects.md): All 32 shipped projects with featured case-study links.
 - [Aviz Health case study](https://jayptl.me/projects/aviz-health.md): Digital healthcare ecosystem, three Flutter apps, Next.js 16 admin console, Bun + Hono backend, live on Google Play v2.0.
 - [Swalook CRM case study](https://jayptl.me/projects/swalook.md): Enterprise salon-management SaaS overhaul, Next.js 16 Turborepo, 35+ OpenAPI-documented endpoints, ML Kit AR previews.
-- [Genuinest case study](https://jayptl.me/projects/genuinest.md): Founding Engineer work, Flutter product plus migration to self-hosted Docker/Coolify/Traefik with 20TB MinIO.
-- [Vini & Tini case study](https://jayptl.me/projects/vini-tini.md): Two small language models trained from scratch on BitNet b1.58; Tini published on HuggingFace (jayptl-rq/tini).
+- [Genuinest case study](https://jayptl.me/projects/genuinest.md): Founding Engineer (Contract) work, Flutter product plus migration to self-hosted Docker/Coolify/Traefik with 20TB MinIO.
+- [Vini & Tini case study](https://jayptl.me/projects/vini-tini.md): Two small language models trained from scratch: Vini, a BitNet b1.58 edge assistant (jayptl-rq/vini-pico), and Tini, a dense TypeScript coder (weights not public yet).
 
 ## API
 
@@ -35,4 +45,4 @@ Every page is also available as Markdown by sending `Accept: text/markdown` (e.g
 - [Sitemap](https://jayptl.me/sitemap.xml): XML sitemap for crawlers.
 - [robots.txt](https://jayptl.me/robots.txt): Crawler directives, AI agents explicitly allowed.
 - [GitHub](https://github.com/jayptl-me): Source code for this site and other projects.
-- [HuggingFace](https://huggingface.co/jayptl-rq): Published models and datasets.
+- [HuggingFace](https://huggingface.co/jayptl-rq): Published models (Vini model card).

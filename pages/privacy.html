@@ -93,7 +93,7 @@
                 <p class="hud-label">Privacy Policy</p>
                 <h1>Your privacy is important to me.</h1>
                 <p class="privacy-subtitle">This policy explains how I handle data on this portfolio website.</p>
-                <p class="privacy-updated hud-readout">Last updated: <time datetime="2025-01-15">January 15, 2025</time></p>
+                <p class="privacy-updated hud-readout">Last updated: <time datetime="2026-09-28">September 28, 2026</time></p>
             </header>
 
             <div class="privacy-content">
@@ -113,8 +113,8 @@
                         </div>
                         <div class="card card-default card-sm privacy-summary-item">
                             <h3>Personal Data</h3>
-                            <p>No personal information is collected or stored. No email signup, no contact forms that
-                                store data.</p>
+                            <p>Nothing personal is stored unless you book a call. Then your name, email and note are
+                                kept until 30 days after the call, and deleted.</p>
                         </div>
                         <div class="card card-default card-sm privacy-summary-item">
                             <h3>Purpose</h3>
@@ -130,8 +130,8 @@
 
                     <h3>Information We DON'T Collect</h3>
                     <ul>
-                        <li>Names, email addresses, or any personal identifiers</li>
-                        <li>Exact location or IP addresses</li>
+                        <li>Names, email addresses, or any personal identifiers, unless you book a call (see "Booking a Call")</li>
+                        <li>Exact location, or IP addresses (the API uses your IP only in memory to stop abuse, and never writes it down)</li>
                         <li>Keystrokes or form inputs</li>
                         <li>Cross-site browsing activity</li>
                         <li>Sensitive personal information</li>
@@ -182,6 +182,8 @@
                     <ul>
                         <li><strong>Theme Preference:</strong> Remembers if you prefer dark or light mode</li>
                         <li><strong>Consent Choice:</strong> Remembers your analytics consent decision</li>
+                        <li><strong>Game Best Score:</strong> The tiny snake game on the About page keeps your best
+                            score in your browser, nowhere else</li>
                     </ul>
 
                     <h3>Analytics Cookies (Only with Consent)</h3>
@@ -224,6 +226,44 @@
                             rel="noopener">Google Analytics Opt-out Browser Add-on</a>.</p>
                 </section>
 
+                <!-- Page View Counter -->
+                <section class="privacy-section" id="view-counter">
+                    <h2>Page View Counter</h2>
+                    <p>The footer and case studies can show how many times a page has been read. The counter runs
+                        on a small API service of mine and needs no cookies and no consent, because it records nothing
+                        about you.</p>
+                    <ul>
+                        <li><strong>What is counted:</strong> the page path (for example <code>/about</code>) and a
+                            running number. Only pages listed in the sitemap count.</li>
+                        <li><strong>What is not:</strong> no IP address, no cookies, no device or browser details, no
+                            referrer, and nothing that could link two visits together.</li>
+                        <li><strong>Where it lives:</strong> a Redis database behind the API. Counts are kept for as
+                            long as the site exists.</li>
+                        <li>While the API is switched off, the counter does not load and nothing is sent.</li>
+                    </ul>
+                </section>
+
+                <!-- Booking a Call -->
+                <section class="privacy-section" id="booking">
+                    <h2>Booking a Call</h2>
+                    <p>The <a href="/book">booking page</a> lets you pick a 15 minute slot from my calendar.</p>
+                    <ul>
+                        <li><strong>What you share:</strong> your name, your email, an optional short note, and the
+                            time you picked.</li>
+                        <li><strong>Why:</strong> only to hold the call. Your details go into a Google Calendar invite
+                            so Google can email you the invitation and, 15 minutes before the start, the Google Meet
+                            link.</li>
+                        <li><strong>How long:</strong> the API keeps your booking until 30 days after the call, then
+                            deletes it automatically. The calendar event stays in my calendar like any meeting; ask
+                            and I will delete it.</li>
+                        <li><strong>Cancelling:</strong> the link on your confirmation screen cancels the call and
+                            removes the event.</li>
+                        <li><strong>Abuse limits:</strong> a hidden form field, a minimum fill time and per-address
+                            limits stop spam. Your IP is used for this only in memory and is never stored.</li>
+                    </ul>
+                    <p>To see or delete what I hold about a booking, email <a href="mailto:hello@jayptl.me">hello@jayptl.me</a>.</p>
+                </section>
+
                 <!-- Your Rights -->
                 <section class="privacy-section">
                     <h2>Your Rights</h2>
@@ -234,8 +274,8 @@
                             settings button</li>
                         <li><strong>Data Deletion:</strong> Clear all stored preferences and tracking data through your
                             browser or privacy settings</li>
-                        <li><strong>Access:</strong> No personal data is stored, so there's nothing to access or
-                            download</li>
+                        <li><strong>Access:</strong> The only personal data I hold is a booking, if you made one.
+                            Email me and I will send it to you or delete it</li>
                         <li><strong>Portability:</strong> Theme and consent preferences are stored locally in your
                             browser</li>
                         <li><strong>Objection:</strong> You can object to any data processing by disabling analytics
@@ -248,7 +288,7 @@
                     <h2>Data Security</h2>
                     <ul>
                         <li><strong>HTTPS:</strong> All connections are encrypted with SSL/TLS</li>
-                        <li><strong>No Server Storage:</strong> No personal data is stored on our servers</li>
+                        <li><strong>Minimal Server Storage:</strong> The only personal data on my servers is an upcoming booking, deleted 30 days after the call</li>
                         <li><strong>Third-Party Security:</strong> Google Analytics follows industry-standard security
                             practices</li>
                         <li><strong>Local Storage:</strong> Preferences are stored locally in your browser</li>
@@ -265,6 +305,15 @@
                     <p>When enabled, this site uses Google Analytics 4. Please review <a
                             href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy
                             Policy</a> for more information on how Google processes data.</p>
+
+                    <h3>API service and database</h3>
+                    <p>The view counter and bookings run on a small API service hosted on Render, with its data in a
+                        Redis Cloud database. Both only see what is described above.</p>
+
+                    <h3>Google Calendar</h3>
+                    <p>Bookings become Google Calendar events, and Google sends the invitation and the Meet link. See
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy
+                            Policy</a>.</p>
 
                     <h3>Hosting</h3>
                     <p>This website is hosted on a secure hosting platform. Server logs may temporarily contain IP
@@ -319,15 +368,15 @@
             <div class="privacy-actions">
                 <h2>Manage Your Privacy</h2>
                 <div class="privacy-actions-grid">
-                    <button id="privacySettingsBtn" class="btn btn-primary">
+                    <button id="privacySettingsBtn" class="pill-btn pill-btn--filled" type="button">
                         <span>Privacy Settings</span>
                     </button>
 
-                    <button id="clearDataBtn" class="btn btn-outline">
-                        <span>Clear All Data</span>
+                    <button id="clearDataBtn" class="pill-btn pill-btn--outline" type="button" data-hold-confirm>
+                        <span>Hold to clear all data</span>
                     </button>
 
-                    <a href="/" class="btn btn-secondary">
+                    <a href="/" class="pill-btn pill-btn--outline">
                         <span>Back to Portfolio</span>
                     </a>
                 </div>
@@ -335,15 +384,20 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="privacy-footer">
-        <div class="privacy-footer-container">
-            <p class="hand">Built with privacy in mind, and zero trackers by default.</p>
-            <p class="hud-readout">
-                <a href="/">Portfolio</a> •
-                <a href="/privacy">Privacy Policy</a> •
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>
-            </p>
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span class="site-footer-rule" data-ink="zigzag"></span>
+            <div class="site-footer-grid">
+                <div class="site-footer-left">
+                    <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
+                    <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></p>
+                </div>
+                <div class="site-footer-right hud-readout">
+                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
+                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
+                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -363,6 +417,19 @@
     <script defer src="/js/components/consent-banner.js"></script>
     <script defer src="/js/components/analytics.js"></script>
     <script defer src="/js/components/doodle.js"></script>
+    <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/ink-status.js"></script>
+    <script defer src="/js/components/press-state.js"></script>
+    <script defer src="/js/components/site-api.js"></script>
+    <script defer src="/js/components/ink-mark.js"></script>
+    <script defer src="/js/components/scroll-glide.js"></script>
+    <script defer src="/js/components/command-deck.js"></script>
+    <script defer src="/js/components/talk-chip.js"></script>
+    <script defer src="/js/components/edge-blur.js"></script>
+    <script defer src="/js/components/control-dock.js"></script>
+    <script defer src="/js/components/digit-odometer.js"></script>
+    <script defer src="/js/components/view-counter.js"></script>
+    <script defer src="/js/components/api-status.js"></script>
     <script defer src="/js/main.js"></script>
 </body>
 

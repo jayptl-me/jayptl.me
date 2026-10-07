@@ -866,13 +866,14 @@ html[data-theme="dark"] .reveal-stepper.progress-100::after {
   cursor: pointer;
   outline: none;
   transition:
-    width 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 380ms var(--ease-snap),
     background-color 240ms var(--ease-out),
     box-shadow 240ms var(--ease-out),
     border-color 240ms var(--ease-out),
-    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform 200ms var(--ease-snap);
 }
 
+/* Hit area: 24px, and 44px tall on phones (see below). */
 .stepper-dot::after {
   content: '';
   position: absolute;
@@ -1340,43 +1341,6 @@ html[data-theme="dark"] .stepper-dot.active {
   box-shadow: 0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35);
 }
 
-/* Button revamp utility (can be used elsewhere) */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: linear-gradient(180deg,
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.2),
-      rgba(var(--theme-bg-rgb, 18, 18, 18), 0.12));
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--theme-text);
-  text-decoration: none;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
-  transition: transform 120ms ease, background 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  background: rgba(var(--theme-bg-rgb, 18, 18, 18), 0.26);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.btn:active {
-  transform: translateY(0);
-  filter: saturate(1.05);
-}
-
-.btn-primary {
-  background: linear-gradient(180deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.12));
-  border-color: rgba(33, 150, 243, 0.35);
-}
-
-.btn-primary:hover {
-  background: linear-gradient(180deg, rgba(33, 150, 243, 0.28), rgba(33, 150, 243, 0.16));
-}
-
 /* Transition of final 'Jay' to navbar */
 .jay-to-nav {
   position: fixed !important;
@@ -1530,4 +1494,17 @@ html[data-theme="light"] .stepper-dot.active:focus-visible {
     0 0 0 3px rgba(var(--primary-500-rgb, 33, 150, 243), 0.5),
     0 0 20px rgba(var(--primary-500-rgb, 33, 150, 243), 0.6),
     0 4px 12px rgba(var(--primary-500-rgb, 33, 150, 243), 0.35) !important;
+}
+
+/* Phones: thumb-sized step dots (UI system round 2026-09-30). The dots
+   spread to a 24px pitch and each hit area is 44px tall and as wide as the
+   pitch, so neighbouring targets never overlap. */
+@media (max-width: 599.98px) {
+  .stepper-dots {
+    gap: 16px;
+  }
+
+  .stepper-dot::after {
+    inset: -18px -8px;
+  }
 }

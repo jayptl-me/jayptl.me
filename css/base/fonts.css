@@ -14,9 +14,10 @@
 @import 'fonts-local.css';
 
 /* ==========================================================================
-   AUDIOWIDE, hero reveal + preloader only (locked hero surface)
-   The hero scroll-reveal letters and preloader logo keep the original
-   display face; everything else uses the Engineer Notebook stack.
+   AUDIOWIDE, hero reveal only (locked hero surface)
+   The hero scroll-reveal letters keep the original display face; everything
+   else uses the Engineer Notebook stack. The preloader has had no text since
+   2026-09-30 (ink loop, no fonts).
    Self-hosted latin woff2 (see fonts-local.css), no external request.
    ========================================================================== */
 
@@ -41,11 +42,10 @@
      swap from jittering layout. Local first, system fallback tuned after. */
 }
 
-/* Hero reveal + preloader: Audiowide wins over the generic tokens.
+/* Hero reveal: Audiowide wins over the generic tokens.
    This is applied to the locked hero surface only (see index.html). */
 html .hero-audiowide .char,
-html .hero-audiowide .gradient-text,
-html .preloader-logo {
+html .hero-audiowide .gradient-text {
   font-family: var(--font-audiowide);
   font-weight: 400;
   letter-spacing: 0.01em;

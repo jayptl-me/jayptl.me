@@ -1,19 +1,50 @@
 /* ==========================================================================
-   PROJECTS INDEX PAGE (/projects)
-   Uses existing design tokens + theme duality. No new palette.
+   PROJECTS INDEX PAGE (/projects), Features + Archive (2026-09-30)
+   Four tiers: phone < 600, tablet 600 to 1023, laptop 1024 to 1439,
+   wide 1440+. Plan: docs/redesign/projects-cards-plan-2026-09-30.md.
+   Brief: docs/motion-zen.md section 6b "Projects cards revamp".
+   Live work: feature cards with a framed desktop screenshot and a phone
+   on a tinted mat. The archive: Role Ledger rows that open in place to
+   the full story, with the project's drawing on the same mat. The filter
+   is the Stretch Rail (components/stretch-rail.css); buttons are the pill
+   family (components/buttons.css). Materials come from the shared surface
+   tokens, so light is clay and dark is glass without theme rules.
    ========================================================================== */
 
 .projects-page {
+    --page-gutter: 16px;
+    --work-gap: 64px;
     max-width: 1080px;
     margin: 0 auto;
-    padding: calc(var(--space-24) + var(--space-8)) var(--space-6) var(--space-16);
+    padding: calc(var(--space-24) + var(--space-4)) var(--page-gutter) var(--space-16);
     font-family: var(--font-body);
     color: var(--theme-text);
 }
 
+@media (min-width: 600px) {
+    .projects-page {
+        --page-gutter: 24px;
+        --work-gap: 80px;
+        padding-top: calc(var(--space-24) + var(--space-8));
+    }
+}
+
+@media (min-width: 1024px) {
+    .projects-page {
+        --page-gutter: 32px;
+        --work-gap: 96px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .projects-page {
+        max-width: 1280px;
+    }
+}
+
 /* ---- Page hero ---------------------------------------------------------- */
 .page-hero {
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
 }
 
 .page-hero-kicker {
@@ -29,6 +60,7 @@
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.08;
     margin: 0 0 var(--space-4);
+    text-wrap: balance;
 }
 
 .page-hero-lead {
@@ -39,223 +71,639 @@
     margin: 0;
 }
 
-/* ---- Featured case-study callout --------------------------------------- */
-.case-study-callout {
-    background: var(--theme-surface-bg);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-xl);
-    box-shadow: var(--theme-surface-shadow);
-    backdrop-filter: blur(var(--theme-surface-blur));
-    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
-    padding: var(--space-5) var(--space-6);
+/* ---- Filter row ------------------------------------------------------------ */
+/* Above the work: the staged page entry gives each section its own layer,
+   and the phone chip list must open over what sits below it. */
+.project-filter {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    gap: var(--space-2);
     margin-bottom: var(--space-10);
 }
 
-.case-study-callout-label {
-    font-size: var(--text-sm);
-    color: var(--theme-text-secondary);
-    margin: 0 0 var(--space-3);
+.project-filter .stretch-rail {
+    justify-self: start;
 }
 
-.case-study-callout-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-}
-
-/* ---- Filter chips ------------------------------------------------------- */
-.project-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-8);
-}
-
-.filter-btn {
-    appearance: none;
-    cursor: pointer;
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--theme-text-secondary);
-    background: var(--theme-surface-bg);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-full);
-    box-shadow: var(--theme-surface-shadow-sm);
-    backdrop-filter: blur(var(--theme-surface-blur));
-    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
-    padding: var(--space-2) var(--space-4);
-    transition: color var(--duration-fast) var(--ease-smooth),
-        box-shadow var(--duration-fast) var(--ease-smooth),
-        transform var(--duration-fast) var(--ease-smooth);
-}
-
-.filter-btn:hover {
-    color: var(--theme-primary);
-    transform: translateY(-1px);
-}
-
-.filter-btn.active {
-    color: var(--theme-primary);
-    box-shadow: var(--theme-surface-shadow-sm), var(--focus-ring);
-}
-
-.filter-count {
-    opacity: 0.55;
-    font-weight: 400;
-}
-
-/* ---- Project grid & cards ----------------------------------------------- */
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: var(--space-6);
-}
-
-.project-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--theme-surface-bg);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-xl);
-    box-shadow: var(--theme-surface-shadow-sm);
-    backdrop-filter: blur(var(--theme-surface-blur));
-    -webkit-backdrop-filter: blur(var(--theme-surface-blur));
-    overflow: hidden;
-    transition: transform var(--duration-base, 200ms) var(--ease-smooth),
-        box-shadow var(--duration-base, 200ms) var(--ease-smooth);
-}
-
-.project-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--theme-surface-shadow-lg);
-}
-
-.project-card[data-featured="true"] {
-    outline: 2px solid rgba(var(--primary-500-rgb), 0.35);
-    outline-offset: -2px;
-}
-
-.project-card-media {
-    aspect-ratio: 16 / 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--theme-gradient-glow);
-    border-bottom: var(--theme-surface-border);
-}
-
-.project-card-placeholder-label {
-    font-family: var(--font-display);
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--theme-text-muted);
-}
-
-.project-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-5);
-    flex: 1;
-}
-
-.project-card-body h3 {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    line-height: 1.2;
+.filter-readout {
     margin: 0;
+    font-size: 0.75rem;
+    color: var(--theme-text-tertiary);
 }
 
-.project-card-body p {
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    color: var(--theme-text-secondary);
-    margin: 0;
-    flex: 1;
-}
-
-/* ---- Tags ---------------------------------------------------------------- */
-.project-card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-}
-
-.tag {
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--theme-text-secondary);
-    background: var(--theme-surface-tertiary);
-    border: var(--theme-surface-border);
-    border-radius: var(--rounded-full);
-    padding: 2px var(--space-2);
-    white-space: nowrap;
-}
-
-.tag-status {
-    color: var(--primary-700);
-    background: rgba(var(--primary-500-rgb), 0.12);
-}
-
-html[data-theme="light"] .tag-status {
-    color: var(--primary-700);
-    background: rgba(var(--primary-500-rgb), 0.12);
-}
-
-html[data-theme="dark"] .tag-status {
-    color: var(--accent-300);
-    background: rgba(var(--accent-500-rgb), 0.12);
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .tag-status {
-        color: var(--accent-300);
-        background: rgba(var(--accent-500-rgb), 0.12);
+@media (min-width: 1024px) {
+    .project-filter {
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: var(--space-4);
     }
 }
 
-/* ---- Card links ----------------------------------------------------------- */
-.project-card-links {
-    margin-top: auto;
+/* ---- Work sections ------------------------------------------------------------ */
+.project-work {
+    display: grid;
+    gap: var(--work-gap);
 }
 
-.card-link {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--theme-primary);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(var(--primary-500-rgb), 0.35);
-    padding-bottom: 2px;
-    transition: color var(--duration-fast) var(--ease-smooth),
-        border-color var(--duration-fast) var(--ease-smooth);
+.work-section[hidden] {
+    display: none;
 }
 
-.card-link:hover {
-    color: var(--theme-primary-hover);
-    border-color: var(--theme-primary-hover);
+.work-section .section-head {
+    margin-bottom: var(--space-2);
 }
 
-.card-link:focus-visible {
+.work-count {
+    margin: 0 0 var(--space-5);
+    font-size: 0.75rem;
+    color: var(--theme-text-tertiary);
+}
+
+/* ---- Live work: feature grid ----------------------------------------------- */
+/* 1 column phone, 2 from tablet up. An odd count (filtered) makes the last
+   card span the row (data-wide, set by projects-filter.js), so no card is
+   ever alone on a row. */
+.feature-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 600px) {
+    .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .feature-card[data-wide] {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 1024px) {
+    .feature-grid {
+        gap: 24px;
+    }
+
+    /* The wide card lays its cover beside the text. */
+    .feature-card[data-wide] {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+
+    .feature-card[data-wide] .feature-cover {
+        aspect-ratio: auto;
+        min-height: 100%;
+        border-bottom: 0;
+        border-right: 1px solid var(--sf-border);
+    }
+}
+
+@media (min-width: 1440px) {
+    .feature-grid {
+        gap: 28px;
+    }
+}
+
+/* ---- Case-file card (shared by feature cards) ------------------------------- */
+.case-card {
+    /* Material from .sf-card (components/surface.css). */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    scroll-margin-top: 110px;
+    transition:
+        transform 180ms var(--ease-snap),
+        box-shadow 180ms var(--ease-snap),
+        opacity 180ms var(--ease-snap);
+}
+
+.case-card[data-featured="true"] {
+    border-color: color-mix(in srgb, var(--sf-accent) 55%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .case-card[data-linked]:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--sf-pill-shadow-hover);
+    }
+}
+
+.case-card[data-linked]:active {
+    transform: scale(0.985);
+    transition-duration: 140ms;
+}
+
+.case-card:focus-within {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+}
+
+.case-card:has(.case-card-link:focus:not(:focus-visible)),
+.case-card:has(.pill-btn:focus:not(:focus-visible)) {
     outline: none;
-    box-shadow: var(--focus-ring);
-    border-radius: var(--rounded-xs);
 }
 
-.card-link-primary::after {
+/* The card sets its own display, which beats the hidden attribute. */
+.case-card[hidden] {
+    display: none;
+}
+
+/* Swap (js/components/projects-filter.js), exit first. */
+.case-card.is-leaving,
+.arch-row.is-leaving {
+    opacity: 0;
+    transition: opacity 160ms var(--ease-snap);
+}
+
+.case-card.is-entering,
+.arch-row.is-entering {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: none;
+}
+
+.arch-row {
+    transition:
+        opacity 180ms var(--ease-snap),
+        transform 180ms var(--ease-snap);
+}
+
+/* ---- Feature cover: framed desktop and phone on a mat ---- */
+.feature-cover {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 14px 14px 0;
+    border-bottom: 1px solid var(--sf-border);
+    background-color: var(--sf-fog);
+    background-image:
+        linear-gradient(rgba(var(--sf-accent-rgb), 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--sf-accent-rgb), 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+@media (min-width: 1024px) {
+    .feature-cover {
+        padding: 20px 20px 0;
+    }
+}
+
+.feature-frame {
+    border: 1px solid var(--sf-border);
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    background: var(--sf-pill);
+    box-shadow: 0 10px 28px -10px rgba(var(--sf-accent-rgb), 0.4);
+}
+
+.feature-frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 16px;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--sf-border);
+}
+
+.feature-frame-bar i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--sf-border);
+}
+
+.feature-shot,
+.feature-phone {
+    display: block;
+    filter: var(--sf-shot-filter);
+}
+
+.feature-shot {
+    width: 100%;
+    height: auto;
+    transition: transform 180ms var(--ease-snap);
+}
+
+.feature-phone {
+    position: absolute;
+    top: 30%;
+    right: 12px;
+    width: 23%;
+    height: auto;
+    border: 3px solid var(--sf-bezel);
+    border-radius: 14px;
+    box-shadow:
+        0 0 0 1px var(--sf-border),
+        0 14px 30px -8px rgba(0, 0, 0, 0.35);
+    transition: transform 180ms var(--ease-snap);
+}
+
+@media (min-width: 1024px) {
+    .feature-phone {
+        right: 18px;
+        border-radius: 16px;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .feature-card:hover .feature-shot,
+    .feature-card:hover .feature-phone {
+        transform: translateY(-4px);
+    }
+}
+
+/* ---- Card body ---- */
+.case-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 10px;
+    padding: 16px 16px 18px;
+}
+
+@media (min-width: 1024px) {
+    .case-card-body {
+        padding: 18px 20px 20px;
+    }
+}
+
+.case-card-kicker {
+    margin: 0;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+}
+
+.feature-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+}
+
+.case-card-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+}
+
+.feature-when {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--sf-text-dim);
+    white-space: nowrap;
+}
+
+.case-card-link {
+    color: var(--sf-text);
+    text-decoration: none;
+}
+
+.case-card-link:hover,
+.case-card-link:focus-visible {
+    color: var(--sf-text);
+}
+
+.case-card-link:focus-visible {
+    outline: none;
+}
+
+/* The whole card is the title link: a stretched overlay above the glare.
+   The pills sit above the overlay. */
+.case-card-link::before {
     content: "";
-    display: inline-block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
 }
 
-.card-link-muted {
-    font-size: var(--text-sm);
-    color: var(--theme-text-muted);
+.case-card .case-card-link[href]::after {
+    content: none !important;
 }
 
-/* ---- Empty state / footer -------------------------------------------------- */
+.case-card-pitch {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--theme-text-secondary);
+    flex: 1;
+}
+
+.case-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.case-card-tags .tag {
+    padding: 5px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--sf-border);
+    background: var(--sf-fog);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--sf-text);
+    white-space: nowrap;
+}
+
+.feature-actions {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0 0;
+}
+
+/* ---- The archive -------------------------------------------------------------- */
+/* Rows are Role Ledger rows (components/role-ledger.css) restyled as a
+   list: dashed rules between closed rows, the card material only when a
+   row is open. Columns: phone year, project, chevron (stack beneath);
+   tablet adds the stack column; laptop and wide add role and status. */
+.archive {
+    position: relative;
+    gap: 0;
+    border-top: 1px dashed var(--sf-border);
+}
+
+.archive-cols {
+    display: none;
+}
+
+.archive .arch-row {
+    border: 0;
+    border-bottom: 1px dashed var(--sf-border);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.archive .arch-row[open] {
+    margin: 8px 0;
+    border: 1px solid var(--sf-border);
+    border-radius: 16px;
+    background: var(--sf-pill);
+    box-shadow: var(--sf-pill-shadow);
+}
+
+.archive .arch-head {
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2px 12px;
+    min-height: 56px;
+    padding: 12px;
+}
+
+.arch-year {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--sf-text-dim);
+}
+
+.arch-name {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.arch-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--sf-text);
+}
+
+.arch-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sf-accent);
+}
+
+.arch-role,
+.arch-stack {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--sf-text-dim);
+    min-width: 0;
+}
+
+/* Phone: the stack sits under the name; role and status live inside. */
+.arch-role,
+.arch-status {
+    display: none;
+}
+
+.archive .arch-head .arch-stack {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.archive .arch-head .role-chevron {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+}
+
+.archive .arch-body {
+    display: grid;
+    gap: 14px;
+    padding: 0 12px 16px;
+}
+
+.arch-cover {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--sf-border);
+    border-radius: 12px;
+    color: var(--sf-accent);
+    background-color: var(--sf-fog);
+    background-image:
+        linear-gradient(rgba(var(--sf-accent-rgb), 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--sf-accent-rgb), 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+.arch-cover img {
+    display: block;
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: top center;
+    filter: var(--sf-shot-filter);
+}
+
+.case-card-blueprint {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none;
+}
+
+.case-card-blueprint .bp-ink {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.85;
+    vector-effect: non-scaling-stroke;
+}
+
+.case-card-blueprint .bp-dot {
+    fill: currentColor;
+    opacity: 0.85;
+}
+
+.arch-detail {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-width: 0;
+}
+
+.arch-pitch {
+    max-width: 65ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--theme-text-secondary);
+}
+
+.arch-links {
+    margin: 2px 0 0;
+}
+
+@media (min-width: 600px) {
+    .archive .arch-head {
+        grid-template-columns: 3.5rem minmax(0, 1.3fr) minmax(0, 1fr) auto;
+        gap: 4px 16px;
+        padding: 12px 16px;
+    }
+
+    .archive .arch-head .arch-stack {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .archive .arch-head .role-chevron {
+        grid-column: 4;
+        grid-row: 1;
+    }
+
+    .archive .arch-body {
+        grid-template-columns: 200px minmax(0, 1fr);
+        gap: 20px;
+        padding: 2px 16px 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .archive-cols,
+    .archive .arch-head {
+        grid-template-columns: 4rem minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.3fr) 6.5rem 16px;
+        gap: 4px 18px;
+    }
+
+    .archive-cols {
+        display: grid;
+        padding: 0 16px 10px;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sf-text-dim);
+    }
+
+    .arch-role,
+    .arch-status {
+        display: block;
+    }
+
+    .archive .arch-head .arch-role {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .archive .arch-head .arch-stack {
+        grid-column: 4;
+    }
+
+    .archive .arch-head .arch-status {
+        grid-column: 5;
+        grid-row: 1;
+    }
+
+    .archive .arch-head .role-chevron {
+        grid-column: 6;
+    }
+
+    .archive .arch-body {
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 24px;
+        padding: 4px 16px 20px calc(4rem + 34px);
+    }
+}
+
+/* ---- Archive hover preview (js/components/archive-peek.js) ---- */
+/* Laptop and wide with a fine pointer only: one preview, pinned to the
+   hovered row over the stack column; it never follows the pointer. */
+.arch-peek {
+    display: none;
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    .arch-peek {
+        position: absolute;
+        top: 0;
+        right: calc(6.5rem + 64px);
+        z-index: 4;
+        display: block;
+        width: 220px;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(var(--peek-y, 0px)) scale(0.96);
+        transform-origin: 50% 50%;
+        transition:
+            opacity 140ms var(--ease-snap),
+            transform 140ms var(--ease-snap);
+        box-shadow: var(--sf-pill-shadow-hover);
+        border-radius: 12px;
+    }
+
+    .arch-peek.is-in {
+        opacity: 1;
+        transform: translateY(var(--peek-y, 0px)) scale(1);
+        transition-duration: 180ms;
+    }
+
+    .arch-peek .arch-cover {
+        background-color: var(--sf-panel);
+    }
+}
+
+/* ---- Empty state / footer ------------------------------------------------------ */
 .projects-empty {
     margin-top: var(--space-10);
     text-align: center;
@@ -268,49 +716,45 @@ html[data-theme="dark"] .tag-status {
     font-size: var(--text-lg);
 }
 
-/* ---- Gate P refinements ------------------------------------------------------ */
-/* Case-study callout label now uses the shared hud-label */
-.case-study-callout-label {
-    display: none;
-}
-.case-study-callout .hud-label {
-    margin-bottom: var(--space-3);
-}
-
-/* Page footer "hand" voice */
 .page-footer .hand {
     margin: 0;
 }
+
 .page-footer a {
     color: var(--theme-primary);
     text-decoration: none;
     font-weight: 600;
 }
+
 .page-footer a:hover {
     text-decoration: underline;
 }
 
-/* Featured cards: corner-bracket HUD accent instead of raw outline */
-.project-card[data-featured="true"] {
-    outline: 0;
-    border-color: rgba(var(--primary-500-rgb), 0.4);
-}
-html[data-theme="dark"] .project-card[data-featured="true"] {
-    border-color: rgba(var(--accent-500-rgb), 0.4);
-}
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .project-card[data-featured="true"] {
-        border-color: rgba(var(--accent-500-rgb), 0.4);
+@media (prefers-reduced-motion: reduce) {
+    .case-card,
+    .arch-row,
+    .feature-shot,
+    .feature-phone {
+        transition: none;
+    }
+
+    .case-card[data-linked]:hover,
+    .case-card[data-linked]:active,
+    .case-card.is-entering,
+    .arch-row.is-entering,
+    .feature-card:hover .feature-shot,
+    .feature-card:hover .feature-phone {
+        transform: none;
+    }
+
+    .arch-peek {
+        display: none;
     }
 }
 
-/* ---- Responsive ------------------------------------------------------------ */
-@media (max-width: 640px) {
-    .projects-page {
-        padding-inline: var(--space-4);
-    }
-
-    .project-grid {
-        grid-template-columns: 1fr;
+@media print {
+    .arch-peek,
+    .archive-cols {
+        display: none;
     }
 }

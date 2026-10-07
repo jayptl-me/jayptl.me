@@ -68,7 +68,8 @@ test('llms-full.txt contains every markdown document', () => {
   for (const doc of [
     'pages/about.md', 'pages/projects/index.md', 'pages/projects/aviz-health.md',
     'pages/projects/swalook.md', 'pages/projects/genuinest.md',
-    'pages/projects/vini-tini.md', 'pages/privacy.md'
+    'pages/projects/vini-tini.md', 'pages/privacy.md',
+    'pages/contact.md', 'pages/book.md', 'pages/now.md', 'pages/uses.md', 'pages/colophon.md', 'pages/changelog.md', 'pages/ai.md'
   ]) {
     const source = fs.readFileSync(path.join(dist, doc), 'utf8').trim();
     assert.ok(full.includes(source.slice(0, 200)), `${doc} content missing from llms-full.txt`);
@@ -146,7 +147,14 @@ const ROUTES = {
   '/projects/aviz-health': 'pages/projects/aviz-health.md',
   '/projects/swalook': 'pages/projects/swalook.md',
   '/projects/genuinest': 'pages/projects/genuinest.md',
-  '/projects/vini-tini': 'pages/projects/vini-tini.md'
+  '/projects/vini-tini': 'pages/projects/vini-tini.md',
+  '/contact': 'pages/contact.md',
+  '/book': 'pages/book.md',
+  '/now': 'pages/now.md',
+  '/uses': 'pages/uses.md',
+  '/colophon': 'pages/colophon.md',
+  '/changelog': 'pages/changelog.md',
+  '/ai': 'pages/ai.md'
 };
 
 test('every content page has a substantive markdown companion', () => {
@@ -209,7 +217,14 @@ test('every content page advertises its markdown alternate and parses its JSON-L
     'pages/projects/aviz-health.html': '/projects/aviz-health.md',
     'pages/projects/swalook.html': '/projects/swalook.md',
     'pages/projects/genuinest.html': '/projects/genuinest.md',
-    'pages/projects/vini-tini.html': '/projects/vini-tini.md'
+    'pages/projects/vini-tini.html': '/projects/vini-tini.md',
+    'pages/contact.html': '/contact.md',
+    'pages/book.html': '/book.md',
+    'pages/now.html': '/now.md',
+    'pages/uses.html': '/uses.md',
+    'pages/colophon.html': '/colophon.md',
+    'pages/changelog.html': '/changelog.md',
+    'pages/ai.html': '/ai.md'
   };
   for (const [page, mdHref] of Object.entries(pages)) {
     const html = read(page);
@@ -226,7 +241,8 @@ test('every content page advertises its markdown alternate and parses its JSON-L
 test('page titles carry the brand token for name-based search', () => {
   for (const page of ['index.html', 'pages/about.html', 'pages/resume.html', 'pages/projects/index.html',
     'pages/privacy.html', 'pages/projects/aviz-health.html', 'pages/projects/swalook.html',
-    'pages/projects/genuinest.html', 'pages/projects/vini-tini.html']) {
+    'pages/projects/genuinest.html', 'pages/projects/vini-tini.html',
+    'pages/contact.html', 'pages/book.html', 'pages/now.html', 'pages/uses.html', 'pages/colophon.html', 'pages/changelog.html', 'pages/ai.html']) {
     const title = read(page).match(/<title>(.*?)<\/title>/)[1];
     assert.ok(/jayptl\.me/.test(title), `${page} title mentions jayptl.me`);
   }
@@ -244,7 +260,14 @@ test('every content page exists as a directory index.html for static clean URL h
     'projects/aviz-health/index.html',
     'projects/swalook/index.html',
     'projects/genuinest/index.html',
-    'projects/vini-tini/index.html'
+    'projects/vini-tini/index.html',
+    'contact/index.html',
+    'book/index.html',
+    'now/index.html',
+    'uses/index.html',
+    'colophon/index.html',
+    'changelog/index.html',
+    'ai/index.html'
   ];
 
   for (const route of staticRoutes) {
@@ -265,7 +288,14 @@ test('clean markdown companions exist in dist for direct static access', () => {
     'projects/aviz-health.md',
     'projects/swalook.md',
     'projects/genuinest.md',
-    'projects/vini-tini.md'
+    'projects/vini-tini.md',
+    'contact.md',
+    'book.md',
+    'now.md',
+    'uses.md',
+    'colophon.md',
+    'changelog.md',
+    'ai.md'
   ];
 
   for (const companion of mdCompanions) {
@@ -274,3 +304,29 @@ test('clean markdown companions exist in dist for direct static access', () => {
   }
 });
 
+
+/* --------------------------- resume downloads --------------------------- */
+
+test('every /resumes/<track>.pdf linked from the resume page ships and routes on the static host', () => {
+  const html = read('resume/index.html');
+  const tracks = [...new Set([...html.matchAll(/href="\/resumes\/([a-z0-9-]+)\.pdf"/g)].map(m => m[1]))];
+  assert.ok(tracks.length >= 4, `resume page links the tailored PDFs (found ${tracks.length})`);
+  const renderYaml = fs.readFileSync(path.join(root, 'render.yaml'), 'utf8');
+  for (const t of tracks) {
+    const pdf = path.join(dist, 'assets/resumes', `${t}.pdf`);
+    assert.ok(fs.existsSync(pdf), `dist/assets/resumes/${t}.pdf exists`);
+    assert.equal(fs.readFileSync(pdf).subarray(0, 5).toString('latin1'), '%PDF-', `${t}.pdf is a PDF`);
+    assert.ok(
+      renderYaml.includes(`source: /resumes/${t}.pdf`) && renderYaml.includes(`destination: /assets/resumes/${t}.pdf`),
+      `render.yaml rewrites /resumes/${t}.pdf to /assets/resumes/${t}.pdf`,
+    );
+  }
+});
+
+test('resume.json carries dated work history and the canonical headline', () => {
+  const r = JSON.parse(read('assets/resumes/resume.json'));
+  assert.ok(Array.isArray(r.work) && r.work.length > 0, 'work history is not empty');
+  for (const w of r.work) assert.match(w.startDate || '', /^\d{4}(-\d{2})?$/, `${w.name} has a start date`);
+  assert.equal(r.basics.email, 'hello@jayptl.me');
+  assert.match(r.basics.label, /Software Engineer/);
+});

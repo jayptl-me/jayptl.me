@@ -1,8 +1,10 @@
 # Genuinest, Case Study
 
-> How Jay Patel served as Founding Engineer at Genuinest, building the Flutter product and migrating the company from costly cloud services to a fully self-hosted Docker, Coolify, and Traefik stack with 20TB of MinIO storage.
+> How Jay Patel served as Founding Engineer (Contract) at Genuinest, building the Flutter product and migrating the company from costly cloud services to a fully self-hosted Docker, Coolify, and Traefik stack with 20TB of MinIO storage.
 
-*Founding Engineer · Self-hosted infrastructure.*
+*Founding Engineer (Contract) · Self-hosted infrastructure.*
+
+*Live site: [genuinest.com](https://genuinest.com/).*
 
 The brief was "build our app." The real job became "build our app, then unhook the company from its cloud bill."
 

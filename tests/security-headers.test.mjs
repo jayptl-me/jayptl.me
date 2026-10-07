@@ -79,3 +79,15 @@ test('every built page carries the CSP meta tag and no inline scripts or handler
     assert.doesNotMatch(html, /\son[a-z]+="/i, `${rel} has an inline event handler, which the CSP blocks`);
   }
 });
+
+test('the site API origin, when set, is allowed by connect-src', () => {
+  const siteApi = fs.readFileSync(path.join(root, 'js/components/site-api.js'), 'utf8');
+  const base = /var API_BASE = '([^']*)';/.exec(siteApi)[1];
+  const csp = SECURITY_HEADERS['Content-Security-Policy'];
+  const connect = (/connect-src ([^;]+)/.exec(csp) || [])[1] || '';
+  if (base) {
+    assert.ok(connect.split(/\s+/).includes(new URL(base).origin), `connect-src must include ${base}`);
+  } else {
+    assert.ok(true, 'API off, nothing to allow');
+  }
+});

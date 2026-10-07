@@ -1,0 +1,148 @@
+/* ==========================================================================
+   TALK CHIP (js/components/talk-chip.js)
+   "Book 15 min" + "Copy email". On pages both halves are pill family
+   buttons (components/buttons.css); this file only lays the pair out and
+   places the hand-written "copied" note:
+
+   <div class="talk-chip">
+     <a class="talk-chip-book pill-btn pill-btn--filled" href="/book">Book 15 min</a>
+     <button class="talk-chip-copy pill-btn pill-btn--outline" type="button"
+             data-copy="hello@jayptl.me"><span>Copy email</span></button>
+   </div>
+
+   The navbar variant (.talk-chip--nav) keeps its original look: the navbar
+   is out of scope for the 2026-09-30 UI system round.
+   ========================================================================== */
+
+.talk-chip {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Phones: the pair stacks into two full-width pills, thumb sized. */
+@media (max-width: 599.98px) {
+  .talk-chip:not(.talk-chip--nav) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .talk-chip:not(.talk-chip--nav) .pill-btn {
+    width: 100%;
+    padding-inline: 12px;
+  }
+}
+
+/* ---- The "copied" note ----------------------------------------------------
+   Placed by talk-chip.js each time it shows: beside the copy pill, below it
+   or above it, the first spot that stays on screen and covers no text.
+   Phones try below first. */
+.talk-chip-note {
+  position: absolute;
+  z-index: 2;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  color: var(--sf-accent);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms var(--ease-snap);
+}
+
+.talk-chip-note--right {
+  transform: translateY(-50%) rotate(-4deg);
+}
+
+.talk-chip-note--above,
+.talk-chip-note--below {
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+.talk-chip-note.is-shown {
+  opacity: 1;
+  transition: opacity 180ms var(--ease-snap);
+}
+
+/* ---- Navbar variant: unchanged from the navbar's shipped look ------------- */
+.talk-chip--nav {
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.talk-chip--nav .talk-chip-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+  width: 34px;
+  padding: 0;
+  border: 1px solid var(--sf-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sf-text);
+  box-shadow: none;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-snap),
+              box-shadow var(--duration-fast) var(--ease-snap),
+              background var(--duration-fast) var(--ease-snap);
+}
+
+.talk-chip--nav .talk-chip-copy:hover {
+  transform: translateY(-1px);
+}
+
+.talk-chip--nav .talk-chip-copy:active {
+  transform: translateY(1px);
+}
+
+.talk-chip--nav .talk-chip-copy:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 3px;
+}
+
+.talk-chip--nav svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.talk-chip--nav .talk-chip-note {
+  left: 50%;
+  top: 100%;
+  margin: 6px 0 0;
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+/* Keep the navbar CTA a single line and hide the copy icon on the island
+   breakpoint (the mobile hub has its own copy pill). */
+@media (max-width: 860px) {
+  .talk-chip--nav .talk-chip-copy {
+    display: none;
+  }
+}
+
+/* Mobile island copy pill is a button, so it borrows the link pill look. */
+button.mobile-social-pill {
+  grid-column: 1 / -1;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 0;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talk-chip-note,
+  .talk-chip-note.is-shown,
+  .talk-chip--nav .talk-chip-copy {
+    transition: none;
+  }
+}

@@ -16,6 +16,9 @@ class ScrollRevealComponent {
     static DESKTOP_COOLDOWN_DURATION = 500;
     static MOBILE_STEP_INTERVAL = 350;
     static DESKTOP_STEP_INTERVAL = 450;
+    static WHEEL_GESTURE_GAP = 200; // ms of wheel silence that starts a new gesture
+    static RELEASE_PUSH_PX = 240;   // steady push on the last line that releases the hero
+    static RELEASE_HOLD_MS = 350;   // the last line stays at least this long before a push releases
     static MOBILE_BREAKPOINT = 860;
 
     constructor() {
@@ -47,6 +50,11 @@ class ScrollRevealComponent {
         this.debounceTimer = null;
         this.accumulatedScroll = 0;
         this.scrollResetTimer = null;
+        // Wheel gesture history: one flick = one step, momentum tails are ignored
+        this._wheelDeltas = [];
+        this._lastWheelTime = 0;
+        this._wheelGestureId = 0;
+        this._armedGestureId = -1; // gesture that armed the release; a new one must release
         this.releaseArmed = false; // require one more scroll on last item to release
         this._releasing = false; // release transition in flight, blocks re-entry until it settles
         this._releaseDisarmTimer = null; // timer to auto-disarm the armed state
@@ -694,6 +702,43 @@ class ScrollRevealComponent {
         }, extendedCooldown);
     }
 
+    /**
+     * Record a wheel delta and report whether it is a new, intentional push.
+     * Trackpads and smooth-scroll mice keep firing decaying "momentum" events
+     * for 1-2s after a flick; those used to trip extra steps once the cooldown
+     * expired. A gap of 200ms+ starts a fresh gesture, and inside a gesture only
+     * an accelerating stream (recent average >= longer average) counts, so a
+     * decelerating momentum tail never steps. Same heuristic as fullPage.js.
+     */
+    recordWheelIntent(deltaY) {
+        const now = performance.now();
+        if (now - this._lastWheelTime > ScrollRevealComponent.WHEEL_GESTURE_GAP) {
+            this._wheelDeltas = [];
+            this._wheelGestureId += 1;
+        }
+        this._lastWheelTime = now;
+        this._wheelDeltas.push(Math.abs(deltaY));
+        if (this._wheelDeltas.length > 150) this._wheelDeltas.shift();
+
+        const average = (count) => {
+            const recent = this._wheelDeltas.slice(-count);
+            return recent.reduce((sum, d) => sum + d, 0) / recent.length;
+        };
+        return average(10) >= average(70);
+    }
+
+    /** (Re)start the 900ms window in which a new scroll releases the hero. */
+    startWheelDisarmTimer() {
+        if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
+        this._releaseDisarmTimer = setTimeout(() => {
+            this.releaseArmed = false;
+            this.container.classList.remove('release-armed');
+            if (this.bottomHint) this.bottomHint.classList.remove('armed');
+            this.updateStepper();
+            this._releaseDisarmTimer = null;
+        }, 900);
+    }
+
     handleWheel(e) {
         if (this._releasing) {
             e.preventDefault();
@@ -701,8 +746,35 @@ class ScrollRevealComponent {
         }
 
         if (this.container.classList.contains('released') ||
-            !this.container.classList.contains('in-view') ||
-            this.scrollCooldown ||
+            !this.container.classList.contains('in-view')) return;
+
+        // Line-mode wheels (Firefox) report ~3 per notch; compare in pixels.
+        const deltaPx = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
+
+        // Record every event, even during cooldown, so momentum is recognized
+        const isIntentional = this.recordWheelIntent(deltaPx);
+        const inArmingGesture = this.releaseArmed && this._wheelGestureId === this._armedGestureId;
+        if (inArmingGesture) {
+            e.preventDefault();
+            // A steady, deliberate push inside the arming gesture releases too,
+            // so a mouse wheel never has to pause and scroll again. Momentum
+            // tails decelerate and never count, so one trackpad flick still
+            // lands on the last line first.
+            if (isIntentional && deltaPx > 0) {
+                this._armedPush = (this._armedPush || 0) + Math.abs(deltaPx);
+                if (this._armedPush >= ScrollRevealComponent.RELEASE_PUSH_PX &&
+                    performance.now() - this._armedAt >= ScrollRevealComponent.RELEASE_HOLD_MS) {
+                    if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
+                    this.stepDown();
+                    return;
+                }
+            }
+            // Keep the armed state alive until the arming flick fully settles
+            this.startWheelDisarmTimer();
+            return;
+        }
+
+        if (this.scrollCooldown ||
             this.isProcessingScroll ||
             this.scrollEventLocked) return;
 
@@ -714,7 +786,13 @@ class ScrollRevealComponent {
 
         // Require a less significant scroll delta to trigger step (faster reveal)
         const minScrollDelta = this.isMobile ? 10 : 15;
-        if (Math.abs(e.deltaY) < minScrollDelta) {
+        if (Math.abs(deltaPx) < minScrollDelta) {
+            return;
+        }
+
+        // Momentum tail of an earlier flick: swallow it, never step or release
+        if (!isIntentional) {
+            e.preventDefault();
             return;
         }
 
@@ -729,21 +807,16 @@ class ScrollRevealComponent {
 
             if (!this.releaseArmed) {
                 this.releaseArmed = true;
+                this._armedGestureId = this._wheelGestureId;
+                this._armedPush = 0;
+                this._armedAt = performance.now();
                 this.container.classList.add('release-armed');
                 if (this.bottomHint) this.bottomHint.classList.add('armed');
                 this.updateStepper();
-
-                if (this._releaseDisarmTimer) clearTimeout(this._releaseDisarmTimer);
-                this._releaseDisarmTimer = setTimeout(() => {
-                    this.releaseArmed = false;
-                    this.container.classList.remove('release-armed');
-                    if (this.bottomHint) this.bottomHint.classList.remove('armed');
-                    this.updateStepper();
-                    this._releaseDisarmTimer = null;
-                }, 900);
+                this.startWheelDisarmTimer();
             } else {
                 if (this._releaseDisarmTimer) { clearTimeout(this._releaseDisarmTimer); this._releaseDisarmTimer = null; }
-                // Second scroll while armed -> release to native scroll
+                // A separate, deliberate scroll while armed -> release to native scroll
                 this.stepDown();
             }
             return; // handled

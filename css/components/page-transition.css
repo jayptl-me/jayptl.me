@@ -118,3 +118,39 @@ html.pt-exiting #glassNav {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   CARD TO COVER (js/components/page-router.js, motion-zen 6a, 520ms)
+   The card and its title are named only for the duration of the swap, so
+   names never collide. Old page leaves in 140ms, new page arrives in
+   240ms after 40ms; the shared card and title travel 520ms on snap.
+   ========================================================================== */
+::view-transition-group(case-cover),
+::view-transition-group(case-title) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease-snap);
+}
+
+::view-transition-old(case-cover),
+::view-transition-new(case-cover),
+::view-transition-old(case-title),
+::view-transition-new(case-title) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease-snap);
+}
+
+html.pt-morphing::view-transition-old(root) {
+  animation: pt-morph-out 140ms var(--ease-snap) both;
+}
+
+html.pt-morphing::view-transition-new(root) {
+  animation: pt-morph-in 240ms var(--ease-snap) 40ms both;
+}
+
+@keyframes pt-morph-out {
+  to { opacity: 0; }
+}
+
+@keyframes pt-morph-in {
+  from { opacity: 0; }
+}

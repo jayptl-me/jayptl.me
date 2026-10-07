@@ -1,0 +1,141 @@
+/* ==========================================================================
+   COMMIT FIELD (js/components/commit-field.js)
+   Static contribution grid, ramp-colored cells, HUD readouts. No motion.
+   ========================================================================== */
+
+.commit-field {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.commit-field > figcaption {
+  font-size: 0.9375rem;
+  color: var(--sf-text-dim);
+}
+
+.commit-field.is-ready > figcaption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.cf-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: 0;
+}
+
+.cf-stats > div {
+  display: grid;
+  gap: 2px;
+}
+
+.cf-stats dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sf-accent);
+}
+
+.cf-stats dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.375rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-text);
+}
+
+.cf-wrap {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 4px;
+}
+
+.cf-months,
+.cf-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks, 53), var(--cf-cell, 11px));
+  gap: 3px;
+  width: max-content;
+}
+
+.cf-months {
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--sf-text-dim);
+}
+
+.cf-months > span {
+  white-space: nowrap;
+}
+
+.cf-grid {
+  grid-template-rows: repeat(7, var(--cf-cell, 11px));
+  border-radius: 6px;
+}
+
+.cf-grid:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 4px;
+}
+
+.cf-cell {
+  display: block;
+  width: var(--cf-cell, 11px);
+  height: var(--cf-cell, 11px);
+  border-radius: 3px;
+  background: rgba(var(--sf-accent-rgb), 0.07);
+  outline: 1px solid rgba(var(--sf-accent-rgb), 0.08);
+  outline-offset: -1px;
+}
+
+.cf-cell[data-level="1"] { background: rgba(var(--sf-accent-rgb), 0.28); }
+.cf-cell[data-level="2"] { background: rgba(var(--sf-accent-rgb), 0.5); }
+.cf-cell[data-level="3"] { background: rgba(var(--sf-accent-rgb), 0.72); }
+.cf-cell[data-level="4"] { background: rgba(var(--sf-accent-rgb), 0.95); }
+
+.cf-cell.is-active {
+  outline: 2px solid var(--sf-text);
+  outline-offset: 0;
+}
+
+.cf-readout {
+  margin: 0;
+  min-height: 1.5em;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-text-dim);
+}
+
+.cf-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--sf-text-dim);
+}
+
+.cf-legend .cf-cell {
+  display: inline-block;
+}
+
+@media (min-width: 1100px) {
+  .commit-field {
+    --cf-cell: 13px;
+  }
+}
+
+@media (forced-colors: active) {
+  .cf-cell[data-level="0"] { background: Canvas; }
+  .cf-cell:not([data-level="0"]) { background: CanvasText; }
+}

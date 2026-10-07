@@ -96,6 +96,15 @@
             targets.forEach(function (t) {
                 t.link.classList.toggle('active', t === current);
             });
+            // Reading progress through the active section, as a readout
+            // (no easing of its own; it follows the scroll).
+            var i = targets.indexOf(current);
+            var top = current.el.getBoundingClientRect().top + window.scrollY;
+            var end = targets[i + 1]
+                ? targets[i + 1].el.getBoundingClientRect().top + window.scrollY
+                : top + current.el.offsetHeight;
+            var read = Math.max(0, Math.min(1, (pos - top) / Math.max(1, end - top)));
+            current.link.style.setProperty('--read', read.toFixed(3));
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
@@ -110,19 +119,12 @@
        strokes with stroke-dashoffset:1 and draws them to 0 on .is-drawn.
        JS only staggers children via --d and flips the class on first
        reveal. Respects prefers-reduced-motion (collapses to fully drawn). */
-    function initDoodleDraw() {
-        if (drawObserver) {
-            try { drawObserver.disconnect(); } catch (e) { /* noop */ }
-            drawObserver = null;
-        }
-        var drawings = document.querySelectorAll('.doodle-draw, .icon-draw');
-        if (!drawings.length) return;
-        var reduceMotion = window.matchMedia &&
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduceMotion || !('IntersectionObserver' in window)) {
-            drawings.forEach(function (el) { el.classList.add('is-drawn'); });
-            return;
-        }
+    function prefersReducedMotion() {
+        return Boolean(window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+
+    function createDrawObserver() {
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
@@ -142,8 +144,35 @@
                 });
             });
         }, { threshold: 0.4 });
-        drawObserver = io;
-        drawings.forEach(function (el) { io.observe(el); });
+        return io;
+    }
+
+    function initDoodleDraw() {
+        if (drawObserver) {
+            try { drawObserver.disconnect(); } catch (e) { /* noop */ }
+            drawObserver = null;
+        }
+        var drawings = document.querySelectorAll('.doodle-draw, .icon-draw');
+        if (!drawings.length) return;
+        if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+            drawings.forEach(function (el) { el.classList.add('is-drawn'); });
+            return;
+        }
+        drawObserver = createDrawObserver();
+        drawings.forEach(function (el) {
+            if (!el.classList.contains('is-drawn')) drawObserver.observe(el);
+        });
+    }
+
+    /* Draw-on for a drawing added after the scan (Ink Mark helper). */
+    function draw(el) {
+        if (!el || el.classList.contains('is-drawn')) return;
+        if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+            el.classList.add('is-drawn');
+            return;
+        }
+        if (!drawObserver) drawObserver = createDrawObserver();
+        drawObserver.observe(el);
     }
 
     /* ---- Cap ambient idle bob to ONE sticker ----------------------------- */
@@ -171,6 +200,6 @@
 
     /* Re-scan hook for seamless revisits (same document shell). */
     try {
-        window.Doodle = { init: init };
+        window.Doodle = { init: init, draw: draw };
     } catch (e) { /* noop */ }
 })();

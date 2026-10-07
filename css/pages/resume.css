@@ -1,65 +1,417 @@
 /* ==========================================================================
-   RESUME PAGE (/resume)
-   Canonical HTML resume. Print-friendly. Uses existing theme tokens only.
-   Light = blue ramp, Dark = turquoise glass. No new palette.
+   RESUME PAGE (/resume), UI system round 2026-09-30
+   Canonical HTML resume. Print-friendly. Shares the About page base
+   (about.css: container, section rhythm, headline). Four tiers: phone
+   < 600, tablet 600 to 1023, laptop 1024 to 1439, wide 1440+.
+   Brief: docs/motion-zen.md section 6b "Resume page, Phase 3".
    ========================================================================== */
 
+/* ---- Contact row: quiet pills with drawn icons ---------------------------- */
 .resume-page .resume-contact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 8px;
     margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
 }
 
+.resume-page .resume-contact li + li {
+    margin-top: 0;
+}
+
+/* The email is the longest label: it takes the full first row on phones. */
+.resume-page .resume-contact li:first-child {
+    grid-column: 1 / -1;
+}
+
+.resume-contact-link {
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+    padding-inline: 4px;
+    font-size: 0.9375rem;
+}
+
+.resume-contact-link .line-icon {
+    width: 18px;
+    height: 18px;
+}
+
+@media (min-width: 600px) {
+    .resume-page .resume-contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 20px;
+    }
+
+    .resume-contact-link {
+        width: auto;
+    }
+}
+
+/* ---- Action row ----------------------------------------------------------- */
 .resume-page .resume-actions {
-    margin: var(--space-4) 0 0;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
     align-items: center;
+    gap: 4px 20px;
+    margin: var(--space-4) 0 0;
 }
 
-.resume-page .resume-actions button {
-    font: inherit;
-    cursor: pointer;
-    padding: var(--space-2) var(--space-4);
-    border-radius: 8px;
-    border: 1px solid var(--theme-border);
-    background: var(--theme-surface-bg);
-    color: var(--theme-text);
-    transition: border-color var(--duration-fast) var(--ease-smooth),
-        color var(--duration-fast) var(--ease-smooth);
+/* ---- One-pagers: card-family tiles ------------------------------------------ */
+/* 1 column phone, 2 tablet, 4 laptop and wide; the lead tile spans two, so
+   seven tiles never leave one alone on a row. */
+.resume-track-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
 }
 
-.resume-page .resume-actions button:hover {
-    border-color: var(--theme-primary);
-    color: var(--theme-primary);
+.resume-page .resume-track-grid {
+    padding-left: 0;
 }
 
-.resume-page section {
-    margin: var(--space-10) 0;
+.resume-page .resume-track-grid li + li {
+    margin-top: 0;
+}
+
+@media (min-width: 600px) {
+    .resume-track-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .resume-track-lead {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .resume-track-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.resume-track {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    height: 100%;
+    padding: 16px 18px;
+    color: var(--sf-text);
+    text-decoration: none;
+    transition:
+        transform 180ms var(--ease-snap),
+        box-shadow 180ms var(--ease-snap),
+        border-color 180ms var(--ease-snap);
+}
+
+.resume-track-lead .resume-track {
+    border-color: color-mix(in srgb, var(--sf-accent) 55%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .resume-track:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--sf-pill-shadow-hover);
+        color: var(--sf-text);
+    }
+}
+
+.resume-track:active {
+    transform: scale(0.985);
+    transition-duration: 140ms;
+}
+
+.resume-track:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+}
+
+.resume-track-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: var(--sf-accent);
+}
+
+.resume-track-note {
+    color: var(--theme-text-secondary);
+    font-size: 0.9375rem;
+}
+
+.resume-track-file {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: var(--space-2);
+    font-size: 0.8125rem;
+    color: var(--theme-text-tertiary);
+}
+
+.resume-track-file::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    flex: none;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v9.5M4 8.5l4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v9.5M4 8.5l4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* The download-started check (js/components/page-actions.js). */
+.resume-track > .ink-status {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+}
+
+.resume-note {
+    margin: var(--space-3) 0 0;
+    text-align: right;
+    font-size: 1.125rem;
+}
+
+/* ---- Lists ------------------------------------------------------------------ */
+.resume-page ul {
+    padding-left: 1.25rem;
 }
 
 .resume-page article {
     margin: var(--space-5) 0;
 }
 
-.resume-page ul {
-    padding-left: 1.25rem;
+/* ---- Dates ---------------------------------------------------------------------------------- */
+.resume-when {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--theme-text-secondary);
+    white-space: nowrap;
 }
 
+/* ---- 2026-09-28: hero Talk Chip, ledger, skill lanes -------------------------------------- */
+.resume-hero-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+    margin-top: var(--space-5);
+}
+
+.resume-updated {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--theme-text-tertiary);
+}
+
+.resume-page .role-ledger {
+    margin-top: var(--space-4);
+}
+
+.resume-page .role-body li + li,
+.resume-page .role-stack li + li,
+.resume-page .skill-lane li + li {
+    margin-top: 0;
+}
+
+
+.resume-page li + li {
+    margin-top: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .resume-track {
+        transition: none;
+    }
+
+    .resume-track:hover,
+    .resume-track:active {
+        transform: none;
+    }
+}
+
+/* ---- Print: the page itself becomes a clean resume --------------------------------------- */
 @media print {
+    @page {
+        size: A4;
+        margin: 14mm 14mm 16mm;
+    }
+
     .navbar,
     .consent-settings-toggle,
     .preloader,
-    .resume-actions {
+    .pt-veil,
+    .custom-cursor,
+    .resume-downloads,
+    .page-footer,
+    .doodle,
+    .hand {
         display: none !important;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        color: #111 !important;
     }
 
     .about-page {
         max-width: 100%;
         padding: 0;
+        margin: 0;
     }
 
-    body {
-        background: #fff;
-        color: #111;
+    .resume-page {
+        font-size: 10.5pt;
+        line-height: 1.4;
+    }
+
+    .resume-page h1 {
+        font-size: 20pt;
+        margin: 0;
+    }
+
+    .resume-page .page-hero {
+        padding: 0;
+        margin: 0 0 8pt;
+    }
+
+    .resume-page .page-hero-kicker {
+        display: none;
+    }
+
+    .resume-page section {
+        margin: 10pt 0;
+        break-inside: auto;
+    }
+
+    .resume-page article,
+    .resume-page li {
+        break-inside: avoid;
+    }
+
+    .resume-page h2 {
+        font-size: 11pt;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #1976d2;
+        border-bottom: 1px solid #bbdefb;
+        padding-bottom: 2pt;
+        margin: 0 0 4pt;
+    }
+
+    .resume-page .section-no {
+        display: none;
+    }
+
+    .resume-page h3 {
+        font-size: 10.5pt;
+        margin: 6pt 0 2pt;
+    }
+
+    .resume-page a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .resume-when {
+        color: #444 !important;
+        font-size: 9.5pt;
+    }
+
+    .resume-contact .line-icon,
+    .resume-contact .arrow,
+    .resume-actions,
+    .resume-page a[href^="http"]::after {
+        display: none !important;
+    }
+
+    .resume-page .resume-contact {
+        display: block !important;
+        margin: 2pt 0 6pt !important;
+    }
+
+    .resume-page .resume-contact li {
+        display: inline !important;
+    }
+
+    .resume-page .resume-contact li + li::before {
+        content: " · ";
+    }
+
+    .resume-contact-link {
+        display: inline !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        font: inherit !important;
+        color: inherit !important;
+    }
+
+    .resume-hero-row,
+    .role-mark,
+    .role-stack,
+    .stack-chip-icon,
+    .ink-svg {
+        display: none !important;
+    }
+
+    .role,
+    .skill-lane {
+        border: 0 !important;
+        padding: 0 !important;
+        background: none !important;
+    }
+
+    .role-head {
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    .role-outcome {
+        display: none !important;
+    }
+
+    .role-body {
+        padding: 0 !important;
+    }
+
+    .stack-chip {
+        background: none !important;
+        padding: 0 !important;
+    }
+
+    .skill-lanes {
+        display: block !important;
+    }
+
+    .skill-lane h3,
+    .skill-lane ul {
+        display: inline !important;
+        font-size: 10.5pt !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+        color: inherit !important;
+    }
+
+    .skill-lane li {
+        display: inline !important;
+        border: 0 !important;
+        padding: 0 !important;
+    }
+
+    .skill-lane li + li::before {
+        content: ", ";
+    }
+
+    .skill-lane h3::after {
+        content: ": ";
     }
 }

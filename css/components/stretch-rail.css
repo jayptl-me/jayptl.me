@@ -1,0 +1,293 @@
+/**
+ * Stretch Rail (UI system round, 2026-09-30). Brief: docs/motion-zen.md
+ * section 6b. A segmented choice built on native radios, so arrow keys and
+ * screen readers work with no script. js/components/stretch-rail.js moves
+ * the highlight (transform only), adds drag on fine pointers and builds the
+ * phone chip menu.
+ *
+ *   <div class="project-filter" data-component="stretch-rail">
+ *     <fieldset class="stretch-rail">
+ *       <legend class="sr-only">Filter projects by kind</legend>
+ *       <span class="stretch-rail-thumb" aria-hidden="true"></span>
+ *       <input type="radio" name="f" id="f-all" value="all" checked>
+ *       <label for="f-all"><span class="stretch-rail-label">All</span>
+ *         <span class="stretch-rail-count">32</span></label>
+ *       ...
+ *     </fieldset>
+ *   </div>
+ *
+ * Heights follow the pill family: 48 phone, 44 tablet, 40 laptop and wide.
+ * Light: a recessed clay track with a raised blue highlight. Dark: a glass
+ * track with a turquoise glass highlight.
+ *
+ * @file components/stretch-rail.css
+ */
+
+.stretch-rail {
+    --rail-h: 48px;
+    --rail-pad: 4px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: var(--rail-pad);
+    border: 1px solid var(--sf-border);
+    border-radius: 999px;
+    background: var(--sf-fog);
+    box-shadow: var(--sf-pill-shadow-press);
+    touch-action: pan-y;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.stretch-rail::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 600px) {
+    .stretch-rail {
+        --rail-h: 44px;
+        overflow: visible;
+    }
+}
+
+@media (min-width: 1024px) {
+    .stretch-rail {
+        --rail-h: 40px;
+    }
+}
+
+.stretch-rail input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.stretch-rail label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: calc(var(--rail-h) - var(--rail-pad) * 2);
+    padding: 0 16px;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sf-text-dim);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 200ms var(--ease-snap);
+}
+
+.stretch-rail-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .stretch-rail label:hover {
+        color: var(--sf-text);
+    }
+}
+
+.stretch-rail input:checked + label,
+.stretch-rail input:checked + label:hover {
+    color: var(--sf-panel);
+}
+
+html[data-theme="dark"] .stretch-rail input:checked + label {
+    color: var(--accent-300);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .stretch-rail input:checked + label {
+        color: var(--accent-300);
+    }
+}
+
+.stretch-rail input:focus-visible + label {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 2px;
+}
+
+.stretch-rail input:disabled + label {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* The highlight. Before the script measures, the checked label carries a
+   plain fill so the rail reads correctly with no script at all. */
+.stretch-rail-thumb {
+    position: absolute;
+    z-index: 0;
+    top: var(--rail-pad);
+    left: 0;
+    width: 0;
+    height: calc(var(--rail-h) - var(--rail-pad) * 2);
+    border-radius: 999px;
+    background: var(--sf-accent);
+    box-shadow: var(--sf-pill-shadow);
+    transform-origin: left center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+html[data-theme="dark"] .stretch-rail-thumb {
+    background: linear-gradient(135deg, rgba(0, 184, 204, 0.32), rgba(0, 184, 204, 0.14));
+    border: 1px solid rgba(0, 184, 204, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .stretch-rail-thumb {
+        background: linear-gradient(135deg, rgba(0, 184, 204, 0.32), rgba(0, 184, 204, 0.14));
+        border: 1px solid rgba(0, 184, 204, 0.4);
+    }
+}
+
+.stretch-rail:not(.is-live) input:checked + label {
+    background: var(--sf-accent);
+}
+
+html[data-theme="dark"] .stretch-rail:not(.is-live) input:checked + label {
+    background: rgba(0, 184, 204, 0.24);
+}
+
+.stretch-rail.is-live .stretch-rail-thumb {
+    opacity: 1;
+}
+
+.stretch-rail.is-draggable .stretch-rail-thumb {
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 2;
+    background: transparent;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.stretch-rail.is-dragging,
+.stretch-rail.is-dragging .stretch-rail-thumb {
+    cursor: grabbing;
+}
+
+/* The painted highlight while dragging is a sibling ghost (see script). */
+.stretch-rail-ghost {
+    position: absolute;
+    z-index: 0;
+    top: var(--rail-pad);
+    left: 0;
+    height: calc(var(--rail-h) - var(--rail-pad) * 2);
+    border-radius: 999px;
+    background: var(--sf-accent);
+    box-shadow: var(--sf-pill-shadow);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+html[data-theme="dark"] .stretch-rail-ghost {
+    background: linear-gradient(135deg, rgba(0, 184, 204, 0.32), rgba(0, 184, 204, 0.14));
+    border: 1px solid rgba(0, 184, 204, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .stretch-rail-ghost {
+        background: linear-gradient(135deg, rgba(0, 184, 204, 0.32), rgba(0, 184, 204, 0.14));
+        border: 1px solid rgba(0, 184, 204, 0.4);
+    }
+}
+
+/* ---- Phone chip menu (built by the script) ----------------------------- */
+
+.rail-chip {
+    position: relative;
+    display: none;
+}
+
+.rail-chip-list {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: min(280px, calc(100vw - 32px));
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    border: 1px solid var(--sf-border);
+    border-radius: 18px;
+    background: var(--sf-panel);
+    box-shadow: var(--sf-shadow);
+    -webkit-backdrop-filter: var(--sf-panel-blur);
+            backdrop-filter: var(--sf-panel-blur);
+}
+
+.rail-chip-glide {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 0;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--sf-row-hover);
+    pointer-events: none;
+    transition: transform 180ms var(--ease-snap);
+}
+
+.rail-chip-list li {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sf-text);
+    cursor: pointer;
+}
+
+.rail-chip-list li[aria-selected="true"] {
+    color: var(--sf-accent);
+}
+
+.rail-chip-list li:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: -2px;
+}
+
+.rail-chip-list .stretch-rail-count {
+    color: var(--sf-text-dim);
+}
+
+@media (max-width: 599.98px) {
+    /* The chip menu drives the same radios; the rail itself is removed
+       from view and from the tab order. */
+    .has-rail-chip > .stretch-rail {
+        display: none;
+    }
+
+    .has-rail-chip > .rail-chip {
+        display: block;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stretch-rail label,
+    .rail-chip-glide {
+        transition: none;
+    }
+}

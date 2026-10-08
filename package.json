@@ -21,7 +21,7 @@
     "cssnano": "^9",
     "happy-dom": "^20.14.5",
     "html-minifier-terser": "^7.2.0",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.29",
     "terser": "^5.51.2"
   },
   "engines": {

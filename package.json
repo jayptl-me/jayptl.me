@@ -7,7 +7,7 @@
     "clean": "rm -rf dist",
     "prebuild": "bun run clean",
     "build": "bun scripts/build.js",
-    "optimize": "bun scripts/optimize.js",
+    "optimize": "node scripts/optimize.js",
     "validate": "bun scripts/validate.js",
     "deploy:prepare": "bun run commits:refresh && bun run build && bun run optimize && bun run validate",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
@@ -18,7 +18,7 @@
     "commits:refresh": "node scripts/fetch-commits.js"
   },
   "devDependencies": {
-    "cssnano": "^9",
+    "cssnano": "9.0.5",
     "happy-dom": "^20.14.5",
     "html-minifier-terser": "^7.2.0",
     "postcss": "^8.5.28",

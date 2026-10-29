@@ -333,3 +333,60 @@ test('resume.json carries dated work history and the canonical headline', () => 
   assert.equal(r.basics.email, 'hello@jayptl.me');
   assert.match(r.basics.label, /Software Engineer/);
 });
+
+/* ------------------------ asset publish policy -------------------------- */
+
+function distWalk(dir, exts, out = []) {
+  for (const entry of fs.readdirSync(path.join(dist, dir), { withFileTypes: true })) {
+    const rel = dir ? path.join(dir, entry.name) : entry.name;
+    if (entry.isDirectory()) distWalk(rel, exts, out);
+    else if (exts.some((ext) => rel.endsWith(ext))) out.push(rel);
+  }
+  return out;
+}
+
+// The build only copies what scripts/asset-policy.js names, so this is the
+// check that makes the allow-list safe: a page referencing something the policy
+// withholds would 404 in production instead of failing here.
+test('every /assets/ reference in the built pages resolves to a shipped file', () => {
+  const files = distWalk('', ['.html', '.css', '.js', '.webmanifest']);
+  assert.ok(files.length > 40, 'expected the real built file set');
+  const missing = [];
+  for (const rel of files) {
+    const src = fs.readFileSync(path.join(dist, rel), 'utf8');
+    for (const match of src.matchAll(/\/assets\/[A-Za-z0-9._/-]+/g)) {
+      const target = path.join(dist, match[0].slice(1));
+      if (!fs.existsSync(target)) missing.push(`${rel} -> ${match[0]}`);
+    }
+  }
+  assert.deepEqual(missing, [], 'a reference to an unpublished asset would 404 live');
+});
+
+test('the build does not ship screenshots that no page links', () => {
+  // The exact files that were publicly reachable before the policy existed:
+  // an admin partner directory with third-party contact data, and the gallery
+  // sets that no page ever referenced.
+  const withheld = [
+    'assets/case-studies/aviz-health/08-admin-verify-partners.png',
+    'assets/case-studies/aviz-health/09-admin-homecare.png',
+    'assets/case-studies/aviz-health/07-admin-dashboard.png',
+    'assets/case-studies/aviz-health/gallery/desktop-01.jpg',
+    'assets/projects/thhiya/gallery/desktop-01.jpg',
+    'assets/case-studies/swalook-crm/05-crm-billing-demo.webp',
+    'assets/icons/home.svg'
+  ];
+  for (const rel of withheld) {
+    assert.equal(fs.existsSync(path.join(dist, rel)), false, `${rel} is referenced by nothing and must not ship`);
+  }
+  // And the imagery the pages do use still ships, so this is a policy and not
+  // an accidental deletion.
+  for (const kept of [
+    'assets/case-studies/aviz-health/hero.jpg',
+    'assets/case-studies/aviz-health/cover-desktop.jpg',
+    'assets/projects/thhiya/cover-phone.jpg',
+    'assets/fonts/space-grotesk-400.woff2',
+    'assets/resumes/resume.json'
+  ]) {
+    assert.ok(fs.existsSync(path.join(dist, kept)), `${kept} is referenced and must ship`);
+  }
+});

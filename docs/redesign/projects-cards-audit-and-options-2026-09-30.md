@@ -4,6 +4,10 @@ Gate R research for the Projects card revamp. Mockups with real screenshots:
 `projects-card-options-light.jpg` and `projects-card-options-dark.jpg` in this
 folder (quick mockups for choosing a direction, not the build).
 
+Reference names are private. They use the neutral labels Ref-1 to Ref-4; the real
+names and URLs are in the gitignored register
+`.agents/memory/facts/motion-reference-sites.md`.
+
 ## Audit (local build, measured at 390, 768, 1280, 1600 wide, light and dark)
 
 1. No hierarchy. All 32 cards are the same size and anatomy; the four case
@@ -28,36 +32,36 @@ folder (quick mockups for choosing a direction, not the build).
 
 ## References studied (live, captured headless)
 
-- athrix.me/projects (Jay's liked dev portfolio): two columns, screenshot
+- Ref-1 (Jay's liked dev portfolio): two columns, screenshot
   inset on a soft backdrop with padding, title and date on one line, status,
   short text, tags, Live and GitHub pills.
-- radhekrishna.athrix.me (Jay's liked scroll story): huge titles, images
+- Ref-2 (Jay's liked scroll story): huge titles, images
   drift and tilt around them as you scroll.
-- brittanychiang.com: a few featured projects as rows with thumbnails, then
+- Ref-3: a few featured projects as rows with thumbnails, then
   a full archive table (Year, Project, Made at, Built with, Link).
-- vercel.com/templates: text first, screenshot peeking up from the card's
+- Ref-4: text first, screenshot peeking up from the card's
   bottom edge, uniform tiles.
 - Hover-preview project lists (common on design portfolios and in UI
   catalogs): list rows reveal a floating preview on hover.
 
 ## Options
 
-- A. Framed Shelf (athrix.me model). Same 1/2/3/3 grid. Every cover becomes a
+- A. Framed Shelf (Ref-1 model). Same 1/2/3/3 grid. Every cover becomes a
   framed desktop screenshot on a tinted mat with a phone frame overlapping,
   so white screenshots never touch dark glass; drawings sit on the same mat.
   Body tightened: title and date on one line, status line, full
   description, tags, pills (Case study, Live site, GitHub). Footer strip
   removed. Cards about 90 to 110px shorter; page still 32 cards long.
-- B. Features + Archive (brittanychiang.com model). The 8 live projects
+- B. Features + Archive (Ref-3 model). The 8 live projects
   become big framed cards (2 across from tablet up); the other 24 become an
   archive list (Year, Project, Role, Built with, Link) whose rows expand in
   place to the full description, with a hover preview on laptop and wide.
   Phone page drops from about 18,200px to roughly 8,000px (estimate).
   Filter rail keeps working across both.
-- C. Bento Peek (vercel.com/templates model). Text first; live projects span
+- C. Bento Peek (Ref-4 model). Text first; live projects span
   two columns with the screenshot peeking up from the bottom edge; projects
   without a site become compact text tiles with no cover.
-- D. Story Index (radhekrishna.athrix.me model). Big project names as a list;
+- D. Story Index (Ref-2 model). Big project names as a list;
   framed screenshots drift beside them on scroll and hover. Most expressive,
   heaviest motion, needs its own motion brief; phones fall back to a list.
 

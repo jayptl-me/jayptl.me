@@ -131,7 +131,7 @@ The rack asked four questions; you answered all four. These steer any future Gat
 Research: docs/redesign/projects-cards-audit-and-options-2026-09-30.md
 (mockups projects-card-options-light.jpg and -dark.jpg).
 - Layout: B, FEATURES + ARCHIVE (live projects as big cards, the rest as an
-  expandable archive list; brittanychiang.com model).
+  expandable archive list; Ref-3 model, mapped in the private reference register).
 - Covers: DESKTOP + PHONE ON A MAT (framed, padded, tinted mat).
 - Projects without a live site: KEEP THE DRAWINGS (shown on the mat in the
   open archive row and in the hover preview).

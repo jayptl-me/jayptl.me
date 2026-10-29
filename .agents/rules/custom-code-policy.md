@@ -16,6 +16,15 @@
    - Zero CSS preprocessors or utility frameworks (pure vanilla CSS only).
    - Zero emojis in deliverables.
 
+4. **Reference Privacy**:
+   - External sites studied for inspiration are private. Record their names, URLs, and what
+     was taken only in `.agents/memory/facts/motion-reference-sites.md`, which is gitignored.
+     Tracked docs use neutral labels: Ref-1, Ref-2, and so on.
+   - Never put a reference name, URL, screenshot, "inspired by" credit, or "built from"
+     claim into a tracked file, a commit, site copy, or any built page. This repository is
+     public.
+   - A new reference is added to that register first; the public label is assigned there.
+
 
 ---
 

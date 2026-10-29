@@ -6,13 +6,13 @@ Canonical HTML: [jayptl.me/resume](https://jayptl.me/resume) · Machine data: [/
 
 ## One-page PDFs by role
 
-- Client-facing / FDE: [/resumes/fde.pdf](https://jayptl.me/resumes/fde.pdf)
-- Full-stack: [/resumes/fullstack.pdf](https://jayptl.me/resumes/fullstack.pdf)
-- Frontend: [/resumes/frontend.pdf](https://jayptl.me/resumes/frontend.pdf)
-- Backend: [/resumes/backend.pdf](https://jayptl.me/resumes/backend.pdf)
-- Mobile: [/resumes/mobile.pdf](https://jayptl.me/resumes/mobile.pdf)
-- AI / ML: [/resumes/ai.pdf](https://jayptl.me/resumes/ai.pdf)
-- Web3: [/resumes/web3.pdf](https://jayptl.me/resumes/web3.pdf)
+- Client-facing / FDE: [/resumes/fde.pdf](https://jayptl.me/assets/resumes/fde.pdf)
+- Full-stack: [/resumes/fullstack.pdf](https://jayptl.me/assets/resumes/fullstack.pdf)
+- Frontend: [/resumes/frontend.pdf](https://jayptl.me/assets/resumes/frontend.pdf)
+- Backend: [/resumes/backend.pdf](https://jayptl.me/assets/resumes/backend.pdf)
+- Mobile: [/resumes/mobile.pdf](https://jayptl.me/assets/resumes/mobile.pdf)
+- AI / ML: [/resumes/ai.pdf](https://jayptl.me/assets/resumes/ai.pdf)
+- Web3: [/resumes/web3.pdf](https://jayptl.me/assets/resumes/web3.pdf)
 
 ## Summary
 

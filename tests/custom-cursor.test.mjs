@@ -46,12 +46,18 @@ test('custom cursor assets exist in dist', () => {
   );
 });
 
-test('main.css wires the custom cursor styles globally', () => {
-  const main = read('css/main.css');
+test('main.css wires the cursor sheet and the built css carries its rules', () => {
+  // Wiring is a source fact: dist/css/main.css is flattened by
+  // scripts/css-bundle.js and then minified by scripts/optimize.js, so an
+  // @import line is not in the shipped file. Asserting on one here passed
+  // while a path comment survived the bundler and died under cssnano.
+  const source = fs.readFileSync(path.join(root, 'css/main.css'), 'utf8');
   assert.ok(
-    main.includes('components/custom-cursor.css'),
-    'css/main.css must @import components/custom-cursor.css'
+    source.includes('components/custom-cursor.css'),
+    'source css/main.css must import components/custom-cursor.css'
   );
+  const built = read('css/main.css');
+  assert.match(built, /\.custom-cursor\b/, 'built css/main.css must contain the cursor rules');
 });
 
 test('every page loads custom-cursor.js', () => {

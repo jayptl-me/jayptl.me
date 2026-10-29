@@ -1,5 +1,4 @@
 
-"use strict";
 
 /**
  * Ultra-Strict Scroll-to-Reveal Text Component
@@ -8,6 +7,9 @@
  * @file components/scroll-reveal.js
  * @author Jay Patel
  */
+
+(function () {
+'use strict';
 
 class ScrollRevealComponent {
     // Configuration constants for better maintainability
@@ -1427,3 +1429,5 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ScrollRevealComponent;
 }
+
+})();

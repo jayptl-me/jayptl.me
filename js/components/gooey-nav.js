@@ -1,4 +1,3 @@
-"use strict";
 
 /**
  * Gooey Navigation Effect - Fluid, Calm & Pure Monochromatic
@@ -17,6 +16,7 @@
  */
 
 (function () {
+    'use strict';
   const PER_ITEM_COOLDOWN_MS = 900;
   const PARTICLE_R = 75;
   const TIME_VARIANCE = 200;

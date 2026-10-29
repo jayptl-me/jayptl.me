@@ -6,6 +6,9 @@
  * @author Jay Patel
  */
 
+(function () {
+'use strict';
+
 // Simple performance optimizations
 class PerformanceManager {
     constructor() {
@@ -59,3 +62,5 @@ if (document.readyState === 'loading') {
 } else {
     new PerformanceManager();
 }
+
+})();

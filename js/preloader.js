@@ -1,4 +1,3 @@
-"use strict";
 
 /**
  * Home Ink Loop Preloader: skip rule and hero hand-off.
@@ -17,6 +16,7 @@
  * @file js/preloader.js
  */
 (function () {
+    'use strict';
     var KEY = 'jayptl-preloaded';
     var root = document.documentElement;
     var reduce = false;

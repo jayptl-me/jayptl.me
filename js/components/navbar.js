@@ -1,4 +1,3 @@
-"use strict";
 
 /**
  * Reusable Navbar Component - Dynamic Island Architecture
@@ -19,6 +18,7 @@
  */
 
 (function () {
+    'use strict';
   function buildNavHTML() {
     // Canonical clean URLs (matching server redirects and routes)
     const homeHref = '/';

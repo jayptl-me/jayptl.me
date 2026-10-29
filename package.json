@@ -18,10 +18,10 @@
     "commits:refresh": "node scripts/fetch-commits.js"
   },
   "devDependencies": {
-    "cssnano": "9.0.5",
-    "happy-dom": "^20.14.5",
+    "cssnano": "9.9.0",
+    "happy-dom": "^21.0.4",
     "html-minifier-terser": "^7.2.0",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.31",
     "terser": "^5.51.2"
   },
   "engines": {

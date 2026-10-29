@@ -15,6 +15,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { META_CONTENT_SECURITY_POLICY, SECURITY_HEADERS } = require('./security-headers');
 const { bundleCssInDist } = require('./css-bundle');
+const { ships: assetShips } = require('./asset-policy');
 
 // ANSI color codes for terminal output
 const colors = {
@@ -43,7 +44,7 @@ const config = {
     '*.html',
     'css/**/*',
     'js/**/*',
-    'assets/**/*',
+    'assets/* (allow-listed by scripts/asset-policy.js)',
     'markdown/**/*',
     'robots.txt',
     'humans.txt',
@@ -101,6 +102,44 @@ async function copyDir(src, dest) {
 }
 
 /**
+ * Copy assets/ through the publish policy in scripts/asset-policy.js
+ */
+async function copyAssets() {
+  log.info('Copying publishable assets...');
+  const base = path.join(config.sourceDir, 'assets');
+  let shipped = 0;
+  let withheld = 0;
+
+  async function walk(dir, rel) {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const entryRel = rel ? `${rel}/${entry.name}` : entry.name;
+      const srcPath = path.join(dir, entry.name);
+      if (shouldExclude(srcPath)) continue;
+      if (entry.isDirectory()) {
+        await walk(srcPath, entryRel);
+        continue;
+      }
+      if (!assetShips(entryRel)) {
+        withheld += 1;
+        continue;
+      }
+      const destPath = path.join(config.distDir, 'assets', entryRel);
+      await fs.mkdir(path.dirname(destPath), { recursive: true });
+      await fs.copyFile(srcPath, destPath);
+      shipped += 1;
+    }
+  }
+
+  try {
+    await walk(base, '');
+    log.success(`Copied ${shipped} assets, withheld ${withheld} not named in scripts/asset-policy.js`);
+  } catch (error) {
+    log.warn(`Could not copy assets: ${error.message}`);
+  }
+}
+
+/**
  * Copy specific files matching patterns
  */
 async function copyFiles() {
@@ -134,11 +173,11 @@ async function copyFiles() {
     }
   }
 
-  // Copy directories
+  // Copy directories. assets/ is deliberately absent: it goes through the
+  // publish policy in scripts/asset-policy.js instead.
   const dirsToCopy = [
     { src: 'css', dest: 'dist/css' },
     { src: 'js', dest: 'dist/js' },
-    { src: 'assets', dest: 'dist/assets' },
     { src: 'pages', dest: 'dist/pages' },
     // Markdown companions mirror the dist layout (index.md, pages/about.md, ...)
     // so scripts/server.js can negotiate Accept: text/markdown per page.
@@ -154,6 +193,8 @@ async function copyFiles() {
       log.warn(`Could not copy ${src}: ${error.message}`);
     }
   }
+
+  await copyAssets();
 }
 
 /**

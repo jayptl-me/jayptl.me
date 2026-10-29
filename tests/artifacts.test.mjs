@@ -11,7 +11,7 @@ const dist = path.join(root, 'dist');
 
 const distExists = fs.existsSync(dist);
 if (!distExists) {
-  console.error('dist/ not found — run `npm run build` (or `node scripts/build.js`) before tests.');
+  console.error('dist/ not found — run `bun run build` (or `node scripts/build.js`) before tests.');
 }
 assert.ok(distExists, 'dist/ must exist (run the build first)');
 
@@ -307,18 +307,21 @@ test('clean markdown companions exist in dist for direct static access', () => {
 
 /* --------------------------- resume downloads --------------------------- */
 
-test('every /resumes/<track>.pdf linked from the resume page ships and routes on the static host', () => {
+test('every resume PDF linked from the resume page resolves to a real file in dist', () => {
   const html = read('resume/index.html');
-  const tracks = [...new Set([...html.matchAll(/href="\/resumes\/([a-z0-9-]+)\.pdf"/g)].map(m => m[1]))];
-  assert.ok(tracks.length >= 4, `resume page links the tailored PDFs (found ${tracks.length})`);
+  const links = [...new Map([...html.matchAll(/href="(\/(?:assets\/)?resumes\/([a-z0-9-]+)\.pdf)"/g)]
+    .map((m) => [m[2], m[1]])).entries()];
+  assert.ok(links.length >= 4, `resume page links the tailored PDFs (found ${links.length})`);
   const renderYaml = fs.readFileSync(path.join(root, 'render.yaml'), 'utf8');
-  for (const t of tracks) {
-    const pdf = path.join(dist, 'assets/resumes', `${t}.pdf`);
-    assert.ok(fs.existsSync(pdf), `dist/assets/resumes/${t}.pdf exists`);
-    assert.equal(fs.readFileSync(pdf).subarray(0, 5).toString('latin1'), '%PDF-', `${t}.pdf is a PDF`);
+  for (const [t, href] of links) {
+    // The link must resolve as served. A rewrite declared in render.yaml is not
+    // proof: the live host ignored every render.yaml rule on 2026-10-29.
+    const file = path.join(dist, href.replace(/^\//, ''));
+    assert.ok(fs.existsSync(file), `${href} as linked resolves in dist`);
+    assert.equal(fs.readFileSync(file).subarray(0, 5).toString('latin1'), '%PDF-', `${t}.pdf is a PDF`);
     assert.ok(
       renderYaml.includes(`source: /resumes/${t}.pdf`) && renderYaml.includes(`destination: /assets/resumes/${t}.pdf`),
-      `render.yaml rewrites /resumes/${t}.pdf to /assets/resumes/${t}.pdf`,
+      `render.yaml still rewrites the legacy /resumes/${t}.pdf form`,
     );
   }
 });

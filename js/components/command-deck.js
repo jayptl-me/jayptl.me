@@ -197,9 +197,9 @@
             out.push({
                 group: 'Resume PDFs',
                 label: 'Resume, ' + RESUME_LABELS[track],
-                hint: '/resumes/' + track + '.pdf',
+                hint: '/assets/resumes/' + track + '.pdf',
                 keys: 'download cv pdf ' + track,
-                download: '/resumes/' + track + '.pdf',
+                download: '/assets/resumes/' + track + '.pdf',
                 filename: 'Jay-Patel-Resume-' + track + '.pdf'
             });
         });

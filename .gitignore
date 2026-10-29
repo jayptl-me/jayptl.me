@@ -149,5 +149,8 @@ vite.config.ts.timestamp-*
 # Local agent memory (never committed, see AGENTS.md "Local agent memory")
 .agents/memory/
 
+# Private design-reference material (never public, see .agents/rules/custom-code-policy.md item 4)
+references/
+
 # The API settings template is meant to be committed (no secrets in it).
 !services/api/.env.example

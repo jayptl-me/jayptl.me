@@ -28,7 +28,7 @@ const FAIL = { requests: 80, cssBytes: 550000, jsBytes: 400000, fontsBytes: 3000
 
 // Set this to true in the same commit that deletes the duplicate font files,
 // then a duplicate byte-for-byte copy fails the gate instead of warning.
-const FONT_DUPLICATES_FAIL = false;
+const FONT_DUPLICATES_FAIL = true;
 
 function read(rel) {
   return fs.readFileSync(path.join(dist, rel), 'utf8');

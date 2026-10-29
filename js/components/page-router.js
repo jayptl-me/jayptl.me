@@ -144,13 +144,58 @@
         });
     }
 
+    var warmed = new Set();
+
+    function prefetchAssets(doc) {
+        var connection = null;
+        try {
+            connection = (navigator.connection || navigator.mozConnection ||
+                navigator.webkitConnection) || null;
+        } catch (e) { connection = null; }
+        if (connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ''))) return;
+
+        var assets = [];
+        try {
+            Array.from(doc.querySelectorAll('link[rel="stylesheet"][href^="/css/"]')).forEach(function (link) {
+                assets.push({ href: link.getAttribute('href'), as: 'style' });
+            });
+            Array.from(doc.querySelectorAll('script[defer][src^="/js/"]')).forEach(function (script) {
+                assets.push({ href: script.getAttribute('src'), as: 'script' });
+            });
+        } catch (e) { return; }
+
+        var added = 0;
+        assets.forEach(function (asset) {
+            var href = asset.href;
+            if (!href || warmed.has(href) || added >= 12) return;
+            if (document.querySelector('link[rel="stylesheet"][href="' + href + '"]') ||
+                document.querySelector('script[src="' + href + '"]')) {
+                warmed.add(href);
+                return;
+            }
+            var link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.as = asset.as;
+            link.href = href;
+            warmed.add(href);
+            added += 1;
+            try {
+                (document.head || document.documentElement).appendChild(link);
+            } catch (e) { /* noop */ }
+        });
+    }
+
     function prefetch(url) {
         var key = normalize(url);
-        if (!key) return;
-        if (cache.has(key)) return;
-        try {
-            fetchDocument(key).catch(function () { /* fire and forget */ });
-        } catch (e) { /* noop */ }
+        if (!key) return Promise.resolve();
+        var cached = cache.get(key);
+        if (cached && (Date.now() - cached.at) < CACHE_TTL) {
+            prefetchAssets(parseDocument(cached.text));
+            return Promise.resolve();
+        }
+        return fetchDocument(key).then(function (text) {
+            prefetchAssets(parseDocument(text));
+        }).catch(function () { /* fire and forget */ });
     }
 
     function parseDocument(text) {
@@ -314,27 +359,28 @@
                 if (src && !have[src] && missing.indexOf(src) === -1) missing.push(src);
             });
         } catch (e) { missing = []; }
-        var chain = Promise.resolve();
-        missing.forEach(function (src) {
-            chain = chain.then(function () {
-                return new Promise(function (resolve) {
-                    var script = document.createElement('script');
-                    script.src = src;
-                    script.async = false;
-                    var settled = false;
-                    function settle() { if (!settled) { settled = true; resolve(); } }
-                    script.onload = settle;
-                    script.onerror = settle;
-                    setTimeout(settle, ASSET_TIMEOUT);
-                    try {
-                        document.body.appendChild(script);
-                    } catch (e) {
-                        settle();
-                    }
-                });
+        if (!missing.length) return Promise.resolve();
+        var pending = missing.map(function (src) {
+            return new Promise(function (resolve) {
+                var script = document.createElement('script');
+                script.src = src;
+                // Dynamic scripts are force-async by default. async=false puts
+                // this one in the ordered list, so all of them fetch together
+                // and execute in insertion order.
+                script.async = false;
+                var settled = false;
+                function settle() { if (!settled) { settled = true; resolve(); } }
+                script.onload = settle;
+                script.onerror = settle;
+                setTimeout(settle, ASSET_TIMEOUT);
+                try {
+                    document.body.appendChild(script);
+                } catch (e) {
+                    settle();
+                }
             });
         });
-        return chain;
+        return Promise.all(pending);
     }
 
     function swapBody(doc, visible) {
@@ -737,6 +783,7 @@
     window.PageRouter = {
         handles: handles,
         navigate: navigate,
-        prefetch: prefetch
+        prefetch: prefetch,
+        loadMissingScripts: loadMissingScripts
     };
 })();

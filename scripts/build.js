@@ -14,6 +14,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { META_CONTENT_SECURITY_POLICY, SECURITY_HEADERS } = require('./security-headers');
+const { bundleCssInDist } = require('./css-bundle');
 
 // ANSI color codes for terminal output
 const colors = {
@@ -536,6 +537,11 @@ async function build() {
 
     // Copy error pages to root for direct access
     await copyErrorPages();
+
+    // Flatten each linked CSS entry's imports so the browser requests one
+    // stylesheet per entry instead of a request per partial.
+    const cssBundles = bundleCssInDist({ distDir: config.distDir, root: process.cwd() });
+    log.success(`Bundled ${cssBundles.entries} CSS entries (${cssBundles.included} imports inlined)`);
 
     // Stamp the shared CSP into every page
     await applyCspMeta();

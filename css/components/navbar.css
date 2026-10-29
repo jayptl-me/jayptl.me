@@ -158,7 +158,9 @@ body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
 .nav-brand-name {
     font-family: var(--font-audiowide, var(--font-sans));
     font-size: 13.5px;
-    font-weight: 600;
+    /* Audiowide ships one weight, so 600 here was browser-synthesised bold on
+       a display face. 400 is the drawn design. */
+    font-weight: 400;
     letter-spacing: 0.02em;
     white-space: nowrap;
 }

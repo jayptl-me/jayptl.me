@@ -49,7 +49,7 @@ async function checkDistDirectory() {
     log.success('Found dist directory');
     return true;
   } catch {
-    log.error('dist directory not found. Run "npm run deploy:prepare" first.');
+    log.error('dist directory not found. Run "bun run deploy:prepare" first.');
     return false;
   }
 }
@@ -97,7 +97,7 @@ function deployToNetlify() {
     try {
       execSync('netlify --version', { stdio: 'ignore' });
     } catch {
-      log.error('Netlify CLI not installed. Run: npm install -g netlify-cli');
+      log.error('Netlify CLI not installed. Run: bun add -g netlify-cli');
       throw new Error('Netlify CLI not found');
     }
     
@@ -124,7 +124,7 @@ function deployToVercel() {
     try {
       execSync('vercel --version', { stdio: 'ignore' });
     } catch {
-      log.error('Vercel CLI not installed. Run: npm install -g vercel');
+      log.error('Vercel CLI not installed. Run: bun add -g vercel');
       throw new Error('Vercel CLI not found');
     }
     
@@ -179,14 +179,14 @@ function showManualInstructions() {
   console.log(`${colors.bright}Deployment Options:${colors.reset}\n`);
   
   console.log(`${colors.cyan}1. GitHub Pages:${colors.reset}`);
-  console.log(`   DEPLOY_TYPE=github npm run deploy\n`);
+  console.log(`   DEPLOY_TYPE=github bun run deploy\n`);
   
   console.log(`${colors.cyan}2. Netlify:${colors.reset}`);
-  console.log(`   DEPLOY_TYPE=netlify npm run deploy`);
+  console.log(`   DEPLOY_TYPE=netlify bun run deploy`);
   console.log(`   Or drag and drop the dist/ folder to: https://app.netlify.com/drop\n`);
   
   console.log(`${colors.cyan}3. Vercel:${colors.reset}`);
-  console.log(`   DEPLOY_TYPE=vercel npm run deploy`);
+  console.log(`   DEPLOY_TYPE=vercel bun run deploy`);
   console.log(`   Or run: vercel dist --prod\n`);
   
   console.log(`${colors.cyan}4. FTP/SFTP:${colors.reset}`);
@@ -197,7 +197,7 @@ function showManualInstructions() {
   console.log(`   export DEPLOY_SERVER=your-server.com`);
   console.log(`   export DEPLOY_USER=your-username`);
   console.log(`   export DEPLOY_PATH=/path/to/webroot`);
-  console.log(`   Then run: DEPLOY_TYPE=rsync npm run deploy\n`);
+  console.log(`   Then run: DEPLOY_TYPE=rsync bun run deploy\n`);
 }
 
 /**

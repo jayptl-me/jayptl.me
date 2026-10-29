@@ -586,7 +586,7 @@ async function validate() {
     try {
       await fs.access(config.distDir);
     } catch {
-      log.error('dist directory not found. Run "npm run build" first.');
+      log.error('dist directory not found. Run "bun run build" first.');
       process.exit(1);
     }
     

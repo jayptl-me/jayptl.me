@@ -23,7 +23,7 @@ This site is built to be consumable by AI agents and crawlers without a browser:
 curl -si -H "Accept: text/markdown" https://jayptl.me/          # markdown + Vary: Accept
 curl -s https://jayptl.me/api/health                              # {"status":"ok",...}
 curl -s -H "Accept: application/json" https://jayptl.me/api/nope  # JSON 404 with hint
-npm test                                                          # build + 54 behavior tests
+bun run test                                                      # clean build + the behavior suite
 ```
 
 ### Cloudflare / WAF notes (dashboard, not repo)

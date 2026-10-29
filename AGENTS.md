@@ -71,3 +71,99 @@ The portfolio uses two fundamentally distinct design languages across light and 
 - Dev server habitually runs on port 8000 (`scripts/preview.js` serves `dist/` with directory `index.html` resolution).
 - `dist/` is build output; edit sources in `pages/`, `css/`, `js/`, `markdown/`.
 - **Clean-build deployment rule (no stale files, ever)**: `scripts/build.js` wipes `dist/` at startup, so every invocation path builds from scratch. `scripts/validate.js` fails the deploy when any source is newer than `dist/build-info.json`. Never ship a `dist/` that was built before the latest source change, rebuild with `rm -rf dist && node scripts/build.js`.
+
+## Books
+
+The books live one level up in `pm/`, outside this repo, so they are never pushed with the site.
+
+- Docs index (this surface): `docs/icons-system.md`, `docs/motion-zen.md`, `docs/taste.md`.
+- Owner decisions follow `~/.agents/DECISION-PROTOCOL.md`. Open decisions: `../pm/DECISIONS.md`.
+- Status snapshot: `../pm/STATUS.md`
+- Decisions register: `../pm/DECISIONS.md`
+- Backlog: `../pm/TODO.md`
+- Performance plan, the single home for measured perf numbers: `../pm/PERF-PLAN.md`
+- A decision that is not in the decisions register did not happen.
+- Books are a working set, not an archive. Update the file that already exists; do not add a second report for the same item.
+- Design reference names NEVER go in a tracked file. They live in `.agents/memory/facts/motion-reference-sites.md` (gitignored); tracked docs say Ref-N. See `.agents/rules/custom-code-policy.md` item 4.
+
+## Always
+
+- No emojis in code, commits, logs, docs, task titles or product copy.
+- Every claim carries a fresh `file:line` or a primary source. A sub-agent summary is a lead until you read the source yourself.
+- Judge a gate by the real exit line in its log, never a wrapper's return code. An unrun gate is reported NOT RUN, never green.
+- Separate PROVED from ASSUMED, and say what was not done. Never invent a test result: report the command and its output.
+- Every bug fix starts with a failing test. Every new guard gets a negative control in the same turn.
+- Never fabricate data. If a fact is unverified, mark it unverified and cite where it came from.
+- Research before build. Write the brief and cite the sources, then write the code.
+- Point to the canonical example in this repo instead of writing a parallel implementation. One implementation, one type system, one place to change.
+- Keep the fix minimal. Do not reformat, restructure or add infrastructure outside what was asked.
+- If the request is a question, answer it. Do not edit files unless you were asked to change them.
+- Do not leave TODO, FIXME or placeholder implementations. If you cannot finish part of the task, stop and report exactly what is missing and why.
+- Update the books in the same pass as the change, and end every session with a Next line in the resume page so the next agent starts where you stopped, with no duplicate work.
+- Sub-agents: no concurrency cap - `~/.agents/OWNER.md` rule 27 (Jay, 2026-10-22). Brief each one exactly: objective, owned files, output file, stop rule.
+
+## Ask first
+
+- Money, pricing, paid services, legal or retention policy.
+- Any write to production: deploy, migration or promotion.
+- Deleting data, or anything irreversible.
+- New dependencies, infrastructure, tools or services. Bring options, not a decision.
+- Taste: look and feel, naming, product copy. Rack the options in a picker, paired with the same options as plain text.
+- Scope beyond the finish line of the current lane.
+- Outward actions under Jay's name: messages, posts, tickets, PRs, commits and pushes. Agent-lane commits are allowed. Commits on dj-features, testing, staging or main and every push need Jay's ask.
+
+## Never
+
+- Never run a build, test, lint, typecheck, install, codegen or formatter on the Mac. Not a quick check, not a one-liner.
+- Never deploy or promote to production without Jay's explicit approval.
+- Never commit on dj-features, testing, staging or main, and never push, without Jay's ask. Never pair a commit state with a request or a reminder.
+- Never suppress a finding. No `ignore`, `eslint-disable`, `oxlint-ignore`, `@ts-ignore`, skipped or focused test, or downgraded rule. Fix the code.
+- Never leave `target/`, `node_modules/`, `.next/`, `.dart_tool/`, `build/` or `Pods/` in this repo. If one appears, a build ran here. Report it, do not quietly clean it up.
+- Never revert another session's work, and never put secrets, keys or tokens in this file, in code, or in a commit.
+
+## Definition of done
+
+1. The gates above ran and passed on the box or in CI. A gate that did not run is NOT RUN, and the work is not done.
+2. Zero new lint, type or analyzer findings in the files you touched. Pre-existing debt in those files is fixed too.
+3. No suppressions added, no placeholders left, no unrelated files changed.
+4. Books updated in the same pass, with a Next line for the next agent.
+5. The report states what you changed, what you deliberately did not change, and what you could not verify, and ends with `Pending on you:` and `Next for me:`.
+
+## Gates
+
+Run these on the build box or in CI. Never on the Mac. `.github/workflows/ci.yml` runs the same list.
+
+- Install: `bun install --frozen-lockfile`
+- Test: `bun run test` (wipes `dist/`, builds, then `node --test tests/*.test.mjs services/api/test/*.test.mjs`)
+- Optimize: `bun run optimize`
+- Validate: `bun run validate` (fails when any source is newer than `dist/build-info.json`)
+- Size budget: `node scripts/perf-budget.js` (request and byte ceilings, zero `@import` in a linked
+  stylesheet; the warning threshold is the same one CI reports)
+
+## Session start
+
+1. Read `~/.agents/OWNER.md`. It wins over this file.
+2. Read this file.
+3. Read the books below, then the code itself. Docs can be incomplete, so the code is the last and authoritative word.
+4. Check `git status` before editing. Another session may be working in this tree.
+
+## What this is
+
+A hand-written static portfolio site: vanilla HTML, CSS and JS, no frameworks, no runtime
+dependencies, no third-party code in the product or the build. `scripts/build.js` copies and
+flattens sources into `dist/`, `scripts/optimize.js` minifies, and the result hosts as a Render
+static site behind Cloudflare. `services/api/` is a separate zero-dependency Node service.
+
+## The compute law
+
+The Mac never computes. The Mac is for reading, editing, writing files and git. If a task needs a build, that is a blocker to report, not a reason to run it here. Detail: `~/.agents/OWNER.md` rule 23.
+
+Compute: the Mac never builds, tests, lints or typechecks (OWNER.md rule 23). This repo has no named compute helper yet - when it gains one, put the real preflight, sync and remote-run commands here instead of a generic ssh pointer.
+
+## UI acceptance law
+
+A green build proves function only, never owner sign-off on visuals. Rack the visual direction before components ship: post-ship rejection costs about ten times the retrofit, and owners often keep the palette family while rejecting the type and layout system carrying it.
+
+## Toolchain
+
+Bun is the canonical toolchain for JavaScript and TypeScript. Do not use npm, yarn or pnpm unless a verified external constraint requires it.

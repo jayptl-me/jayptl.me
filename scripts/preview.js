@@ -130,7 +130,7 @@ server.listen(PORT, HOST, () => {
 server.on('error', (error) => {
   if (error.code === 'EADDRINUSE') {
     console.error(`\n${colors.red}Error: Port ${PORT} is already in use${colors.reset}`);
-    console.log(`Try a different port: PORT=8080 npm run preview\n`);
+    console.log(`Try a different port: PORT=8080 bun run preview\n`);
   } else {
     console.error(`\n${colors.red}Server error: ${error.message}${colors.reset}\n`);
   }

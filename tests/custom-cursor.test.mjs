@@ -12,7 +12,7 @@ const dist = path.join(root, 'dist');
 
 const distExists = fs.existsSync(dist);
 if (!distExists) {
-  console.error('dist/ not found — run `npm run build` (or `node scripts/build.js`) before tests.');
+  console.error('dist/ not found — run `bun run build` (or `node scripts/build.js`) before tests.');
 }
 assert.ok(distExists, 'dist/ must exist (run the build first)');
 

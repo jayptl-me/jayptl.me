@@ -14,7 +14,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 
 if (!fs.existsSync(dist)) {
-  console.error('dist/ not found — run `npm run build` (or `node scripts/build.js`) before tests.');
+  console.error('dist/ not found — run `bun run build` (or `node scripts/build.js`) before tests.');
 }
 assert.ok(fs.existsSync(dist), 'dist/ must exist (run the build first)');
 

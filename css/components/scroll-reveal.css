@@ -568,7 +568,9 @@ html[data-theme="dark"] .text-reveal-container::after {
   -webkit-backdrop-filter: none;
   font-family: var(--font-mono);
   font-size: 0.625rem; /* 10px */
-  font-weight: 500;
+  /* plex-mono ships static 400 and 600 only, so a 500 ask silently rendered
+     the 400 face. This is that face, named. */
+  font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--hud-label, var(--theme-text-secondary));

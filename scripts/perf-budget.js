@@ -5,10 +5,11 @@
  * Custom performance budget gate.
  *
  * Runs after build + optimize. Counts what a browser must request for each
- * key page, checks the CSS entries are flat, and fails on hard limits.
- * No third-party code.
+ * key page, checks the CSS entries are flat, reports duplicated font files,
+ * and fails on hard limits. No third-party code.
  */
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -24,6 +25,10 @@ const pages = [
 
 const WARN = { requests: 65, cssBytes: 450000, jsBytes: 300000 };
 const FAIL = { requests: 80, cssBytes: 550000, jsBytes: 400000, fontsBytes: 300000 };
+
+// Set this to true in the same commit that deletes the duplicate font files,
+// then a duplicate byte-for-byte copy fails the gate instead of warning.
+const FONT_DUPLICATES_FAIL = false;
 
 function read(rel) {
   return fs.readFileSync(path.join(dist, rel), 'utf8');
@@ -75,6 +80,38 @@ function walkFiles(dir, out) {
     else out.push(full);
   }
   return out;
+}
+
+function sha256(file) {
+  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+}
+
+function duplicateFontGroups() {
+  const dir = path.join(dist, 'assets', 'fonts');
+  if (!fs.existsSync(dir)) return [];
+  const byHash = new Map();
+  // Font files only; other assets are not hashed by this check yet.
+  const files = walkFiles(dir, []).filter((file) => /\.(woff2?|ttf|otf)$/i.test(file));
+  for (const file of files) {
+    const hash = sha256(file);
+    const group = byHash.get(hash);
+    if (group) group.push(file);
+    else byHash.set(hash, [file]);
+  }
+  return Array.from(byHash.values()).filter((group) => group.length > 1);
+}
+
+function checkFontDuplicates() {
+  const groups = duplicateFontGroups();
+  if (!groups.length) return;
+  const wasted = groups.reduce(
+    (sum, group) => sum + (group.length - 1) * fs.statSync(group[0]).size, 0);
+  const copies = groups
+    .map((group) => group.map((file) => path.relative(dist, file)).join(' = '))
+    .join(', ');
+  const message = `${groups.length} duplicate font group(s), ${wasted} wasted bytes: ${copies}`;
+  if (FONT_DUPLICATES_FAIL) fail(message);
+  else warn(message);
 }
 
 let failed = false;
@@ -132,6 +169,8 @@ for (const page of pages) {
 
 const apple = walkFiles(dist, []).filter((file) => path.basename(file).startsWith('._'));
 if (apple.length) fail(`${apple.length} AppleDouble files in dist`);
+
+checkFontDuplicates();
 
 if (failed) {
   console.log('\nPERF_BUDGET_FAIL');

@@ -17,7 +17,9 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/assets/fonts/space-grotesk-500.woff2') format('woff2');
+  /* One variable file serves every declared weight. The 500, 600 and 700
+     copies were byte-identical downloads of this same file. */
+  src: url('/assets/fonts/space-grotesk-400.woff2') format('woff2');
 }
 
 @font-face {
@@ -25,7 +27,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/assets/fonts/space-grotesk-600.woff2') format('woff2');
+  src: url('/assets/fonts/space-grotesk-400.woff2') format('woff2');
 }
 
 @font-face {
@@ -33,7 +35,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/assets/fonts/space-grotesk-700.woff2') format('woff2');
+  src: url('/assets/fonts/space-grotesk-400.woff2') format('woff2');
 }
 
 @font-face {
@@ -49,7 +51,8 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/assets/fonts/plex-sans-600.woff2') format('woff2');
+  /* Same file as the 400 block: plex-sans-600.woff2 was a duplicate. */
+  src: url('/assets/fonts/plex-sans-400.woff2') format('woff2');
 }
 
 @font-face {

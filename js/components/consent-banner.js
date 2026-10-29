@@ -1,31 +1,16 @@
 
-"use strict";
 
 /**
  * Consent Banner Component
- * GDPR/Privacy complia        const currentStatus = this.consentData && this.consentData.analytics !== undefined 
-            ? (this.consentData.analytics ? 'Enabled' : 'Disabled')
-            : 'Not set';
-
-        const message = `${ConsentBanner.CONSENT_MESSAGES.currentSettingsTitle}
-        
-Analytics Status: ${currentStatus}
-
-What would you like to do?
-
-${ConsentBanner.CONSENT_MESSAGES.enableAnalytics}
-${ConsentBanner.CONSENT_MESSAGES.disableAnalytics}
-${ConsentBanner.CONSENT_MESSAGES.resetBanner}
-
-${ConsentBanner.CONSENT_MESSAGES.analyticsDescription}`;
-
-        // Create a custom dialog
-        this.createSettingsDialog();ent for Google Analytics
+ * GDPR/Privacy compliance for Google Analytics
  * Integrates with theme system and manages user preferences
- * 
+ *
  * @file js/components/consent-banner.js
  * @author Jay Patel
  */
+
+(function () {
+'use strict';
 
 class ConsentBanner {
     // Configuration object for better maintainability
@@ -757,3 +742,5 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ConsentBanner;
 }
+
+})();

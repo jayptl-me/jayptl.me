@@ -1,4 +1,3 @@
-"use strict";
 
 /**
  * Small page behaviors that used to live in inline scripts and handlers.
@@ -15,6 +14,7 @@
  */
 
 (function () {
+    'use strict';
     if (window.__pageActionsBound) return;
     window.__pageActionsBound = true;
 

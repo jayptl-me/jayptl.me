@@ -7,6 +7,9 @@
  * @author Jay Patel
  */
 
+(function () {
+'use strict';
+
 class CustomCursor {
     constructor() {
         this.cursor = null;
@@ -473,3 +476,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+
+})();

@@ -6,6 +6,9 @@
  * @author Jay Patel
  */
 
+(function () {
+'use strict';
+
 class ThemeToggle {
     constructor() {
         // Bind handlers
@@ -188,3 +191,5 @@ class ThemeToggle {
 document.addEventListener('DOMContentLoaded', () => {
     window.themeToggleComponent = new ThemeToggle();
 });
+
+})();

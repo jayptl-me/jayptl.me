@@ -1,5 +1,4 @@
 
-"use strict";
 
 /**
  * Google Analytics Integration with Consent Management
@@ -7,6 +6,9 @@
  * @file js/components/analytics.js
  * @author Jay Patel
  */
+
+(function () {
+'use strict';
 
 
 /**
@@ -304,3 +306,5 @@ window.trackEvent = (eventName, parameters = {}) => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = AnalyticsManager;
 }
+
+})();

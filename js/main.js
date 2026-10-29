@@ -6,6 +6,9 @@
  * @author Jay Patel
  */
 
+(function () {
+'use strict';
+
 // Enhanced theme system that actively detects and responds to system preference changes
 class ThemeManager {
     constructor() {
@@ -310,3 +313,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Handle page visibility changes
 // Keep minimal visibility handlers if needed later
+
+})();

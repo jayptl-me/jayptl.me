@@ -94,6 +94,10 @@ Run these on the build box or in CI. Never on the Mac. `.github/workflows/ci.yml
 - Validate: `bun run validate` (fails when any source is newer than `dist/build-info.json`)
 - Size budget: `node scripts/perf-budget.js` (request and byte ceilings, zero `@import` in a linked
   stylesheet; the warning threshold is the same one CI reports)
+- Deploy candidate, and this is the one that matters: `bun run test:deploy`. Render's build command
+  is `bun install --frozen-lockfile && bun run test:deploy`, which also runs `optimize` and
+  `validate`. Gating `bun run test` alone certified a pipeline the host does not run, twice, while
+  every deploy failed. Judge the command the host runs.
 
 ## What this is
 

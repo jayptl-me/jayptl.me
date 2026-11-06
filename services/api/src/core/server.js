@@ -1,16 +1,17 @@
 'use strict';
 
 /**
- * Entry point: wire real Redis, Google and Steam into the app and listen.
- *   node src/server.js
+ * Entry point: wire the real store, calendar and game platform clients
+ * into the app and listen.
+ *   node src/core/server.js
  */
 
 const http = require('node:http');
 const { loadConfig, features } = require('./config');
-const { createRedis } = require('./redis');
+const { createRedis } = require('../clients/redis');
+const { createGoogle } = require('../clients/google');
+const { createSteam } = require('../clients/steam');
 const { createStore } = require('./store');
-const { createGoogle } = require('./google');
-const { createSteam } = require('./steam');
 const { createApp } = require('./app');
 
 function log(...args) {
@@ -30,7 +31,7 @@ const unavailable = new Proxy({}, {
 
 const app = createApp({
   config,
-  store: redis ? createStore(redis) : unavailable,
+  store: redis ? createStore(redis, { keepDays: config.booking.keepDays }) : unavailable,
   google: on.booking ? createGoogle(config.google) : unavailable,
   steam: on.steam ? createSteam(config.steam) : unavailable,
   log

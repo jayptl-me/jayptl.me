@@ -122,7 +122,7 @@ function parseUrl(url) {
   };
 }
 
-function createRedis(url, { log = () => {} } = {}) {
+function createRedis(url, { log = () => {}, timeoutMs = COMMAND_TIMEOUT_MS } = {}) {
   const opts = parseUrl(url);
   let socket = null;
   let ready = false;
@@ -166,10 +166,16 @@ function createRedis(url, { log = () => {} } = {}) {
     }
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
+        // The caller is told this failed, so it must never be sent later:
+        // take it out of the queue that a reconnect would replay.
+        const queued = waiting.findIndex((w) => w.entry === entry);
+        if (queued !== -1) waiting.splice(queued, 1);
         reject(new RedisError(`Redis timeout on ${args[0]}`));
-        // A lost reply desynchronizes the stream: start over cleanly.
-        if (socket) socket.destroy();
-      }, COMMAND_TIMEOUT_MS);
+        // A lost reply desynchronizes the stream: start over cleanly. A
+        // command that was only queued was never sent, so the connection
+        // (or a reconnect still in progress) is left alone.
+        if (queued === -1 && socket) socket.destroy();
+      }, timeoutMs);
       const entry = { resolve, reject, timer };
       const bytes = encode(args);
       if (ready || raw) {

@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Page views, uptime, booking and now playing for jayptl.me. Zero dependencies.",
   "private": true,
-  "main": "src/server.js",
+  "main": "src/core/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "test": "bun test test/",
+    "start": "node src/core/server.js",
+    "test": "node --test 'test/**/*.test.mjs'",
     "google-auth": "node scripts/google-auth.mjs"
   },
   "engines": {

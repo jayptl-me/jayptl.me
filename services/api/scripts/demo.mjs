@@ -15,14 +15,14 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { fakeRedis, fakeGoogle } from '../test/fakes.mjs';
+import { fakeRedis, fakeGoogle } from '../test/fakes/index.mjs';
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '../../..');
-const { createApp } = require('../src/app.js');
-const { createStore } = require('../src/store.js');
-const { loadConfig } = require('../src/config.js');
+const { createApp } = require('../src/core/app.js');
+const { createStore } = require('../src/core/store.js');
+const { loadConfig } = require('../src/core/config.js');
 
 const API_PORT = 8787;
 const API = `http://127.0.0.1:${API_PORT}`;

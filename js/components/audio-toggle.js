@@ -36,12 +36,6 @@
         return on;
     }
 
-    function setMotifs(on) {
-        try {
-            if (window.SoundManager) return window.SoundManager.setMotifsEnabled(on);
-        } catch { /* noop */ }
-        return on;
-    }
 
     function setLevel(level) {
         try {
@@ -80,17 +74,13 @@
             '<button type="button" class="audio-switch" id="audioBedSwitch" role="switch" aria-checked="false" aria-labelledby="audioBedLabel">Off</button>' +
             '</div>' +
             '<div class="audio-row">' +
-            '<span id="audioMotifLabel">Motifs</span>' +
-            '<button type="button" class="audio-switch" id="audioMotifSwitch" role="switch" aria-checked="false" aria-labelledby="audioMotifLabel">Off</button>' +
-            '</div>' +
-            '<div class="audio-row">' +
             '<span id="audioLevelLabel">Volume</span>' +
             '<div class="audio-seg" role="group" aria-labelledby="audioLevelLabel">' +
             '<button type="button" class="audio-seg-btn" id="audioLevelLow">Low</button>' +
             '<button type="button" class="audio-seg-btn" id="audioLevelMed">Med</button>' +
             '</div>' +
             '</div>' +
-            '<p class="audio-hint">Serene pad, synthesized live. No files, no tracking.</p>';
+            '<p class="audio-hint">Quiet felt taps, made in the page. No files, no tracking.</p>';
         return panel;
     }
 
@@ -105,7 +95,6 @@
         try {
             var master = panel.querySelector('#audioMasterSwitch');
             var bed = panel.querySelector('#audioBedSwitch');
-            var motif = panel.querySelector('#audioMotifSwitch');
             var low = panel.querySelector('#audioLevelLow');
             var med = panel.querySelector('#audioLevelMed');
             if (master) {
@@ -118,12 +107,6 @@
                 bed.textContent = p.bed ? 'On' : 'Off';
                 bed.classList.toggle('is-on', p.bed);
                 bed.disabled = !p.master;
-            }
-            if (motif) {
-                motif.setAttribute('aria-checked', p.motifs ? 'true' : 'false');
-                motif.textContent = p.motifs ? 'On' : 'Off';
-                motif.classList.toggle('is-on', p.motifs);
-                motif.disabled = !p.master;
             }
             if (low && med) {
                 low.classList.toggle('is-on', p.level !== 'med');
@@ -179,8 +162,8 @@
             e.stopPropagation();
             // Plain click toggles master for speed. Long panel stays
             // available through the options below, not hidden here.
-            // Single click on the icon toggles the panel so bed and
-            // motifs stay discoverable. Master flips inside the panel.
+            // Single click on the icon toggles the panel so the bed and
+            // volume stay discoverable. Master flips inside the panel.
             togglePanel();
         });
 
@@ -195,8 +178,6 @@
                 }
             } else if (t.id === 'audioBedSwitch') {
                 setBed(!prefs().bed);
-            } else if (t.id === 'audioMotifSwitch') {
-                setMotifs(!prefs().motifs);
             } else if (t.id === 'audioLevelLow') {
                 setLevel('low');
             } else if (t.id === 'audioLevelMed') {

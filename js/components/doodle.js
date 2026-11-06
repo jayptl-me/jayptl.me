@@ -51,7 +51,7 @@
                 sticker.style.setProperty('--r', randomRotation());
             });
             // Gentle feedback sound where available
-            if (window.SoundManager) window.SoundManager.playHoverSound();
+            if (window.SoundManager && window.SoundManager.playDropSound) window.SoundManager.playDropSound();
         });
     }
 

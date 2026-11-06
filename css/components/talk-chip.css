@@ -100,7 +100,7 @@
 }
 
 .talk-chip--nav .talk-chip-copy:active {
-  transform: translateY(1px);
+  transform: none;
 }
 
 .talk-chip--nav .talk-chip-copy:focus-visible {

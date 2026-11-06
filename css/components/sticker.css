@@ -25,13 +25,19 @@
 .sticker .sticker-art {
   width: 52px;
   height: 52px;
-  color: var(--hud-label);
+  /* One pen (D-74): sticker art is the same ink as every other doodle. */
+  color: var(--doodle-line);
   display: grid;
   place-items: center;
 }
 .sticker .sticker-art .doodle {
   width: 44px;
   height: 44px;
+}
+/* The tape is a strip, not a square: in a 44px square it fell to a hairline. */
+.sticker .sticker-art .doodle:has(use[href="#d-tape"]) {
+  width: 52px;
+  height: 14px;
 }
 
 /* Handwriting caption, counter-rotated a touch so it sits level */

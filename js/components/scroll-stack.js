@@ -381,8 +381,8 @@
             if (now - this.lastSoundTime < this.soundThrottleMs) return;
             this.lastSoundTime = now;
 
-            if (this.soundManager && typeof this.soundManager.playHoverSound === 'function') {
-                this.soundManager.playHoverSound();
+            if (this.soundManager && typeof this.soundManager.playTickSound === 'function') {
+                this.soundManager.playTickSound();
             }
         }
 

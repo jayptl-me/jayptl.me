@@ -73,14 +73,27 @@
   font-size: 1.25rem;
   line-height: 1.35;
 }
+/* The arrow points back at the intro text the note annotates (D-74): mirrored
+   to point left, its tip lands in the column gap, never on the text. The
+   wide tier has room to set it beside the note's first line; narrower two
+   column screens keep it just above the note; on one column (the RESPONSIVE
+   block below) the text sits above the note, so it points up and left. */
 .doodle-note-arrow {
   position: absolute;
   width: 74px;
   height: 30px;
-  top: -26px;
-  right: -14px;
-  rotate: -8deg;
+  top: -24px;
+  left: -30px;
+  scale: -1 1;
+  rotate: -10deg;
   color: var(--doodle-line);
+}
+@media (min-width: 1440px) {
+  .doodle-note-arrow {
+    top: 6px;
+    left: -88px;
+    rotate: -8deg;
+  }
 }
 
 /* ==========================================================================
@@ -123,7 +136,6 @@
   transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
 }
 .work-card:hover {
-  transform: translateY(-3px);
   box-shadow: var(--theme-surface-shadow);
   border-color: var(--theme-border-hover);
 }
@@ -360,6 +372,11 @@
     max-width: 100%;
     padding-left: var(--space-2);
   }
+  .doodle-note-arrow {
+    top: -26px;
+    left: -6px;
+    rotate: 30deg;
+  }
   .home-section {
     padding: var(--space-16) 0;
   }
@@ -452,7 +469,7 @@
   color: var(--theme-primary);
 }
 .now-rail .metric .ink--burst > .ink-svg {
-  height: 0.7em !important;
+  height: 1em !important;
 }
 .now-rail .metric .ink--burst {
   vertical-align: 0.1em;

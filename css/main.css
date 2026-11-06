@@ -85,6 +85,12 @@
 @import 'components/playful.css';
 @import 'components/skill-lanes.css';
 @import 'components/api-status.css';
+@import 'components/arrive.css';
+@import 'components/way-back.css';
+@import 'components/resume-sheet.css';
+@import 'components/squish.css';
+@import 'components/time-rail.css';
+@import 'components/gel.css';
 
 /* ==========================================================================
    PAGES - Page Specific Styles (Only Home)

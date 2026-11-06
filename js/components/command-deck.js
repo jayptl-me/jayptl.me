@@ -90,11 +90,11 @@
             var sm = window.SoundManager;
             if (!sm) return;
             if (kind === 'select' && typeof sm.playSelectSound === 'function') sm.playSelectSound();
-            if (kind === 'tick' && typeof sm.playHoverSound === 'function') {
+            if (kind === 'tick' && typeof sm.playTickSound === 'function') {
                 var now = Date.now();
                 if (now - lastTick < 160) return;
                 lastTick = now;
-                sm.playHoverSound();
+                sm.playTickSound();
             }
         } catch (e) { /* sound never blocks the deck */ }
     }
@@ -549,6 +549,8 @@
     document.addEventListener('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) {
             e.preventDefault();
+            // Nothing opens behind the preloader's cover (D-118).
+            if (document.documentElement.classList.contains('pl-on')) return;
             toggle();
         }
     });

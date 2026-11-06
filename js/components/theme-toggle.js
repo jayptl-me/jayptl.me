@@ -9,6 +9,47 @@
 (function () {
 'use strict';
 
+/* The saved theme: localStorage first, then the cookie. Same rule as
+   js/theme-detection.js and the home page's head script. */
+function storedTheme() {
+    try {
+        const s = localStorage.getItem('user-theme-preference');
+        if (s === 'dark' || s === 'light') return s;
+    } catch { }
+    try {
+        const cookies = document.cookie.split('; ');
+        const found = cookies.find(c => c.startsWith('preferred-theme='));
+        if (found) {
+            const val = found.split('=')[1];
+            if (val === 'dark' || val === 'light') return val;
+        }
+    } catch { }
+    return null;
+}
+
+/* On the home page the theme and the js flag are set by the one hashed head
+   script (D-81). If that script was blocked (a hash drift, an edge rewrite),
+   set both here, late but harmless: the saved theme still applies and the
+   consent settings toggle, hidden under .no-js, comes back. Every other page
+   loads js/theme-detection.js, so this finds nothing to do there. */
+function applyHeadScriptFallback() {
+    const root = document.documentElement;
+    if (!root.hasAttribute('data-theme')) {
+        let theme = storedTheme();
+        if (!theme) {
+            try { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch { theme = 'light'; }
+        }
+        root.setAttribute('data-theme', theme);
+        root.style.colorScheme = theme;
+    }
+    if (root.classList.contains('no-js')) {
+        root.classList.remove('no-js');
+        root.classList.add('js');
+    }
+}
+
+applyHeadScriptFallback();
+
 class ThemeToggle {
     constructor() {
         // Bind handlers
@@ -74,21 +115,7 @@ class ThemeToggle {
         const self = this;
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-        function getStored() {
-            try {
-                const s = localStorage.getItem('user-theme-preference');
-                if (s === 'dark' || s === 'light') return s;
-            } catch { }
-            try {
-                const cookies = document.cookie.split('; ');
-                const found = cookies.find(c => c.startsWith('preferred-theme='));
-                if (found) {
-                    const val = found.split('=')[1];
-                    if (val === 'dark' || val === 'light') return val;
-                }
-            } catch { }
-            return null;
-        }
+        const getStored = storedTheme;
 
         function setStored(theme) {
             try { localStorage.setItem('user-theme-preference', theme); } catch { }

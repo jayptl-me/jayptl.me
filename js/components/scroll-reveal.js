@@ -842,6 +842,8 @@ class ScrollRevealComponent {
     }
 
     handleKeyboard(e) {
+        // The preloader holds the page (D-81): the stepper must not move under it.
+        if (document.documentElement.classList.contains('pl-on')) return;
         if (this._releasing) {
             e.preventDefault();
             return;
@@ -951,7 +953,7 @@ class ScrollRevealComponent {
             this.revealItem(this.items[this.currentIndex]);
             this.updateStepper();
             // Play step up sound
-            if (window.SoundManager) window.SoundManager.playStepUp();
+            if (window.SoundManager) window.SoundManager.playStepUp(this.currentIndex);
         }
     }
 
@@ -963,7 +965,7 @@ class ScrollRevealComponent {
             this.revealItem(this.items[this.currentIndex]);
             this.updateStepper();
             // Play step down sound
-            if (window.SoundManager) window.SoundManager.playStepDown();
+            if (window.SoundManager) window.SoundManager.playStepDown(this.currentIndex);
         } else {
             // On last item: release to native scroll with pixel dissolve or fade.
             // Guarded: a second input must not start a second release while this one settles.

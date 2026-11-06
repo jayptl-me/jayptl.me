@@ -44,8 +44,7 @@
 
 /* Hero reveal: Audiowide wins over the generic tokens.
    This is applied to the locked hero surface only (see index.html). */
-html .hero-audiowide .char,
-html .hero-audiowide .gradient-text {
+html .hero-audiowide .char {
   font-family: var(--font-audiowide);
   font-weight: 400;
   letter-spacing: 0.01em;

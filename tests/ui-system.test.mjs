@@ -53,7 +53,6 @@ const LEGACY = {
   'css/components/split-text.css': 1,
   'css/components/sticker.css': 1,
   'css/components/theme-toggle.css': 1,
-  'css/critical.css': 1,
   'css/layout/containers.css': 3,
   'css/pages/home.css': 3,
   'css/utilities/cursor.css': 1,

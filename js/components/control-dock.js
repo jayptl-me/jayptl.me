@@ -118,15 +118,7 @@
             syncSound();
         });
         dock.querySelector('.dock-top').addEventListener('click', toTop);
-        dock.querySelectorAll('.dock-btn').forEach(function (b) {
-            b.addEventListener('pointerenter', function () {
-                try {
-                    if (window.SoundManager && typeof window.SoundManager.playHoverSound === 'function') {
-                        window.SoundManager.playHoverSound();
-                    }
-                } catch (e) { /* noop */ }
-            });
-        });
+        // No hover sound: the dock is crossed many times a visit (Jay, D-100).
 
         window.addEventListener('scroll', queue, { passive: true });
         window.addEventListener('resize', queue, { passive: true });

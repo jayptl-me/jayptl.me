@@ -42,10 +42,201 @@
 
     <!-- Fonts are self-hosted; loaded via /css/main.css (fonts-local.css) -->
 
-    <!-- Main Stylesheet (render-blocking in head prevents FOUC on force-reload) -->
-    <link rel="stylesheet" href="/css/main.css">
+    <!-- Main Stylesheet and the critical CSS: linked at the top of the body, right
+         after the preloader overlay, so the overlay paints before they arrive (D-81).
+         main.css still blocks everything after it, so the page never shows unstyled,
+         and the critical block follows it, so the cascade keeps its old order. -->
 
-    <!-- Critical CSS inline for fastest render -->
+
+    <!-- Theme color for light and dark -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+
+    <style>
+        /* Signature preloader (D-80 look, D-81 plumbing; brief: docs/motion-zen.md section 6b).
+           Inline so it paints in the first frame, before main.css arrives. It shows only
+           while the head script holds it (html.pl-on) or lifts it (html.pl-out), so a
+           blocked or failed script never paints it. If the script fails part way, the 10 s
+           step hides the paper and frees the scroll lock (the script's own hard ceiling is
+           8 s, plus the writing and the lift). Light: blue ink on blue paper. Dark: turquoise
+           ink on turquoise-black paper. The exit moves only transform and opacity. While the
+           overlay is in the page, the page-transition veil stays off: home owns its own
+           cover. Printing skips the paper. The last two rules only paint the page background
+           before main.css arrives on a repeat visit; main.css and the critical block win
+           over them once loaded. */
+        .pl{position:fixed;inset:0;z-index:var(--z-preloader,60);display:none;place-items:center;background:#eef5fd;color:#2196f3;animation:pl-fs 1ms 10s forwards}
+        html[data-theme="dark"] .pl{background:#031315;color:#00b8cc}
+        html.pl-on .pl,html.pl-out .pl{display:grid}
+        html.pl-on{overflow:hidden;animation:pl-ov 1ms 10s forwards}
+        .pl~.pt-veil{display:none}
+        @keyframes pl-fs{to{visibility:hidden}}
+        @keyframes pl-ov{to{overflow:visible}}
+        @keyframes pl-w{to{stroke-dashoffset:0}}
+        @keyframes pl-p{50%{opacity:.9}}
+        .pl-mark{width:min(440px,76vw);height:auto;overflow:visible;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+        .pl-sig,.pl-dot{stroke-dasharray:1;stroke-dashoffset:1;animation:pl-w 900ms cubic-bezier(.45,.05,.4,1) 80ms forwards}
+        .pl-dot{animation-duration:140ms;animation-delay:1s}
+        .pl-pen{fill:currentColor;stroke:none;opacity:0;animation:pl-p 1.2s ease-in-out 1.6s infinite}
+        .pl::after{content:"";position:absolute;left:-10%;right:-10%;top:100%;height:16vh;background:inherit;border-radius:0 0 50% 50%;transform-origin:top}
+        html.pl-out .pl-mark{opacity:0;transition:opacity 160ms}
+        html.pl-out .pl,html.pl-out .pl::after{transition:transform 680ms cubic-bezier(.76,0,.24,1) 160ms}
+        html.pl-out .pl{transform:translateY(-118%)}
+        html.pl-out .pl::after{transform:scaleY(0)}
+        html.pl-rm .pl-sig,html.pl-rm .pl-dot{animation:none;stroke-dashoffset:0}
+        html.pl-rm .pl-pen,html.pl-rm .pl::after{display:none}
+        html.pl-rm.pl-out .pl{transform:none;opacity:0;transition:opacity 200ms}
+        @media print{.pl{display:none!important}html.pl-on{overflow:visible}}
+        html[data-theme="light"]{background-color:#fff}
+        html[data-theme="dark"]{background-color:#000}
+    </style>
+
+    <!-- The page's ONE inline script (D-81), allowed by its sha256 hash in script-src.
+         scripts/security-headers.js hashes it as written; the htmlmin:ignore markers keep
+         the minifier from changing a byte. Any edit here changes the hash: update
+         render.yaml, _headers and .htaccess to the policy the security-headers test prints.
+         1. Theme, before first paint: the same rule as js/theme-detection.js (saved choice,
+            then the cookie, then the system setting; tests/preloader.test.mjs keeps them equal).
+         2. Preloader hold, first visit per session only. Timers are registered before
+            anything that could throw. The page is inert and scroll is held while the paper
+            is up. The exit never starts before the writing ends: 1200 ms from the overlay's
+            own start (its draw begins 80 ms after it is styled; under reduced motion, from
+            first paint). It starts at DOMContentLoaded, when the hero is built; or at 5 s
+            once main.css has applied and the main element exists; or at the 8 s hard
+            ceiling whatever has loaded. Inert and the scroll hold go the moment the exit
+            starts. The hero text replays 160 ms later (text last), and the paper is cleared
+            when its own lift ends (transitionend), with a 3 s fallback. -->
+    <!-- htmlmin:ignore --><script>
+(function(w,d){'use strict';var h=d.documentElement,c=h.classList,k='user-theme-preference',th=null,seen=null,t,s=0,done=0,a,i;
+try{th=localStorage.getItem(k)}catch(x){}
+if(th!=='light'&&th!=='dark'){th=null;try{a=d.cookie.split('; ');for(i=0;i<a.length;i++)if(a[i].indexOf('preferred-theme=')===0){th=a[i].split('=')[1];break}}catch(x){}
+if(th==='light'||th==='dark'){try{localStorage.setItem(k,th)}catch(x){}}else th=null}
+if(!th)th=w.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+h.setAttribute('data-theme',th);h.style.colorScheme=th;c.remove('no-js');c.add('js');
+try{seen=sessionStorage.getItem('jayptl-preloaded');sessionStorage.setItem('jayptl-preloaded','1')}catch(x){}
+if(seen)return;
+function ok(){var l=d.querySelector('link[href="/css/main.css"]');return!!d.querySelector('main')&&(!l||!!l.sheet)}
+function cap(){if(ok()||performance.now()>=8e3)end();else setTimeout(cap,100)}
+function end(){if(done)return;var r=12e2-(performance.now()-t);if(r>0)return setTimeout(end,r);done=1;h.inert=!1;c.remove('pl-on');c.add('pl-out');w.dispatchEvent(new Event('pl:out'));
+var o=d.getElementById('preloader'),f=0;function off(e){if(f||e&&(e.target!==o||e.pseudoElement))return;f=1;c.remove('pl-out')}
+if(o)o.addEventListener('transitionend',off);setTimeout(off,3e3);
+setTimeout(function(){try{var p=d.querySelector('[data-particle-text]'),q=p&&w.ParticleText&&w.ParticleText.of(p);if(q){q.unpause();q.replay({duration:900,stagger:180})}}catch(x){}
+try{w.SoundManager&&w.SoundManager.playStepperEnter&&w.SoundManager.playStepperEnter()}catch(x){}},160)}
+t=performance.now();d.addEventListener('DOMContentLoaded',function(){setTimeout(end,0)});setTimeout(cap,5e3);
+c.add('pl-on');h.inert=!0;
+try{w.matchMedia('(prefers-reduced-motion: reduce)').matches&&c.add('pl-rm')}catch(x){}
+d.addEventListener('animationstart',function(e){if(!s&&e.animationName==='pl-w'){s=1;t=performance.now()-80}},!0);
+try{requestAnimationFrame(function(){if(!s)t=performance.now()})}catch(x){}
+try{new PerformanceObserver(function(l){l.getEntries().forEach(function(p){if(!s&&p.name==='first-paint')t=p.startTime})}).observe({type:'paint',buffered:true})}catch(x){}
+})(window,document);
+</script><!-- htmlmin:ignore -->
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "ProfilePage",
+                    "@id": "https://jayptl.me/#profilepage",
+                    "url": "https://jayptl.me/",
+                    "name": "Jay Patel, Software Engineer: Full-Stack, Mobile & Applied AI | Gujarat, India",
+                    "isPartOf": { "@id": "https://jayptl.me/#website" },
+                    "mainEntity": { "@id": "https://jayptl.me/#person" }
+                },
+                {
+                    "@type": "Person",
+                    "@id": "https://jayptl.me/#person",
+                    "name": "Jay Patel",
+                    "alternateName": [
+                        "Jay Bhaumikbhai Patel",
+                        "Jaykumar Bhaumikbhai Patel",
+                        "jayptl",
+                        "jayptl-me",
+                        "jayptl_rq"
+                    ],
+                    "url": "https://jayptl.me/",
+                    "image": "https://jayptl.me/assets/logo-1024.png",
+                    "description": "Software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity. 31 shipped projects spanning mobile, web, backend, and self-hosted infrastructure.",
+                    "email": "mailto:hello@jayptl.me",
+                    "jobTitle": [
+                        "Software Engineer",
+                        "Full Stack Engineer",
+                        "Mobile Developer",
+                        "Applied AI Engineer"
+                    ],
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "Anand",
+                        "addressRegion": "Gujarat",
+                        "addressCountry": "IN"
+                    },
+                    "alumniOf": {
+                        "@type": "CollegeOrUniversity",
+                        "name": "A.D. Patel Institute of Technology",
+                        "url": "https://www.adit.ac.in/",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "addressLocality": "Anand",
+                            "addressRegion": "Gujarat",
+                            "addressCountry": "IN"
+                        }
+                    },
+                    "sameAs": [
+                        "https://www.linkedin.com/in/jayptl-rq",
+                        "https://github.com/jayptl-me",
+                        "https://dev.to/jayptl_rq",
+                        "https://huggingface.co/jayptl-rq",
+                        "https://instagram.com/jayptl.me",
+                        "https://hashnode.com/@jayptl-rq",
+                        "https://app.daily.dev/jayptl_rq"
+                    ],
+                    "knowsAbout": [
+                        "Flutter",
+                        "Dart",
+                        "Next.js",
+                        "TypeScript",
+                        "Bun",
+                        "Hono",
+                        "Node.js",
+                        "Python",
+                        "PyTorch",
+                        "BitNet",
+                        "Docker",
+                        "Self-hosting",
+                        "UI/UX design"
+                    ]
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://jayptl.me/#website",
+                    "url": "https://jayptl.me/",
+                    "name": "Jay Patel",
+                    "alternateName": "jayptl.me",
+                    "description": "Jay Patel's portfolio: full-stack, mobile, and applied AI engineering.",
+                    "inLanguage": "en",
+                    "publisher": { "@id": "https://jayptl.me/#person" }
+                }
+            ]
+        }
+    </script>
+</head>
+
+<body data-transition="pixels">
+    <!-- Signature preloader overlay (D-80): the first element in the body, so it paints
+         before main.css, which is linked right after it. -->
+    <div class="pl" id="preloader" aria-hidden="true">
+        <!-- Signature STAND-IN: hand-coded until Jay's real signature is traced. To swap it, replace the d of .pl-sig (the one line), the d of .pl-dot (the j dot, tapped on last) and the cx and cy of .pl-pen (where the line ends); keep pathLength="1" on both paths. -->
+        <svg class="pl-mark" viewBox="0 0 200 130" focusable="false"><path class="pl-sig" pathLength="1" d="M28 54C35 47 41 43 46 40C48 57 48 79 46 96C44 109 35 115 29 110C23 105 30 95 42 88C55 80 66 64 84 53C76 47 63 54 63 64C63 73 75 74 83 62C85 58 86 55 87 52C86 62 86 71 93 72C98 72 99 62 101 54C101 64 104 72 111 70C117 68 119 60 121 52C121 72 119 96 110 106C104 114 93 112 96 103C100 93 130 89 176 84"/><path class="pl-dot" pathLength="1" d="M48 27c1.2-.2 2.2.6 2.2 1.8"/><circle class="pl-pen" cx="176" cy="84" r="3.2"/></svg>
+    </div>
+    <link rel="stylesheet" href="/css/main.css">
+    <!-- Critical CSS inline. It comes right after main.css, as it did when both sat in the
+         head, so it still wins its ties with main.css (D-81 moved them into the body). -->
     <style>
         /* Critical theme variables - only what's needed for initial render */
         :root {
@@ -260,90 +451,6 @@
             }
         }
 
-        /* Ink Loop Preloader (UI system round 2026-09-30, docs/motion-zen.md
-           section 6b and ruling "preloader mask exception"). No text, no
-           fonts, no images. Plays in CSS from the first frame and removes
-           itself with no script: 0-420ms the loop draws, 420-560ms it closes
-           into a dot, 560-880ms the dot opens as a circle onto the page. The
-           page underneath is fully drawn the whole time. js/preloader.js only
-           skips it on repeat visits and under reduced motion. */
-        @property --pl-r {
-            syntax: "<length>";
-            inherits: false;
-            initial-value: 0px;
-        }
-
-        .preloader {
-            position: fixed;
-            inset: 0;
-            z-index: var(--z-preloader, 60);
-            display: grid;
-            place-items: center;
-            background-color: var(--theme-bg);
-            color: var(--primary-600, #1e88e5);
-            -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--pl-r), #000 calc(var(--pl-r) + 1px));
-                    mask: radial-gradient(circle at 50% 50%, transparent var(--pl-r), #000 calc(var(--pl-r) + 1px));
-            animation:
-                pl-open 320ms cubic-bezier(0.16, 1, 0.3, 1) 560ms forwards,
-                pl-gone 1ms linear 900ms forwards;
-        }
-
-        html[data-theme="dark"] .preloader {
-            color: var(--accent-400, #26c9d8);
-        }
-
-        .preloader-ink {
-            width: clamp(64px, 14vmin, 104px) !important;
-            height: clamp(64px, 14vmin, 104px) !important;
-            overflow: visible;
-        }
-
-        .preloader-loop {
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-dasharray: 1;
-            stroke-dashoffset: 1;
-            transform-box: fill-box;
-            transform-origin: center;
-            animation:
-                pl-draw 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards,
-                pl-close 140ms cubic-bezier(0.16, 1, 0.3, 1) 420ms forwards;
-        }
-
-        .preloader-dot {
-            fill: currentColor;
-            transform-box: fill-box;
-            transform-origin: center;
-            transform: scale(0);
-            animation: pl-dot 140ms cubic-bezier(0.16, 1, 0.3, 1) 420ms forwards;
-        }
-
-        @keyframes pl-draw { to { stroke-dashoffset: 0; } }
-        @keyframes pl-close { to { opacity: 0; transform: scale(0.2); } }
-        @keyframes pl-dot { to { transform: scale(1); } }
-        @keyframes pl-open { from { --pl-r: 0px; } to { --pl-r: 150vmax; } }
-        @keyframes pl-gone { to { visibility: hidden; pointer-events: none; } }
-
-        /* Repeat visit in this session, reduced motion, or no script: never paints. */
-        html.no-preloader .preloader,
-        html.no-js .preloader {
-            display: none !important;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .preloader {
-                display: none !important;
-            }
-        }
-
-        /* Lock scroll while the preloader plays. Content is never hidden:
-           the page is fully drawn under the overlay from first paint. */
-        body.preloading {
-            overflow: hidden;
-        }
-
         .hero,
         main,
         .site-footer,
@@ -359,148 +466,32 @@
         }
 
     </style>
-
-    <!-- Theme color for light and dark -->
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
-    <!-- Theme Detection Script - Prevent FOUC and set .js class -->
-    <script src="/js/theme-detection.js"></script>
-
-    <!-- Preloader Script - Initialize immediately -->
-    <script src="/js/preloader.js"></script>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "ProfilePage",
-                    "@id": "https://jayptl.me/#profilepage",
-                    "url": "https://jayptl.me/",
-                    "name": "Jay Patel, Software Engineer: Full-Stack, Mobile & Applied AI | Gujarat, India",
-                    "isPartOf": { "@id": "https://jayptl.me/#website" },
-                    "mainEntity": { "@id": "https://jayptl.me/#person" }
-                },
-                {
-                    "@type": "Person",
-                    "@id": "https://jayptl.me/#person",
-                    "name": "Jay Patel",
-                    "alternateName": [
-                        "Jay Bhaumikbhai Patel",
-                        "Jaykumar Bhaumikbhai Patel",
-                        "jayptl",
-                        "jayptl-me",
-                        "jayptl_rq"
-                    ],
-                    "url": "https://jayptl.me/",
-                    "image": "https://jayptl.me/assets/logo-1024.png",
-                    "description": "Software engineer from Anand, Gujarat, India working across full-stack, mobile, and applied AI in TypeScript, Dart/Flutter, Python, and Solidity. 31 shipped projects spanning mobile, web, backend, and self-hosted infrastructure.",
-                    "email": "mailto:hello@jayptl.me",
-                    "jobTitle": [
-                        "Software Engineer",
-                        "Full Stack Engineer",
-                        "Mobile Developer",
-                        "Applied AI Engineer"
-                    ],
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressLocality": "Anand",
-                        "addressRegion": "Gujarat",
-                        "addressCountry": "IN"
-                    },
-                    "alumniOf": {
-                        "@type": "CollegeOrUniversity",
-                        "name": "A.D. Patel Institute of Technology",
-                        "url": "https://www.adit.ac.in/",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "addressLocality": "Anand",
-                            "addressRegion": "Gujarat",
-                            "addressCountry": "IN"
-                        }
-                    },
-                    "sameAs": [
-                        "https://www.linkedin.com/in/jayptl-rq",
-                        "https://github.com/jayptl-me",
-                        "https://dev.to/jayptl_rq",
-                        "https://huggingface.co/jayptl-rq",
-                        "https://instagram.com/jayptl.me",
-                        "https://hashnode.com/@jayptl-rq",
-                        "https://app.daily.dev/jayptl_rq"
-                    ],
-                    "knowsAbout": [
-                        "Flutter",
-                        "Dart",
-                        "Next.js",
-                        "TypeScript",
-                        "Bun",
-                        "Hono",
-                        "Node.js",
-                        "Python",
-                        "PyTorch",
-                        "BitNet",
-                        "Docker",
-                        "Self-hosting",
-                        "UI/UX design"
-                    ]
-                },
-                {
-                    "@type": "WebSite",
-                    "@id": "https://jayptl.me/#website",
-                    "url": "https://jayptl.me/",
-                    "name": "Jay Patel",
-                    "alternateName": "jayptl.me",
-                    "description": "Jay Patel's portfolio: full-stack, mobile, and applied AI engineering.",
-                    "inLanguage": "en",
-                    "publisher": { "@id": "https://jayptl.me/#person" }
-                }
-            ]
-        }
-    </script>
-</head>
-
-<body class="preloading" data-transition="pixels">
     <div class="pt-veil" id="ptVeil" aria-hidden="true"></div>
     <!-- Shared doodle sprite (inlined canonical copy of assets/doodle-sprite.svg; no fetch) -->
     <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false" id="doodleSprite">
         <defs>
-            <symbol id="d-arrow" viewBox="0 0 64 24"><title>Hand-drawn arrow</title><path d="M3 13 C 18 13 30 12 44 8 M40 5 c 4 3 8 5 14 4 M40 11 c 5 1 9 2 14 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-underline" viewBox="0 0 120 14"><title>Hand-drawn underline</title><path d="M4 9 C 20 4 34 6 48 9 C 62 12 74 6 88 8 C 100 10 110 8 116 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-circle" viewBox="0 0 64 48"><title>Hand-drawn circle</title><path d="M40 5 C 54 8 60 18 58 28 C 56 38 45 44 32 43 C 19 42 8 35 8 24 C 8 14 20 7 32 6 C 40 5 46 7 50 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-bracket-l" viewBox="0 0 24 48"><title>Hand-drawn left bracket</title><path d="M18 3 C 8 4 4 10 4 16 L4 32 C 4 38 8 44 18 45" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-bracket-r" viewBox="0 0 24 48"><title>Hand-drawn right bracket</title><path d="M6 3 C 16 4 20 10 20 16 L20 32 C 20 38 16 44 6 45" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-sparkle" viewBox="0 0 32 32"><title>Hand-drawn sparkle</title><path d="M16 3 L18 13 L28 11 L21 17 L27 25 L17 21 L13 30 L11 19 L3 20 L10 14 L5 6 L15 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-tape" viewBox="0 0 96 24"><title>Hand-drawn washi tape</title><path d="M8 22 L88 22 C 90 16 90 8 88 2 L8 2 C 6 8 6 16 8 22 Z M12 4 L84 4 M12 20 L84 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.7" pathLength="1"/></symbol>
-            <symbol id="d-scissors" viewBox="0 0 96 24"><title>Hand-drawn scissors cut line</title><circle cx="18" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><circle cx="18" cy="17" r="4.5" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/><path d="M22 12 L44 12 M46 6 L44 12 L46 18 M46 6 c 10 0 20 0 30 6 M46 18 c 10 0 20 0 30 -6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-asterisk" viewBox="0 0 24 24"><title>Hand-drawn asterisk</title><path d="M12 3 L12 21 M4 7 L20 17 M20 7 L4 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1"/></symbol>
-            <symbol id="d-squiggle" viewBox="0 0 120 12"><title>Hand-drawn squiggle</title><path d="M3 7 C9 2 13 2 17 6 S25 11 30 6 S38 1 43 6 S51 11 56 6 S64 2 69 6 S77 10 82 6 S90 2 95 6 S103 10 108 6 S114 3 117 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-arrow" viewBox="0 0 64 24"><title>Hand-drawn arrow</title><path d="M3 14 C 18 14 31 12 46 8 M37 3.5 C 40.5 5.5 43.5 7 46 8 M38.5 15.5 C 41 12.5 43.5 10 46 8" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-underline" viewBox="0 0 120 14" preserveAspectRatio="none"><title>Hand-drawn underline</title><path d="M4 9 C 20 4 34 6 48 9 C 62 12 74 6 88 8 C 100 10 110 8 116 7" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-circle" viewBox="0 0 64 48"><title>Hand-drawn circle</title><path d="M40 5 C 54 8 60 18 58 28 C 56 38 45 44 32 43 C 19 42 8 35 8 24 C 8 14 20 7 32 6 C 40 5 46 7 50 10" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-bracket-l" viewBox="0 0 24 48"><title>Hand-drawn left bracket</title><path d="M18 3 C 8 4 4 10 4 16 L4 32 C 4 38 8 44 18 45" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-bracket-r" viewBox="0 0 24 48"><title>Hand-drawn right bracket</title><path d="M6 3 C 16 4 20 10 20 16 L20 32 C 20 38 16 44 6 45" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-sparkle" viewBox="0 0 32 32"><title>Hand-drawn sparkle</title><path d="M16 3 L18 13 L28 11 L21 17 L27 25 L17 21 L13 30 L11 19 L3 20 L10 14 L5 6 L15 10 Z" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-tape" viewBox="0 0 96 24"><title>Hand-drawn washi tape</title><path d="M8 22 L88 22 C 90 16 90 8 88 2 L8 2 C 6 8 6 16 8 22 Z M12 4 L84 4 M12 20 L84 20" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-asterisk" viewBox="0 0 24 24"><title>Hand-drawn asterisk</title><path d="M12 3 L12 21 M4 7 L20 17 M20 7 L4 17" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-squiggle" viewBox="0 0 120 12"><title>Hand-drawn squiggle</title><path d="M3 7 C9 2 13 2 17 6 S25 11 30 6 S38 1 43 6 S51 11 56 6 S64 2 69 6 S77 10 82 6 S90 2 95 6 S103 10 108 6 S114 3 117 5" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
             <symbol id="d-marker" viewBox="0 0 120 24"><title>Hand-drawn marker swipe</title><path d="M6 15 C30 12 62 14 88 11 C100 10 108 10 114 10" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-scribble-out" viewBox="0 0 120 24"><title>Hand-drawn scribble out</title><path d="M3 13 C12 6 18 18 26 11 C34 4 40 18 49 11 C58 4 64 18 73 11 C82 4 88 18 97 11 C104 6 110 14 117 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-loop-arrow" viewBox="0 0 72 40"><title>Hand-drawn loop arrow</title><path d="M4 30 C14 30 22 26 26 18 C30 10 24 4 19 8 C14 12 20 22 32 24 C44 26 54 22 64 17 M56 12 L64 17 L57 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-heart" viewBox="0 0 24 22"><title>Hand-drawn heart</title><path d="M12 20 C6 15 2 11 2.8 7 C3.6 3.4 8 2.4 10.4 5.2 C11.2 6.1 11.7 7 12 7.8 C12.6 6 14 3.8 16.6 3.4 C20 3 22 6 21.2 9 C20.2 13 16 16.4 12.4 20.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-check" viewBox="0 0 24 24"><title>Hand-drawn check</title><path d="M4 13 C6 14.5 8 16.5 9.5 19 C12 13 15.5 8 20.5 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-box" viewBox="0 0 100 40"><title>Hand-drawn box</title><path d="M5 6 C35 4 68 5 95 5 C96 15 96 26 95 35 C66 36 34 36 6 35 C4 25 4 14 6 4 L12 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-brace" viewBox="0 0 20 100"><title>Hand-drawn curly brace</title><path d="M16 3 C9 4 8 8 8 16 L8 40 C8 46 6 49 2 50 C6 51 8 54 8 60 L8 84 C8 92 9 96 16 97" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-burst" viewBox="0 0 64 64"><title>Hand-drawn starburst</title><path d="M32 1.5 L37.6 11.1 L46.7 6.6 L46.7 17.3 L58.3 16.8 L52.8 26.4 L61.2 32 L53.9 37.9 L58.6 47.4 L47 47 L46.9 57.9 L37.8 53.6 L32 63 L26.8 51.5 L16.8 58.4 L17.4 46.6 L5.1 47.5 L12.2 37.3 L1.3 32 L11.3 26.4 L6.4 17.2 L17.8 17.8 L16.1 4.4 L26.1 9.9 L32 1.5 L37.6 11.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-zigzag" viewBox="0 0 240 12"><title>Hand-drawn zigzag rule</title><path d="M2 7 L10 3 L17 9 L25 3 L33 9 L40 4 L48 9 L56 3 L63 8 L71 3 L79 9 L86 4 L94 9 L102 3 L109 8 L117 3 L125 9 L132 4 L140 9 L148 3 L155 8 L163 3 L171 9 L178 4 L186 9 L194 3 L201 8 L209 3 L217 9 L224 4 L232 8 L238 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-here" viewBox="0 0 80 48"><title>Hand-drawn you-are-here loop</title><path d="M52 8 C40 3 18 5 10 14 C3 22 8 34 24 38 C42 42 64 38 70 28 C75 19 66 10 52 8 C44 7 36 9 32 12 M70 31 C73 36 75 40 77 45" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
-            <symbol id="d-margin" viewBox="0 0 64 40"><title>Hand-drawn margin note arrow</title><path d="M4 6 C16 4 30 8 38 18 C44 25 48 30 57 32 M49 27 L57 32 L50 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-scribble-out" viewBox="0 0 120 24"><title>Hand-drawn scribble out</title><path d="M3 13 C12 6 18 18 26 11 C34 4 40 18 49 11 C58 4 64 18 73 11 C82 4 88 18 97 11 C104 6 110 14 117 10" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-loop-arrow" viewBox="0 0 72 40"><title>Hand-drawn loop arrow</title><path d="M4 30 C14 30 22 26 26 18 C30 10 24 4 19 8 C14 12 20 22 32 24 C44 26 54 22 64 17 M56 12 L64 17 L57 24" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-heart" viewBox="0 0 24 22"><title>Hand-drawn heart</title><path d="M12 20 C6 15 2 11 2.8 7 C3.6 3.4 8 2.4 10.4 5.2 C11.2 6.1 11.7 7 12 7.8 C12.6 6 14 3.8 16.6 3.4 C20 3 22 6 21.2 9 C20.2 13 16 16.4 12.4 20.4" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-check" viewBox="0 0 24 24"><title>Hand-drawn check</title><path d="M4 13 C6 14.5 8 16.5 9.5 19 C12 13 15.5 8 20.5 4" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-box" viewBox="0 0 100 40"><title>Hand-drawn box</title><path d="M5 6 C35 4 68 5 95 5 C96 15 96 26 95 35 C66 36 34 36 6 35 C4 25 4 14 6 4 L12 5" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-brace" viewBox="0 0 20 100"><title>Hand-drawn curly brace</title><path d="M16 3 C9 4 8 8 8 16 L8 40 C8 46 6 49 2 50 C6 51 8 54 8 60 L8 84 C8 92 9 96 16 97" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-burst" viewBox="0 0 64 64"><title>Hand-drawn starburst</title><path d="M32 1.5 L37.6 11.1 L46.7 6.6 L46.7 17.3 L58.3 16.8 L52.8 26.4 L61.2 32 L53.9 37.9 L58.6 47.4 L47 47 L46.9 57.9 L37.8 53.6 L32 63 L26.8 51.5 L16.8 58.4 L17.4 46.6 L5.1 47.5 L12.2 37.3 L1.3 32 L11.3 26.4 L6.4 17.2 L17.8 17.8 L16.1 4.4 L26.1 9.9 L32 1.5 L37.6 11.1" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-zigzag" viewBox="0 0 240 12"><title>Hand-drawn zigzag rule</title><path d="M2 7 L10 3 L17 9 L25 3 L33 9 L40 4 L48 9 L56 3 L63 8 L71 3 L79 9 L86 4 L94 9 L102 3 L109 8 L117 3 L125 9 L132 4 L140 9 L148 3 L155 8 L163 3 L171 9 L178 4 L186 9 L194 3 L201 8 L209 3 L217 9 L224 4 L232 8 L238 6" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-here" viewBox="0 0 80 48"><title>Hand-drawn you-are-here loop</title><path d="M52 8 C40 3 18 5 10 14 C3 22 8 34 24 38 C42 42 64 38 70 28 C75 19 66 10 52 8 C44 7 36 9 32 12 M70 31 C73 36 75 40 77 45" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
+            <symbol id="d-margin" viewBox="0 0 64 40"><title>Hand-drawn margin note arrow</title><path d="M4 6 C16 4 30 8 38 18 C44 25 48 30 57 32 M49 27 L57 32 L50 37" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></symbol>
         </defs>
     </svg>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader" aria-hidden="true">
-        <svg class="preloader-ink" viewBox="0 0 100 100" focusable="false">
-            <path class="preloader-loop" pathLength="1" d="M50 16c19-1 34 13 33 31-1 20-17 35-36 34-18-1-31-15-30-33 1-17 14-30 30-31 11-1 20 4 25 13"/>
-            <circle class="preloader-dot" cx="50" cy="50" r="7"/>
-        </svg>
-    </div>
 
     <!-- Main Content -->
     <main id="main-content" aria-label="Jay Patel Portfolio">
@@ -518,7 +509,7 @@
                         <!-- Text Reveal List -->
                         <div class="text-reveal-list" id="textRevealList" aria-live="polite">
                             <!-- ...existing code for text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="WHO AM I?">
+                            <div class="text-reveal-item">
                                 <!-- Reveal 1 · ParticleText (vanilla, zero deps). The canvas
                                      gathers into the glyph; fallback + sr text keep the
                                      words available to no-JS and assistive tech. -->
@@ -529,27 +520,27 @@
                                 </div>
                             </div>
                             <!-- ...existing code for other text-reveal-items... -->
-                            <div class="text-reveal-item" data-role="THE FULL-STACK DEV?">
+                            <div class="text-reveal-item">
                                 <!-- Reveal 2 · SplitText (vanilla, zero deps). Plain text;
                                      js/components/split-text.js splits + staggers at runtime.
                                      Bookends are locked: "LOOKING FOR JAY?" first, "Ahhhh, Just Jay!"
                                      last. Only these middle words ever change. -->
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The full-stack dev?">THE FULL-STACK DEV?</p>
                             </div>
-                            <div class="text-reveal-item" data-role="THE FLUTTER NERD?">
+                            <div class="text-reveal-item">
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The Flutter nerd?">THE FLUTTER NERD?</p>
                             </div>
-                            <div class="text-reveal-item" data-role="THAT AI GUY?">
+                            <div class="text-reveal-item">
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="That AI guy?">THAT AI GUY?</p>
                             </div>
-                            <div class="text-reveal-item" data-role="THE INFRA ENGINEER?">
+                            <div class="text-reveal-item">
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The infra engineer?">THE INFRA ENGINEER?</p>
                             </div>
-                            <div class="text-reveal-item" data-role="THE WEB3 GEEK?">
+                            <div class="text-reveal-item">
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="The Web3 geek?">THE WEB3 GEEK?</p>
                             </div>
                             <!-- Final: Ahhhh, Just Jay! -->
-                            <div class="text-reveal-item final" data-role="JUST JAY">
+                            <div class="text-reveal-item final">
                                 <p class="split-host" data-split="chars" data-split-manual data-split-delay="55" aria-label="Ahhhh, Just Jay!">Ahhhh, Just <span class="word-jay">Jay!</span></p>
                             </div>
                         </div>
@@ -927,6 +918,7 @@
     <script defer src="/js/components/scroll-stack.js"></script>
     <script defer src="/js/components/doodle.js"></script>
     <script defer src="/js/components/mount.js"></script>
+    <script defer src="/js/components/arrive.js"></script>
     <script defer src="/js/components/ink-status.js"></script>
     <script defer src="/js/components/press-state.js"></script>
     <script defer src="/js/components/site-api.js"></script>

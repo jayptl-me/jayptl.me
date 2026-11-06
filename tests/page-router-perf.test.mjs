@@ -92,3 +92,19 @@ test('router: prefetch respects Save-Data', async () => {
   await window.PageRouter.prefetch('/about');
   assert.equal(document.querySelectorAll('link[rel="prefetch"]').length, 0);
 });
+
+test('router: a swap carries the doodle sprite over when the page it leaves has none', () => {
+  // Sprite marks are <use href="#d-..."> into an inline sprite outside <main>;
+  // a swap that moves only <main> left them pointing at nothing.
+  const { window, document } = setup();
+  const parsed = new window.DOMParser().parseFromString(
+    '<html><body><svg id="doodleSprite"><symbol id="d-underline"></symbol></svg>' +
+    '<main><svg><use href="#d-underline"></use></svg></main></body></html>',
+    'text/html'
+  );
+  assert.equal(document.getElementById('doodleSprite'), null);
+  assert.ok(window.PageRouter.swapBody(parsed, true));
+  assert.ok(document.getElementById('d-underline'), 'the sprite arrives with the page');
+  window.PageRouter.swapBody(parsed, true);
+  assert.equal(document.querySelectorAll('#doodleSprite').length, 1, 'never twice');
+});

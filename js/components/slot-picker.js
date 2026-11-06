@@ -224,7 +224,7 @@
                 say('');
                 done.focus();
                 try {
-                    if (window.SoundManager && window.SoundManager.playSelectSound) window.SoundManager.playSelectSound();
+                    if (window.SoundManager && window.SoundManager.playSuccessSound) window.SoundManager.playSuccessSound();
                 } catch (err) { /* noop */ }
             }, function (err) {
                 submitting = false;

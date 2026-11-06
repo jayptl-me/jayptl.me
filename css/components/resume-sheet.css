@@ -1,0 +1,178 @@
+/**
+ * Resume Sheet (js/components/resume-sheet.js).
+ * Brief: docs/motion-zen.md section 6d. The sheet rises from the bottom over
+ * 500ms on --ease-sheet while the page behind sinks on the same clock:
+ * narrower by 26px, 14px lower, corners rounded to 8px. While dragging,
+ * both follow the finger with no easing.
+ *
+ * @file css/components/resume-sheet.css
+ */
+
+html.rsheet-open,
+html.rsheet-open body {
+  overflow: hidden;
+}
+
+/* What shows around the sunk page: deep blue in light, black in dark */
+html.rsheet-open,
+html.rsheet-open body {
+  background: #0f1b2a;
+}
+
+html[data-theme="dark"].rsheet-open,
+html[data-theme="dark"].rsheet-open body {
+  background: #000000;
+}
+
+/* The page behind: main, the site footer and the navbar */
+html.rsheet-open main,
+html.rsheet-open .site-footer,
+html.rsheet-open #glassNav,
+html.rsheet-open .edge-blur {
+  transform-origin: 50% var(--rsheet-origin-y, 0px);
+  transform: translateY(var(--rsheet-y, 0px)) scale(var(--rsheet-scale, 1));
+  border-radius: var(--rsheet-r, 0px);
+  transition: transform 500ms var(--ease-sheet), border-radius 500ms var(--ease-sheet);
+}
+
+/* The page carries its own full-width ground, so the deep colour shows only
+   around the sunk page. The ground is a layer behind each column that spans
+   the viewport, and it scales with the column. */
+html.rsheet-open main,
+html.rsheet-open .site-footer {
+  position: relative;
+}
+
+html.rsheet-open main::before,
+html.rsheet-open .site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -1;
+  background-color: var(--theme-bg);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+html.rsheet-dragging main,
+html.rsheet-dragging .site-footer,
+html.rsheet-dragging #glassNav,
+html.rsheet-dragging .edge-blur {
+  transition: none;
+}
+
+.rsheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  width: min(100%, 980px);
+  height: 92dvh;
+  max-width: none;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--sf-panel);
+  color: var(--sf-text);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+  transform: translateY(100%);
+  transition: transform 500ms var(--ease-sheet);
+  z-index: var(--z-modal);
+}
+
+.rsheet:not([open]) {
+  display: none;
+}
+
+.rsheet.is-up {
+  transform: translateY(var(--rsheet-drag, 0px));
+}
+
+.rsheet.is-dragging {
+  transition: none;
+}
+
+.rsheet::backdrop {
+  background: transparent;
+}
+
+.rsheet-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px 12px;
+  border-bottom: 1px solid var(--sf-border);
+  touch-action: none;
+  cursor: grab;
+}
+
+.rsheet.is-dragging .rsheet-head {
+  cursor: grabbing;
+}
+
+.rsheet-handle {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 40px;
+  height: 5px;
+  margin-left: -20px;
+  border-radius: 999px;
+  background: var(--sf-text-dim);
+  opacity: 0.5;
+}
+
+.rsheet-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rsheet-body {
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #ffffff;
+}
+
+.rsheet-body[data-theme="dark"] {
+  background: #0b1219;
+}
+
+.rsheet-body:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: -4px;
+}
+
+/* Phones: the download keeps its words, the title gives way. */
+@media (max-width: 599.98px) {
+  .rsheet-title {
+    font-size: var(--text-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsheet,
+  html.rsheet-open main,
+  html.rsheet-open .site-footer,
+  html.rsheet-open #glassNav {
+    transition: none;
+  }
+
+  html.rsheet-open main,
+  html.rsheet-open .site-footer,
+  html.rsheet-open #glassNav {
+    transform: none;
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,41 @@
+/**
+ * Headline Arrival (docs/motion-zen.md section 6d).
+ *
+ * An inner page's headline arrives once, word by word: each word rises 8px
+ * out of an 8px blur over 800ms, 80ms apart. js/components/arrive.js wraps
+ * the words and starts it when the staged entry reveals the heading.
+ *
+ * @file css/components/arrive.css
+ */
+
+.arrive-t {
+  display: inline-block;
+}
+
+.arrive-nb {
+  white-space: nowrap;
+}
+
+.arrive.is-waiting .arrive-w {
+  opacity: 0;
+}
+
+.arrive.is-arriving .arrive-w {
+  animation: arrive 800ms var(--ease-arrive) calc(var(--i, 0) * 80ms) both;
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrive.is-waiting .arrive-w,
+  .arrive.is-arriving .arrive-w {
+    opacity: 1;
+    animation: none;
+  }
+}

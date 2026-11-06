@@ -177,7 +177,7 @@
 
     function actionItems() {
         var out = [
-            { group: 'Actions', label: 'Switch theme', hint: 'Light clay or dark glass', keys: 'dark light mode', run: function () {
+            { group: 'Actions', label: 'Switch theme', hint: 'Light or dark', keys: 'dark light mode', run: function () {
                 var t = document.getElementById('themeToggle');
                 if (t) t.click();
             } },

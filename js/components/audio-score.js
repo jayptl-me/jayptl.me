@@ -1,9 +1,10 @@
 /**
  * Audio Score Component
- * Bespoke full score wiring. Observes homepage sections and generic
- * motif anchors, shifts the ambient bed per room, plays quiet two
- * note motifs on entry, and adds soft hover and tap voices to nav,
- * pills, cards, and stickers. Router aware for soft navigations.
+ * Score wiring. Observes homepage sections and generic anchors and
+ * shifts the ambient bed per room; sections themselves make no sound,
+ * motion carries them (D-146). Hover is silent. Taps on pills,
+ * stickers and filters voice a select. Router aware for soft
+ * navigations; the page change itself is silent.
  *
  * Everything is gated on the master pref and stays silent by default.
  * No audio files, no network, no blocking of taps or scroll.
@@ -99,10 +100,7 @@
                     if (!entry.isIntersecting) return;
                     var name = motifFor(entry.target);
                     try {
-                        if (sound()) {
-                            sound().setBedScene(name);
-                            sound().playMotif(name);
-                        }
+                        if (sound()) sound().setBedScene(name);
                     } catch { /* score never breaks scroll */ }
                 });
             }, { threshold: 0.35 });
@@ -139,7 +137,6 @@
         document.addEventListener('click', function (e) {
             try {
                 if (!masterOn()) return;
-                if (reducedMotion()) return;
                 var sm = sound();
                 if (!sm) return;
                 var anchor = e.target && e.target.closest ? e.target.closest('a[href]') : null;
@@ -163,30 +160,10 @@
         }, { passive: true });
     }
 
-    function wireHovers() {
-        var lastHover = 0;
-        document.addEventListener('pointerover', function (e) {
-            try {
-                if (!masterOn()) return;
-                if (reducedMotion()) return;
-                var sm = sound();
-                if (!sm) return;
-                var t = e.target && e.target.closest
-                    ? e.target.closest('.scroll-stack-pill, .scroll-stack-card, .sticker, .nav-link, .dropdown-card, .audio-toggle')
-                    : null;
-                if (!t) return;
-                var now = Date.now();
-                if (now - lastHover < 110) return;
-                lastHover = now;
-                sm.playHoverSound();
-            } catch { /* hover stays silent */ }
-        }, { passive: true });
-    }
 
     function init() {
         bindMotifObserver();
         wireClicks();
-        wireHovers();
         window.addEventListener('page:ready', function () {
             try {
                 bindMotifObserver();

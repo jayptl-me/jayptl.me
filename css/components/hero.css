@@ -75,18 +75,6 @@
   width: 100%;
   margin-left: auto !important;
   margin-right: auto !important;
-
-  /* Theme-aware Gradient Text Effect */
-  background: var(--theme-gradient-text);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-
-  /* Fallback for browsers that don't support background-clip: text */
-  @supports not (background-clip: text) {
-    color: var(--theme-text);
-  }
 }
 
 .hero-subtitle {
@@ -359,7 +347,6 @@ html[data-theme="dark"] .project-card {
 
 
 .project-card:hover {
-  transform: translateY(-4px);
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
 }
 

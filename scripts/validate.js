@@ -574,6 +574,38 @@ async function validateSourceComments() {
 }
 
 /**
+ * Inline script hashes on the bytes that ship (D-81). The build checks the page
+ * before the minifier runs; this runs after it, in every pipeline (CI, the host
+ * and test:deploy), so a minifier change, a second optimize pass or a lost
+ * htmlmin:ignore marker that rewrites the home script fails the deploy instead
+ * of shipping a script the CSP refuses. Returns the problems found.
+ */
+function checkInlineScriptHashes(distDir) {
+  const { inlineScriptViolations } = require('./security-headers');
+  const fsSync = require('fs');
+  const problems = [];
+  (function walk(dir) {
+    for (const entry of fsSync.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.name.endsWith('.html')) {
+        const html = fsSync.readFileSync(full, 'utf8');
+        if (!/<head[^>]*>/i.test(html)) continue;
+        problems.push(...inlineScriptViolations(path.relative(distDir, full).split(path.sep).join('/'), html));
+      }
+    }
+  })(distDir);
+  return problems;
+}
+
+async function validateInlineScriptHashes() {
+  log.info('Re-hashing inline scripts in the minified dist...');
+  const problems = checkInlineScriptHashes(config.distDir);
+  config.errors.push(...problems);
+  if (!problems.length) log.success('Every inline script that ships is allowed by its CSP hash');
+}
+
+/**
  * Main validation function
  */
 async function validate() {
@@ -613,6 +645,8 @@ async function validate() {
 
     await validateAgentReadiness();
 
+    await validateInlineScriptHashes();
+
     // Print summary
     const passed = printSummary();
     
@@ -636,4 +670,4 @@ if (require.main === module) {
   validate();
 }
 
-module.exports = { validate };
+module.exports = { validate, checkInlineScriptHashes };

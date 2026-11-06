@@ -13,7 +13,12 @@
 
 const fs = require('fs').promises;
 const path = require('path');
-const { META_CONTENT_SECURITY_POLICY, SECURITY_HEADERS } = require('./security-headers');
+const {
+  META_CONTENT_SECURITY_POLICY,
+  SECURITY_HEADERS,
+  inlineScripts,
+  inlineScriptViolations
+} = require('./security-headers');
 const { bundleCssInDist } = require('./css-bundle');
 const { ships: assetShips } = require('./asset-policy');
 
@@ -521,11 +526,23 @@ async function generateCleanUrls() {
  * Stamp the Content-Security-Policy <meta> tag into every built HTML page.
  * The HTTP header (render.yaml) is the primary policy; the tag keeps pages
  * protected on any host that drops custom headers.
+ *
+ * Before stamping, hash every inline script the built page actually carries
+ * and refuse the build unless it is the home page's one preloader script and
+ * its hash is in script-src (D-81). scripts/validate.js runs the same check
+ * again after the minifier, on the bytes that ship.
  */
 async function applyCspMeta() {
   const tag = `<meta http-equiv="Content-Security-Policy" content="${META_CONTENT_SECURITY_POLICY}">`;
   const existing = /<meta http-equiv="Content-Security-Policy"[^>]*>/i;
   let count = 0;
+  let hashed = 0;
+
+  function checkInlineScripts(html, rel) {
+    const problems = inlineScriptViolations(rel, html);
+    if (problems.length) throw new Error(problems.join('; '));
+    hashed += inlineScripts(html).length;
+  }
 
   async function walk(dir) {
     const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -536,6 +553,7 @@ async function applyCspMeta() {
       } else if (entry.name.endsWith('.html')) {
         const html = await fs.readFile(full, 'utf8');
         if (!/<head[^>]*>/i.test(html)) continue;
+        checkInlineScripts(html, path.relative(config.distDir, full).split(path.sep).join('/'));
         const next = existing.test(html)
           ? html.replace(existing, tag)
           : html.replace(/<meta charset="[^"]*"\s*\/?>/i, (m) => `${m}\n    ${tag}`);
@@ -549,7 +567,7 @@ async function applyCspMeta() {
   }
 
   await walk(config.distDir);
-  log.success(`Applied CSP meta tag to ${count} HTML files`);
+  log.success(`Applied CSP meta tag to ${count} HTML files (${hashed} inline script(s), each allowed by its hash)`);
 }
 
 /**

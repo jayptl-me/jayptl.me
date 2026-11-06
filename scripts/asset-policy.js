@@ -24,6 +24,7 @@ const ASSET_FILES = [
   'apple-touch-icon.png',
   'android-chrome-192x192.png',
   'android-chrome-512x512.png',
+  'logo-96.png',
   'logo-512.png',
   'logo-1024.png',
   'doodle-sprite.svg'

@@ -24,8 +24,8 @@
         try {
             var sm = window.SoundManager;
             if (!sm) return;
-            if (kind === 'pick' && sm.playSelectSound) sm.playSelectSound();
-            if (kind === 'drop' && sm.playHoverSound) sm.playHoverSound();
+            if (kind === 'pick' && sm.playPickSound) sm.playPickSound();
+            if (kind === 'drop' && sm.playDropSound) sm.playDropSound();
         } catch (e) { /* noop */ }
     }
 

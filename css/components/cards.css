@@ -36,7 +36,6 @@ html[data-theme="light"] .card-default {
 html[data-theme="light"] .card-default:hover {
     box-shadow: var(--skeu-shadow-raised-lg), var(--skeu-highlight);
     border-color: rgba(var(--primary-500-rgb), 0.2);
-    transform: translateY(-2px);
 }
 
 html[data-theme="light"] .card-default:active,
@@ -58,7 +57,6 @@ html[data-theme="dark"] .card-default {
 html[data-theme="dark"] .card-default:hover {
     border-color: var(--glass-border-accent);
     box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
-    transform: translateY(-2px);
 }
 
 html[data-theme="dark"] .card-default:active,
@@ -89,7 +87,6 @@ html[data-theme="light"] .card-elevated:hover {
         -12px -12px 24px rgba(255, 255, 255, 0.98),
         var(--skeu-highlight-strong);
     border-color: rgba(var(--primary-500-rgb), 0.2);
-    transform: translateY(-3px);
 }
 
 html[data-theme="light"] .card-elevated:active {
@@ -110,7 +107,6 @@ html[data-theme="dark"] .card-elevated {
 html[data-theme="dark"] .card-elevated:hover {
     border-color: var(--glass-border-accent);
     box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5), var(--glass-inner-glow), var(--glass-glow-accent);
-    transform: translateY(-3px);
 }
 
 html[data-theme="dark"] .card-elevated:active {
@@ -138,7 +134,6 @@ html[data-theme="light"] .card-glass {
 html[data-theme="light"] .card-glass:hover {
     box-shadow: var(--skeu-shadow-raised-lg), var(--skeu-highlight);
     border-color: rgba(var(--primary-500-rgb), 0.25);
-    transform: translateY(-2px);
 }
 
 html[data-theme="light"] .card-glass:active {
@@ -172,7 +167,6 @@ html[data-theme="dark"] .card-glass {
 html[data-theme="dark"] .card-glass:hover {
     border-color: var(--glass-border-accent);
     box-shadow: var(--glass-shadow-elevated), var(--glass-inner-glow), var(--glass-glow-accent);
-    transform: translateY(-2px);
 }
 
 html[data-theme="dark"] .card-glass:active {

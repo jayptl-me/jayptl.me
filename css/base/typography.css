@@ -257,16 +257,6 @@ dd {
 /* Decoration and transform utilities moved to utilities/text.css for consolidation */
 
 /* Special text effects */
-.gradient-text {
-  background: var(--theme-gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  font-family: var(--font-display);
-  font-weight: var(--weight-bold);
-}
-
 .text-shadow {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

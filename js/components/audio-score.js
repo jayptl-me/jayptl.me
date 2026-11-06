@@ -112,11 +112,26 @@
         } catch (e) { /* noop */ }
     }
 
+    // The riser plays once per page change. A routed link click plays it
+    // with the cover; page:ready then plays it only for a navigation no
+    // click voiced (back and forward).
+    var RISER_NAV_MS = 4000;
+    var riserAt = 0;
+
     function playRiser() {
         try {
             var sm = sound();
             if (sm && masterOn() && !reducedMotion()) sm.playRiser();
         } catch (e) { /* noop */ }
+    }
+
+    function riserForPageReady() {
+        if (riserAt && Date.now() - riserAt < RISER_NAV_MS) {
+            riserAt = 0;
+            return;
+        }
+        riserAt = 0;
+        playRiser();
     }
 
     function wireClicks() {
@@ -132,6 +147,7 @@
                     try {
                         if (window.PageRouter.handles(anchor)) {
                             sm.playRiser();
+                            riserAt = Date.now();
                             return;
                         }
                     } catch (err) { /* fall through */ }
@@ -174,7 +190,7 @@
         window.addEventListener('page:ready', function () {
             try {
                 bindMotifObserver();
-                playRiser();
+                riserForPageReady();
             } catch (e) { /* noop */ }
         });
     }

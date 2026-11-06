@@ -191,7 +191,7 @@
                 var next = !prefs().master;
                 setMaster(next);
                 if (next && window.SoundManager) {
-                    try { window.SoundManager.playSelectSound(); } catch (err) { /* silent */ }
+                    try { window.SoundManager.playSuccessSound(); } catch (err) { /* silent */ }
                 }
             } else if (t.id === 'audioBedSwitch') {
                 setBed(!prefs().bed);

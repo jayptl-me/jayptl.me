@@ -1,0 +1,191 @@
+/* One-pager styles for the resume sheet (js/components/resume-sheet.js),
+   adapted from the resume repo's resume-onepager.css to live in a shadow
+   root: :root became :host, the body rules moved onto .sheet, and the
+   @font-face and @page rules were dropped: the fonts are the page's own
+   faces (space-grotesk, plex-mono), which a shadow root can use. The tail block reflows the A4 sheet for the screen. */
+/* ============================================================
+   JAY PATEL, ONE-PAGER v2 (site-matched, ATS-clean)
+   Single column, A4, one page. Space Grotesk throughout at
+   10pt body, IBM Plex Mono for dates, one blue accent (#1976d2).
+   Fonts are the self-hosted jayptl.me files in ./fonts. The site's
+   IBM Plex Sans file is NOT used here: its PDF text extraction
+   splits words ("An a n d"), which breaks ATS parsing.
+   ============================================================ */
+
+/* Space Grotesk is variable, but Chrome's PDF text layer only maps weight 500
+   cleanly (other weights split pairs like "ML" into "M L" for ATS parsers).
+   So every glyph renders at 500; hierarchy comes from size, color, and case. */
+
+:host {
+  --accent: #1976d2;
+  --accent-soft: #bbdefb;
+  --ink: #16202b;
+  --ink-2: #3d4a57;
+  --ink-3: #5b6875;
+  --paper: #ffffff;
+
+  --font-display: 'space-grotesk', 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'space-grotesk', 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+  --font-mono: 'plex-mono', 'IBM Plex Mono', Menlo, Consolas, monospace;
+
+  --size-body: 10pt;
+  --size-meta: 9pt;
+  --lh: 1.28;
+}
+
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+.sheet {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  font-weight: 500;
+  line-height: var(--lh);
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  /* ATS: kerned pairs (M+L in "ML") split words when parsers extract PDF text. */
+  font-kerning: none;
+  font-feature-settings: "kern" 0;
+}
+
+/* Screen preview: an A4 sheet. Print: the sheet is the page. */
+.sheet {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 12mm auto;
+  padding: 10mm 13mm 9mm;
+  background: var(--paper);
+  box-shadow: 0 12px 30px -6px rgba(33, 150, 243, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@media print {
+  html { background: none; }
+  .sheet { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---- Header -------------------------------------------------------------- */
+.head { padding-bottom: 5pt; border-bottom: 1.5pt solid var(--accent); margin-bottom: 6pt; }
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22pt;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 11pt;
+  color: var(--accent);
+  margin-top: 2pt;
+}
+
+.contact {
+  margin-top: 3pt;
+  font-size: var(--size-meta);
+  color: var(--ink-2);
+}
+
+.contact span { white-space: nowrap; }
+.contact span + span::before { content: '\2002\00B7\2002'; color: var(--ink-3); }
+
+/* ---- Sections ------------------------------------------------------------ */
+section { margin-top: 6pt; }
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 10.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  border-bottom: 0.75pt solid var(--accent-soft);
+  padding-bottom: 1pt;
+  margin-bottom: 3pt;
+}
+
+p { margin: 0; }
+
+/* Skills: label + list per row, single column for ATS order */
+.skills { display: grid; grid-template-columns: max-content 1fr; column-gap: 7pt; row-gap: 1pt; }
+.skills dt { font-weight: 500; color: var(--accent); }
+.skills dd { color: var(--ink-2); }
+
+/* Roles */
+.role { margin-top: 4pt; break-inside: avoid; }
+.role:first-of-type { margin-top: 0; }
+
+.role-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8pt;
+}
+
+.role-title { font-family: var(--font-display); font-weight: 500; font-size: 10.5pt; color: var(--ink); }
+.role-title .org { font-weight: 500; color: var(--ink-2); }
+
+.when {
+  font-family: var(--font-mono);
+  font-size: var(--size-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.client { margin-top: 2.5pt; }
+.client-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8pt; }
+.client-name { font-weight: 500; }
+.client-name .org { font-weight: 500; color: var(--ink-2); }
+
+ul { list-style: none; margin-top: 1pt; }
+li { position: relative; padding-left: 9pt; margin-top: 0.5pt; color: var(--ink-2); }
+li::before {
+  content: '';
+  position: absolute;
+  left: 1.5pt;
+  top: 0.6em;
+  width: 3pt;
+  height: 3pt;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.note { color: var(--ink-2); }
+
+/* Projects */
+.proj { margin-top: 2pt; color: var(--ink-2); }
+.proj-name { font-weight: 500; color: var(--ink); }
+
+/* Education and recognition */
+.edu li { padding-left: 9pt; }
+
+/* Dark theme: obsidian paper on the turquoise ramp, never blue in dark
+   (jayptl.me/AGENTS.md). resume-sheet.js sets the host's data-theme. */
+:host([data-theme="dark"]) {
+  --accent: #26c9d8;
+  --accent-soft: rgba(0, 184, 204, 0.32);
+  --ink: #e6fbfc;
+  --ink-2: #bfd0d8;
+  --ink-3: #93a6b0;
+  --paper: #0b1219;
+}
+
+/* Screen: the sheet fills the bottom sheet's width and reflows on phones. */
+.sheet {
+  width: auto;
+  max-width: 210mm;
+  min-height: 0;
+  margin: 0 auto;
+  box-shadow: none;
+}
+
+@media (max-width: 599.98px) {
+  .sheet { padding: 20px 18px 24px; }
+}

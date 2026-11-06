@@ -40,7 +40,8 @@
     const email = 'hello@jayptl.me';
     const bookHref = '/book';
     const contactHref = '/contact';
-    const avatarSrc = '/assets/logo-512.png';
+    // 96px: sharp at 2.8x for the 34px slot; the 512px file was about 200 KB on every page.
+    const avatarSrc = '/assets/logo-96.png';
 
     return `
       <header id="glassNav" class="glass-nav" aria-label="Primary Navigation" role="banner">

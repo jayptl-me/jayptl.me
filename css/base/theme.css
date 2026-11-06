@@ -363,8 +363,8 @@ html[data-theme="dark"] {
    ========================================================================== */
 html[data-theme="dark"] {
   --ink-hand: #b3f4f8;
-  --doodle-line: rgba(var(--accent-500-rgb), 0.55);
-  --marker-band: rgba(var(--accent-500-rgb), 0.14);
+  --doodle-line: rgba(var(--accent-400-rgb), 0.85);
+  --marker-band: rgba(var(--accent-500-rgb), 0.24);
   --hud-label: var(--accent-300);
   --hud-readout: #e6fbfc;
   --hud-bracket: var(--accent-400);
@@ -376,8 +376,8 @@ html[data-theme="dark"] {
 @media (prefers-color-scheme: dark) {
   html:not([data-theme="light"]) {
     --ink-hand: #b3f4f8;
-    --doodle-line: rgba(var(--accent-500-rgb), 0.55);
-    --marker-band: rgba(var(--accent-500-rgb), 0.14);
+    --doodle-line: rgba(var(--accent-400-rgb), 0.85);
+    --marker-band: rgba(var(--accent-500-rgb), 0.24);
     --hud-label: var(--accent-300);
     --hud-readout: #e6fbfc;
     --hud-bracket: var(--accent-400);

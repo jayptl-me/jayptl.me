@@ -1,0 +1,167 @@
+/* ==========================================================================
+   TIME RAIL (js/components/time-rail.js)
+   A drawn rail in the left gutter of the /resume Experience rows, laptop and
+   wide only (docs/motion-zen.md section 6c, Gate R answers D-48). One stop
+   per row at its own row head, the row's start year beside it, one marker
+   that follows the reading line. The marker and the fill move by transform
+   only and carry no easing of their own; the active stop settles in 180ms
+   and leaves in 140ms, both on the snap curve. Decoration: aria-hidden, no
+   pointer events, hidden in print. Theme colours come from the shared
+   surface tokens, so light draws in the blue ramp and dark in turquoise.
+   ========================================================================== */
+
+.time-rail {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .time-rail-host {
+    --rail-gutter: 64px;
+    --rail-x: 46px;
+    position: relative;
+    padding-left: var(--rail-gutter);
+  }
+
+  .time-rail {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--rail-gutter);
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+@media (min-width: 1440px) {
+  .time-rail-host {
+    --rail-gutter: 76px;
+    --rail-x: 56px;
+  }
+}
+
+/* The spine is drawn from page load; the script trims it to run from the
+   first stop to the last once it has measured the rows. */
+.time-rail-spine,
+.time-rail-fill {
+  position: absolute;
+  top: 0;
+  left: calc(var(--rail-x) - 1px);
+  width: 2px;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.time-rail-spine {
+  background: var(--sf-border);
+}
+
+.time-rail-fill {
+  background: var(--sf-accent);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* Stops and the marker wait for the first measure, so they never show at
+   a guessed position. */
+.time-rail-stop,
+.time-rail-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+.time-rail.is-live .time-rail-stop,
+.time-rail.is-live .time-rail-marker {
+  visibility: visible;
+}
+
+.time-rail-stop {
+  width: var(--rail-x);
+  height: 0;
+}
+
+.time-rail-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--sf-border);
+  background: var(--theme-bg);
+  transition: transform 140ms var(--ease-snap),
+              border-color 140ms var(--ease-snap),
+              background-color 140ms var(--ease-snap);
+}
+
+.time-rail-year {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--sf-text-dim);
+  transition: color 140ms var(--ease-snap);
+}
+
+.time-rail-stop.is-reached .time-rail-dot {
+  border-color: var(--sf-accent);
+}
+
+.time-rail-stop.is-reached .time-rail-year {
+  color: var(--sf-text);
+}
+
+.time-rail-stop.is-active .time-rail-dot {
+  transform: scale(1.3);
+  border-color: var(--sf-accent);
+  background-color: var(--sf-accent);
+  transition-duration: 180ms;
+}
+
+.time-rail-stop.is-active .time-rail-year {
+  color: var(--sf-accent);
+  transition-duration: 180ms;
+}
+
+/* The marker is a shape only: no label, no now pill. */
+.time-rail-marker {
+  left: calc(var(--rail-x) - 7px);
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--sf-accent);
+  box-shadow: 0 0 0 4px rgba(var(--sf-accent-rgb), 0.18), var(--sf-glow);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .time-rail-dot,
+  .time-rail-year {
+    transition: none;
+  }
+  .time-rail-fill,
+  .time-rail-marker {
+    will-change: auto;
+  }
+}
+
+@media print {
+  .time-rail {
+    display: none !important;
+  }
+  .time-rail-host {
+    padding-left: 0;
+  }
+}

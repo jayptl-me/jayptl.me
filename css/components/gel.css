@@ -1,0 +1,295 @@
+/**
+ * Gel (D-103): the painted gel on the squishy controls.
+ *
+ * A tinted gel painted once from gradients: a body that deepens toward its
+ * base, a coloured rim, a soft highlight band across the top, light
+ * gathered at the base, and a shadow in the gel's own colour. Light is clay
+ * on the blue ramp, dark is glass on the turquoise ramp.
+ *
+ * js/components/press-state.js (the Gel block) adds two empty layers to
+ * each squishy control and marks it .has-gel, so no markup changes; without
+ * the script the controls keep their own paint. Layers, back to front:
+ *   .gel-shadow             the bleed, in the gel's colour
+ *   .gel-body               the body and its inner rim
+ *   .gel-body::before       the highlight band
+ *   .gel-body::after        the caustic at the base
+ * then the control's own label and icons.
+ *
+ * Filled pills, the sound toggle while on, the active deck and stack tab
+ * (.is-active; the script marks those tabs .gel--tab),
+ * the picked booking pill and the island's highlight pill are filled gel;
+ * the rest are clear gel.
+ *
+ * Press (with .is-pressed from the pill press or .gel-held from the Gel
+ * block): only transform and opacity move. The highlight flattens to 80%,
+ * the caustic brightens (to 0.7 on light filled gel, so white labels keep
+ * 4.5:1 while held), the shadow tucks in and fades to 45%. Pressing in
+ * takes 110ms; letting go settles on a critically damped curve (--gel-firm)
+ * so nothing here bounces. The squash of the control itself is the D-71
+ * spring in press-state.js. Reduced motion: colour and shadow only.
+ *
+ * @file css/components/gel.css
+ */
+
+/* ---- The host: the gel replaces its own paint ---------------------------- */
+
+.has-gel {
+    isolation: isolate;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    color: var(--g-ink) !important;
+}
+
+/* The Ink Status mark inside a busy pill takes the gel's ink; the look rules in
+   buttons.css set --pill-ink per theme at higher specificity. */
+.has-gel.pill-btn {
+    --pill-ink: var(--g-ink) !important;
+}
+
+.has-gel:is(.day-pill, .slot-pill, .mobile-all-projects, .mobile-social-pill) {
+    position: relative;
+}
+
+/* Secondary text inside a booking pill takes the gel's ink. */
+.has-gel :is(.day-name, .day-count, .slot-ist) {
+    color: inherit;
+}
+
+/* ---- Layers ---------------------------------------------------------------- */
+
+.has-gel > .gel-shadow,
+.has-gel > .gel-body {
+    position: absolute;
+    /* Over the host's own 1px (now transparent) border. */
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.has-gel > .gel-shadow {
+    z-index: -2;
+    transform-origin: 50% 40%;
+    box-shadow: var(--g-bleed);
+}
+
+.has-gel > .gel-body {
+    z-index: -1;
+    overflow: hidden;
+    background: var(--g-body);
+    box-shadow: var(--g-rim), var(--g-rim-press, 0 0 0 0 transparent);
+}
+
+/* Feathered on every side, so it reads as light inside a soft body, not a
+   hard gloss strip. */
+.has-gel > .gel-body::before {
+    content: "";
+    position: absolute;
+    left: var(--g-hl-x, 4%);
+    right: var(--g-hl-x, 4%);
+    top: 0;
+    height: var(--g-hl-h, 62%);
+    background: radial-gradient(70% 90% at 50% 8%, var(--g-hl) 0%, var(--g-hl-tail) 55%, transparent 100%);
+    transform-origin: 50% 0;
+}
+
+.has-gel > .gel-body::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    height: 50%;
+    background: radial-gradient(55% 70% at 50% 100%, var(--g-caustic) 0%, transparent 100%);
+    opacity: 0.6;
+}
+
+/* The round toggles carry a narrower, taller highlight. */
+.has-gel:is(.theme-toggle, .audio-toggle) {
+    --g-hl-x: 8%;
+    --g-hl-h: 60%;
+}
+
+/* ---- Press: transform and opacity only, no overshoot ----------------------- */
+
+.has-gel > .gel-shadow,
+.has-gel > .gel-body::before,
+.has-gel > .gel-body::after {
+    transition: transform 200ms var(--gel-firm, ease-out), opacity 200ms var(--gel-firm, ease-out);
+}
+
+/* Hover, fine pointers only: the gel's paint replaces the old hover tints, so
+   the gel answers hover itself, inside its body: the highlight band reaches a
+   little lower and the light at the base gathers. Transform and opacity only,
+   on the same no-bounce settle. The shadow layer stays put: a box shadow is
+   cut out under its own box, so moving it would open a pale rim under the
+   pill. Light filled gel keeps its light still, for its white label. The
+   pill's own 1px lift (buttons.css) still runs on the host. */
+@media (hover: hover) and (pointer: fine) {
+    .has-gel:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):not(.is-pressed):not(.gel-held):not(input:disabled + *):hover > .gel-body::before {
+        transform: scaleY(var(--g-hl-hover, 1.12));
+    }
+
+    .has-gel:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):not(.is-pressed):not(.gel-held):not(input:disabled + *):hover > .gel-body::after {
+        opacity: var(--g-caustic-hover, 1);
+    }
+}
+
+.has-gel:is(.is-pressed, .gel-held) > .gel-shadow,
+.has-gel:is(.is-pressed, .gel-held) > .gel-body::before,
+.has-gel:is(.is-pressed, .gel-held) > .gel-body::after {
+    transition-duration: 110ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.has-gel:is(.is-pressed, .gel-held) > .gel-shadow {
+    opacity: 0.45;
+    transform: translateY(-2px) scale(0.97);
+}
+
+.has-gel:is(.is-pressed, .gel-held) > .gel-body::before {
+    transform: scaleY(0.8);
+    opacity: 0.8;
+}
+
+.has-gel:is(.is-pressed, .gel-held) > .gel-body::after {
+    opacity: var(--g-caustic-press, 1);
+}
+
+/* The deck and stack tabs are about 20px tall and their label fills most of
+   it, so their light sits at the edges: the highlight in the top quarter and
+   the caustic in the bottom quarter, clear of the glyphs. */
+.has-gel.gel--tab {
+    --g-hl-h: 24% !important;
+}
+
+.has-gel.gel--tab > .gel-body::after {
+    height: 26%;
+}
+
+/* The label spans nearly the whole tab, so an active tab's body starts at
+   the depth a taller pill has under its label (--g-body-tab, set by the
+   light filled recipe only). */
+.has-gel.gel--tab.is-active > .gel-body {
+    background: var(--g-body-tab, var(--g-body));
+}
+
+/* ---- Light: clay on the blue ramp, as a tinted gel ------------------------- */
+
+/* recipe: light-clear */
+.has-gel {
+    --g-body: linear-gradient(180deg, rgba(240, 248, 255, 0.82) 0%, rgba(214, 234, 251, 0.8) 60%, rgba(187, 222, 251, 0.82) 100%);
+    --g-rim: inset 0 0 0 1px rgba(33, 150, 243, 0.3), inset 0 1.5px 0 rgba(255, 255, 255, 0.95), inset 0 -6px 9px -5px rgba(33, 150, 243, 0.35), inset 0 0 12px rgba(144, 202, 249, 0.45);
+    --g-hl: rgba(255, 255, 255, 0.8);
+    --g-hl-tail: rgba(255, 255, 255, 0.15);
+    --g-caustic: rgba(255, 255, 255, 0.85);
+    --g-bleed: 0 8px 16px -7px rgba(33, 150, 243, 0.45), 0 2px 4px -1px rgba(13, 71, 161, 0.12);
+    --g-ink: #0d47a1;
+    --g-press-inset: inset 0 3px 8px rgba(33, 150, 243, 0.4), inset 0 0 0 999px rgba(33, 150, 243, 0.12);
+}
+
+/* recipe: light-fill */
+.has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-active, input:checked + .day-pill, input:checked + .slot-pill, .mobile-social-pill.highlight) {
+    --g-body: linear-gradient(180deg, rgba(66, 165, 245, 0.95) 0%, rgba(25, 118, 210, 0.97) 30%, rgba(21, 101, 192, 0.98) 55%, rgba(13, 71, 161, 0.98) 100%);
+    --g-body-tab: linear-gradient(180deg, rgba(21, 101, 192, 0.98) 0%, rgba(13, 71, 161, 0.98) 100%);
+    --g-rim: inset 0 0 0 1px rgba(13, 71, 161, 0.22), inset 0 1.5px 0 rgba(255, 255, 255, 0.55), inset 0 -7px 10px -5px rgba(13, 71, 161, 0.45), inset 0 0 14px 1px rgba(144, 202, 249, 0.5);
+    --g-hl: rgba(255, 255, 255, 0.45);
+    --g-hl-h: 48%;
+    --g-hl-tail: rgba(255, 255, 255, 0.06);
+    --g-caustic: rgba(144, 202, 249, 0.5);
+    --g-caustic-press: 0.7;
+    --g-caustic-hover: 0.6;
+    --g-hl-hover: 1;
+    --g-bleed: 0 10px 20px -7px rgba(33, 150, 243, 0.65), 0 3px 6px -2px rgba(13, 71, 161, 0.28);
+    --g-ink: #ffffff;
+    --g-press-inset: inset 0 4px 10px rgba(13, 71, 161, 0.55), inset 0 0 0 999px rgba(13, 71, 161, 0.14);
+}
+
+/* ---- Dark: liquid glass on the turquoise ramp, as a tinted gel ------------- */
+
+/* recipe: dark-clear */
+html[data-theme="dark"] .has-gel {
+    --g-body: linear-gradient(180deg, rgba(22, 36, 48, 0.78) 0%, rgba(10, 17, 25, 0.86) 100%);
+    --g-rim: inset 0 0 0 1px rgba(0, 184, 204, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -6px 9px -5px rgba(0, 184, 204, 0.26), inset 0 0 12px rgba(0, 184, 204, 0.18);
+    --g-hl: rgba(255, 255, 255, 0.2);
+    --g-hl-tail: rgba(255, 255, 255, 0.02);
+    --g-caustic: rgba(0, 184, 204, 0.28);
+    --g-bleed: 0 10px 22px -8px rgba(0, 0, 0, 0.7), 0 0 14px -4px rgba(0, 184, 204, 0.25);
+    --g-ink: #80e2ea;
+    --g-press-inset: inset 0 3px 9px rgba(0, 0, 0, 0.65), inset 0 0 0 999px rgba(0, 184, 204, 0.10);
+}
+
+/* recipe: dark-fill */
+html[data-theme="dark"] .has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-active, input:checked + .day-pill, input:checked + .slot-pill, .mobile-social-pill.highlight) {
+    --g-body: linear-gradient(180deg, rgba(38, 201, 216, 0.5) 0%, rgba(0, 159, 179, 0.4) 45%, rgba(0, 129, 144, 0.42) 75%, rgba(0, 97, 107, 0.56) 100%);
+    --g-rim: inset 0 0 0 1px rgba(77, 214, 226, 0.55), inset 0 1.5px 0 rgba(255, 255, 255, 0.4), inset 0 -7px 10px -5px rgba(0, 60, 66, 0.75), inset 0 0 16px 1px rgba(0, 184, 204, 0.5);
+    --g-hl: rgba(255, 255, 255, 0.38);
+    --g-hl-h: 48%;
+    --g-hl-tail: rgba(255, 255, 255, 0.04);
+    --g-caustic: rgba(128, 226, 234, 0.55);
+    --g-caustic-press: 1;
+    --g-caustic-hover: 1;
+    --g-hl-hover: 1.12;
+    --g-body-tab: initial;
+    --g-bleed: 0 10px 24px -6px rgba(0, 184, 204, 0.5), 0 4px 10px rgba(0, 0, 0, 0.55);
+    --g-ink: #e0f7f9;
+    --g-press-inset: inset 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 0 999px rgba(0, 0, 0, 0.22);
+}
+
+/* The same two recipes when the page follows the system's dark setting. */
+@media (prefers-color-scheme: dark) {
+    /* recipe: dark-clear */
+    :root:not([data-theme="light"]) .has-gel {
+        --g-body: linear-gradient(180deg, rgba(22, 36, 48, 0.78) 0%, rgba(10, 17, 25, 0.86) 100%);
+        --g-rim: inset 0 0 0 1px rgba(0, 184, 204, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -6px 9px -5px rgba(0, 184, 204, 0.26), inset 0 0 12px rgba(0, 184, 204, 0.18);
+        --g-hl: rgba(255, 255, 255, 0.2);
+        --g-hl-tail: rgba(255, 255, 255, 0.02);
+        --g-caustic: rgba(0, 184, 204, 0.28);
+        --g-bleed: 0 10px 22px -8px rgba(0, 0, 0, 0.7), 0 0 14px -4px rgba(0, 184, 204, 0.25);
+        --g-ink: #80e2ea;
+        --g-press-inset: inset 0 3px 9px rgba(0, 0, 0, 0.65), inset 0 0 0 999px rgba(0, 184, 204, 0.10);
+    }
+
+    /* recipe: dark-fill */
+    :root:not([data-theme="light"]) .has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-active, input:checked + .day-pill, input:checked + .slot-pill, .mobile-social-pill.highlight) {
+        --g-body: linear-gradient(180deg, rgba(38, 201, 216, 0.5) 0%, rgba(0, 159, 179, 0.4) 45%, rgba(0, 129, 144, 0.42) 75%, rgba(0, 97, 107, 0.56) 100%);
+        --g-rim: inset 0 0 0 1px rgba(77, 214, 226, 0.55), inset 0 1.5px 0 rgba(255, 255, 255, 0.4), inset 0 -7px 10px -5px rgba(0, 60, 66, 0.75), inset 0 0 16px 1px rgba(0, 184, 204, 0.5);
+        --g-hl: rgba(255, 255, 255, 0.38);
+        --g-hl-h: 48%;
+        --g-hl-tail: rgba(255, 255, 255, 0.04);
+        --g-caustic: rgba(128, 226, 234, 0.55);
+        --g-caustic-press: 1;
+        --g-caustic-hover: 1;
+        --g-hl-hover: 1.12;
+        --g-body-tab: initial;
+        --g-bleed: 0 10px 24px -6px rgba(0, 184, 204, 0.5), 0 4px 10px rgba(0, 0, 0, 0.55);
+        --g-ink: #e0f7f9;
+        --g-press-inset: inset 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 0 999px rgba(0, 0, 0, 0.22);
+    }
+}
+
+/* ---- Reduced motion: colour and shadow only --------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .has-gel > .gel-shadow,
+    .has-gel > .gel-body,
+    .has-gel > .gel-body::before,
+    .has-gel > .gel-body::after {
+        transition: none;
+    }
+
+    .has-gel:is(.is-pressed, .gel-held) > .gel-shadow {
+        transform: none;
+    }
+
+    .has-gel:is(.is-pressed, .gel-held) > .gel-body::before,
+    .has-gel:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):not(.is-pressed):not(.gel-held):not(input:disabled + *):hover > .gel-body::before {
+        transform: none;
+    }
+
+    .has-gel:is(.is-pressed, .gel-held) > .gel-body {
+        --g-rim-press: var(--g-press-inset);
+    }
+}

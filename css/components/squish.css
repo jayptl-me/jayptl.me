@@ -1,0 +1,45 @@
+/**
+ * Squish (docs/motion-zen.md section 6e, js/components/press-state.js).
+ *
+ * The press is a scale animation run by press-state.js, sized per element.
+ * When it runs (html.squish-on), the older fixed press scales step aside
+ * so the two never multiply. Without the script, the old :active scales
+ * stay as the fallback.
+ *
+ * @file css/components/squish.css
+ */
+
+html.squish-on {
+    --press-scale: 1;
+    --press-scale-soft: 1;
+}
+
+/* Pills: the press sinks from the hover lift; the squash is the scale. */
+html.squish-on .pill-btn.is-pressed:not(:disabled):not([aria-disabled="true"]) {
+    transform: none;
+}
+
+html.squish-on .case-card[data-linked]:active,
+html.squish-on .resume-track:active,
+html.squish-on .scroll-stack-pill:active,
+html.squish-on .day-pill:active,
+html.squish-on .slot-pill:active {
+    transform: none;
+}
+
+/* The two floating toggles keep their own hover and focus size while held. */
+html.squish-on .theme-toggle:not(:hover):not(:focus):active {
+    transform: none;
+}
+
+html.squish-on .theme-toggle:is(:hover, :focus):active {
+    transform: scale(1.1);
+}
+
+html.squish-on .audio-toggle:not(:hover):not(:focus-visible):active {
+    transform: none;
+}
+
+html.squish-on .audio-toggle:is(:hover, :focus-visible):active {
+    transform: scale(1.08);
+}

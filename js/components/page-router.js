@@ -332,11 +332,32 @@
                 setTimeout(settle, ASSET_TIMEOUT);
             });
             try {
-                (document.head || document.documentElement).appendChild(link);
+                insertPageStyle(link);
             } catch (e) { /* noop */ }
             pending.push(done);
         });
         return Promise.all(pending);
+    }
+
+    /* Home links main.css and its critical block at the top of the body, not in
+       the head (D-81), so page CSS appended to the head would sit before them and
+       lose every tie. Put it after the last stylesheet in that run instead. On
+       every other page main.css is in the head and page CSS is appended there,
+       as before. */
+    function insertPageStyle(link) {
+        var main = document.querySelector('link[rel="stylesheet"][href="/css/main.css"]');
+        if (!main || main.parentNode === document.head) {
+            (document.head || document.documentElement).appendChild(link);
+            return;
+        }
+        var anchor = main;
+        var next = anchor.nextElementSibling;
+        while (next && (next.tagName === 'STYLE' ||
+            (next.tagName === 'LINK' && /(^|\s)stylesheet(\s|$)/i.test(next.getAttribute('rel') || '')))) {
+            anchor = next;
+            next = anchor.nextElementSibling;
+        }
+        anchor.parentNode.insertBefore(link, anchor.nextSibling);
     }
 
     function currentScriptSrcs() {
@@ -394,6 +415,14 @@
             if (!visible) imported.classList.add('pt-swapped');
         } catch (e) { /* noop */ }
         liveMain.parentNode.replaceChild(imported, liveMain);
+        // Sprite marks point into an inline sprite that lives outside <main>,
+        // so bring it along when the page being left has none.
+        try {
+            var sprite = doc.getElementById('doodleSprite');
+            if (sprite && !document.getElementById('doodleSprite')) {
+                document.body.insertBefore(document.importNode(sprite, true), document.body.firstChild);
+            }
+        } catch (e) { /* noop */ }
         try {
             var liveFooters = Array.from(document.querySelectorAll('body > footer'));
             liveFooters.forEach(function (f) {
@@ -784,6 +813,8 @@
         handles: handles,
         navigate: navigate,
         prefetch: prefetch,
-        loadMissingScripts: loadMissingScripts
+        loadMissingScripts: loadMissingScripts,
+        swapBody: swapBody,
+        syncPageStyles: syncPageStyles
     };
 })();

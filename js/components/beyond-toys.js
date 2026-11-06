@@ -28,6 +28,10 @@
             if (!s) return;
             if (kind === 'hover' && s.playHoverSound) s.playHoverSound();
             if (kind === 'select' && s.playSelectSound) s.playSelectSound();
+            if (kind === 'tick' && s.playTickSound) s.playTickSound();
+            if (kind === 'release' && s.playReleaseSound) s.playReleaseSound();
+            if (kind === 'drop' && s.playDropSound) s.playDropSound();
+            if (kind === 'success' && s.playSuccessSound) s.playSuccessSound();
         } catch (e) { /* noop */ }
     }
 
@@ -133,7 +137,7 @@
             var now = performance.now();
             if (hit > 260 && now - lastBounce > 120) {
                 lastBounce = now;
-                tick('hover');
+                tick('tick');
             }
         }
 
@@ -195,7 +199,7 @@
                 b.vy = Math.max(-1600, Math.min(1600, (z.y - a.y) / dt));
             }
             drag = null;
-            tick('select');
+            tick('release');
             if (live) live.textContent = 'Flicked';
             run();
         }
@@ -331,7 +335,7 @@
             showScore();
             if (live) live.textContent = 'Game over, score ' + score + ', best ' + best + '. Press Enter to play again.';
             if (playBtn) playBtn.textContent = 'Play again';
-            tick('hover');
+            tick('drop');
         }
 
         function advance() {
@@ -348,7 +352,7 @@
             if (food && head.x === food.x && head.y === food.y) {
                 score++;
                 showScore();
-                tick('select');
+                tick('success');
                 placeFood();
             } else {
                 body.pop();

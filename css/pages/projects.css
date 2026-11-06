@@ -185,7 +185,6 @@
 
 @media (hover: hover) and (pointer: fine) {
     .case-card[data-linked]:hover {
-        transform: translateY(-1px);
         box-shadow: var(--sf-pill-shadow-hover);
     }
 }
@@ -306,13 +305,6 @@
     .feature-phone {
         right: 18px;
         border-radius: 16px;
-    }
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .feature-card:hover .feature-shot,
-    .feature-card:hover .feature-phone {
-        transform: translateY(-4px);
     }
 }
 

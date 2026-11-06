@@ -58,7 +58,7 @@
     }
 
     function swapLabel(btn, ok) {
-        var label = btn.querySelector('span');
+        var label = btn.querySelector('span:not([aria-hidden="true"])');
         if (!label) return;
         if (!btn._label) btn._label = label.textContent;
         label.textContent = ok ? 'Copied' : btn.getAttribute('data-copy');
@@ -154,8 +154,8 @@
             if (btn.classList.contains('pill-btn') && window.PillPress) window.PillPress.flash(btn, ok);
             liveRegion().textContent = ok ? 'Copied ' + value : 'Copy failed, the address is ' + value;
             try {
-                if (ok && window.SoundManager && typeof window.SoundManager.playSelectSound === 'function') {
-                    window.SoundManager.playSelectSound();
+                if (ok && window.SoundManager && typeof window.SoundManager.playSuccessSound === 'function') {
+                    window.SoundManager.playSuccessSound();
                 }
             } catch (err) { /* noop */ }
         });

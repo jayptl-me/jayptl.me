@@ -557,7 +557,6 @@ html[data-theme="dark"] .dropdown-card {
 html[data-theme="dark"] .dropdown-card:hover {
     background: rgba(0, 184, 204, 0.10);
     border-color: rgba(0, 184, 204, 0.35);
-    transform: translateY(-1px);
 }
 
 html[data-theme="dark"] .dropdown-card-icon {
@@ -773,7 +772,6 @@ html[data-theme="light"] .dropdown-card:hover {
     background: #f0f7ff;
     border-color: var(--primary-500);
     box-shadow: 0 6px 14px rgba(33, 150, 243, 0.18);
-    transform: translateY(-1px);
 }
 
 html[data-theme="light"] .dropdown-card-icon {

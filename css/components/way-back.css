@@ -1,0 +1,51 @@
+/**
+ * Way Back (docs/motion-zen.md section 6d): a quiet hooked return arrow
+ * above a page's title. Its ink darkens from the dim tone to full text in
+ * 100ms on fine pointers. It never moves.
+ *
+ * Markup:
+ *   <a class="way-back" href="/projects"><span class="arrow arrow--back" aria-hidden="true"></span>All projects</a>
+ *
+ * @file css/components/way-back.css
+ */
+
+.way-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--sf-text-dim);
+    text-decoration: none;
+    transition: color 100ms ease-out;
+}
+
+.way-back .arrow {
+    width: 18px;
+    height: 18px;
+    flex: none;
+}
+
+/* Beats the global a:hover tint, so a tap on touch leaves the ink quiet. */
+.way-back:hover {
+    color: var(--sf-text-dim);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .way-back:hover {
+        color: var(--sf-text);
+    }
+}
+
+.way-back:focus-visible {
+    color: var(--sf-text);
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+.privacy-main .breadcrumb {
+    margin-bottom: var(--space-4);
+}

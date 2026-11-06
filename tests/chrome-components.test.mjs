@@ -110,6 +110,29 @@ test('ink mark: every mark renders an aria-hidden, draw-ready svg with its defau
   assert.ok(document.querySelector('[data-ink="heart"]').classList.contains('ink--solo'));
 });
 
+test('ink mark: a stretched mark scales its path to the host box, so its one-dash draw covers the whole line', () => {
+  // A non-scaling stroke inside preserveAspectRatio="none" lays the dash out in
+  // screen space, so a pathLength of 1 drew only part of a stretched line.
+  const { window, document } = makeWindow({ reduced: true });
+  window.SVGElement.prototype.getBoundingClientRect = function () {
+    return { width: 240, height: 12, top: 0, left: 0, right: 240, bottom: 12 };
+  };
+  run(window, 'js/components/mount.js');
+  document.body.innerHTML = '<span data-ink="squiggle">ships</span><span data-ink="heart"></span>';
+  run(window, 'js/components/ink-mark.js');
+  const svg = document.querySelector('[data-ink="squiggle"] svg');
+  assert.equal(svg.getAttribute('preserveAspectRatio'), null);
+  assert.equal(svg.getAttribute('viewBox'), '0 0 240.0 12.0');
+  const path = svg.querySelector('path');
+  assert.equal(path.getAttribute('vector-effect'), null);
+  assert.ok(path.getAttribute('d').startsWith('M6.0 7.0 C18.0 2.0'), path.getAttribute('d').slice(0, 30));
+  // Solo marks are redrawn too, scaled evenly and centred, so w is the line in
+  // screen px (one pen, D-74): 240x12 fits the 24x22 heart at 12/22, from x 113.5.
+  const heart = document.querySelector('[data-ink="heart"] svg');
+  assert.equal(heart.getAttribute('viewBox'), '0 0 240.0 12.0');
+  assert.ok(heart.querySelector('path').getAttribute('d').startsWith('M120.0 10.9 C116.7 8.2'), heart.querySelector('path').getAttribute('d').slice(0, 30));
+});
+
 test('ink mark: an empty host renders solo and hides itself from assistive tech', () => {
   const { window, document } = makeWindow({ reduced: true });
   run(window, 'js/components/mount.js');
@@ -242,6 +265,16 @@ test('command deck: Cmd K and Ctrl K toggle it', () => {
   assert.ok(document.documentElement.classList.contains('deck-open'));
   document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
   assert.equal(document.documentElement.classList.contains('deck-open'), false);
+});
+
+test('command deck: Cmd K does nothing while the preloader holds the page', () => {
+  const { window, document } = deckEnv();
+  document.documentElement.classList.add('pl-on');
+  document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+  assert.equal(document.documentElement.classList.contains('deck-open'), false, 'nothing opens behind the cover');
+  document.documentElement.classList.remove('pl-on');
+  document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+  assert.ok(document.documentElement.classList.contains('deck-open'), 'after the lift it works');
 });
 
 /* ---- Talk Chip -------------------------------------------------------- */

@@ -2,8 +2,13 @@
 /**
  * One-time Google sign-in that prints a refresh token for GOOGLE_REFRESH_TOKEN.
  *
- * Run it on your own machine, never on the server:
- *   GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=... node scripts/google-auth.mjs
+ * Run it once, never on the server. On a build box, with a tunnel from the
+ * machine whose browser you approve in (README, "Your setup", step 2):
+ *   ssh -L 53682:127.0.0.1:53682 <box>
+ *   GOOGLE_AUTH_PORT=53682 node scripts/google-auth.mjs
+ * with GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the environment.
+ * Without GOOGLE_AUTH_PORT it picks a free port, for a run on the same
+ * machine as the browser.
  *
  * It opens a loopback server on 127.0.0.1, prints a Google consent URL,
  * and after you approve it exchanges the code for tokens. Your OAuth
@@ -16,6 +21,7 @@ import crypto from 'node:crypto';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const PORT = Number(process.env.GOOGLE_AUTH_PORT || 0);
 const SCOPES = [
   'https://www.googleapis.com/auth/calendar.events',
   'https://www.googleapis.com/auth/calendar.freebusy'
@@ -23,6 +29,10 @@ const SCOPES = [
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET first.');
+  process.exit(1);
+}
+if (!Number.isInteger(PORT) || PORT < 0 || PORT > 65535) {
+  console.error('GOOGLE_AUTH_PORT must be a port number.');
   process.exit(1);
 }
 
@@ -57,7 +67,8 @@ const server = http.createServer(async (req, res) => {
   const data = await tokenRes.json();
   if (!data.refresh_token) {
     res.writeHead(500, { 'Content-Type': 'text/plain' }).end('No refresh token returned. Remove the app from your Google account access page and run this again.');
-    console.error(data);
+    // Only the error fields: an access token in the reply must not reach the screen.
+    console.error('No refresh token:', data.error || 'none', data.error_description || '');
     server.close();
     return;
   }
@@ -67,7 +78,7 @@ const server = http.createServer(async (req, res) => {
   server.close();
 });
 
-server.listen(0, '127.0.0.1', () => {
+server.listen(PORT, '127.0.0.1', () => {
   const redirectUri = `http://127.0.0.1:${server.address().port}/callback`;
   const auth = new URL('https://accounts.google.com/o/oauth2/v2/auth');
   auth.search = new URLSearchParams({

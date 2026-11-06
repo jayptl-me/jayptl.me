@@ -10,7 +10,7 @@
  *   with minutes played in the last two weeks (GetRecentlyPlayedGames).
  */
 
-const { fetchWithTimeout } = require('./util');
+const { fetchWithTimeout } = require('../core/fetch');
 
 const BASE = 'https://api.steampowered.com';
 

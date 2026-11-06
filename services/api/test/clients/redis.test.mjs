@@ -3,10 +3,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { respServer } from './fakes.mjs';
+import { respServer } from '../fakes/index.mjs';
 
 const require = createRequire(import.meta.url);
-const { createRedis, encode, Parser, parseUrl } = require('../src/redis.js');
+const { createRedis, encode, Parser, parseUrl } = require('../../src/clients/redis.js');
 
 test('encode and parse round-trip every reply type', () => {
   assert.equal(encode(['SET', 'k', 'héllo']).toString('utf8'), '*3\r\n$3\r\nSET\r\n$1\r\nk\r\n$6\r\nhéllo\r\n');
@@ -41,4 +41,21 @@ test('client talks to a RESP server: commands, pipelines, errors', async () => {
   assert.equal(await redis.command(['GET', 'missing']), null, 'still in sync after an error');
   await redis.quit();
   await srv.close();
+});
+
+test('a command that timed out is never sent later, after a reconnect', async () => {
+  const srv = respServer(undefined, { stallFirst: true });
+  const port = await srv.listen();
+  const redis = createRedis(`redis://default:secret@127.0.0.1:${port}`, { timeoutMs: 150 });
+  try {
+    await assert.rejects(redis.command(['INCR', 'n']), /timeout/);
+    // Give a reconnect every chance to replay it.
+    await new Promise((r) => setTimeout(r, 900));
+    assert.equal(srv.fake.kv.get('n'), undefined, 'the caller was told it failed, so it must not run');
+    // Negative control: a new command on a fresh connection works.
+    assert.equal(await redis.command(['INCR', 'm']), 1);
+  } finally {
+    await redis.quit();
+    await srv.close();
+  }
 });

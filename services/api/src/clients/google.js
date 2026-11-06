@@ -9,7 +9,7 @@
  * the guest for every change because sendUpdates=all.
  */
 
-const { fetchWithTimeout } = require('./util');
+const { fetchWithTimeout } = require('../core/fetch');
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const API = 'https://www.googleapis.com/calendar/v3';

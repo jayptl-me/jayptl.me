@@ -63,6 +63,13 @@ html.deck-open body {
   transition: opacity 140ms var(--ease-snap);
 }
 
+/* The field draws no outline of its own; the whole search row carries
+   the pill ring while it has keyboard focus. */
+.deck-search:focus-within {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 3px;
+}
+
 .deck-search {
   display: flex;
   align-items: center;

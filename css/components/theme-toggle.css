@@ -38,10 +38,19 @@
 }
 
 .theme-toggle:hover,
-.theme-toggle:focus {
+.theme-toggle:focus-visible {
     transform: scale(1.1);
     /* Default fallback */
     background: rgba(var(--primary-500-rgb), 0.15);
+}
+
+/* Keyboard focus shows the pill ring; a mouse click shows none. */
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
+}
+
+.theme-toggle:focus:not(:focus-visible) {
     outline: none;
 }
 

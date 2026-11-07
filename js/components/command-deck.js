@@ -490,6 +490,9 @@
             clearTimeout(closeTimer);
             closeTimer = null;
         }
+        // Reopened during the exit: drop the closing state, or its opacity 0
+        // outranks is-open and the deck stays invisible.
+        root.classList.remove('is-closing');
         if (isOpen) {
             if (typeof query === 'string') {
                 input.value = query;

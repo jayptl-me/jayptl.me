@@ -62,6 +62,13 @@
         var sameZone = zone === IST;
         var off = host.querySelector('.book-off');
         var on = host.querySelector('.book-on');
+
+        // The page lead promises what the visitor can do now: email while
+        // live booking is off, picking a slot once open times load.
+        function leads(live) {
+            document.querySelectorAll('.book-lead-off').forEach(function (n) { n.hidden = live; });
+            document.querySelectorAll('.book-lead-on').forEach(function (n) { n.hidden = !live; });
+        }
         var daysEl = host.querySelector('.slot-days');
         var timesEl = host.querySelector('.slot-times');
         var tzEl = host.querySelector('.slot-tz');
@@ -172,6 +179,7 @@
                 }
                 off.hidden = true;
                 on.hidden = false;
+                leads(true);
                 say('');
                 showDays(data.slots);
             });

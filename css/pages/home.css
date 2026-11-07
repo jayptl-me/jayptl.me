@@ -291,6 +291,10 @@
   gap: var(--space-10);
   align-items: center;
 }
+/* No photo yet: the copy takes the row on its own (D-149). */
+.home-about-grid--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
 .home-about-copy .section-title {
   max-width: 22ch;
 }

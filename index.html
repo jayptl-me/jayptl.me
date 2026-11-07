@@ -851,17 +851,15 @@ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(p){if(!s
 
         <!-- 06 · About / journey teaser -->
         <section id="about-teaser" class="home-section" aria-labelledby="aboutTeaserHeading">
-            <div class="container home-about-grid">
+            <div class="container home-about-grid home-about-grid--solo">
                 <div class="home-about-copy">
                     <p class="hud-label">06 · <span class="sr-only">About</span></p>
                     <h2 id="aboutTeaserHeading" class="section-title">Games taught me systems thinking before any textbook did.</h2>
                     <p class="home-about-text">I don't just play them, I dissect them. Economies, feedback loops, difficulty curves, why players quit. It's market research my product sense benefits from. Building games keeps my UX instincts honest: nothing exposes bad interaction design faster than a player rage-quitting your menu.</p>
                     <a class="pill-btn pill-btn--filled" href="/about">Read the longer version</a>
                 </div>
-                <figure class="fig home-fig">
-                    <div class="work-cover-placeholder home-fig-frame">[ a candid desk photo lands here ]</div>
-                    <figcaption class="fig-caption"><b>FIG 1</b>, the homelab, the console, the coffee</figcaption>
-                </figure>
+                <!-- FIG 1 (a candid desk photo) returns here when the owner has one; the
+                     frame styles stay in css/pages/home.css (.home-fig, .home-fig-frame). -->
             </div>
         </section>
 

@@ -240,6 +240,20 @@ test('command deck: opens from a [data-deck-open] control, locks the page, lists
   window.CommandDeck.close(false);
 });
 
+test('command deck fix: reopened during its 140ms close, it is visible, not stuck closing', () => {
+  const env = makeWindow();
+  const { window, document } = env;
+  document.body.innerHTML = '<button id="opener" data-deck-open>deck</button><main></main>';
+  run(window, 'js/components/command-deck.js');
+  window.CommandDeck.open();
+  window.CommandDeck.close(false);
+  const deck = document.getElementById('commandDeck');
+  assert.ok(deck.classList.contains('is-closing'), 'close did not start its exit');
+  window.CommandDeck.open();
+  assert.equal(deck.hidden, false);
+  assert.equal(deck.classList.contains('is-closing'), false, 'the reopened deck kept is-closing and stays invisible');
+});
+
 test('command deck: filters, moves with arrows, and Escape restores focus', () => {
   const { window, document } = deckEnv();
   const opener = document.getElementById('opener');

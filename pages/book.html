@@ -62,7 +62,9 @@
         <header class="page-hero">
             <p class="page-hero-kicker hud-label">Book a call</p>
             <h1>Fifteen minutes, <span data-ink="squiggle">no slides</span>.</h1>
-            <p class="page-hero-lead">Pick a slot and leave your name and email. Google sends the invite right away,
+            <p class="page-hero-lead book-lead-off">Email me two or three times that suit you and your time zone.
+                I reply within a day with a calendar invite and a Meet link.</p>
+            <p class="page-hero-lead book-lead-on" hidden>Pick a slot and leave your name and email. Google sends the invite right away,
                 and the Meet link lands in your inbox 15 minutes before we start.</p>
         </header>
 
@@ -70,7 +72,7 @@
             <h2 class="sr-only" id="bookTitle">Pick a time</h2>
 
             <div class="book-off">
-                <p class="book-off-lead">Online booking opens soon. Until then, email
+                <p class="book-off-lead">Write to
                     <a href="mailto:hello@jayptl.me?subject=15%20minute%20call">hello@jayptl.me</a> with two or three
                     times that suit you, and your time zone.</p>
                 <div class="talk-chip">
@@ -118,7 +120,16 @@
             </div>
         </section>
 
-        <section aria-labelledby="bookHow">
+        <section aria-labelledby="bookHowEmail" class="book-lead-off">
+            <div class="section-head"><span class="section-no">01</span><h2 id="bookHowEmail">How it works</h2></div>
+            <ol class="slash-list">
+                <li><strong>Write in.</strong> Email <a href="mailto:hello@jayptl.me?subject=15%20minute%20call">hello@jayptl.me</a> with two or three times that suit you, and your time zone.</li>
+                <li><strong>Get the invite.</strong> I reply within a day with a calendar invite and a Google Meet link.</li>
+                <li><strong>Plans change.</strong> Reply to the thread or decline the invite; no need to explain.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="bookHow" class="book-lead-on" hidden>
             <div class="section-head"><span class="section-no">01</span><h2 id="bookHow">How it works</h2></div>
             <ol class="slash-list">
                 <li><strong>Pick a slot.</strong> Open times come straight from Jay Patel's calendar, two weeks ahead, with at least two hours' notice.</li>
@@ -127,6 +138,7 @@
                 <li><strong>Plans change.</strong> Cancel from the link in your invite or on your confirmation screen, or just decline the invite.</li>
             </ol>
             <p>Prefer email? Write to <a href="mailto:hello@jayptl.me">hello@jayptl.me</a>. Your booking details are deleted 30 days after the call; see <a href="/privacy#booking">privacy</a>.</p>
+        </section>
     </main>
 
     <footer class="site-footer">

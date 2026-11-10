@@ -47,7 +47,11 @@ const config = {
   stats: {
     css: { original: 0, minified: 0, saved: 0, files: 0 },
     js: { original: 0, minified: 0, saved: 0, files: 0 },
-    html: { original: 0, minified: 0, saved: 0, files: 0 }
+    html: { original: 0, minified: 0, saved: 0, files: 0 },
+    /* Every file the minifiers refused. A skipped file ships unminified, which
+       on this site's stylesheet is about 190 KB, and until now the run still
+       printed success and exited 0. */
+    failures: []
   }
 };
 
@@ -134,6 +138,7 @@ async function minifyCSS() {
       
     } catch (error) {
       log.error(`Failed to minify ${file}: ${error.message}`);
+      config.stats.failures.push({ kind: 'css', file: path.relative(config.distDir, file), error: error.message });
     }
   }
 }
@@ -183,6 +188,7 @@ async function minifyJavaScript() {
       
     } catch (error) {
       log.error(`Failed to minify ${file}: ${error.message}`);
+      config.stats.failures.push({ kind: 'js', file: path.relative(config.distDir, file), error: error.message });
     }
   }
 }
@@ -231,6 +237,7 @@ async function minifyHTMLFiles() {
       
     } catch (error) {
       log.error(`Failed to minify ${file}: ${error.message}`);
+      config.stats.failures.push({ kind: 'html', file: path.relative(config.distDir, file), error: error.message });
     }
   }
 }
@@ -298,6 +305,14 @@ async function optimize() {
     printStats();
     
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+    if (config.stats.failures.length) {
+      log.error(`${config.stats.failures.length} file(s) were not minified and would ship as written:`);
+      for (const f of config.stats.failures) {
+        console.error(`  ${f.kind.toUpperCase()} ${f.file}: ${f.error}`);
+      }
+      console.error('A skipped minify is a real size regression, so the build fails here rather than reporting success.');
+      process.exit(1);
+    }
     console.log(`\n${colors.green}${colors.bright}Optimization completed successfully in ${duration}s${colors.reset}\n`);
     
   } catch (error) {

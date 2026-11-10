@@ -479,7 +479,12 @@ async function generateCleanUrls() {
           const destDir = path.join(config.distDir, relDir);
           await fs.mkdir(destDir, { recursive: true });
           await fs.copyFile(sourceFile, path.join(destDir, 'index.html'));
-          log.success(`Generated /${relDir}/index.html`);
+          if (relDir) {
+            await fs.copyFile(sourceFile, path.join(config.distDir, `${relDir}.html`));
+            log.success(`Generated /${relDir}/index.html and /${relDir}.html`);
+          } else {
+            log.success(`Generated /${relDir}/index.html`);
+          }
         } else {
           const slug = subRel.replace(/\.html$/, '');
           const targetDir = path.join(config.distDir, slug);
@@ -520,6 +525,31 @@ async function generateCleanUrls() {
     }
   }
   await processMdDir(mdSrc);
+}
+
+/**
+ * Mirror resume PDFs from dist/assets/resumes/ to dist/resumes/
+ * Ensures clean public URLs (/resumes/<track>.pdf) resolve natively on
+ * static CDN hosting without relying on host-level rewrite rules.
+ */
+async function mirrorResumes() {
+  log.info('Mirroring resumes to dist/resumes/ for clean static URLs...');
+  const srcDir = path.join(config.distDir, 'assets', 'resumes');
+  const destDir = path.join(config.distDir, 'resumes');
+  try {
+    await fs.mkdir(destDir, { recursive: true });
+    const entries = await fs.readdir(srcDir, { withFileTypes: true });
+    let count = 0;
+    for (const entry of entries) {
+      if (entry.isFile() && entry.name.endsWith('.pdf')) {
+        await fs.copyFile(path.join(srcDir, entry.name), path.join(destDir, entry.name));
+        count++;
+      }
+    }
+    log.success(`Mirrored ${count} resume PDFs to /dist/resumes/`);
+  } catch (error) {
+    log.warn(`Could not mirror resumes: ${error.message}`);
+  }
 }
 
 /**
@@ -593,6 +623,9 @@ async function build() {
     // Generate physical clean URL directories (e.g. dist/about/index.html)
     // for native static hosting support on edge CDN platforms.
     await generateCleanUrls();
+
+    // Mirror resume PDFs to dist/resumes/ for clean static URL resolution
+    await mirrorResumes();
 
     // Copy error pages to root for direct access
     await copyErrorPages();

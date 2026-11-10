@@ -396,12 +396,31 @@ function hoverViolations(css) {
     }
     if (!/>\s*\.gel-/.test(m[1])) v.push('hover moves the host itself');
     if (!/:not\(\[aria-busy="true"\]\)/.test(m[1]) || !/:not\(:disabled\)/.test(m[1])) v.push('hover reaches a busy or disabled control');
+    // Hover selectors outrank the press rules on specificity, so the press wins only
+    // because every hover selector stands down while pressed or held (review 2026-11-06).
+    if (!/:not\(\.is-pressed\)/.test(m[1]) || !/:not\(\.gel-held\)/.test(m[1])) v.push('hover does not stand down while pressed');
   }
   if (!/:hover[^{]*>\s*\.gel-body::before[^{]*\{[^}]*transform/.test(fine)) v.push('the highlight does not answer hover');
   if (!/:hover[^{]*>\s*\.gel-body::after[^{]*\{[^}]*opacity/.test(fine)) v.push('the caustic does not answer hover');
   // A box shadow is cut out under its own box: moving the shadow layer opens a pale rim
-  // under the pill (seen in the fix-round render, 2026-11-05), so hover leaves it alone.
+  // under the pill (seen in the fix-round render, 2026-11-05), so hover never moves it.
   if (/:hover[^{]*>\s*\.gel-shadow/.test(fine)) v.push('hover moves the shadow layer');
+  // No drop shadow at all (Jay, 2026-11-06: "i dont like the drop shadow at all"): every
+  // shadow gel.css paints, in a declaration or a --g-* recipe value, is inset or none.
+  const shadowValues = [...body.matchAll(/box-shadow:\s*([^;}]+)/g), ...body.matchAll(/--g-[a-z-]+:\s*([^;}]*rgba[^;}]*)/g)].map((m) => m[1]);
+  for (const val of shadowValues) {
+    for (const part of val.split(/,(?![^(]*\))/).map((x) => x.trim())) {
+      if (/^(none|inset\b|var\()/.test(part) || !/\dpx/.test(part)) continue;
+      v.push('gel paints a drop shadow');
+    }
+  }
+  // Light filled gel keeps its highlight still for its white label, so it answers hover
+  // with its base light, up to the 0.7 its press already proves at 4.5:1.
+  const lf = /recipe: light-fill \*\/[^{]*\{([^}]*)\}/.exec(css);
+  const lfc = lf && /--g-caustic-hover:\s*([\d.]+)/.exec(lf[1]);
+  if (!lfc || !(Number(lfc[1]) > 0.6 && Number(lfc[1]) <= 0.7)) v.push('light filled gel does not answer hover');
+  const hl = /scaleY\(var\(--g-hl-hover,\s*([\d.]+)\)\)/.exec(fine);
+  if (!hl || Number(hl[1]) < 1.2) v.push('the hover highlight is too weak');
   const hoverAt = body.indexOf(FINE);
   const pressAt = body.indexOf(':is(.is-pressed, .gel-held) > .gel-shadow {');
   if (hoverAt === -1 || pressAt === -1 || pressAt < hoverAt) v.push('the press rules must come after hover so the press wins');
@@ -416,7 +435,7 @@ test('gel: hover answers on fine pointers with transform and opacity only, and l
   assert.doesNotMatch(strip(CSS), /\.has-gel[^{>]*\{[^}]*(^|[;\s])transform\s*:/m, 'gel.css never sets the host transform');
 });
 
-test('gel, negative control: a hover tint, a coarse-pointer hover, a moved host or shadow, and no hover at all are caught', () => {
+test('gel, negative control: a hover tint, a coarse-pointer hover, a moved host or shadow, a weak hover, and no hover at all are caught', () => {
   const tint = CSS + '\n' + FINE + ' {\n.has-gel:not(:disabled):not([aria-busy="true"]):hover > .gel-body { background: red; }\n}';
   assert.ok(hoverViolations(tint).includes('hover sets background'), hoverViolations(tint).join('; '));
   const coarse = CSS + '\n.has-gel:hover > .gel-shadow { opacity: 1; }';
@@ -426,6 +445,19 @@ test('gel, negative control: a hover tint, a coarse-pointer hover, a moved host 
   assert.ok(hoverViolations('.x {}').includes('no fine-pointer hover'));
   const rim = CSS + '\n' + FINE + ' {\n.has-gel:not(:disabled):not([aria-busy="true"]):hover > .gel-shadow { transform: translateY(2px) scale(1.03); }\n}';
   assert.ok(hoverViolations(rim).includes('hover moves the shadow layer'));
+  const weak = CSS.replace('scaleY(var(--g-hl-hover, 1.25))', 'scaleY(var(--g-hl-hover, 1.12))');
+  assert.ok(hoverViolations(weak).includes('the hover highlight is too weak'), hoverViolations(weak).join('; '));
+  const overPress = CSS + '\n' + FINE + ' {\n.has-gel:not(:disabled):not([aria-busy="true"]):hover > .gel-shadow { opacity: 1; }\n}';
+  assert.ok(hoverViolations(overPress).includes('hover does not stand down while pressed'), hoverViolations(overPress).join('; '));
+  const drop = CSS.replace('box-shadow: none;\n}', 'box-shadow: 0 8px 16px -7px rgba(33, 150, 243, 0.45);\n}');
+  assert.notEqual(drop, CSS, 'the planted drop shadow must change the CSS');
+  assert.ok(hoverViolations(drop).includes('gel paints a drop shadow'), hoverViolations(drop).join('; '));
+  const bleed = CSS.replace('--g-ink: #0d47a1;', '--g-bleed: 0 8px 16px -7px rgba(33, 150, 243, 0.45);\n    --g-ink: #0d47a1;');
+  assert.notEqual(bleed, CSS, 'the planted bleed must change the CSS');
+  assert.ok(hoverViolations(bleed).includes('gel paints a drop shadow'), hoverViolations(bleed).join('; '));
+  const flatFill = CSS.replace('--g-caustic-hover: 0.7;', '--g-caustic-hover: 0.6;');
+  assert.notEqual(flatFill, CSS, 'the planted flat fill must change the CSS');
+  assert.ok(hoverViolations(flatFill).includes('light filled gel does not answer hover'), hoverViolations(flatFill).join('; '));
 });
 
 // --pill-ink (review finding 4): the gel ink must reach the Ink Status mark, so the

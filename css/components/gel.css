@@ -2,14 +2,15 @@
  * Gel (D-103): the painted gel on the squishy controls.
  *
  * A tinted gel painted once from gradients: a body that deepens toward its
- * base, a coloured rim, a soft highlight band across the top, light
- * gathered at the base, and a shadow in the gel's own colour. Light is clay
- * on the blue ramp, dark is glass on the turquoise ramp.
+ * base, a coloured rim, a soft highlight band across the top, and light
+ * gathered at the base. No drop shadow under the control (Jay, 2026-11-06:
+ * "i dont like the drop shadow at all"). Light is clay on the blue ramp,
+ * dark is glass on the turquoise ramp.
  *
  * js/components/press-state.js (the Gel block) adds two empty layers to
  * each squishy control and marks it .has-gel, so no markup changes; without
  * the script the controls keep their own paint. Layers, back to front:
- *   .gel-shadow             the bleed, in the gel's colour
+ *   .gel-shadow             empty: it paints no shadow (kept in the markup)
  *   .gel-body               the body and its inner rim
  *   .gel-body::before       the highlight band
  *   .gel-body::after        the caustic at the base
@@ -23,9 +24,9 @@
  * Press (with .is-pressed from the pill press or .gel-held from the Gel
  * block): only transform and opacity move. The highlight flattens to 80%,
  * the caustic brightens (to 0.7 on light filled gel, so white labels keep
- * 4.5:1 while held), the shadow tucks in and fades to 45%. Pressing in
- * takes 110ms; letting go settles on a critically damped curve (--gel-firm)
- * so nothing here bounces. The squash of the control itself is the D-71
+ * 4.5:1 while held), and the empty shadow layer's old tuck rules stay
+ * inert. Pressing in takes 110ms; letting go settles on a critically damped
+ * curve (--gel-firm) so nothing here bounces. The squash of the control itself is the D-71
  * spring in press-state.js. Reduced motion: colour and shadow only.
  *
  * @file css/components/gel.css
@@ -69,10 +70,13 @@
     pointer-events: none;
 }
 
+/* The shadow layer stays in the markup (press-state.js builds it) but paints
+   nothing: no drop shadow under any gel control, at rest, on hover or held
+   (Jay, 2026-11-06: "i dont like the drop shadow at all"). */
 .has-gel > .gel-shadow {
     z-index: -2;
     transform-origin: 50% 40%;
-    box-shadow: var(--g-bleed);
+    box-shadow: none;
 }
 
 .has-gel > .gel-body {
@@ -121,15 +125,16 @@
 }
 
 /* Hover, fine pointers only: the gel's paint replaces the old hover tints, so
-   the gel answers hover itself, inside its body: the highlight band reaches a
-   little lower and the light at the base gathers. Transform and opacity only,
-   on the same no-bounce settle. The shadow layer stays put: a box shadow is
-   cut out under its own box, so moving it would open a pale rim under the
-   pill. Light filled gel keeps its light still, for its white label. The
-   pill's own 1px lift (buttons.css) still runs on the host. */
+   the gel answers hover itself, inside its body, with no shadow: the
+   highlight band reaches a quarter lower and the light at the base gathers
+   (Jay, 2026-11-06: "Make it stronger", then no drop shadow at all).
+   Transform and opacity only, on the same no-bounce settle. Light filled gel
+   keeps its highlight still, for its white label, and its base light rises
+   only to the 0.7 the press already proves at 4.5:1. The pill's own 1px lift
+   (buttons.css) still runs on the host. */
 @media (hover: hover) and (pointer: fine) {
     .has-gel:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):not(.is-pressed):not(.gel-held):not(input:disabled + *):hover > .gel-body::before {
-        transform: scaleY(var(--g-hl-hover, 1.12));
+        transform: scaleY(var(--g-hl-hover, 1.25));
     }
 
     .has-gel:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):not(.is-pressed):not(.gel-held):not(input:disabled + *):hover > .gel-body::after {
@@ -185,7 +190,6 @@
     --g-hl: rgba(255, 255, 255, 0.8);
     --g-hl-tail: rgba(255, 255, 255, 0.15);
     --g-caustic: rgba(255, 255, 255, 0.85);
-    --g-bleed: 0 8px 16px -7px rgba(33, 150, 243, 0.45), 0 2px 4px -1px rgba(13, 71, 161, 0.12);
     --g-ink: #0d47a1;
     --g-press-inset: inset 0 3px 8px rgba(33, 150, 243, 0.4), inset 0 0 0 999px rgba(33, 150, 243, 0.12);
 }
@@ -200,9 +204,8 @@
     --g-hl-tail: rgba(255, 255, 255, 0.06);
     --g-caustic: rgba(144, 202, 249, 0.5);
     --g-caustic-press: 0.7;
-    --g-caustic-hover: 0.6;
+    --g-caustic-hover: 0.7;
     --g-hl-hover: 1;
-    --g-bleed: 0 10px 20px -7px rgba(33, 150, 243, 0.65), 0 3px 6px -2px rgba(13, 71, 161, 0.28);
     --g-ink: #ffffff;
     --g-press-inset: inset 0 4px 10px rgba(13, 71, 161, 0.55), inset 0 0 0 999px rgba(13, 71, 161, 0.14);
 }
@@ -216,7 +219,6 @@ html[data-theme="dark"] .has-gel {
     --g-hl: rgba(255, 255, 255, 0.2);
     --g-hl-tail: rgba(255, 255, 255, 0.02);
     --g-caustic: rgba(0, 184, 204, 0.28);
-    --g-bleed: 0 10px 22px -8px rgba(0, 0, 0, 0.7), 0 0 14px -4px rgba(0, 184, 204, 0.25);
     --g-ink: #80e2ea;
     --g-press-inset: inset 0 3px 9px rgba(0, 0, 0, 0.65), inset 0 0 0 999px rgba(0, 184, 204, 0.10);
 }
@@ -231,9 +233,8 @@ html[data-theme="dark"] .has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-
     --g-caustic: rgba(128, 226, 234, 0.55);
     --g-caustic-press: 1;
     --g-caustic-hover: 1;
-    --g-hl-hover: 1.12;
+    --g-hl-hover: 1.25;
     --g-body-tab: initial;
-    --g-bleed: 0 10px 24px -6px rgba(0, 184, 204, 0.5), 0 4px 10px rgba(0, 0, 0, 0.55);
     --g-ink: #e0f7f9;
     --g-press-inset: inset 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 0 999px rgba(0, 0, 0, 0.22);
 }
@@ -247,7 +248,6 @@ html[data-theme="dark"] .has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-
         --g-hl: rgba(255, 255, 255, 0.2);
         --g-hl-tail: rgba(255, 255, 255, 0.02);
         --g-caustic: rgba(0, 184, 204, 0.28);
-        --g-bleed: 0 10px 22px -8px rgba(0, 0, 0, 0.7), 0 0 14px -4px rgba(0, 184, 204, 0.25);
         --g-ink: #80e2ea;
         --g-press-inset: inset 0 3px 9px rgba(0, 0, 0, 0.65), inset 0 0 0 999px rgba(0, 184, 204, 0.10);
     }
@@ -262,9 +262,8 @@ html[data-theme="dark"] .has-gel:is(.pill-btn--filled, .audio-toggle.is-on, .is-
         --g-caustic: rgba(128, 226, 234, 0.55);
         --g-caustic-press: 1;
         --g-caustic-hover: 1;
-        --g-hl-hover: 1.12;
+        --g-hl-hover: 1.25;
         --g-body-tab: initial;
-        --g-bleed: 0 10px 24px -6px rgba(0, 184, 204, 0.5), 0 4px 10px rgba(0, 0, 0, 0.55);
         --g-ink: #e0f7f9;
         --g-press-inset: inset 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 0 999px rgba(0, 0, 0, 0.22);
     }

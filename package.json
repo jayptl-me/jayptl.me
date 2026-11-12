@@ -9,6 +9,7 @@
     "build": "bun scripts/build.js",
     "optimize": "node scripts/optimize.js",
     "validate": "bun scripts/validate.js",
+    "lint": "oxlint",
     "deploy:prepare": "bun run commits:refresh && bun run build && bun run optimize && bun run validate",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
     "deploy": "bun run deploy:prepare && bun scripts/deploy.js",
@@ -18,15 +19,16 @@
     "commits:refresh": "node scripts/fetch-commits.js"
   },
   "devDependencies": {
-    "cssnano": "9.0.5",
-    "happy-dom": "^20.14.5",
+    "cssnano": "9.9.0",
+    "happy-dom": "^21.0.4",
     "html-minifier-terser": "^7.2.0",
-    "postcss": "^8.5.28",
+    "oxlint": "^1.93.0",
+    "postcss": "^8.5.32",
     "terser": "^5.51.2"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0"
+    "node": "^26.0.0",
+    "bun": ">=1.4.4"
   },
   "repository": {
     "type": "git",

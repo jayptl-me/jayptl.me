@@ -770,7 +770,7 @@
                 if (pr && typeof pr.then === 'function') pr.then(done, fail);
                 else octx.oncomplete = function (e) { done(e && e.renderedBuffer); };
                 return true;
-            } catch (e) {
+            } catch {
                 delete this.baking[key];
                 this.bakeFailed = true;
                 return false;
@@ -799,7 +799,7 @@
                 try {
                     if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(this.bakeTimer);
                     clearTimeout(this.bakeTimer);
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
                 this.bakeTimer = null;
             }
         }
@@ -1157,7 +1157,7 @@
                 var w = window.innerWidth || 0;
                 if (!w || typeof event.clientX !== 'number') return 0;
                 return Math.max(-1, Math.min(1, (event.clientX / w) * 2 - 1)) * 0.3;
-            } catch (e) {
+            } catch {
                 return 0;
             }
         }

@@ -7,7 +7,7 @@
             if (stored && (stored === 'light' || stored === 'dark')) {
                 return stored;
             }
-        } catch (e) {
+        } catch {
             // Silent fail for localStorage
         }
 
@@ -21,13 +21,13 @@
                     // Migrate cookie value to localStorage for future use
                     try {
                         localStorage.setItem('user-theme-preference', theme);
-                    } catch (e) {
+                    } catch {
                         // Silent fail for migration
                     }
                     return theme;
                 }
             }
-        } catch (e) {
+        } catch {
             // Silent fail for cookie access
         }
 

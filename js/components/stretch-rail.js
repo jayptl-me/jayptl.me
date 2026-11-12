@@ -29,7 +29,7 @@
     var FLICK = 0.9; // px per ms
 
     function media(q) {
-        try { return window.matchMedia(q).matches; } catch (e) { return false; }
+        try { return window.matchMedia(q).matches; } catch { return false; }
     }
 
     function reduced() { return media('(prefers-reduced-motion: reduce)'); }
@@ -114,7 +114,7 @@
                 if (e.button !== 0) return;
                 var b = box(checkedIndex());
                 st.drag = { startX: e.clientX, x: b.x, w: b.w, cur: b.x, trail: [[performance.now(), e.clientX]] };
-                try { thumb.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+                try { thumb.setPointerCapture(e.pointerId); } catch { /* noop */ }
                 rail.classList.add('is-dragging');
                 e.preventDefault();
             });

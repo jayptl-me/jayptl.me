@@ -71,22 +71,6 @@ class ConsentBanner {
     }
 
     showConsentSettings() {
-        const currentStatus = this.consentData.hasResponded
-            ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled')
-            : 'Not set';
-
-        const message = `Current Privacy Settings:
-        
-Analytics Status: ${currentStatus}
-
-What would you like to do?
-
-Enable Analytics - Help improve this portfolio
-Disable Analytics - Browse privately
-Reset - Show the consent banner again
-
-Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.`;
-
         // Create a custom dialog
         this.createSettingsDialog();
     }
@@ -524,7 +508,7 @@ For questions about data handling, you can contact me through the portfolio cont
             if (window.location && window.location.protocol === 'https:') {
                 cookieStr += ';Secure';
             }
-        } catch (e) {
+        } catch {
             // silent
         }
         document.cookie = cookieStr;
@@ -538,7 +522,7 @@ For questions about data handling, you can contact me through the portfolio cont
         if (stored) {
             try {
                 return JSON.parse(stored);
-            } catch (e) {
+            } catch {
                 console.warn('Invalid consent data in localStorage');
             }
         }
@@ -550,7 +534,7 @@ For questions about data handling, you can contact me through the portfolio cont
             try {
                 const value = decodeURIComponent(consentCookie.split('=')[1]);
                 return JSON.parse(value);
-            } catch (e) {
+            } catch {
                 console.warn('Invalid consent data in cookie');
             }
         }
@@ -647,7 +631,7 @@ For questions about data handling, you can contact me through the portfolio cont
                             // Expire cookie
                             const cookieStr = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
                             document.cookie = cookieStr;
-                        } catch (e) {
+                        } catch {
                             // ignore
                         }
                     });
@@ -657,7 +641,7 @@ For questions about data handling, you can contact me through the portfolio cont
             // also try without domain attribute
             try {
                 document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
-            } catch (e) { }
+            } catch { }
         });
 
         // Also try to remove the consent cookie we set
@@ -668,12 +652,12 @@ For questions about data handling, you can contact me through the portfolio cont
                     secureVariants.forEach(secureFlag => {
                         try {
                             document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
-                        } catch (e) { }
+                        } catch { }
                     });
                 });
             });
             document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
-        } catch (e) { }
+        } catch { }
 
         // Google Analytics disabled and cookie removal attempted (client-side best-effort)
     }

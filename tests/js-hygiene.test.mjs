@@ -24,7 +24,7 @@ function violations(src) {
   const lines = codeLines(src);
   const found = [];
   if (!lines.length) return found;
-  if (!/^\(function/.test(lines[0])) found.push('does not open with an IIFE');
+  if (!lines[0].startsWith('(function')) found.push('does not open with an IIFE');
   if (!/^\}(?:\)\(|\(\))/.test(lines[lines.length - 1])) found.push('does not close its IIFE');
   if (/^["']use strict["'];$/.test(lines[0])) found.push('strict directive is file level');
   const directives = lines.filter((l) => /^["']use strict["'];$/.test(l)).length;

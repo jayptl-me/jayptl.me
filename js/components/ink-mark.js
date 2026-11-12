@@ -83,7 +83,7 @@
         }
     };
 
-    function buildSvg(name, spec, place) {
+    function buildSvg(name, spec) {
         var svg = document.createElementNS(SVG_NS, 'svg');
         svg.setAttribute('class', 'ink-svg doodle-draw');
         svg.setAttribute('viewBox', spec.box);
@@ -151,7 +151,7 @@
         if (!hasText && place !== 'block') place = 'solo';
         el.classList.add('ink', 'ink--' + place, 'ink--' + name);
         if (!hasText) el.setAttribute('aria-hidden', 'true');
-        var svg = buildSvg(name, spec, place);
+        var svg = buildSvg(name, spec);
         if (place === 'side' || (place === 'solo' && el.hasAttribute('data-ink-before'))) {
             el.insertBefore(svg, el.firstChild);
         } else {
@@ -170,7 +170,7 @@
         try {
             if (window.Doodle && typeof window.Doodle.draw === 'function') window.Doodle.draw(svg);
             else svg.classList.add('is-drawn');
-        } catch (e) {
+        } catch {
             svg.classList.add('is-drawn');
         }
         return { svg: svg, ro: ro };
@@ -184,7 +184,7 @@
 
     try {
         window.InkMark = { marks: Object.keys(MARKS), mount: mount };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (window.Mount) {
         window.Mount.register('ink-mark', { selector: '[data-ink]', mount: mount, unmount: unmount });

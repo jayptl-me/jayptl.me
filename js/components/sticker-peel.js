@@ -26,7 +26,7 @@
             if (!sm) return;
             if (kind === 'pick' && sm.playPickSound) sm.playPickSound();
             if (kind === 'drop' && sm.playDropSound) sm.playDropSound();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function announce(zone, text) {

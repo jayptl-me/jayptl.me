@@ -61,7 +61,7 @@ function readJson(req) {
       let body;
       try {
         body = chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {};
-      } catch (e) {
+      } catch {
         reject(new HttpError(400, 'bad_json', 'Body is not valid JSON'));
         return;
       }

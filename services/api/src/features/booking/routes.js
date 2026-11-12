@@ -18,16 +18,22 @@ const DAY_MS = 86400000;
 // Characters that never belong in an invite: control codes and the
 // invisible marks that reverse or reorder text on screen. Joiners used by
 // Indic and other scripts are kept.
-const HIDDEN_RE = /[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u200e\u200f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g;
+// HIDDEN_CTRL_RE is exactly Cc except tab and LF: [^\P{Cc}\t\n] matches a
+// character that is not-not-a-control (i.e. a control) and is neither tab
+// nor LF, which is \u0000-\u0008, \u000b-\u001f, \u007f-\u009f and nothing
+// else. HIDDEN_MARK_RE keeps the explicit bidi and separator marks, which
+// no Unicode property expresses without also taking the kept joiners.
+const HIDDEN_CTRL_RE = /[^\P{Cc}\t\n]/gu;
+const HIDDEN_MARK_RE = /[\u200e\u200f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g;
 
 /** One line of plain text: every hidden or line-breaking character becomes a space. */
 function cleanLine(value, max) {
-  return String(value || '').replace(/[\r\n\t]/g, ' ').replace(HIDDEN_RE, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+  return String(value || '').replace(/[\r\n\t]/g, ' ').replace(HIDDEN_CTRL_RE, ' ').replace(HIDDEN_MARK_RE, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 }
 
 /** A short note: line breaks kept, everything else hidden dropped. */
 function cleanNote(value, max) {
-  return String(value || '').replace(/\r\n?/g, '\n').replace(/\t/g, ' ').replace(HIDDEN_RE, '').trim().slice(0, max);
+  return String(value || '').replace(/\r\n?/g, '\n').replace(/\t/g, ' ').replace(HIDDEN_CTRL_RE, '').replace(HIDDEN_MARK_RE, '').trim().slice(0, max);
 }
 
 function parseDay(text, suffix) {

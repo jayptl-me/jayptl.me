@@ -28,7 +28,7 @@
     function localZone() {
         try {
             return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-        } catch (e) {
+        } catch {
             return 'UTC';
         }
     }
@@ -36,7 +36,7 @@
     function fmt(date, opts, zone) {
         try {
             return new Intl.DateTimeFormat('en-US', Object.assign({ timeZone: zone }, opts)).format(date);
-        } catch (e) {
+        } catch {
             return date.toISOString();
         }
     }
@@ -233,7 +233,7 @@
                 done.focus();
                 try {
                     if (window.SoundManager && window.SoundManager.playSuccessSound) window.SoundManager.playSuccessSound();
-                } catch (err) { /* noop */ }
+                } catch { /* noop */ }
             }, function (err) {
                 submitting = false;
                 // The API's own messages for input problems are written for
@@ -265,7 +265,7 @@
                 request.then(function () {
                     cancelView.querySelector('.book-cancel-msg').textContent = 'Cancelled. The invite is gone from both calendars.';
                     btn.hidden = true;
-                    try { history.replaceState(history.state, '', '/book'); } catch (e) { /* noop */ }
+                    try { history.replaceState(history.state, '', '/book'); } catch { /* noop */ }
                 }, function () {
                     cancelView.querySelector('.book-cancel-msg').textContent = 'That link did not work. It may already be cancelled, or email hello@jayptl.me.';
                 });

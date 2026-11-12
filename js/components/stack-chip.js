@@ -96,7 +96,7 @@
 
     try {
         window.StackChip = { stack: STACK, total: TOTAL };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (window.Mount) {
         window.Mount.register('stack-chip', { selector: '[data-stack]', mount: mount, unmount: unmount });

@@ -18,35 +18,35 @@
             if (window.SoundManager && typeof window.SoundManager.getPrefs === 'function') {
                 return window.SoundManager.getPrefs();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return { master: false, bed: false, motifs: false, level: 'low' };
     }
 
     function setMaster(on) {
         try {
             if (window.SoundManager) return window.SoundManager.setMasterEnabled(on);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return on;
     }
 
     function setBed(on) {
         try {
             if (window.SoundManager) return window.SoundManager.setBedEnabled(on);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return on;
     }
 
     function setMotifs(on) {
         try {
             if (window.SoundManager) return window.SoundManager.setMotifsEnabled(on);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return on;
     }
 
     function setLevel(level) {
         try {
             if (window.SoundManager) return window.SoundManager.setVolumeLevel(level);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return level;
     }
 
@@ -100,7 +100,7 @@
             btn.setAttribute('aria-pressed', p.master ? 'true' : 'false');
             btn.setAttribute('aria-label', p.master ? 'Turn sound off' : 'Turn sound on');
             btn.classList.toggle('is-on', p.master);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         if (!panel) return;
         try {
             var master = panel.querySelector('#audioMasterSwitch');
@@ -129,7 +129,7 @@
                 low.classList.toggle('is-on', p.level !== 'med');
                 med.classList.toggle('is-on', p.level === 'med');
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function mount() {
@@ -139,7 +139,7 @@
         try {
             var nav = document.getElementById('glassNav');
             host = nav ? nav.querySelector('.nav-controls') : null;
-        } catch (e) { host = null; }
+        } catch { host = null; }
 
         var btn = document.createElement('button');
         btn.type = 'button';
@@ -166,11 +166,11 @@
                 // One popover at a time: nav dropdowns step aside.
                 try {
                     window.dispatchEvent(new CustomEvent('nav:popover-open', { detail: { source: 'audio' } }));
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
                 sync(btn, panel);
                 var first = panel.querySelector('.audio-switch');
                 if (first) {
-                    try { first.focus({ preventScroll: true }); } catch (e) { /* noop */ }
+                    try { first.focus({ preventScroll: true }); } catch { /* noop */ }
                 }
             }
         }
@@ -191,7 +191,7 @@
                 var next = !prefs().master;
                 setMaster(next);
                 if (next && window.SoundManager) {
-                    try { window.SoundManager.playSuccessSound(); } catch (err) { /* silent */ }
+                    try { window.SoundManager.playSuccessSound(); } catch { /* silent */ }
                 }
             } else if (t.id === 'audioBedSwitch') {
                 setBed(!prefs().bed);
@@ -214,7 +214,7 @@
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && !panel.hidden) {
                 closePanel();
-                try { btn.focus({ preventScroll: true }); } catch (err) { /* noop */ }
+                try { btn.focus({ preventScroll: true }); } catch { /* noop */ }
             }
         });
 
@@ -245,7 +245,7 @@
                 btn.parentNode.insertBefore(panel, btn.nextSibling);
                 sync(btn, panel);
                 return true;
-            } catch (e) { /* fall through to floating */ }
+            } catch { /* fall through to floating */ }
         }
 
         // Fallback floating control when the island nav is absent.
@@ -256,7 +256,7 @@
             document.body.appendChild(panel);
             sync(btn, panel);
             return true;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -281,6 +281,6 @@
     window.addEventListener('page:ready', function () {
         // Router swaps main but keeps the shell. Re mount is cheap
         // and keeps the toggle alive across soft navigations.
-        try { mount(); } catch (e) { /* noop */ }
+        try { mount(); } catch { /* noop */ }
     });
 })();

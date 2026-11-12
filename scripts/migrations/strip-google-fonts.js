@@ -21,9 +21,6 @@ const files = [
 
 // The exact 7-line block to remove (varies by page only in trailing `>` vs ` />`
 // on the main.css link, which we leave alone). We target the preload+noscript.
-const BLOCK_START = '    <!-- Fonts Preload -->\n';
-const BLOCK_START_ALT = '    <link rel="preload"\n';
-
 let removed = 0;
 for (const rel of files) {
   const file = path.join(ROOT, rel);

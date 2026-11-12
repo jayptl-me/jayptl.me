@@ -126,7 +126,7 @@
             this._motionQuery = null;
             try {
                 this._motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this._onMotionChange = (e) => {
                 this.reducedMotion = e.matches;
                 this.checkMode();
@@ -137,7 +137,7 @@
                     if (this._motionQuery.addEventListener) this._motionQuery.addEventListener('change', this._onMotionChange);
                     else if (this._motionQuery.addListener) this._motionQuery.addListener(this._onMotionChange);
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
 
             // Interactive jump pills
             this.pills.forEach((pill, idx) => {
@@ -202,7 +202,7 @@
 
                 if (!this.isAnimating) {
                     this.isAnimating = true;
-                    try { cancelAnimationFrame(this._rafId); } catch (e) { /* noop */ }
+                    try { cancelAnimationFrame(this._rafId); } catch { /* noop */ }
                     this._rafId = window.requestAnimationFrame(this.renderLoop);
                 }
             } else if (!this.reducedMotion) {
@@ -423,10 +423,10 @@
         destroy() {
             this._destroyed = true;
             this.isAnimating = false;
-            try { cancelAnimationFrame(this._rafId); } catch (e) { /* noop */ }
+            try { cancelAnimationFrame(this._rafId); } catch { /* noop */ }
             try {
                 if (this.observer && typeof this.observer.disconnect === 'function') this.observer.disconnect();
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this.observer = null;
             try {
                 if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
@@ -435,7 +435,7 @@
                     if (this._motionQuery.removeEventListener) this._motionQuery.removeEventListener('change', this._onMotionChange);
                     else if (this._motionQuery.removeListener) this._motionQuery.removeListener(this._onMotionChange);
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this._onScroll = null;
             this._onResize = null;
             this._onMotionChange = null;
@@ -453,14 +453,14 @@
             if (window.scrollStack && typeof window.scrollStack.destroy === 'function') {
                 window.scrollStack.destroy();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         window.scrollStack = new ScrollStack();
     }
 
     /* Re-scan hook for seamless revisits. */
     try {
         window.ScrollStackRefresh = init;
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

@@ -146,7 +146,7 @@ class ThemeManager {
                     // Migrate cookie value to localStorage for future use
                     try {
                         localStorage.setItem('user-theme-preference', theme);
-                    } catch (e) {
+                    } catch {
                         // Silent fail for migration
                     }
                     return theme;
@@ -171,34 +171,6 @@ class ThemeManager {
 // Form Management - REMOVED (no forms in current HTML)
 
 // Analytics utility functions - REMOVED (no GA setup)
-
-// Utility Functions
-class Utils {
-    static debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    static throttle(func, limit) {
-        let inThrottle;
-        return function () {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        }
-    }
-}
 
 // Initialize enhanced theme manager and make it globally available
 window.themeManager = new ThemeManager();

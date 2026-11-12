@@ -23,7 +23,7 @@
         try {
             return window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
                 !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }

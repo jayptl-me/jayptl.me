@@ -26,7 +26,7 @@
         try {
             return window.matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)').matches &&
                 !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }

@@ -23,7 +23,7 @@
     function request(method, path, body) {
         if (!API_BASE) return Promise.resolve(null);
         var controller = null;
-        try { controller = new AbortController(); } catch (e) { controller = null; }
+        try { controller = new AbortController(); } catch { controller = null; }
         var timer = controller ? setTimeout(function () { controller.abort(); }, TIMEOUT_MS) : null;
         var opts = {
             method: method,

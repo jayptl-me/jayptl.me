@@ -17,7 +17,7 @@
     function sound() {
         try {
             return window.SoundManager || null;
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -26,7 +26,7 @@
         try {
             var sm = sound();
             return Boolean(sm && sm.prefs && sm.prefs.master);
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -34,7 +34,7 @@
     function reducedMotion() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -63,7 +63,7 @@
                 var direct = el.getAttribute('data-audio-motif');
                 if (direct) return direct;
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return 'generic';
     }
 
@@ -72,7 +72,7 @@
         if (!sm) return;
         try {
             if (observer) observer.disconnect();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
 
         var targets = [];
         try {
@@ -89,7 +89,7 @@
             extra.forEach(function (node) {
                 if (targets.indexOf(node) === -1) targets.push(node);
             });
-        } catch (e) { targets = []; }
+        } catch { targets = []; }
 
         if (!targets.length || !('IntersectionObserver' in window)) return;
 
@@ -103,13 +103,13 @@
                             sound().setBedScene(name);
                             sound().playMotif(name);
                         }
-                    } catch (err) { /* score never breaks scroll */ }
+                    } catch { /* score never breaks scroll */ }
                 });
             }, { threshold: 0.35 });
             targets.forEach(function (t) {
-                try { observer.observe(t); } catch (e) { /* noop */ }
+                try { observer.observe(t); } catch { /* noop */ }
             });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     // The riser plays once per page change. A routed link click plays it
@@ -122,7 +122,7 @@
         try {
             var sm = sound();
             if (sm && masterOn() && !reducedMotion()) sm.playRiser();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function riserForPageReady() {
@@ -150,7 +150,7 @@
                             riserAt = Date.now();
                             return;
                         }
-                    } catch (err) { /* fall through */ }
+                    } catch { /* fall through */ }
                 }
                 var pill = e.target && e.target.closest ? e.target.closest('.scroll-stack-pill, .sticker, .filter-btn') : null;
                 if (pill) {
@@ -159,7 +159,7 @@
                     lastTap = now;
                     sm.playSelectSound();
                 }
-            } catch (err) { /* taps never break */ }
+            } catch { /* taps never break */ }
         }, { passive: true });
     }
 
@@ -179,7 +179,7 @@
                 if (now - lastHover < 110) return;
                 lastHover = now;
                 sm.playHoverSound();
-            } catch (err) { /* hover stays silent */ }
+            } catch { /* hover stays silent */ }
         }, { passive: true });
     }
 
@@ -191,7 +191,7 @@
             try {
                 bindMotifObserver();
                 riserForPageReady();
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         });
     }
 

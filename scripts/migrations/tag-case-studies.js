@@ -20,8 +20,6 @@ for (const slug of pages) {
     const labels = [];
     let m;
     while ((m = h2Re.exec(html))) labels.push({ n: m[1], text: m[2].trim() });
-    // Trim trailing punctuation fragments from headings used in the rail
-    const clean = (s) => s.replace(/[—–\-–].*$/, '').replace(/\s+$/, '').trim();
     const railLinks = labels
       .map((l) => `<a href="#cs-${l.n}">${l.n}</a>`)
       .join('\n        ');

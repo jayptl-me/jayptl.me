@@ -207,7 +207,7 @@ function heroSidePadding(html, css, width) {
   return value;
 }
 
-const px = (v) => (/rem$/.test(v) ? parseFloat(v) * 16 : parseFloat(v));
+const px = (v) => (v.endsWith('rem') ? parseFloat(v) * 16 : parseFloat(v));
 
 test('cascade: on a phone the hero keeps the critical 16px side padding (main.css does not win the tie)', () => {
   const { html, css } = builtHome();

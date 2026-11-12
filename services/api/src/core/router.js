@@ -38,7 +38,7 @@ function createRouter({ routes, pages = {}, config, now, log }) {
     let url;
     try {
       url = new URL(req.url, 'http://api.local');
-    } catch (e) {
+    } catch {
       url = new URL('http://api.local/');
     }
     const requestId = crypto.randomUUID();

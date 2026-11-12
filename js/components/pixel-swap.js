@@ -13,8 +13,6 @@
 (function (root) {
     'use strict';
 
-    var MAX_PIXELS = 260;
-
     var PATTERNS = {
         random: function () { return null; },
         center: function (x, y) { return Math.hypot(x - 0.5, y - 0.5) / Math.SQRT1_2; },

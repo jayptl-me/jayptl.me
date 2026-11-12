@@ -29,16 +29,15 @@
 
     var cache = new Map(); // url -> { text, at }
     var navigating = false;
-    var currentUrl = null;
 
     try {
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    } catch (e) { /* advisory */ }
+    } catch { /* advisory */ }
 
     function reduceMotion() {
         try {
             return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -46,7 +45,7 @@
     function isHomeDocument(doc) {
         try {
             return Boolean(doc.getElementById('preloader') || doc.querySelector('.text-reveal-container'));
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -54,7 +53,7 @@
     function sameOrigin(url) {
         try {
             return new URL(url, window.location.href).origin === window.location.origin;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -64,7 +63,7 @@
             var u = new URL(url, window.location.href);
             u.hash = '';
             return u.href;
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -80,7 +79,7 @@
         if (anchor.hasAttribute('download')) return false;
         try {
             if (anchor.origin !== window.location.origin) return false;
-        } catch (e) {
+        } catch {
             if (!sameOrigin(anchor.href)) return false;
         }
         var href = anchor.getAttribute('href') || '';
@@ -89,13 +88,13 @@
         var dest;
         try {
             dest = new URL(anchor.href, window.location.href);
-        } catch (e) {
+        } catch {
             return false;
         }
         var current;
         try {
             current = new URL(window.location.href);
-        } catch (e) {
+        } catch {
             return false;
         }
         // Same-document hash moves stay native.
@@ -115,11 +114,11 @@
         var controller = null;
         try {
             controller = new AbortController();
-        } catch (e) { controller = null; }
+        } catch { controller = null; }
         var timer = null;
         if (controller) {
             timer = setTimeout(function () {
-                try { controller.abort(); } catch (e) { /* noop */ }
+                try { controller.abort(); } catch { /* noop */ }
             }, FETCH_TIMEOUT);
         }
         var options = { credentials: 'same-origin', headers: { Accept: 'text/html' } };
@@ -151,7 +150,7 @@
         try {
             connection = (navigator.connection || navigator.mozConnection ||
                 navigator.webkitConnection) || null;
-        } catch (e) { connection = null; }
+        } catch { connection = null; }
         if (connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ''))) return;
 
         var assets = [];
@@ -162,7 +161,7 @@
             Array.from(doc.querySelectorAll('script[defer][src^="/js/"]')).forEach(function (script) {
                 assets.push({ href: script.getAttribute('src'), as: 'script' });
             });
-        } catch (e) { return; }
+        } catch { return; }
 
         var added = 0;
         assets.forEach(function (asset) {
@@ -181,7 +180,7 @@
             added += 1;
             try {
                 (document.head || document.documentElement).appendChild(link);
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         });
     }
 
@@ -204,7 +203,7 @@
             var doc = parser.parseFromString(text, 'text/html');
             if (!doc || !doc.querySelector('main')) return null;
             return doc;
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -228,44 +227,44 @@
             if (window.scrollRevealComponent && typeof window.scrollRevealComponent.destroy === 'function') {
                 window.scrollRevealComponent.destroy();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             window.scrollRevealComponent = null;
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.scrollStack && typeof window.scrollStack.destroy === 'function') {
                 window.scrollStack.destroy();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             window.scrollStack = null;
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var preloader = document.getElementById('preloader');
             if (preloader && preloader.parentNode) preloader.parentNode.removeChild(preloader);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             document.body.classList.remove('preloading', 'no-scroll', 'nav-open');
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function syncHead(doc) {
-        try { document.title = doc.title || document.title; } catch (e) { /* noop */ }
+        try { document.title = doc.title || document.title; } catch { /* noop */ }
         function setMeta(selector, attr, value) {
             if (value == null) return;
             try {
                 var el = document.head.querySelector(selector);
                 if (el) el.setAttribute(attr, value);
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         }
         try {
             var canon = doc.querySelector('link[rel="canonical"]');
             setMeta('link[rel="canonical"]', 'href', canon && canon.getAttribute('href'));
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var desc = doc.querySelector('meta[name="description"]');
             setMeta('meta[name="description"]', 'content', desc && desc.getAttribute('content'));
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var ogUrl = doc.querySelector('meta[property="og:url"]');
             setMeta('meta[property="og:url"]', 'content', ogUrl && ogUrl.getAttribute('content'));
@@ -273,14 +272,14 @@
             setMeta('meta[property="og:title"]', 'content', ogTitle && ogTitle.getAttribute('content'));
             var ogDesc = doc.querySelector('meta[property="og:description"]');
             setMeta('meta[property="og:description"]', 'content', ogDesc && ogDesc.getAttribute('content'));
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var md = doc.querySelector('link[rel="alternate"][type="text/markdown"]');
             var curMd = document.head.querySelector('link[rel="alternate"][type="text/markdown"]');
             if (md && curMd) curMd.setAttribute('href', md.getAttribute('href'));
             else if (md && !curMd) document.head.appendChild(md.cloneNode(false));
             else if (!md && curMd && curMd.parentNode) curMd.parentNode.removeChild(curMd);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var fresh = doc.querySelectorAll('script[type="application/ld+json"]');
             var stale = document.head.querySelectorAll('script[type="application/ld+json"]');
@@ -293,13 +292,13 @@
                 clone.textContent = fresh[j].textContent;
                 document.head.appendChild(clone);
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function currentPageStyles() {
         try {
             return Array.from(document.querySelectorAll('link[rel="stylesheet"][href^="/css/pages/"]'));
-        } catch (e) {
+        } catch {
             return [];
         }
     }
@@ -310,7 +309,7 @@
             wanted = Array.from(doc.querySelectorAll('link[rel="stylesheet"][href^="/css/pages/"]'))
                 .map(function (l) { return l.getAttribute('href'); })
                 .filter(Boolean);
-        } catch (e) { wanted = []; }
+        } catch { wanted = []; }
         var existing = currentPageStyles();
         var keep = {};
         wanted.forEach(function (h) { keep[h] = true; });
@@ -333,7 +332,7 @@
             });
             try {
                 insertPageStyle(link);
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             pending.push(done);
         });
         return Promise.all(pending);
@@ -367,7 +366,7 @@
                 var src = s.getAttribute('src');
                 if (src) set[src] = true;
             });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return set;
     }
 
@@ -379,7 +378,7 @@
                 var src = s.getAttribute('src');
                 if (src && !have[src] && missing.indexOf(src) === -1) missing.push(src);
             });
-        } catch (e) { missing = []; }
+        } catch { missing = []; }
         if (!missing.length) return Promise.resolve();
         var pending = missing.map(function (src) {
             return new Promise(function (resolve) {
@@ -396,7 +395,7 @@
                 setTimeout(settle, ASSET_TIMEOUT);
                 try {
                     document.body.appendChild(script);
-                } catch (e) {
+                } catch {
                     settle();
                 }
             });
@@ -413,7 +412,7 @@
             // Fresh content starts hidden for the staged entry, except under
             // a card-to-cover morph, whose snapshot must see the page.
             if (!visible) imported.classList.add('pt-swapped');
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         liveMain.parentNode.replaceChild(imported, liveMain);
         // Sprite marks point into an inline sprite that lives outside <main>,
         // so bring it along when the page being left has none.
@@ -422,7 +421,7 @@
             if (sprite && !document.getElementById('doodleSprite')) {
                 document.body.insertBefore(document.importNode(sprite, true), document.body.firstChild);
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var liveFooters = Array.from(document.querySelectorAll('body > footer'));
             liveFooters.forEach(function (f) {
@@ -436,7 +435,7 @@
                 else document.body.appendChild(node);
                 anchor = node;
             });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var freshBody = doc.body;
             if (freshBody) {
@@ -446,36 +445,36 @@
                 if (dt != null) document.body.setAttribute('data-transition', dt);
                 document.body.classList.remove('preloading', 'no-scroll', 'nav-open');
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return true;
     }
 
     function reinitComponents() {
         try {
             if (window.SplitText && typeof window.SplitText.init === 'function') window.SplitText.init();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.ParticleText && typeof window.ParticleText.init === 'function') window.ParticleText.init();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.Doodle && typeof window.Doodle.init === 'function') window.Doodle.init();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.ProjectsFilter && typeof window.ProjectsFilter.init === 'function') window.ProjectsFilter.init();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.FeaturedWorkRefresh && typeof window.FeaturedWorkRefresh === 'function') window.FeaturedWorkRefresh();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             if (window.ScrollStackRefresh && typeof window.ScrollStackRefresh === 'function') window.ScrollStackRefresh();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var nav = document.getElementById('glassNav');
             if (nav && window.setNavbarAccessibility) {
                 var overlay = document.querySelector('.text-reveal-container');
                 window.setNavbarAccessibility(nav, !overlay || overlay.classList.contains('released'));
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function stageEntry() {
@@ -502,7 +501,7 @@
                 try {
                     if (!el.classList.contains('pt-item')) el.classList.add('pt-item');
                     el.style.setProperty('--pt-index', String(idx));
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
             });
             html.classList.add('pt-entering', 'pt-uncovering');
             var veil = document.getElementById('ptVeil');
@@ -519,7 +518,7 @@
             }
             setTimeout(function () {
                 items.forEach(function (el) {
-                    try { el.classList.add('pt-in'); } catch (e) { /* noop */ }
+                    try { el.classList.add('pt-in'); } catch { /* noop */ }
                 });
             }, 120);
             if (veil && window.PixelSwap && typeof window.PixelSwap.dissolve === 'function') {
@@ -532,14 +531,14 @@
                         easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
                         onComplete: settle
                     });
-                } catch (e) {
+                } catch {
                     settle();
                 }
             } else {
                 settle();
             }
             setTimeout(settle, UNCOVER_DURATION + 500);
-        } catch (e) { /* never trap the page veiled */ }
+        } catch { /* never trap the page veiled */ }
     }
 
     function focusContent(url) {
@@ -550,7 +549,7 @@
             var target = heading || main;
             if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
             target.focus({ preventScroll: true });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         try {
             var region = document.getElementById('routerLive');
             if (!region) {
@@ -562,7 +561,7 @@
                 document.body.appendChild(region);
             }
             region.textContent = 'Loaded: ' + (document.title || url);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function trackPageView(url) {
@@ -572,7 +571,7 @@
             } else if (typeof window.trackEvent === 'function') {
                 window.trackEvent('page_view', { page_path: url });
             }
-        } catch (e) { /* analytics never breaks navigation */ }
+        } catch { /* analytics never breaks navigation */ }
     }
 
     function cover() {
@@ -595,13 +594,13 @@
                             easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
                             onComplete: settle
                         });
-                    } catch (e) {
+                    } catch {
                         settle();
                     }
                     setTimeout(settle, COVER_DURATION + 200);
                 });
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return Promise.resolve();
     }
 
@@ -621,7 +620,7 @@
             var card = anchor.closest('[data-morph]');
             if (!card) return null;
             return { card: card, title: card.querySelector('h3, [data-morph-title]') };
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -652,7 +651,7 @@
                 nameMorph(target);
             }
             syncHead(doc);
-            try { window.scrollTo(0, 0); } catch (e) { /* noop */ }
+            try { window.scrollTo(0, 0); } catch { /* noop */ }
             return syncPageStyles(doc).then(function () {
                 return loadMissingScripts(doc);
             });
@@ -684,10 +683,9 @@
             return Promise.resolve(false);
         }
         var hash = '';
-        try { hash = new URL(url, window.location.href).hash || ''; } catch (e) { hash = ''; }
+        try { hash = new URL(url, window.location.href).hash || ''; } catch { hash = ''; }
         if (navigating) return Promise.resolve(false);
         navigating = true;
-        currentUrl = key;
 
         var morph = push && opts.morph && canMorph() ? opts.morph : null;
         var coverPromise = push && !morph ? cover() : Promise.resolve();
@@ -708,27 +706,27 @@
             }).then(function () {
                 return doc;
             });
-        }).then(function (doc) {
+        }).then(function () {
             if (push) {
                 try {
                     history.pushState({ router: true, y: 0 }, '', key + hash);
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
             } else if (typeof opts.y === 'number') {
                 // popstate restores after paint
             }
             try {
                 reinitComponents();
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             try {
                 window.scrollTo(0, push ? 0 : (typeof opts.y === 'number' ? opts.y : 0));
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             // Deep links (Command Deck project jumps) land on their target
             // while the veil still covers the page.
             if (push && hash.length > 1) {
                 try {
                     var landing = document.getElementById(decodeURIComponent(hash.slice(1)));
                     if (landing) landing.scrollIntoView({ block: 'start', behavior: 'instant' });
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
             }
             if (morph) settleMorphEntry();
             else stageEntry();
@@ -736,7 +734,7 @@
             trackPageView(key);
             try {
                 window.dispatchEvent(new CustomEvent('page:ready', { detail: { url: key } }));
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             navigating = false;
             return true;
         }).catch(function () {
@@ -745,7 +743,7 @@
                 var v = document.getElementById('ptVeil');
                 if (v && v.parentNode && push) v.parentNode.removeChild(v);
                 document.documentElement.classList.remove('pt-exiting', 'pt-covering');
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             window.location.assign(key);
             return false;
         });
@@ -765,7 +763,7 @@
                 var state = history.state || {};
                 state.y = window.scrollY || 0;
                 history.replaceState(state, '');
-            } catch (err) { /* noop */ }
+            } catch { /* noop */ }
             navigate(anchor.href, { push: true, morph: morphSource(anchor) });
         }, true);
     }

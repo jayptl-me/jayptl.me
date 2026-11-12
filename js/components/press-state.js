@@ -258,7 +258,7 @@
     function supports(prop, value) {
         try {
             return !!(window.CSS && window.CSS.supports && window.CSS.supports(prop, value));
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -273,7 +273,7 @@
     function reducedMotion() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }

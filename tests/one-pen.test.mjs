@@ -224,7 +224,7 @@ test('one pen: every visible doodle is a 2px round pen with a 1:1 dash', { skip:
       for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
         const context = await browser.newContext({ viewport, deviceScaleFactor: 1, reducedMotion: 'reduce' });
         await context.addInitScript((t) => {
-          try { localStorage.setItem('user-theme-preference', t); } catch (e) { /* noop */ }
+          try { localStorage.setItem('user-theme-preference', t); } catch { /* noop */ }
         }, theme);
         await context.route('**/*', (route) => (route.request().url().startsWith(origin) ? route.continue() : route.abort()));
         const page = await context.newPage();

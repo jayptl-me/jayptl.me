@@ -37,7 +37,7 @@ function read(rel) {
 function bytes(rel) {
   try {
     return fs.statSync(path.join(dist, rel)).size;
-  } catch (e) {
+  } catch {
     return 0;
   }
 }
@@ -136,7 +136,7 @@ for (const page of pages) {
   let html;
   try {
     html = read(page.file);
-  } catch (e) {
+  } catch {
     fail(`${page.name}: missing ${page.file}`);
     continue;
   }

@@ -55,7 +55,7 @@
             word.textContent = text;
             return word;
         }
-        Array.prototype.forEach.call(text, function (ch, i) {
+        Array.prototype.forEach.call(text, function (ch) {
             var c = doc.createElement('span');
             c.className = 'split-char';
             c.textContent = ch;

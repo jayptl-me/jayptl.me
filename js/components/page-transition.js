@@ -19,7 +19,7 @@
     function reduceMotion() {
         try {
             return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -120,7 +120,7 @@
                     onComplete: settle
                 });
                 setTimeout(stageIn, 150);
-            } catch (e) {
+            } catch {
                 stageIn();
                 settle();
             }
@@ -140,7 +140,7 @@
         var url;
         try {
             url = new URL(anchor.href, window.location.href);
-        } catch (e) {
+        } catch {
             return false;
         }
         if (url.origin !== window.location.origin) return false;
@@ -167,7 +167,7 @@
             // path remains the fallback (full load behind cover).
             try {
                 if (window.PageRouter && window.PageRouter.handles(anchor)) return;
-            } catch (e) { /* fall through to veil navigation */ }
+            } catch { /* fall through to veil navigation */ }
             // Let the homepage stepper own unreleased overlay anchor flows
             var href = anchor.getAttribute('href');
             if (href && href.charAt(0) === '#' && isHomepageFlow()) return;
@@ -199,7 +199,7 @@
                     });
                     // Navigate once covered: the reload happens behind the veil.
                     setTimeout(go, Math.max(200, COVER_DURATION - 100));
-                } catch (err) {
+                } catch {
                     go();
                 }
             } else {

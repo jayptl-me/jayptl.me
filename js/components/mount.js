@@ -71,7 +71,7 @@
         var hosts;
         try {
             hosts = (root || document).querySelectorAll(selectorFor(name, def));
-        } catch (e) {
+        } catch {
             return;
         }
         for (var i = 0; i < hosts.length; i++) {

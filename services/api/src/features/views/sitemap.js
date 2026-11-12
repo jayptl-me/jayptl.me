@@ -27,7 +27,7 @@ function createSitemap({ config, fetch, now, log }) {
             try {
               const p = new URL(m[1]).pathname.replace(/\/+$/, '') || '/';
               set.add(p);
-            } catch (e) { /* skip bad loc */ }
+            } catch { /* skip bad loc */ }
           }
           if (set.size <= config.extraPaths.length) throw new Error('sitemap had no pages');
           sitemap = { paths: set, at: now(), loading: null };

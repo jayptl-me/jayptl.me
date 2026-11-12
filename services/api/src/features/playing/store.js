@@ -10,7 +10,7 @@ function createPlayingStore(redis) {
   return {
     async manualPlaying() {
       const raw = await redis.command(['GET', 'play:manual']);
-      try { return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+      try { return raw ? JSON.parse(raw) : null; } catch { return null; }
     },
 
     async setManualPlaying(entry) {
@@ -20,7 +20,7 @@ function createPlayingStore(redis) {
 
     async cachedSteam() {
       const raw = await redis.command(['GET', 'play:steam']);
-      try { return raw ? JSON.parse(raw) : undefined; } catch (e) { return undefined; }
+      try { return raw ? JSON.parse(raw) : undefined; } catch { return undefined; }
     },
 
     async cacheSteam(value) {

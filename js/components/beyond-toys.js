@@ -32,7 +32,7 @@
             if (kind === 'release' && s.playReleaseSound) s.playReleaseSound();
             if (kind === 'drop' && s.playDropSound) s.playDropSound();
             if (kind === 'success' && s.playSuccessSound) s.playSuccessSound();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function sizeCanvas(canvas) {
@@ -48,7 +48,7 @@
     function ink(canvas) {
         try {
             return getComputedStyle(canvas).color || '#2196f3';
-        } catch (e) {
+        } catch {
             return '#2196f3';
         }
     }
@@ -245,11 +245,11 @@
     var BEST_KEY = 'jayptl-snake-best';
 
     function readBest() {
-        try { return Number(localStorage.getItem(BEST_KEY)) || 0; } catch (e) { return 0; }
+        try { return Number(localStorage.getItem(BEST_KEY)) || 0; } catch { return 0; }
     }
 
     function writeBest(n) {
-        try { localStorage.setItem(BEST_KEY, String(n)); } catch (e) { /* private mode */ }
+        try { localStorage.setItem(BEST_KEY, String(n)); } catch { /* private mode */ }
     }
 
     function snake(host) {
@@ -440,7 +440,7 @@
             var s = sm();
             if (!s) return;
             var on = false;
-            try { on = Boolean(s.getPrefs().master); } catch (e) { on = false; }
+            try { on = Boolean(s.getPrefs().master); } catch { on = false; }
             if (!on) {
                 if (note) {
                     note.hidden = false;
@@ -450,14 +450,14 @@
                     s.setMasterEnabled(true);
                     btn.removeAttribute('data-armed');
                     if (note) note.textContent = 'sound on';
-                    setTimeout(function () { try { s.playLightsaberIgnite(); } catch (e) { /* noop */ } }, 120);
+                    setTimeout(function () { try { s.playLightsaberIgnite(); } catch { /* noop */ } }, 120);
                 } else {
                     btn.setAttribute('data-armed', 'true');
                 }
                 return;
             }
             if (note) note.hidden = true;
-            try { s.playLightsaberIgnite(); } catch (e) { /* noop */ }
+            try { s.playLightsaberIgnite(); } catch { /* noop */ }
         }
         btn.addEventListener('click', onClick);
         return { destroy: function () { btn.removeEventListener('click', onClick); } };

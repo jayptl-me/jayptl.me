@@ -38,7 +38,7 @@
     function query(q) {
         try {
             return window.matchMedia(q);
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -203,7 +203,7 @@
         listen(calmQ, sync);
         try {
             if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
 
         sync();
 

@@ -48,7 +48,7 @@
     function reduced() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -59,7 +59,7 @@
         if (t) return t === 'dark';
         try {
             return window.matchMedia('(prefers-color-scheme: dark)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -207,7 +207,7 @@
         dialog.showModal();
         root.classList.add('rsheet-open');
         setBehind(1);
-        try { body.focus({ preventScroll: true }); } catch (e) { body.focus(); }
+        try { body.focus({ preventScroll: true }); } catch { body.focus(); }
         // Two frames, so the rise starts from below the screen.
         requestAnimationFrame(function () {
             requestAnimationFrame(function () { if (dialog.open && !closing) dialog.classList.add('is-up'); });

@@ -43,7 +43,7 @@
     function motionQuery() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)');
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -61,7 +61,7 @@
         lastSetY = Math.round(y);
         try {
             window.scrollTo({ top: y, left: window.scrollX, behavior: 'instant' });
-        } catch (e) {
+        } catch {
             window.scrollTo(window.scrollX, y);
         }
     }
@@ -110,7 +110,7 @@
             var pad = 0;
             try {
                 pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-            } catch (e) { pad = 0; }
+            } catch { pad = 0; }
             y = dest.getBoundingClientRect().top + window.scrollY - pad;
         }
         if (typeof y !== 'number' || isNaN(y)) return;
@@ -139,7 +139,7 @@
             html.classList.contains('deck-open')) return true;
         try {
             if (getComputedStyle(body).overflowY === 'hidden' || getComputedStyle(html).overflowY === 'hidden') return true;
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return false;
     }
 
@@ -154,7 +154,7 @@
         var el = node && node.nodeType === 1 ? node : node && node.parentElement;
         while (el && el !== document.body && el !== document.documentElement) {
             var style;
-            try { style = getComputedStyle(el); } catch (e) { style = null; }
+            try { style = getComputedStyle(el); } catch { style = null; }
             if (style && /(auto|scroll|overlay)/.test(style.overflowY) && el.scrollHeight > el.clientHeight + 1) {
                 if (dy > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true;
                 if (dy < 0 && el.scrollTop > 0) return true;
@@ -235,11 +235,11 @@
         if (!el || stepperHolds() || pageLocked()) return;
         e.preventDefault();
         to(el);
-        try { history.pushState(history.state, '', '#' + id); } catch (err) { /* noop */ }
+        try { history.pushState(history.state, '', '#' + id); } catch { /* noop */ }
         if (!el.hasAttribute('tabindex') && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(el.tagName)) {
             el.setAttribute('tabindex', '-1');
         }
-        try { el.focus({ preventScroll: true }); } catch (err) { /* noop */ }
+        try { el.focus({ preventScroll: true }); } catch { /* noop */ }
     }
 
     function init() {

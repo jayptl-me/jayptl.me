@@ -112,7 +112,6 @@ class ThemeToggle {
 
     // Minimal fallback theme manager used only when no global manager exists.
     createFallbackManager() {
-        const self = this;
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
         const getStored = storedTheme;
@@ -204,12 +203,14 @@ class ThemeToggle {
         manager.applyTheme(initial);
 
         // Also react to system changes if user hasn't explicitly set a preference
-        mediaQuery.addEventListener && mediaQuery.addEventListener('change', (e) => {
-            const stored = getStored();
-            if (!stored) {
-                manager.applyTheme(e.matches ? 'dark' : 'light');
-            }
-        });
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', (e) => {
+                const stored = getStored();
+                if (!stored) {
+                    manager.applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
 
         return manager;
     }

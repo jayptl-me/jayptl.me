@@ -27,7 +27,7 @@
     function reduced() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -40,7 +40,7 @@
     function soundOn() {
         try {
             return Boolean(window.SoundManager && window.SoundManager.getPrefs().master);
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -83,7 +83,7 @@
         try {
             var skip = document.querySelector('.skip-link') || document.getElementById('glassNavBrand');
             if (skip) skip.focus({ preventScroll: true });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function mount() {
@@ -114,7 +114,7 @@
         soundBtn.addEventListener('click', function () {
             try {
                 if (window.SoundManager) window.SoundManager.setMasterEnabled(!soundOn());
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             syncSound();
         });
         dock.querySelector('.dock-top').addEventListener('click', toTop);

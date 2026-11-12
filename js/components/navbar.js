@@ -36,7 +36,6 @@
 
     const githubHref = 'https://github.com/jayptl-me';
     const linkedinHref = 'https://www.linkedin.com/in/jayptl-rq/';
-    const emailHref = 'mailto:hello@jayptl.me';
     const email = 'hello@jayptl.me';
     const bookHref = '/book';
     const contactHref = '/contact';

@@ -43,7 +43,10 @@
         var n = Math.max(0, Math.floor(Number(value) || 0));
         var text = n.toLocaleString('en-US');
         el.classList.add('odometer');
-        el.setAttribute('aria-label', text);
+        // The number as real (visually hidden) text: an aria-label on a plain
+        // span is ignored by most screen readers, and copied text would
+        // otherwise pick up every reel's 0-9.
+        el.removeAttribute('aria-label');
         var face = el.querySelector(':scope > .odo-face');
         if (!face) {
             el.textContent = '';
@@ -52,6 +55,13 @@
             face.setAttribute('aria-hidden', 'true');
             el.appendChild(face);
         }
+        var said = el.querySelector(':scope > .sr-only');
+        if (!said) {
+            said = document.createElement('span');
+            said.className = 'sr-only';
+            el.insertBefore(said, face);
+        }
+        said.textContent = text;
         // Rebuild the slots to match the new length, then roll each reel.
         var chars = text.split('');
         var slots = Array.from(face.children);

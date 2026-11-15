@@ -54,7 +54,7 @@ const LEGACY = {
   'css/components/sticker.css': 1,
   'css/components/theme-toggle.css': 1,
   'css/layout/containers.css': 3,
-  'css/pages/home.css': 3,
+  'css/pages/home.css': 2,
   'css/utilities/cursor.css': 1,
   'css/utilities/responsive.css': 26,
   'css/utilities/text.css': 2

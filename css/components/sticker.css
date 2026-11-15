@@ -60,7 +60,7 @@
   padding: 8px 0;
 }
 
-/* Reset button lives in the footer */
+/* Reset button sits under the stickers (home page, .sticker-reset) */
 .reset-stickers {
   font-family: var(--font-hand);
   font-size: 1.0625rem;

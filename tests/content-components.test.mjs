@@ -118,7 +118,7 @@ test('digit odometer: builds one reel per digit and labels the number', async ()
   run(window, 'js/components/digit-odometer.js');
   const el = document.getElementById('v');
   window.DigitOdometer.set(el, 12345);
-  assert.equal(el.getAttribute('aria-label'), '12,345');
+  assert.equal(el.querySelector('.sr-only').textContent, '12,345');
   assert.equal(el.querySelectorAll('.odo-col').length, 5);
   assert.equal(el.querySelectorAll('.odo-sep').length, 1);
   // The roll starts two animation frames later (each a zero-delay timer
@@ -251,7 +251,7 @@ test('pill links keep their text color on hover (global a:hover would hide it)',
 test('every class the new home sections use has a style rule', () => {
   const css = src('css/pages/home.css');
   for (const cls of ['home-intro-talk', 'home-socials', 'home-more', 'home-closing-inner', 'home-closing-lede',
-    'home-closing-note', 'home-closing-chip', 'site-footer-grid', 'site-footer-right', 'site-footer-status']) {
+    'home-closing-note', 'home-closing-chip', 'site-footer-grid', 'site-footer-brand', 'site-footer-bar', 'sticker-reset']) {
     assert.match(css, new RegExp('\\.' + cls + '\\b'), `home.css styles .${cls}`);
   }
 });

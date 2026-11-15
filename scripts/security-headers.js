@@ -86,7 +86,7 @@ const CSP_DIRECTIVES = [
   ["style-src", "'self' 'unsafe-inline'"],
   ["font-src", "'self'"],
   ["img-src", "'self' data: https://*.google-analytics.com https://*.googletagmanager.com"],
-  ["connect-src", "'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com"],
+  ["connect-src", "'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://api.jayptl.me"],
   ["object-src", "'none'"],
   ["base-uri", "'self'"],
   ["form-action", "'self'"],

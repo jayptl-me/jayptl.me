@@ -35,6 +35,14 @@ function loadConfig(env = process.env) {
     tickSecret: env.TICK_SECRET || '',
     adminSecret: env.ADMIN_SECRET || '',
     tokenSecret: env.TOKEN_SECRET || '',
+    // Server-side page views from our other sites (the notes site's edge
+    // middleware). HIT_SECRET signs them; HIT_SITES lists who may report.
+    hitSecret: env.HIT_SECRET || '',
+    hitSites: list(env.HIT_SITES, ['notes']),
+    hitServerPerMin: Math.max(1, int(env.HIT_SERVER_PER_MIN, 600)),
+    // A tick within this many minutes of the last one also marks the minutes
+    // between as up (1 = only the minute of each tick). See uptime/store.js.
+    tickFillMinutes: Math.min(60, Math.max(1, Math.floor(int(env.TICK_FILL_MINUTES, 1)))),
 
     google: {
       clientId: env.GOOGLE_CLIENT_ID || '',
@@ -80,6 +88,7 @@ function features(config) {
     // The scheduler's key only runs the tick. Guest data (export) and the
     // admin page need ADMIN_SECRET, which never leaves the owner's hands.
     tick: Boolean(config.redisUrl && config.tickSecret),
+    serverHit: Boolean(config.redisUrl && config.hitSecret),
     steam: Boolean(config.steam.apiKey && config.steam.steamId),
     admin: Boolean(config.redisUrl && config.adminSecret)
   };

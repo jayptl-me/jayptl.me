@@ -64,14 +64,31 @@ function createUptimeStore(redis) {
   }
 
   return {
-    async heartbeat(nowMs) {
-      const key = 'up:' + utcDay(nowMs);
-      await redis.pipeline([
-        ['SETBIT', key, minuteOfDay(nowMs), 1],
-        ['EXPIRE', key, 40 * 86400],
-        ['SET', 'up:since', new Date(nowMs).toISOString(), 'NX'],
-        ['SET', 'up:last', new Date(nowMs).toISOString()]
-      ]);
+    /**
+     * One heartbeat. With fillMinutes above 1, a beat that arrives within
+     * that many minutes of the last one also marks the minutes between as
+     * up, so a scheduler that beats every few minutes (the box heartbeat,
+     * every 8) reads as up. A longer gap stays down.
+     */
+    async heartbeat(nowMs, fillMinutes = 1) {
+      const nowMin = floorMinute(nowMs);
+      const minutes = [nowMin];
+      if (fillMinutes > 1) {
+        const last = await redis.command(['GET', 'up:last']);
+        const lastMin = last ? floorMinute(Date.parse(last)) : NaN;
+        if (Number.isFinite(lastMin) && nowMin > lastMin && nowMin - lastMin <= fillMinutes * 60000) {
+          for (let t = lastMin + 60000; t < nowMin; t += 60000) minutes.push(t);
+        }
+      }
+      const cmds = [];
+      const days = new Set();
+      for (const t of minutes) {
+        cmds.push(['SETBIT', 'up:' + utcDay(t), minuteOfDay(t), 1]);
+        days.add('up:' + utcDay(t));
+      }
+      for (const key of days) cmds.push(['EXPIRE', key, 40 * 86400]);
+      cmds.push(['SET', 'up:since', new Date(nowMs).toISOString(), 'NX'], ['SET', 'up:last', new Date(nowMs).toISOString()]);
+      await redis.pipeline(cmds);
     },
 
     minutes,

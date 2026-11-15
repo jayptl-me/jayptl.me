@@ -64,24 +64,47 @@ function createUptimeStore(redis) {
   }
 
   return {
-    async heartbeat(nowMs) {
-      const key = 'up:' + utcDay(nowMs);
-      await redis.pipeline([
-        ['SETBIT', key, minuteOfDay(nowMs), 1],
-        ['EXPIRE', key, 40 * 86400],
-        ['SET', 'up:since', new Date(nowMs).toISOString(), 'NX'],
-        ['SET', 'up:last', new Date(nowMs).toISOString()]
-      ]);
+    /**
+     * One heartbeat. With fillMinutes above 1, a beat that arrives within
+     * that many minutes of the last one also marks the minutes between as
+     * up, so a scheduler that beats every few minutes (the box heartbeat,
+     * every 8) reads as up. A longer gap stays down.
+     */
+    async heartbeat(nowMs, fillMinutes = 1) {
+      const nowMin = floorMinute(nowMs);
+      const minutes = [nowMin];
+      if (fillMinutes > 1) {
+        const last = await redis.command(['GET', 'up:last']);
+        const lastMin = last ? floorMinute(Date.parse(last)) : NaN;
+        if (Number.isFinite(lastMin) && nowMin > lastMin && nowMin - lastMin <= fillMinutes * 60000) {
+          for (let t = lastMin + 60000; t < nowMin; t += 60000) minutes.push(t);
+        }
+      }
+      const cmds = [];
+      const days = new Set();
+      for (const t of minutes) {
+        cmds.push(['SETBIT', 'up:' + utcDay(t), minuteOfDay(t), 1]);
+        days.add('up:' + utcDay(t));
+      }
+      for (const key of days) cmds.push(['EXPIRE', key, 40 * 86400]);
+      cmds.push(['SET', 'up:since', new Date(nowMs).toISOString(), 'NX'], ['SET', 'up:last', new Date(nowMs).toISOString()]);
+      await redis.pipeline(cmds);
     },
 
     minutes,
 
     /** Uptime is the share of minutes that got a heartbeat. */
-    async uptime(nowMs) {
+    async uptime(nowMs, fillMinutes = 1) {
       const [since, last] = await redis.pipeline([['GET', 'up:since'], ['GET', 'up:last']]);
       if (!since) return { since: null, lastTick: null, uptime24h: 0, uptime30d: 0, days: [] };
       const sinceMs = Date.parse(since);
-      const end = floorMinute(nowMs) + 60000;
+      let end = floorMinute(nowMs) + 60000;
+      // With a beat every few minutes, the minutes since the last beat are
+      // not down yet: stop counting at the last beat until it is overdue.
+      const lastMs = last ? Date.parse(last) : NaN;
+      if (fillMinutes > 1 && Number.isFinite(lastMs) && floorMinute(nowMs) - floorMinute(lastMs) <= fillMinutes * 60000) {
+        end = Math.min(end, floorMinute(lastMs) + 60000);
+      }
       const ratio = (m) => (m.possible ? Math.min(1, m.up / m.possible) : 0);
       const dayStarts = [];
       for (let i = 29; i >= 0; i--) dayStarts.push(Date.parse(utcDay(nowMs - i * DAY_MS) + 'T00:00:00Z'));

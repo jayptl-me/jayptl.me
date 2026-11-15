@@ -47,7 +47,7 @@ test('cleanup also drops index entries whose booking already expired on its own'
   const slot = await firstSlot(t);
   await t.call('POST', '/v1/book', { body: { name: 'Old', email: 'old@example.com', slot, company: '', elapsed: 5000 } });
   // The store expired the guest hash by itself (no tick ran for a month).
-  for (const k of [...t.redis.hashes.keys()]) if (k.startsWith('bk:')) t.redis.hashes.delete(k);
+  for (const k of t.redis.hashes.keys()) if (k.startsWith('bk:')) t.redis.hashes.delete(k);
   t.setNow(Date.parse(slot) + 31 * 86400000);
   await t.call('POST', '/v1/tick', { token: 'tick-secret' });
   assert.equal((t.redis.zsets.get('bk:start') || new Map()).size, 0, 'no ids left behind');

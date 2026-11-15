@@ -118,7 +118,12 @@ async function minifyCSS() {
             normalizeWhitespace: true,
             colormin: true,
             minifyFontValues: true,
-            minifySelectors: true
+            minifySelectors: true,
+            /* Keep "@media (" spaced: minified params print "@media(",
+               which is valid CSS but the test browser (happy-dom 21,
+               latest) drops the whole rule, so every phone rule reads
+               as its desktop value. Costs a couple of bytes per query. */
+            minifyParams: false
           }]
         })
       ]).process(original, { from: file, to: file });

@@ -28,7 +28,7 @@
     var MAX_STAGGER = 10;
 
     function reduced() {
-        try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+        try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
     }
 
     function plural(n) {

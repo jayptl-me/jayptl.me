@@ -28,7 +28,7 @@ export async function boot(overrides = {}) {
     TOKEN_SECRET: 'token-secret',
     GOOGLE_CLIENT_ID: 'id', GOOGLE_CLIENT_SECRET: 'secret', GOOGLE_REFRESH_TOKEN: 'refresh',
     ...(overrides.steamEnv ? { STEAM_API_KEY: 'k', STEAM_ID: '1' } : {}),
-    ...(overrides.env || {})
+    ...overrides.env
   });
   const fetch = overrides.fetch || (async (url) => {
     if (String(url).includes('sitemap')) return { ok: true, text: async () => SITEMAP };
@@ -54,7 +54,7 @@ export async function boot(overrides = {}) {
     });
     const text = await res.text();
     let json = null;
-    try { json = JSON.parse(text); } catch (e) { json = text; }
+    try { json = JSON.parse(text); } catch { json = text; }
     return { status: res.status, headers: res.headers, body: json };
   };
   const raw = async (method, path, body, type, token) => {
@@ -62,7 +62,7 @@ export async function boot(overrides = {}) {
     const res = await globalThis.fetch(base + path, { method, headers, body });
     const text = await res.text();
     let json = null;
-    try { json = JSON.parse(text); } catch (e) { json = text; }
+    try { json = JSON.parse(text); } catch { json = text; }
     return { status: res.status, body: json };
   };
   return {

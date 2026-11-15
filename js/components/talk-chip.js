@@ -39,7 +39,7 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallback(text); });
             }
-        } catch (e) { /* fall through */ }
+        } catch { /* fall through */ }
         return Promise.resolve(fallback(text));
     }
 
@@ -52,7 +52,7 @@
         document.body.appendChild(area);
         area.select();
         var ok = false;
-        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        try { ok = document.execCommand('copy'); } catch { ok = false; }
         document.body.removeChild(area);
         return ok;
     }
@@ -157,7 +157,7 @@
                 if (ok && window.SoundManager && typeof window.SoundManager.playSuccessSound === 'function') {
                     window.SoundManager.playSuccessSound();
                 }
-            } catch (err) { /* noop */ }
+            } catch { /* noop */ }
         });
     });
 

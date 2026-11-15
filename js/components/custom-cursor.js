@@ -55,7 +55,7 @@ class CustomCursor {
             if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 return;
             }
-        } catch (e) { /* conservative: continue */ }
+        } catch { /* conservative: continue */ }
 
         // Defer creation out of the initial TBT window: idle or first mousemove
         const start = () => {
@@ -76,7 +76,7 @@ class CustomCursor {
             this.targetX = e.clientX;
             this.targetY = e.clientY;
             if (this._idleCallback) {
-                try { cancelIdleCallback(this._idleCallback); } catch (err) { /* noop */ }
+                try { cancelIdleCallback(this._idleCallback); } catch { /* noop */ }
                 this._idleCallback = null;
             }
             start();
@@ -428,7 +428,7 @@ class CustomCursor {
             try {
                 if ('cancelIdleCallback' in window) cancelIdleCallback(this._idleCallback);
                 else clearTimeout(this._idleCallback);
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this._idleCallback = null;
         }
         // Remove event listeners
@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (('ontouchstart' in window) || navigator.maxTouchPoints > 0) ok = false;
         else if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) ok = false;
         else if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ok = false;
-    } catch (e) { /* default to init */ }
+    } catch { /* default to init */ }
     if (!ok) return;
     window.customCursor = new CustomCursor();
 

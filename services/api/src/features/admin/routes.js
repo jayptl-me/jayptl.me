@@ -26,7 +26,7 @@ function createAdmin(ctx) {
         const t = now();
         return {
           exportedAt: new Date(t).toISOString(),
-          views: await store.allViews(),
+          views: await store.allViews(config.hitSites),
           bookings: await store.bookingsBetween(t - config.booking.keepDays * 86400000, '+inf'),
           playing: await store.manualPlaying()
         };

@@ -38,14 +38,17 @@ class AnalyticsManager {
      * Waits for user consent before loading Google Analytics.
      */
     waitForConsent() {
-        const checkConsent = () => {
-            if (window.consentBanner && window.consentBanner.hasConsent()) {
-                this.loadGoogleAnalytics();
-            } else {
-                setTimeout(checkConsent, 100);
-            }
+        // consent-banner.js is the one loader of the GA script. It fires
+        // 'analytics:ready' once gtag is set up for an opted-in visitor (at
+        // load, or when they opt in later on /privacy). No polling.
+        const start = () => {
+            if (this.isLoaded || !window.gtag) return;
+            if (!(window.consentBanner && window.consentBanner.hasConsent())) return;
+            this.isLoaded = true;
+            this.setupPortfolioTracking();
         };
-        checkConsent();
+        document.addEventListener('analytics:ready', start);
+        start();
     }
 
 
@@ -68,7 +71,8 @@ class AnalyticsManager {
      */
     initializeGtag() {
         window.dataLayer = window.dataLayer || [];
-        window.gtag = (...args) => window.dataLayer.push(args);
+        // gtag.js reads the arguments object, not an array.
+        window.gtag = function gtag() { window.dataLayer.push(arguments); };
 
         // Set conservative consent mode defaults (deny analytics until explicit user consent)
         // This avoids accidental tracking prior to consent and aligns with Google & GDPR guidance.
@@ -115,11 +119,13 @@ class AnalyticsManager {
      * @param {string|null} pageTitle
      */
     trackPageView(pagePath = null, pageTitle = null) {
+        // Called by page-router.js after each in-page navigation. The page_view
+        // itself is sent by GA4's enhanced measurement, which watches history
+        // changes (on by default); sending one here too would count every
+        // navigation twice. What this does is start the per-page events over.
+        void pagePath; void pageTitle;
         if (!this.isAnalyticsReady()) return;
-        const params = {};
-        if (pagePath) params.page_path = pagePath;
-        if (pageTitle) params.page_title = pageTitle;
-        gtag('event', 'page_view', params);
+        this.resetPageTracking();
     }
 
 
@@ -138,6 +144,7 @@ class AnalyticsManager {
      * Sets up custom portfolio tracking events.
      */
     setupPortfolioTracking() {
+        this.setupLeadTracking();
         window.addEventListener('themechange', e => {
             this.trackEvent('theme_change', {
                 theme: e.detail.theme,
@@ -156,10 +163,11 @@ class AnalyticsManager {
     setupScrollTracking() {
         const scrollDepths = [25, 50, 75, 90];
         const trackedDepths = new Set();
+        this.resetScrollDepths = () => trackedDepths.clear();
         const trackScrollDepth = () => {
-            const scrollPercent = Math.round(
-                (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
-            );
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            if (scrollable <= 0) return;
+            const scrollPercent = Math.round((window.scrollY / scrollable) * 100);
             scrollDepths.forEach(depth => {
                 if (scrollPercent >= depth && !trackedDepths.has(depth)) {
                     trackedDepths.add(depth);
@@ -197,7 +205,9 @@ class AnalyticsManager {
                 });
             }, seconds * 1000);
         });
-        window.addEventListener('beforeunload', () => {
+        // pagehide fires on mobile and on back/forward-cache exits, where
+        // beforeunload does not; gtag sends it with a beacon.
+        window.addEventListener('pagehide', () => {
             const timeSpent = Math.round((Date.now() - startTime) / 1000);
             this.trackEvent('session_duration', {
                 duration_seconds: timeSpent,
@@ -211,12 +221,19 @@ class AnalyticsManager {
      * Tracks when portfolio sections come into view using IntersectionObserver.
      */
     setupSectionTracking() {
-        const sections = document.querySelectorAll('[id]');
+        if (!('IntersectionObserver' in window)) return;
+        // Page sections only (not every element with an id), and each one
+        // once per page view, so scrolling up and down does not inflate it.
+        const seen = new Set();
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && entry.target.id) {
+                const id = entry.target.id;
+                if (entry.isIntersecting && id && !seen.has(id)) {
+                    seen.add(id);
+                    observer.unobserve(entry.target);
                     this.trackEvent('section_view', {
-                        section_id: entry.target.id,
+                        section_id: id,
+                        page_path: window.location.pathname,
                         event_category: 'navigation'
                     });
                 }
@@ -225,7 +242,54 @@ class AnalyticsManager {
             threshold: 0.5,
             rootMargin: '0px 0px -20% 0px'
         });
-        sections.forEach(section => observer.observe(section));
+        const observeAll = () => {
+            observer.disconnect();
+            seen.clear();
+            document.querySelectorAll('main section[id], section[id]').forEach(section => observer.observe(section));
+        };
+        this.resetSections = observeAll;
+        observeAll();
+    }
+
+    /**
+     * Starts the per-page events over after an in-page navigation swapped
+     * the content (scroll depth and section views belong to one page).
+     */
+    resetPageTracking() {
+        if (this.resetScrollDepths) this.resetScrollDepths();
+        if (this.resetSections) this.resetSections();
+    }
+
+    /**
+     * Leads, from one delegated click listener (works across in-page
+     * navigations): email and phone links (generate_lead) and links to the
+     * booking page (select_content). Outbound links and PDF downloads are
+     * left to GA4's enhanced measurement, which already reports them as
+     * click and file_download; a second event here would double them.
+     * Booking itself is reported by slot-picker.js once the call is booked.
+     */
+    setupLeadTracking() {
+        const where = (el) => {
+            const box = el.closest('footer, nav, header, section[id], main');
+            if (!box) return 'page';
+            return box.id || box.tagName.toLowerCase();
+        };
+        document.addEventListener('click', (e) => {
+            const link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+            if (!link) return;
+            const href = link.getAttribute('href') || '';
+            if (/^mailto:/i.test(href)) {
+                this.trackEvent('generate_lead', { method: 'email', link_location: where(link), page_path: window.location.pathname });
+            } else if (/^tel:/i.test(href)) {
+                this.trackEvent('generate_lead', { method: 'phone', link_location: where(link), page_path: window.location.pathname });
+            } else {
+                let url = null;
+                try { url = new URL(href, window.location.href); } catch { url = null; }
+                if (url && url.origin === window.location.origin && url.pathname.replace(/\/+$/, '') === '/book') {
+                    this.trackEvent('select_content', { content_type: 'cta', content_id: 'book', link_location: where(link), page_path: window.location.pathname });
+                }
+            }
+        }, { capture: true, passive: true });
     }
 
 
@@ -234,7 +298,10 @@ class AnalyticsManager {
      * @returns {boolean}
      */
     isAnalyticsReady() {
-        return this.isLoaded && typeof gtag !== 'undefined';
+        // Also checks consent now, so an opt-out during the visit stops
+        // every event at once, not only on the next page load.
+        return this.isLoaded && typeof window.gtag === 'function' &&
+            Boolean(window.consentBanner && window.consentBanner.hasConsent());
     }
 
 
@@ -291,9 +358,10 @@ class AnalyticsManager {
 
 
 // Initialize analytics manager
-document.addEventListener('DOMContentLoaded', () => {
-    window.analyticsManager = new AnalyticsManager();
-});
+// (or at once, when the page router adds this script after load). Once only.
+const bootAnalytics = () => { if (!window.analyticsManager) window.analyticsManager = new AnalyticsManager(); };
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootAnalytics);
+else bootAnalytics();
 
 // Utility function to easily track events from anywhere
 window.trackEvent = (eventName, parameters = {}) => {

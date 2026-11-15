@@ -28,7 +28,7 @@
     function reduced() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -46,7 +46,7 @@
         try {
             var sm = window.SoundManager;
             if (sm && kind === 'open' && typeof sm.playSelectSound === 'function') sm.playSelectSound();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function mount(root) {

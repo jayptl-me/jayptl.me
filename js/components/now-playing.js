@@ -52,7 +52,7 @@
 
     try {
         window.NowPlaying = { format: format, ago: ago };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (window.Mount) {
         window.Mount.register('now-playing', { mount: mount });

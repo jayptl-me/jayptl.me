@@ -21,10 +21,10 @@ function createUptime(ctx) {
         let redisOk = false;
         try {
           redisOk = (await store.ping()) === 'PONG';
-        } catch (e) {
+        } catch {
           redisOk = false;
         }
-        const up = redisOk ? await store.uptime(now()) : { lastTick: null, uptime24h: 0, uptime30d: 0, days: [] };
+        const up = redisOk ? await store.uptime(now(), ctx.config.tickFillMinutes) : { lastTick: null, uptime24h: 0, uptime30d: 0, days: [] };
         const value = {
           ok: redisOk,
           redis: redisOk,

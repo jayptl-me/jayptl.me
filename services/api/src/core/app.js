@@ -11,7 +11,7 @@
  *
  * Public:  GET /v1/health, GET /v1/status, POST /v1/hit, GET /v1/views,
  *          GET /v1/slots, POST /v1/book, POST /v1/cancel, GET /v1/playing
- * Secret:  POST /v1/tick (TICK_SECRET), GET /v1/export (ADMIN_SECRET),
+ * Secret:  POST /v1/hit/server (HIT_SECRET), POST /v1/tick (TICK_SECRET), GET /v1/export (ADMIN_SECRET),
  *          POST|DELETE /v1/admin/playing, GET /v1/admin/ip-check
  *          (ADMIN_SECRET), GET /admin (page)
  */

@@ -42,12 +42,12 @@
     var snap = bezier(0.16, 1, 0.3, 1);
     try {
         if (!window.SnapEase) window.SnapEase = snap;
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     function reduced() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -96,7 +96,7 @@
 
     try {
         window.TallyRoll = { format: format };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (window.Mount) {
         window.Mount.register('tally-roll', { selector: '[data-tally]', mount: mount, unmount: unmount });

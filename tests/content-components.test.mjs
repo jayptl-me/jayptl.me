@@ -53,7 +53,7 @@ test('stack chip: project counts match the tags on the project cards', () => {
   // carry .case-card-tags; status labels sit in the card or row kicker.
   // Count both, as the old tag row did.
   const cards = [...html.matchAll(/<article class="case-card[\s\S]*?<\/article>|<details class="role arch-row[\s\S]*?<\/details>/g)].map((m) => {
-    const kicker = (m[0].match(/<(?:p|span) class="(?:case-card|arch)-kicker[^"]*">([^<]*)<\/(?:p|span)>/) || [, ''])[1].split(' · ');
+    const kicker = (m[0].match(/<(?:p|span) class="(?:case-card|arch)-kicker[^"]*">([^<]*)<\/(?:p|span)>/) || [undefined, ''])[1].split(' · ');
     const tags = [...m[0].matchAll(/<li class="tag"(?: hidden)?>([^<]+)<\/li>/g)].map((t) => t[1].trim());
     return kicker.concat(tags).filter(Boolean);
   });

@@ -179,7 +179,7 @@ async function validateHTML() {
         
         log.success(`Validated ${file.name}`);
         
-      } catch (error) {
+      } catch {
         config.errors.push(`${file.name}: Failed to read file`);
         log.error(`Failed to read ${file.name}`);
       }
@@ -219,7 +219,7 @@ async function validateRobotsTxt() {
         log.warn('robots.txt: Sitemap URL should use HTTPS');
       }
       
-    } catch (error) {
+    } catch {
       config.errors.push('robots.txt: Failed to read file');
       log.error('Failed to read robots.txt');
     }
@@ -262,7 +262,7 @@ async function validateSitemap() {
         log.warn('sitemap.xml: No <loc> tags found');
       }
       
-    } catch (error) {
+    } catch {
       config.errors.push('sitemap.xml: Failed to read file');
       log.error('Failed to read sitemap.xml');
     }

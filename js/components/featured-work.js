@@ -55,7 +55,7 @@
     /* Re-scan hook for seamless revisits (old nodes detach, new grid binds). */
     try {
         window.FeaturedWorkRefresh = init;
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

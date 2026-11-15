@@ -71,22 +71,6 @@ class ConsentBanner {
     }
 
     showConsentSettings() {
-        const currentStatus = this.consentData.hasResponded
-            ? (this.consentData.accepted ? 'Analytics enabled' : 'Analytics disabled')
-            : 'Not set';
-
-        const message = `Current Privacy Settings:
-        
-Analytics Status: ${currentStatus}
-
-What would you like to do?
-
-Enable Analytics - Help improve this portfolio
-Disable Analytics - Browse privately
-Reset - Show the consent banner again
-
-Analytics helps me understand which sections are most engaging and improve the user experience. No personal information is collected.`;
-
         // Create a custom dialog
         this.createSettingsDialog();
     }
@@ -524,7 +508,7 @@ For questions about data handling, you can contact me through the portfolio cont
             if (window.location && window.location.protocol === 'https:') {
                 cookieStr += ';Secure';
             }
-        } catch (e) {
+        } catch {
             // silent
         }
         document.cookie = cookieStr;
@@ -538,7 +522,7 @@ For questions about data handling, you can contact me through the portfolio cont
         if (stored) {
             try {
                 return JSON.parse(stored);
-            } catch (e) {
+            } catch {
                 console.warn('Invalid consent data in localStorage');
             }
         }
@@ -550,7 +534,7 @@ For questions about data handling, you can contact me through the portfolio cont
             try {
                 const value = decodeURIComponent(consentCookie.split('=')[1]);
                 return JSON.parse(value);
-            } catch (e) {
+            } catch {
                 console.warn('Invalid consent data in cookie');
             }
         }
@@ -583,8 +567,18 @@ For questions about data handling, you can contact me through the portfolio cont
     }
 
     loadGoogleAnalytics() {
-        // Replace 'GA_MEASUREMENT_ID' with your actual Google Analytics 4 Measurement ID
-        const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J'; // Your actual GA4 Measurement ID
+        const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J';
+        // Opting in again lifts the off switch set on opt-out.
+        window['ga-disable-' + GA_MEASUREMENT_ID] = false;
+
+        // Load once per visit. Turning analytics off and on again only flips
+        // consent back to granted; a second script and config would send a
+        // second page_view for the same page.
+        if (this.gaLoaded && window.gtag) {
+            window.gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            document.dispatchEvent(new CustomEvent('analytics:ready'));
+            return;
+        }
 
         // Load Google Analytics
         const script1 = document.createElement('script');
@@ -598,8 +592,13 @@ For questions about data handling, you can contact me through the portfolio cont
         window.gtag = gtag;
 
         // Set default denied; will immediately update to granted only if user consented
+        // Consent mode v2: everything denied until the visitor opts in. This
+        // site runs no ads, so the ad signals stay denied for good.
         gtag('consent', 'default', {
-            'analytics_storage': 'denied'
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
         });
 
         if (this.consentData.accepted && this.consentData.hasResponded) {
@@ -617,9 +616,16 @@ For questions about data handling, you can contact me through the portfolio cont
             allow_ad_personalization_signals: false
         });
 
+        this.gaLoaded = true;
+        // analytics.js listens for this and starts its events (it never loads
+        // a second copy of the script).
+        document.dispatchEvent(new CustomEvent('analytics:ready'));
     }
 
     disableAnalyticsTracking() {
+        // Google's own off switch: with it set, the loaded gtag sends nothing
+        // at all, not even the cookieless pings consent mode still allows.
+        window['ga-disable-G-GGZTYJVH9J'] = true;
         // Disable Google Analytics through consent mode
         if (window.gtag) {
             window.gtag('consent', 'update', {
@@ -647,7 +653,7 @@ For questions about data handling, you can contact me through the portfolio cont
                             // Expire cookie
                             const cookieStr = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
                             document.cookie = cookieStr;
-                        } catch (e) {
+                        } catch {
                             // ignore
                         }
                     });
@@ -657,7 +663,7 @@ For questions about data handling, you can contact me through the portfolio cont
             // also try without domain attribute
             try {
                 document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
-            } catch (e) { }
+            } catch { }
         });
 
         // Also try to remove the consent cookie we set
@@ -668,12 +674,12 @@ For questions about data handling, you can contact me through the portfolio cont
                     secureVariants.forEach(secureFlag => {
                         try {
                             document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path || '/'};domain=${domain};SameSite=Lax${secureFlag}`;
-                        } catch (e) { }
+                        } catch { }
                     });
                 });
             });
             document.cookie = `${consentName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax`;
-        } catch (e) { }
+        } catch { }
 
         // Google Analytics disabled and cookie removal attempted (client-side best-effort)
     }
@@ -734,9 +740,10 @@ For questions about data handling, you can contact me through the portfolio cont
 }
 
 // Initialize consent banner when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.consentBanner = new ConsentBanner();
-});
+// (or at once, when the page router adds this script after load). Once only.
+const bootConsent = () => { if (!window.consentBanner) window.consentBanner = new ConsentBanner(); };
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootConsent);
+else bootConsent();
 
 // Export for module use if needed
 if (typeof module !== 'undefined' && module.exports) {

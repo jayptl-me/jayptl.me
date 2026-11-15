@@ -71,7 +71,7 @@
     function reduced() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -80,7 +80,7 @@
         try {
             var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
             return /mac|iphone|ipad/i.test(p);
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -96,7 +96,7 @@
                 lastTick = now;
                 sm.playTickSound();
             }
-        } catch (e) { /* sound never blocks the deck */ }
+        } catch { /* sound never blocks the deck */ }
     }
 
     function announce(text) {
@@ -129,7 +129,7 @@
                     href: '/projects#' + card.id
                 });
             });
-        } catch (e) { /* leave empty */ }
+        } catch { /* leave empty */ }
         return out;
     }
 
@@ -163,28 +163,28 @@
                 if (!id || !text || out.some(function (o) { return o.hash === id; })) return;
                 out.push({ group: 'On this page', label: text, hash: id, hint: 'Section', keys: id });
             });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return out.slice(0, 12);
     }
 
     function soundOn() {
         try {
             return Boolean(window.SoundManager && window.SoundManager.getPrefs().master);
-        } catch (e) {
+        } catch {
             return false;
         }
     }
 
     function actionItems() {
         var out = [
-            { group: 'Actions', label: 'Switch theme', hint: 'Light clay or dark glass', keys: 'dark light mode', run: function () {
+            { group: 'Actions', label: 'Switch theme', hint: 'Light or dark', keys: 'dark light mode', run: function () {
                 var t = document.getElementById('themeToggle');
                 if (t) t.click();
             } },
             { group: 'Actions', label: soundOn() ? 'Turn sound off' : 'Turn sound on', hint: 'Site score and effects', keys: 'audio mute music', run: function () {
                 try {
                     if (window.SoundManager) window.SoundManager.setMasterEnabled(!soundOn());
-                } catch (e) { /* noop */ }
+                } catch { /* noop */ }
             } },
             { group: 'Actions', label: 'Copy email', hint: EMAIL, keys: 'contact mail hello', run: function () {
                 copy(EMAIL, 'Email copied');
@@ -214,7 +214,7 @@
         var extra = [];
         try {
             if (Array.isArray(window.CommandDeckPages)) extra = window.CommandDeckPages;
-        } catch (e) { extra = []; }
+        } catch { extra = []; }
         return [].concat(
             PAGES.concat(extra).map(function (p) { return page(p, 'Pages'); }),
             sectionItems(),
@@ -257,7 +257,7 @@
     }
 
     function filter(query) {
-        var q = (query || '').toLowerCase().replace(/[\/#_-]+/g, ' ').trim();
+        var q = (query || '').toLowerCase().replace(/[/#_-]+/g, ' ').trim();
         var pool = allItems();
         if (!q) {
             return pool.filter(function (it) { return it.group !== 'Projects' && it.group !== 'Resume PDFs'; });
@@ -351,7 +351,7 @@
         });
         var el = items[active].el;
         input.setAttribute('aria-activedescendant', el.id);
-        try { el.scrollIntoView({ block: 'nearest' }); } catch (e) { /* noop */ }
+        try { el.scrollIntoView({ block: 'nearest' }); } catch { /* noop */ }
         if (withSound) sound('tick');
     }
 
@@ -364,7 +364,7 @@
                 navigator.clipboard.writeText(text).then(done, done);
                 return;
             }
-        } catch (e) { /* fall through */ }
+        } catch { /* fall through */ }
         var area = document.createElement('textarea');
         area.value = text;
         area.setAttribute('readonly', '');
@@ -372,7 +372,7 @@
         area.style.opacity = '0';
         document.body.appendChild(area);
         area.select();
-        try { document.execCommand('copy'); } catch (e) { /* noop */ }
+        try { document.execCommand('copy'); } catch { /* noop */ }
         document.body.removeChild(area);
         done();
     }
@@ -505,7 +505,7 @@
         opener = document.activeElement;
         try {
             if (window.ScrollGlide) window.ScrollGlide.stop();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         input.value = typeof query === 'string' ? query : '';
         render();
         root.hidden = false;
@@ -537,7 +537,7 @@
             closeTimer = null;
         }, reduced() ? 0 : CLOSE_MS);
         if (!keepFocus && opener && typeof opener.focus === 'function' && opener.isConnected) {
-            try { opener.focus({ preventScroll: true }); } catch (e) { /* noop */ }
+            try { opener.focus({ preventScroll: true }); } catch { /* noop */ }
         }
         opener = null;
     }
@@ -564,7 +564,7 @@
         e.preventDefault();
         // data-deck-query-path seeds the search with the current URL (404).
         var query = btn.hasAttribute('data-deck-query-path')
-            ? decodeURIComponent(window.location.pathname).replace(/[\/_.-]+/g, ' ').replace(/\bhtml\b/, '').trim()
+            ? decodeURIComponent(window.location.pathname).replace(/[/_.-]+/g, ' ').replace(/\bhtml\b/, '').trim()
             : btn.getAttribute('data-deck-query');
         open(query || undefined);
     });
@@ -585,5 +585,5 @@
 
     try {
         window.CommandDeck = { open: open, close: close, toggle: toggle, isMac: isMac };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 })();

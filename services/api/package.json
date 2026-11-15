@@ -10,7 +10,7 @@
     "google-auth": "node scripts/google-auth.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^26.0.0"
   },
   "license": "MIT",
   "overrides": {

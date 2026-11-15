@@ -17,15 +17,15 @@
     window.__privacyActionsBound = true;
 
     function clearEverything() {
-        try { localStorage.clear(); } catch (e) { /* storage may be blocked */ }
-        try { sessionStorage.clear(); } catch (e) { /* storage may be blocked */ }
+        try { localStorage.clear(); } catch { /* storage may be blocked */ }
+        try { sessionStorage.clear(); } catch { /* storage may be blocked */ }
         document.cookie.split(';').forEach(function (c) {
             try {
                 if (!c) return;
                 var eq = c.indexOf('=');
                 var name = (eq > -1 ? c.slice(0, eq) : c).trim();
                 document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-            } catch (e) { /* best effort */ }
+            } catch { /* best effort */ }
         });
     }
 

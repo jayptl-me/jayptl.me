@@ -26,7 +26,7 @@
     function sound() {
         try {
             if (window.SoundManager && window.SoundManager.playSelectSound) window.SoundManager.playSelectSound();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function mount(root) {

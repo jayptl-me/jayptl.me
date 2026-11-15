@@ -32,7 +32,7 @@
                     console.warn('[doodle] page uses #d-… symbols without an inline #doodleSprite');
                 }
             }
-        } catch (e) { /* selector support varies; sprite check is advisory */ }
+        } catch { /* selector support varies; sprite check is advisory */ }
     }
 
     /* ---- Reset stickers toy ---------------------------------------------- */
@@ -65,13 +65,13 @@
                 el.textContent = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
                 el.setAttribute('datetime', d.toISOString());
             }
-        } catch (e) { /* leave the fallback text */ }
+        } catch { /* leave the fallback text */ }
     }
 
     /* ---- Case-study numbered side-rail scrollspy ------------------------- */
     function initCaseRail() {
         if (caseRailHandler) {
-            try { window.removeEventListener('scroll', caseRailHandler); } catch (e) { /* noop */ }
+            try { window.removeEventListener('scroll', caseRailHandler); } catch { /* noop */ }
             caseRailHandler = null;
         }
         var rail = document.querySelector('.case-rail');
@@ -149,7 +149,7 @@
 
     function initDoodleDraw() {
         if (drawObserver) {
-            try { drawObserver.disconnect(); } catch (e) { /* noop */ }
+            try { drawObserver.disconnect(); } catch { /* noop */ }
             drawObserver = null;
         }
         var drawings = document.querySelectorAll('.doodle-draw, .icon-draw');
@@ -201,5 +201,5 @@
     /* Re-scan hook for seamless revisits (same document shell). */
     try {
         window.Doodle = { init: init, draw: draw };
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 })();

@@ -74,30 +74,34 @@
         return 1 - Math.pow(1 - t, 3);
     }
 
-    /* Parse #rgb, #rrggbb, rgb() and rgba() (computed styles yield rgb()). */
+    /* Parse #rgb, #rrggbb, rgb() and rgba() (computed styles yield rgb()).
+       Tries str, then fallback, then black: '#000000' always parses, so the
+       loop always returns inside; the trailing return only states totality. */
     function parseCssColor(str, fallback) {
-        var s = String(str || '').trim();
-        var m;
-        if (!s) return parseCssColor(fallback, '#000000');
-        if (s.charAt(0) === '#') {
-            var hex = s.slice(1);
-            if (/^[0-9a-fA-F]{3}$/.test(hex)) {
-                hex = hex.split('').map(function (c) { return c + c; }).join('');
+        var candidates = [str, fallback, '#000000'];
+        for (var i = 0; i < candidates.length; i++) {
+            var s = String(candidates[i] || '').trim();
+            if (!s) continue;
+            if (s.charAt(0) === '#') {
+                var hex = s.slice(1);
+                if (/^[0-9a-fA-F]{3}$/.test(hex)) {
+                    hex = hex.split('').map(function (c) { return c + c; }).join('');
+                }
+                if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+                    return {
+                        r: parseInt(hex.slice(0, 2), 16),
+                        g: parseInt(hex.slice(2, 4), 16),
+                        b: parseInt(hex.slice(4, 6), 16)
+                    };
+                }
+                continue;
             }
-            if (/^[0-9a-fA-F]{6}$/.test(hex)) {
-                return {
-                    r: parseInt(hex.slice(0, 2), 16),
-                    g: parseInt(hex.slice(2, 4), 16),
-                    b: parseInt(hex.slice(4, 6), 16)
-                };
+            var m = s.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+            if (m) {
+                return { r: +m[1], g: +m[2], b: +m[3] };
             }
-            return parseCssColor(fallback, '#000000');
         }
-        m = s.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
-        if (m) {
-            return { r: +m[1], g: +m[2], b: +m[3] };
-        }
-        return parseCssColor(fallback, '#000000');
+        return { r: 0, g: 0, b: 0 };
     }
 
     function mixRgb(from, to, amount) {
@@ -135,7 +139,7 @@
             return Promise.resolve(document.fonts.load(font)).then(function () {
                 return document.fonts.ready;
             }).catch(function () { /* system fallback fonts render anyway */ });
-        } catch (e) {
+        } catch {
             return Promise.resolve();
         }
     }
@@ -435,7 +439,7 @@
                 var data;
                 try {
                     data = offCtx.getImageData(0, 0, off.width, off.height).data;
-                } catch (e) {
+                } catch {
                     return; // tainted/unreadable canvas, leave fallback text
                 }
 
@@ -616,7 +620,7 @@
                 var rect = inst.canvas.getBoundingClientRect();
                 inst.onPointerMove(e);
                 inst.burst(e.clientX - rect.left, e.clientY - rect.top);
-            } catch (err) { /* taps never break */ }
+            } catch { /* taps never break */ }
         };
         inst.onResize = function () {
             if (inst.resizeRaf !== null) window.cancelAnimationFrame(inst.resizeRaf);
@@ -696,7 +700,7 @@
                     }
                 }, { threshold: 0 });
                 inst.viewObs.observe(inst.host);
-            } catch (e) { inst.viewObs = null; }
+            } catch { inst.viewObs = null; }
         }
 
         inst.host._particleText = inst;

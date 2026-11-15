@@ -164,26 +164,6 @@ class ScrollRevealComponent {
     }
 
     setupEventListeners() {
-        // Ultra-strict scroll event with heavy debouncing
-        let scrollLocked = false;
-        const handleScroll = () => {
-            if (this.container.classList.contains('released')) return;
-            if (scrollLocked) return;
-
-            scrollLocked = true;
-
-            // Clear any existing debounce timer
-            if (this.debounceTimer) {
-                clearTimeout(this.debounceTimer);
-            }
-
-            // Debounce scroll events to prevent rapid firing
-            this.debounceTimer = setTimeout(() => {
-                this.handleScroll();
-                scrollLocked = false;
-            }, 100); // 100ms debounce
-        };
-
         // Disable window scroll listener to ensure stepper-only control
         // Scrolling steps are handled via wheel/touch/keyboard on the overlay
 
@@ -513,7 +493,6 @@ class ScrollRevealComponent {
     setupTouchEvents() {
         let startY = 0;
         let startX = 0;
-        let isVerticalSwipe = false;
 
         // Touch start - capture initial position
         // Use passive: false to allow preventDefault in touchmove
@@ -524,7 +503,6 @@ class ScrollRevealComponent {
             }
             startY = e.touches[0].clientY;
             startX = e.touches[0].clientX;
-            isVerticalSwipe = false;
         };
         this.container.addEventListener('touchstart', this._touchStartHandler, { passive: false });
 
@@ -544,7 +522,6 @@ class ScrollRevealComponent {
 
             // Detect vertical swipe (more vertical than horizontal movement)
             if (deltaY > 10 && deltaY > deltaX) {
-                isVerticalSwipe = true;
                 // Prevent browser pull-to-refresh and native scroll
                 e.preventDefault();
             }
@@ -1016,7 +993,7 @@ class ScrollRevealComponent {
                         this.scrollToIntroSection();
                     }, 420);
                 }
-            } catch (err) {
+            } catch {
                 this._releasing = false;
                 this.container.classList.add('released');
                 this.container.style.display = 'none';
@@ -1210,7 +1187,7 @@ class ScrollRevealComponent {
                     sec.removeAttribute('inert');
                 }
             });
-        } catch (e) {
+        } catch {
             // Browser might not support querySelector or inert
         }
     }
@@ -1292,7 +1269,7 @@ class ScrollRevealComponent {
                     top: targetTop,
                     behavior: 'smooth'
                 });
-            } catch (err) {
+            } catch {
                 // Fallback for older browsers
                 window.scrollTo(0, targetTop);
             }
@@ -1304,7 +1281,7 @@ class ScrollRevealComponent {
                     top: targetTop,
                     behavior: 'smooth'
                 });
-            } catch (err) {
+            } catch {
                 window.scrollTo(0, targetTop);
             }
         }
@@ -1359,7 +1336,7 @@ class ScrollRevealComponent {
                     this._touchEndHandler = null;
                 }
             }
-        } catch (err) {
+        } catch {
             // defensive: ignore errors during cleanup
         }
 
@@ -1373,7 +1350,7 @@ class ScrollRevealComponent {
                 this._heroObserver.disconnect();
                 this._heroObserver = null;
             }
-        } catch (err) {
+        } catch {
             // ignore
         }
 
@@ -1392,7 +1369,7 @@ class ScrollRevealComponent {
                     });
                 }
             }
-        } catch (err) {
+        } catch {
             // ignore
         }
 

@@ -1,9 +1,10 @@
 /**
  * Audio Score Component
- * Bespoke full score wiring. Observes homepage sections and generic
- * motif anchors, shifts the ambient bed per room, plays quiet two
- * note motifs on entry, and adds soft hover and tap voices to nav,
- * pills, cards, and stickers. Router aware for soft navigations.
+ * Score wiring. Observes homepage sections and generic anchors and
+ * shifts the ambient bed per room; sections themselves make no sound,
+ * motion carries them (D-146). Hover is silent. Taps on pills,
+ * stickers and filters voice a select. Router aware for soft
+ * navigations; the page change itself is silent.
  *
  * Everything is gated on the master pref and stays silent by default.
  * No audio files, no network, no blocking of taps or scroll.
@@ -17,7 +18,7 @@
     function sound() {
         try {
             return window.SoundManager || null;
-        } catch (e) {
+        } catch {
             return null;
         }
     }
@@ -26,7 +27,7 @@
         try {
             var sm = sound();
             return Boolean(sm && sm.prefs && sm.prefs.master);
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -34,7 +35,7 @@
     function reducedMotion() {
         try {
             return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        } catch (e) {
+        } catch {
             return false;
         }
     }
@@ -63,7 +64,7 @@
                 var direct = el.getAttribute('data-audio-motif');
                 if (direct) return direct;
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         return 'generic';
     }
 
@@ -72,7 +73,7 @@
         if (!sm) return;
         try {
             if (observer) observer.disconnect();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
 
         var targets = [];
         try {
@@ -89,7 +90,7 @@
             extra.forEach(function (node) {
                 if (targets.indexOf(node) === -1) targets.push(node);
             });
-        } catch (e) { targets = []; }
+        } catch { targets = []; }
 
         if (!targets.length || !('IntersectionObserver' in window)) return;
 
@@ -99,17 +100,14 @@
                     if (!entry.isIntersecting) return;
                     var name = motifFor(entry.target);
                     try {
-                        if (sound()) {
-                            sound().setBedScene(name);
-                            sound().playMotif(name);
-                        }
-                    } catch (err) { /* score never breaks scroll */ }
+                        if (sound()) sound().setBedScene(name);
+                    } catch { /* score never breaks scroll */ }
                 });
             }, { threshold: 0.35 });
             targets.forEach(function (t) {
-                try { observer.observe(t); } catch (e) { /* noop */ }
+                try { observer.observe(t); } catch { /* noop */ }
             });
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     // The riser plays once per page change. A routed link click plays it
@@ -122,7 +120,7 @@
         try {
             var sm = sound();
             if (sm && masterOn() && !reducedMotion()) sm.playRiser();
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }
 
     function riserForPageReady() {
@@ -139,7 +137,6 @@
         document.addEventListener('click', function (e) {
             try {
                 if (!masterOn()) return;
-                if (reducedMotion()) return;
                 var sm = sound();
                 if (!sm) return;
                 var anchor = e.target && e.target.closest ? e.target.closest('a[href]') : null;
@@ -150,7 +147,7 @@
                             riserAt = Date.now();
                             return;
                         }
-                    } catch (err) { /* fall through */ }
+                    } catch { /* fall through */ }
                 }
                 var pill = e.target && e.target.closest ? e.target.closest('.scroll-stack-pill, .sticker, .filter-btn') : null;
                 if (pill) {
@@ -159,39 +156,19 @@
                     lastTap = now;
                     sm.playSelectSound();
                 }
-            } catch (err) { /* taps never break */ }
+            } catch { /* taps never break */ }
         }, { passive: true });
     }
 
-    function wireHovers() {
-        var lastHover = 0;
-        document.addEventListener('pointerover', function (e) {
-            try {
-                if (!masterOn()) return;
-                if (reducedMotion()) return;
-                var sm = sound();
-                if (!sm) return;
-                var t = e.target && e.target.closest
-                    ? e.target.closest('.scroll-stack-pill, .scroll-stack-card, .sticker, .nav-link, .dropdown-card, .audio-toggle')
-                    : null;
-                if (!t) return;
-                var now = Date.now();
-                if (now - lastHover < 110) return;
-                lastHover = now;
-                sm.playHoverSound();
-            } catch (err) { /* hover stays silent */ }
-        }, { passive: true });
-    }
 
     function init() {
         bindMotifObserver();
         wireClicks();
-        wireHovers();
         window.addEventListener('page:ready', function () {
             try {
                 bindMotifObserver();
                 riserForPageReady();
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         });
     }
 

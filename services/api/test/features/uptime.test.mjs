@@ -69,3 +69,19 @@ test('a filled gap that crosses midnight lands in both days', async () => {
   assert.deepEqual(s.body.days.map((d) => [d.date, d.uptime]), [['2026-09-28', 1], ['2026-09-29', 1]]);
   await t.close();
 });
+
+test('with TICK_FILL_MINUTES, minutes since the last beat are not counted down before the next beat is due', async () => {
+  const t = await boot({ env: { TICK_FILL_MINUTES: '10' } });
+  for (const m of [0, 8]) {
+    t.setNow(MON_0830_IST + m * 60000);
+    await t.call('POST', '/v1/tick', { token: 'tick-secret' });
+  }
+  t.setNow(MON_0830_IST + 14 * 60000);
+  const s = await t.call('GET', '/v1/status');
+  assert.equal(s.body.uptime24h, 1);
+  // Negative control: past the allowance the silence counts as down.
+  t.setNow(MON_0830_IST + 30 * 60000);
+  const late = await t.call('GET', '/v1/status');
+  assert.ok(late.body.uptime24h < 1);
+  await t.close();
+});

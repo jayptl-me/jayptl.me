@@ -568,6 +568,8 @@ For questions about data handling, you can contact me through the portfolio cont
 
     loadGoogleAnalytics() {
         const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J';
+        // Opting in again lifts the off switch set on opt-out.
+        window['ga-disable-' + GA_MEASUREMENT_ID] = false;
 
         // Load once per visit. Turning analytics off and on again only flips
         // consent back to granted; a second script and config would send a
@@ -621,6 +623,9 @@ For questions about data handling, you can contact me through the portfolio cont
     }
 
     disableAnalyticsTracking() {
+        // Google's own off switch: with it set, the loaded gtag sends nothing
+        // at all, not even the cookieless pings consent mode still allows.
+        window['ga-disable-G-GGZTYJVH9J'] = true;
         // Disable Google Analytics through consent mode
         if (window.gtag) {
             window.gtag('consent', 'update', {

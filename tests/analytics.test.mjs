@@ -92,11 +92,13 @@ test('analytics: the /privacy switch flips off and on without a second loader or
   const p = page({ consent: yes });
   const banner = p.window.consentBanner;
   banner.setConsentInline(false);
+  assert.equal(p.window['ga-disable-G-GGZTYJVH9J'], true, 'opt-out must switch gtag off, not only deny storage');
   const before = p.window.dataLayer.length;
   p.document.getElementById('mail').click();
   assert.equal(p.window.dataLayer.length, before, 'an event went out after opting out');
   banner.setConsentInline(true);
   assert.equal(p.gaScripts(), 1, 'opting in again added a second GA script');
+  assert.equal(p.window['ga-disable-G-GGZTYJVH9J'], false);
   assert.equal(p.calls().filter((c) => c[0] === 'config').length, 1, 'a second config would send a second page_view');
   p.document.getElementById('mail').click();
   assert.equal(p.events('generate_lead').length, 1);

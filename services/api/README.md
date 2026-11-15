@@ -43,7 +43,7 @@ them into one object.
 | GET | `/v1/status` | public | Redis reachable, last tick, uptime 24h and 30d, one bar per day. |
 | POST | `/v1/hit` | public | `{ path }` in, `{ path, views, total }` out. Sitemap paths only. |
 | GET | `/v1/views?path=` | public | Read a count without adding one. |
-| POST | `/v1/hit/server` | `HIT_SECRET` | `{ site, path }` from another of our sites' servers (the notes site's edge middleware). Stored as `<site>:<path>`, its own total, its own limit (`HIT_SERVER_PER_MIN` per site, default 600). |
+| POST | `/v1/hit/server` | `HIT_SECRET` | `{ site, path }` from another of our sites' servers (the notes site's edge middleware). Kept in the site's own hash with its own total and limit (`HIT_SERVER_PER_MIN` per site, default 600), at most `HIT_SITE_MAX_PATHS` distinct paths (default 2000). A correct key is never locked out by others' wrong keys. |
 | GET | `/v1/slots?from=&to=` | public | Open 15 minute slots from Google free/busy. Times only. |
 | POST | `/v1/book` | public | `{ name, email, note, slot, company, elapsed }`, creates the event. |
 | POST | `/v1/cancel` | signed token | Cancels a booking from its confirmation link. |
@@ -87,7 +87,7 @@ still counts as down.
 
 - Views store a path and a number. No IP, cookie, device or referrer.
   Views another site reports from its server (`/v1/hit/server`) are kept
-  under `<site>:<path>` with their own total, never added to the
+  in that site's own hash with their own total, never added to the
   portfolio's total, and cannot be read through the public `/v1/views`.
 - IPs are used only in memory for rate limits (120 hits a minute, 5
   bookings a day per address) and never written or logged. Which header

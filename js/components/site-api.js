@@ -17,7 +17,7 @@
 
     if (window.SiteApi) return;
 
-    var API_BASE = '';
+    var API_BASE = 'https://api.jayptl.me';
     var TIMEOUT_MS = 8000;
 
     function request(method, path, body) {

@@ -567,8 +567,16 @@ For questions about data handling, you can contact me through the portfolio cont
     }
 
     loadGoogleAnalytics() {
-        // Replace 'GA_MEASUREMENT_ID' with your actual Google Analytics 4 Measurement ID
-        const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J'; // Your actual GA4 Measurement ID
+        const GA_MEASUREMENT_ID = 'G-GGZTYJVH9J';
+
+        // Load once per visit. Turning analytics off and on again only flips
+        // consent back to granted; a second script and config would send a
+        // second page_view for the same page.
+        if (this.gaLoaded && window.gtag) {
+            window.gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            document.dispatchEvent(new CustomEvent('analytics:ready'));
+            return;
+        }
 
         // Load Google Analytics
         const script1 = document.createElement('script');
@@ -582,8 +590,13 @@ For questions about data handling, you can contact me through the portfolio cont
         window.gtag = gtag;
 
         // Set default denied; will immediately update to granted only if user consented
+        // Consent mode v2: everything denied until the visitor opts in. This
+        // site runs no ads, so the ad signals stay denied for good.
         gtag('consent', 'default', {
-            'analytics_storage': 'denied'
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
         });
 
         if (this.consentData.accepted && this.consentData.hasResponded) {
@@ -601,6 +614,10 @@ For questions about data handling, you can contact me through the portfolio cont
             allow_ad_personalization_signals: false
         });
 
+        this.gaLoaded = true;
+        // analytics.js listens for this and starts its events (it never loads
+        // a second copy of the script).
+        document.dispatchEvent(new CustomEvent('analytics:ready'));
     }
 
     disableAnalyticsTracking() {
@@ -718,9 +735,10 @@ For questions about data handling, you can contact me through the portfolio cont
 }
 
 // Initialize consent banner when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.consentBanner = new ConsentBanner();
-});
+// (or at once, when the page router adds this script after load). Once only.
+const bootConsent = () => { if (!window.consentBanner) window.consentBanner = new ConsentBanner(); };
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootConsent);
+else bootConsent();
 
 // Export for module use if needed
 if (typeof module !== 'undefined' && module.exports) {

@@ -414,29 +414,43 @@
         <div class="container site-footer-inner">
             <span class="site-footer-rule" data-ink="zigzag"></span>
             <div class="site-footer-grid">
-                <div class="site-footer-left">
+                <div class="site-footer-brand">
                     <p class="site-footer-signoff hand hand--md">No templates were harmed in the making of this site.</p>
                     <p class="site-footer-meta hud-readout"><a href="mailto:hello@jayptl.me">hello@jayptl.me</a> · Analytics only with your consent</p>
-                    <nav class="site-footer-nav hud-readout" aria-label="Site Navigation">
-                        <a href="/">Home</a> · 
-                        <a href="/about">About</a> · 
-                        <a href="/projects">Projects</a> · 
-                        <a href="/resume">Resume</a> · 
-                        <a href="/contact">Contact</a> · 
-                        <a href="/now">Now</a> · 
-                        <a href="/uses">Uses</a> · 
-                        <a href="/book">Book</a> · 
-                        <a href="/changelog">Changelog</a> · 
-                        <a href="/colophon">Colophon</a> · 
-                        <a href="/ai">AI</a> · 
-                        <a href="/privacy">Privacy</a>
-                    </nav>
                 </div>
-                <div class="site-footer-right hud-readout">
-                    <p>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></p>
-                    <p class="site-footer-status"><span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span><span class="footer-api" data-component="api-dot" hidden></span></p>
-                    <p><a class="preferred-source-link" href="https://www.google.com/preferences/source?q=jayptl.me" rel="noopener" target="_blank">Add as Preferred Source</a></p>
-                </div>
+                <nav class="site-footer-nav" aria-label="Site Navigation">
+                    <div class="site-footer-group">
+                        <p class="site-footer-group-label" id="footWork">Work</p>
+                        <ul aria-labelledby="footWork">
+                            <li><a href="/projects">Projects</a></li>
+                            <li><a href="/resume">Resume</a></li>
+                            <li><a href="/changelog">Changelog</a></li>
+                        </ul>
+                    </div>
+                    <div class="site-footer-group">
+                        <p class="site-footer-group-label" id="footMe">Me</p>
+                        <ul aria-labelledby="footMe">
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/now">Now</a></li>
+                            <li><a href="/uses">Uses</a></li>
+                            <li><a href="/ai">AI</a></li>
+                        </ul>
+                    </div>
+                    <div class="site-footer-group">
+                        <p class="site-footer-group-label" id="footTalk">Talk</p>
+                        <ul aria-labelledby="footTalk">
+                            <li><a href="/contact">Contact</a></li>
+                            <li><a href="/book">Book a call</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="site-footer-bar hud-readout">
+                <a href="/">Home</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/colophon">Colophon</a>
+                <span>Updated <a href="/changelog"><time id="footerUpdated">recently</time></a></span>
+                <span class="footer-views" data-component="view-count" data-scope="site" hidden><span data-odometer></span> reads, no cookies</span>
             </div>
         </div>
     </footer>

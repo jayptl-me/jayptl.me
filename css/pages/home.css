@@ -355,31 +355,6 @@
 .preferred-source-link {
   white-space: nowrap;
 }
-.site-footer-meta a.preferred-source-link:focus-visible {
-  outline: 2px solid var(--theme-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-.site-footer-nav {
-  margin-top: var(--space-2);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: 0.8125rem;
-  color: var(--theme-text-tertiary);
-}
-.site-footer-nav a {
-  color: var(--theme-text-secondary);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-.site-footer-nav a:hover {
-  color: var(--theme-primary);
-  text-decoration: underline;
-}
-.reset-stickers {
-  margin-left: 4px;
-}
 
 /* ==========================================================================
    RESPONSIVE
@@ -411,70 +386,109 @@
   }
 }
 
-/* Shared footer (2026-09-28): zigzag rule, sign-off and contact on the
-   left, updated date, reads and API status on the right; stacks on phones. */
+/* Shared footer (owner's pick "A, grouped columns", 2026-11-16): sign-off
+   and email, three labelled link groups, then one thin bar with the small
+   print and the reads count. Groups drop under the sign-off on tablets and
+   sit two across on phones. */
 .site-footer-rule {
   margin-bottom: var(--space-4);
   color: var(--doodle-line);
 }
 .site-footer-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-4) var(--space-8);
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 3fr);
+  gap: var(--space-6) var(--space-10);
   width: 100%;
   text-align: left;
 }
-.site-footer-left,
-.site-footer-right {
+.site-footer-brand {
   display: grid;
+  align-content: start;
   gap: var(--space-2);
   min-width: 0;
 }
-.site-footer-right {
-  justify-items: end;
-  text-align: right;
-  font-size: 0.8125rem;
-  color: var(--theme-text-tertiary);
-}
-.site-footer-left p,
-.site-footer-right p {
+.site-footer-brand p {
   margin: 0;
 }
-.site-footer-right a {
-  color: var(--theme-primary);
-  text-decoration: none;
+.site-footer-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
 }
-.site-footer-right a:hover {
+.site-footer-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+}
+.site-footer-group-label {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* 11px label: the 800 blue (#1565c0, about 5.7:1 on the light footer)
+     passes AA where the 500 blue (about 3:1) does not. Dark keeps the
+     turquoise primary, which already passes (about 7.7:1). */
+  color: var(--primary-800);
+}
+html[data-theme="dark"] .site-footer-group-label {
+  color: var(--theme-primary);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .site-footer-group-label {
+    color: var(--theme-primary);
+  }
+}
+.site-footer-group a {
+  color: var(--theme-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.site-footer-group a:hover,
+.site-footer-group a:focus-visible {
+  color: var(--theme-primary);
   text-decoration: underline;
 }
-.site-footer-status {
+.site-footer-bar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0 10px;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  width: 100%;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--theme-border);
+  font-size: 0.75rem;
+  color: var(--theme-text-tertiary);
+  text-align: left;
 }
-.site-footer-status:not(:has(> :not([hidden]))) {
-  display: none;
+.site-footer-bar a {
+  color: var(--theme-text-secondary);
+  text-decoration: none;
 }
-.site-footer-status > :not([hidden]) ~ :not([hidden])::before {
-  content: "\00b7";
-  margin-right: 10px;
+.site-footer-bar a:hover,
+.site-footer-bar a:focus-visible {
+  color: var(--theme-primary);
+  text-decoration: underline;
 }
-@media (max-width: 640px) {
+@media (max-width: 1023.98px) {
   .site-footer-grid {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    grid-template-columns: minmax(0, 1fr);
   }
-  .site-footer-right {
-    justify-items: center;
-    text-align: center;
+}
+@media (max-width: 599.98px) {
+  .site-footer-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .site-footer-status {
-    justify-content: center;
-  }
+}
+
+/* Reset stickers sits under the stickers it resets (moved from the footer). */
+.sticker-reset {
+  margin: var(--space-4) 0 0;
+  text-align: center;
 }
 
 /* ==========================================================================

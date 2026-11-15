@@ -12,6 +12,10 @@
 .odo-face {
   display: inline-flex;
   vertical-align: bottom;
+  /* The reels hold 0-9 each; copying the count takes the hidden number
+     (the .sr-only text the script writes), never the reels. */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .odo-col {

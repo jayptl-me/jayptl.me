@@ -13,7 +13,7 @@ function createTick(ctx, { uptime, booking }) {
         need('tick', 'Tick');
         secret(req, config.tickSecret);
         const t = now();
-        await store.heartbeat(t);
+        await store.heartbeat(t, config.tickFillMinutes);
         uptime.invalidate();
         const result = { ok: true, at: new Date(t).toISOString(), meetLinks: 0, released: 0, cleaned: 0, errors: 0 };
         if (on.booking) {

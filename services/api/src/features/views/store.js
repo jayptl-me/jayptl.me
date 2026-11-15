@@ -4,6 +4,8 @@
  * Page view keys:
  *   v:paths   hash   path -> reads
  *   v:total   string total reads
+ *   v:paths   field "<site>:<path>" -> reads reported by another site's server
+ *   v:total:<site>  string total reads for that site (never added to v:total)
  */
 
 const { hashToObject } = require('../../core/redis-shapes');
@@ -14,6 +16,14 @@ function createViewsStore(redis) {
       const [views, total] = await redis.pipeline([
         ['HINCRBY', 'v:paths', path, 1],
         ['INCR', 'v:total']
+      ]);
+      return { views: Number(views), total: Number(total) };
+    },
+
+    async siteHit(site, path) {
+      const [views, total] = await redis.pipeline([
+        ['HINCRBY', 'v:paths', site + ':' + path, 1],
+        ['INCR', 'v:total:' + site]
       ]);
       return { views: Number(views), total: Number(total) };
     },

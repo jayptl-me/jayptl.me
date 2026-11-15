@@ -43,6 +43,7 @@ them into one object.
 | GET | `/v1/status` | public | Redis reachable, last tick, uptime 24h and 30d, one bar per day. |
 | POST | `/v1/hit` | public | `{ path }` in, `{ path, views, total }` out. Sitemap paths only. |
 | GET | `/v1/views?path=` | public | Read a count without adding one. |
+| POST | `/v1/hit/server` | `HIT_SECRET` | `{ site, path }` from another of our sites' servers (the notes site's edge middleware). Stored as `<site>:<path>`, its own total, its own limit (`HIT_SERVER_PER_MIN` per site, default 600). |
 | GET | `/v1/slots?from=&to=` | public | Open 15 minute slots from Google free/busy. Times only. |
 | POST | `/v1/book` | public | `{ name, email, note, slot, company, elapsed }`, creates the event. |
 | POST | `/v1/cancel` | signed token | Cancels a booking from its confirmation link. |
@@ -54,7 +55,10 @@ them into one object.
 | GET | `/admin` | page | A tiny page to do the above from a browser. |
 
 Uptime is the share of minutes that received a tick, counted from the
-first tick ever.
+first tick ever. With `TICK_FILL_MINUTES` above 1, a tick that arrives
+within that many minutes of the last one also counts the minutes in
+between, for a scheduler that beats every few minutes; a longer gap
+still counts as down.
 
 ## Booking safety
 
@@ -82,6 +86,9 @@ first tick ever.
 ## Privacy and abuse
 
 - Views store a path and a number. No IP, cookie, device or referrer.
+  Views another site reports from its server (`/v1/hit/server`) are kept
+  under `<site>:<path>` with their own total, never added to the
+  portfolio's total, and cannot be read through the public `/v1/views`.
 - IPs are used only in memory for rate limits (120 hits a minute, 5
   bookings a day per address) and never written or logged. Which header
   the address comes from is a setting; see "Visitor address" below.

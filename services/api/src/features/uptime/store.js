@@ -94,11 +94,17 @@ function createUptimeStore(redis) {
     minutes,
 
     /** Uptime is the share of minutes that got a heartbeat. */
-    async uptime(nowMs) {
+    async uptime(nowMs, fillMinutes = 1) {
       const [since, last] = await redis.pipeline([['GET', 'up:since'], ['GET', 'up:last']]);
       if (!since) return { since: null, lastTick: null, uptime24h: 0, uptime30d: 0, days: [] };
       const sinceMs = Date.parse(since);
-      const end = floorMinute(nowMs) + 60000;
+      let end = floorMinute(nowMs) + 60000;
+      // With a beat every few minutes, the minutes since the last beat are
+      // not down yet: stop counting at the last beat until it is overdue.
+      const lastMs = last ? Date.parse(last) : NaN;
+      if (fillMinutes > 1 && Number.isFinite(lastMs) && floorMinute(nowMs) - floorMinute(lastMs) <= fillMinutes * 60000) {
+        end = Math.min(end, floorMinute(lastMs) + 60000);
+      }
       const ratio = (m) => (m.possible ? Math.min(1, m.up / m.possible) : 0);
       const dayStarts = [];
       for (let i = 29; i >= 0; i--) dayStarts.push(Date.parse(utcDay(nowMs - i * DAY_MS) + 'T00:00:00Z'));

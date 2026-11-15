@@ -3,6 +3,7 @@
 /** POST /v1/hit and GET /v1/views: a path and a number, nothing about the visitor. */
 
 const { HttpError } = require('../../core/errors');
+const { bearerOk } = require('../../core/auth');
 const { readJson } = require('../../core/http');
 const { createSitemap } = require('./sitemap');
 
@@ -40,15 +41,19 @@ function createViews(ctx) {
       // edge network's few addresses, so the per-address 120 would drop views.
       'POST /v1/hit/server': async (req) => {
         need('serverHit', 'Server counting');
-        secret(req, config.hitSecret);
+        // Every call comes from the edge network's shared addresses, so a
+        // stranger's wrong keys must not lock out the right one: a correct
+        // key always passes, and wrong keys still count toward the lockout.
+        if (!bearerOk(req, config.hitSecret)) secret(req, config.hitSecret);
         const body = await readJson(req);
         const site = body.site;
         if (typeof site !== 'string' || !config.hitSites.includes(site)) throw new HttpError(400, 'unknown_site', 'That site is not counted here');
         const path = normalizePath(body.path);
         if (!path || !SERVER_PATH.test(path)) throw new HttpError(400, 'bad_path', 'Send a plain path');
         if (!allow('hit-server', site, config.hitServerPerMin, 60000)) throw new HttpError(429, 'rate_limited', 'Too many requests, slow down');
-        const { views, total } = await store.siteHit(site, path);
-        return { key: site + ':' + path, views, total };
+        const counted = await store.siteHit(site, path, config.hitSiteMaxPaths);
+        if (!counted) throw new HttpError(507, 'site_full', 'This site has reached its limit of counted paths');
+        return { key: site + ':' + path, views: counted.views, total: counted.total };
       },
 
       'GET /v1/views': async (req, url) => {

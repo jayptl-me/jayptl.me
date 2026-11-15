@@ -40,6 +40,9 @@ function loadConfig(env = process.env) {
     hitSecret: env.HIT_SECRET || '',
     hitSites: list(env.HIT_SITES, ['notes']),
     hitServerPerMin: Math.max(1, int(env.HIT_SERVER_PER_MIN, 600)),
+    // Distinct paths kept per reporting site, so a leaked HIT_SECRET cannot
+    // fill the free database with made-up paths.
+    hitSiteMaxPaths: Math.max(1, int(env.HIT_SITE_MAX_PATHS, 2000)),
     // A tick within this many minutes of the last one also marks the minutes
     // between as up (1 = only the minute of each tick). See uptime/store.js.
     tickFillMinutes: Math.min(60, Math.max(1, Math.floor(int(env.TICK_FILL_MINUTES, 1)))),

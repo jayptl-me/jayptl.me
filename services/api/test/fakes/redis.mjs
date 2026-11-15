@@ -51,6 +51,8 @@ export function fakeRedis() {
         return n;
       }
       case 'HGET': return (hashes.get(a[0]) || new Map()).get(a[1]) ?? null;
+      case 'HEXISTS': return (hashes.get(a[0]) || new Map()).has(a[1]) ? 1 : 0;
+      case 'HLEN': return (hashes.get(a[0]) || new Map()).size;
       case 'HSET': {
         const h = hashes.get(a[0]) || new Map();
         for (let i = 1; i < a.length; i += 2) h.set(a[i], a[i + 1]);

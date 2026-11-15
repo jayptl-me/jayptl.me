@@ -231,6 +231,10 @@
                 link.href = '/book#cancel=' + encodeURIComponent(res.cancelToken);
                 say('');
                 done.focus();
+                // A booked call is the site's main lead (sent only with analytics consent).
+                try {
+                    if (window.trackEvent) window.trackEvent('generate_lead', { method: 'booking' });
+                } catch { /* noop */ }
                 try {
                     if (window.SoundManager && window.SoundManager.playSuccessSound) window.SoundManager.playSuccessSound();
                 } catch { /* noop */ }

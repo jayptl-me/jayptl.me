@@ -340,6 +340,11 @@
             ptr.smoothX += (ptr.x - ptr.smoothX) * 0.12;
             ptr.smoothY += (ptr.y - ptr.smoothY) * 0.12;
             var R = inst.fxRadius, push = inst.fxRepel * 0.02;
+            // Time-based steps: one unit is a 60 fps frame, so words form on time
+            // on slow devices too (capped so a stalled tab never jumps far).
+            var sdt = clamp((now - (L.last || now - 16.67)) / 16.67, 0.25, 3);
+            L.last = now;
+            var damp = Math.pow(st.mode === 'form' ? 0.85 : 0.92, sdt);
             var moving = 0;
             var list = inst.particles;
             for (var i = 0; i < list.length; i++) {
@@ -365,10 +370,10 @@
                         ay += (dy / dist) * f;
                     }
                 }
-                p.vx = (p.vx + ax) * (st.mode === 'form' ? 0.85 : 0.92);
-                p.vy = (p.vy + ay) * (st.mode === 'form' ? 0.85 : 0.92);
-                p.x += p.vx;
-                p.y += p.vy;
+                p.vx = (p.vx + ax * sdt) * damp;
+                p.vy = (p.vy + ay * sdt) * damp;
+                p.x += p.vx * sdt;
+                p.y += p.vy * sdt;
                 if (Math.abs(p.vx) + Math.abs(p.vy) > 0.03) moving++;
             }
             var still = moving <= list.length * 0.01; // fewer than 1% still drifting

@@ -134,3 +134,19 @@ test('loop, negative control: without data-pt-loop the old gather runs', async (
   await settle();
   assert.equal(s.inst.loopOn, false);
 });
+
+test('loop: at 10 frames a second the word still forms before its stage ends', async () => {
+  const s = setup();
+  await settle();
+  s.inst.replay();
+  const L = s.inst.loopState;
+  // Search stage at 10 fps, then into the first word.
+  for (let i = 0; i < 80 && L.stages[L.si].mode !== 'form'; i++) s.step(100, 1);
+  assert.equal(L.stages[L.si].mode, 'form');
+  const formIndex = L.si;
+  const end = L.start + L.stages[L.si].ms;
+  while (s.tick() + 100 < end - 300 && L.si === formIndex) s.step(100, 1);
+  const off = s.inst.particles.map((p) => Math.hypot(p.x - p.targetX, p.y - p.targetY));
+  const mean = off.reduce((a, b) => a + b, 0) / off.length;
+  assert.ok(mean < 2, `mean distance from the letters ${mean.toFixed(1)} px at a slow frame rate`);
+});

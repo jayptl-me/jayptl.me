@@ -65,6 +65,7 @@
     var FALLBACK_HIGHLIGHT = '#00b8cc';
     var MIN_PARTICLES = 900;
     var MAX_PARTICLES = 5200;
+    var LOOP_MAX = 2000; // nanotech loop: fine dust needs room between grains
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -407,18 +408,23 @@
             var off = document.createElement('canvas');
             var g = off.getContext('2d', { willReadFrequently: true });
             if (!g) return null;
+            // Fit the word's real ink box inside the host (94% wide, 78% tall),
+            // so tall glyphs like "?" are never clipped on a short hero.
             var size = baseSize * 1.6;
             g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;
-            var wdt = Math.max(1, g.measureText(word).width);
-            if (wdt > W * 0.94) size = size * (W * 0.94 / wdt);
-            size = Math.min(size, H * 0.8);
+            var m = g.measureText(word);
+            var wdt = Math.max(1, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || m.width));
+            var hgt = Math.max(1, (m.actualBoundingBoxAscent || size * 0.78) + (m.actualBoundingBoxDescent || size * 0.22));
+            size = size * Math.min(1, (W * 0.94) / wdt, (H * 0.78) / hgt);
             off.width = Math.max(1, W);
             off.height = Math.max(1, H);
             g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;
+            m = g.measureText(word);
+            var asc = m.actualBoundingBoxAscent || size * 0.78, desc = m.actualBoundingBoxDescent || size * 0.22;
             g.textAlign = 'center';
-            g.textBaseline = 'middle';
+            g.textBaseline = 'alphabetic';
             g.fillStyle = '#fff';
-            g.fillText(word, W / 2, H / 2);
+            g.fillText(word, W / 2, H / 2 + (asc - desc) / 2);
             var data;
             try { data = g.getImageData(0, 0, off.width, off.height).data; } catch { return null; }
             var pts = [];
@@ -440,6 +446,14 @@
         /* After a build: turn the field into nanotech dust and start (or keep) the loop. */
         inst.setupLoop = function (family, baseSize) {
             var words = inst.opts.loop;
+            // Fine dust needs room between grains: at most LOOP_MAX particles,
+            // spread evenly over the field (halves the drawing cost too).
+            if (inst.particles.length > LOOP_MAX) {
+                var keepEvery = inst.particles.length / LOOP_MAX;
+                inst.particles = inst.particles.filter(function (_, i) {
+                    return Math.floor(i / keepEvery) !== Math.floor((i - 1) / keepEvery);
+                });
+            }
             var targets = words.map(function (w) { return inst.sampleWord(w, family, baseSize); });
             if (targets.some(function (t) { return !t; })) return false;
             inst.loopTargets = targets;

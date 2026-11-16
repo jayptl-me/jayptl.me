@@ -9,7 +9,8 @@ services:
     autoDeployTrigger: commit
     # Build, minify, validate, then run the test suite against the minified output.
     # --frozen-lockfile installs exactly what the lockfile pins.
-    buildCommand: bun install --frozen-lockfile && bun run test:deploy
+    # The prune runs last: config files for other hosts and the build stamp are never published.
+    buildCommand: bun install --frozen-lockfile && bun run test:deploy && node scripts/prune-public.js
     staticPublishPath: ./dist
 
     headers:

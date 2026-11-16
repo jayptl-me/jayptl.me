@@ -10,12 +10,13 @@
     "optimize": "node scripts/optimize.js",
     "validate": "bun scripts/validate.js",
     "lint": "oxlint",
-    "deploy:prepare": "bun run commits:refresh && bun run build && bun run optimize && bun run validate",
+    "deploy:build": "bun run commits:refresh && bun run build && bun run optimize && bun run validate",
+    "deploy:prepare": "bun run deploy:build && node scripts/prune-public.js",
     "deploy:preview": "bun run deploy:prepare && bun scripts/preview.js",
     "deploy": "bun run deploy:prepare && bun scripts/deploy.js",
     "serve:dist": "node scripts/server.js",
     "test": "rm -rf dist && node scripts/build.js && node --test tests/*.test.mjs 'services/api/test/**/*.test.mjs'",
-    "test:deploy": "bun run deploy:prepare && node --test tests/*.test.mjs 'services/api/test/**/*.test.mjs'",
+    "test:deploy": "bun run deploy:build && node --test tests/*.test.mjs 'services/api/test/**/*.test.mjs'",
     "commits:refresh": "node scripts/fetch-commits.js"
   },
   "devDependencies": {

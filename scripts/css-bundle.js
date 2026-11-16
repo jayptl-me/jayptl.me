@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const { addMotionSwitch } = require('./motion-switch-css');
 const path = require('path');
 
 const IMPORT_PATTERN = /@import\s+(?:url\(\s*)?(['"])([^'"]+)\1\s*\)?\s*;/g;
@@ -131,7 +132,7 @@ function bundleCssInDist(options) {
     if (!fs.existsSync(source)) fail(`entry ${href} has no source at ${source}`);
     if (!fs.existsSync(target)) fail(`entry ${href} was not copied to ${target}`);
     const result = bundleCss(source, root);
-    fs.writeFileSync(target, result.css);
+    fs.writeFileSync(target, addMotionSwitch(result.css));
     included += result.included.length - 1;
   }
   return { entries: entries.length, included };

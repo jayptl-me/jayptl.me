@@ -1,9 +1,7 @@
-// Tests for the sound manager and the audio score: one quiet felt family
-// in both themes (D-140, D-144 to D-146), recordings made once and
-// replayed (D-128), identical repeats (D-142), and silence on hover,
-// scroll, sections and page changes. The audio engine is a recording
-// stub: every node, connection, start, stop and automation event is kept
-// so the graph can be checked without sound.
+// Tests for the sound manager and the audio score (D-73): Clay in the
+// light theme, Glass in the dark theme, and the engine fixes. The audio
+// engine is a recording stub: every node, connection, start, stop and
+// automation event is kept so the graph can be checked without sound.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -22,10 +20,11 @@ const GLOBALS = [
   'CustomEvent', 'setTimeout', 'clearTimeout', 'Math', 'console'
 ];
 
-// Only what the visitor does makes a sound.
-const VOICED = ['press', 'release', 'select', 'pick', 'drop', 'success', 'themeDark', 'themeLight'];
-// Passing, scrolling and page changes stay silent (D-146).
-const SILENT = ['hover', 'tick', 'stepDown', 'stepUp', 'stepperEnter', 'stepperExit', 'riser', 'motif'];
+const EVENTS = [
+  'press', 'release', 'select', 'hover', 'tick', 'pick', 'drop', 'success',
+  'themeDark', 'themeLight', 'stepDown', 'stepUp', 'stepperEnter', 'stepperExit',
+  'riser', 'motif'
+];
 
 // Every public voice the site called before D-73, with its argument.
 const LEGACY = [
@@ -33,10 +32,6 @@ const LEGACY = [
   ['playLightsaberRetract'], ['playStepUp'], ['playStepDown'],
   ['playStepperEnter'], ['playStepperExit'], ['playRiser'], ['playMotif', 'intro']
 ];
-const LEGACY_VOICED = [['playSelectSound'], ['playLightsaberIgnite'], ['playLightsaberRetract']];
-const LEGACY_SILENT = LEGACY.filter((c) => !LEGACY_VOICED.some((v) => v[0] === c[0]));
-
-const E4 = 323.63, G4 = 384.87, A4 = 432;
 
 const PREFS_KEY = 'jayptl.sound.prefs.v1';
 
@@ -85,7 +80,7 @@ function fakeAudio({ state = 'running' } = {}) {
     return node(ctx, kind, Object.assign({
       startAt: null,
       stopAt: null,
-      start(t = 0, offset = 0) { this.startAt = t; this.offset = offset; },
+      start(t = 0) { this.startAt = t; },
       stop(t = 0) { this.stopAt = t; }
     }, extra));
   }
@@ -104,7 +99,6 @@ function fakeAudio({ state = 'running' } = {}) {
       return source(this, 'osc', { type: 'sine', frequency: new Param(0), detune: new Param(0) });
     }
     createBufferSource() { return source(this, 'noise', { buffer: null, loop: false }); }
-    createStereoPanner() { return node(this, 'panner', { pan: new Param(0) }); }
     createBiquadFilter() {
       return node(this, 'filter', { type: 'lowpass', frequency: new Param(350), Q: new Param(1), gain: new Param(0) });
     }
@@ -116,9 +110,7 @@ function fakeAudio({ state = 'running' } = {}) {
     }
     createBuffer(channels, length, sampleRate) {
       const data = new Float32Array(length);
-      const buf = { length, sampleRate, numberOfChannels: channels, getChannelData: () => data };
-      this.buffers = (this.buffers || []).concat([buf]);
-      return buf;
+      return { length, sampleRate, numberOfChannels: channels, getChannelData: () => data };
     }
     resume() {
       this.resumeCalls++;
@@ -126,23 +118,7 @@ function fakeAudio({ state = 'running' } = {}) {
     }
     suspend() { this.state = 'suspended'; return Promise.resolve(); }
   }
-  // A recording context: builds the same graph, then hands back a buffer.
-  const offline = [];
-  class FakeOfflineAudioContext extends FakeAudioContext {
-    constructor(channels, length, sampleRate) {
-      super();
-      contexts.pop();
-      offline.push(this);
-      this.length = length;
-      this.sampleRate = sampleRate;
-      this.renders = 0;
-    }
-    startRendering() {
-      this.renders++;
-      return Promise.resolve({ recording: true, length: this.length, sampleRate: this.sampleRate, from: this });
-    }
-  }
-  return { Ctor: FakeAudioContext, Offline: FakeOfflineAudioContext, contexts, offline };
+  return { Ctor: FakeAudioContext, contexts };
 }
 
 /* ---- Harness -------------------------------------------------------- */
@@ -162,7 +138,7 @@ function run(win, rel, math) {
 function setup({
   theme = 'light', system = 'light', reduced = false, state = 'running',
   prefs = { master: true, bed: false, motifs: true, level: 'low' },
-  random = 0.5, score = false, router = null, record = false
+  random = 0.5, score = false, router = null
 } = {}) {
   const window = new Window({ url: 'https://jayptl.me/' });
   window.matchMedia = (query) => ({
@@ -177,12 +153,6 @@ function setup({
   if (prefs) window.localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
   const audio = fakeAudio({ state });
   window.AudioContext = audio.Ctor;
-  if (record) {
-    window.OfflineAudioContext = audio.Offline;
-    window.requestIdleCallback = (fn) => setTimeout(fn, 0);
-  } else {
-    delete window.OfflineAudioContext;
-  }
   if (router) window.PageRouter = router;
   const math = random === null
     ? Math
@@ -310,9 +280,9 @@ test('sound fix: no voice is cut before its tail, in either palette', () => {
   ['light', 'dark'].forEach((theme) => {
     const env = setup({ theme });
     env.sm.setMasterEnabled(true);
-    LEGACY_VOICED.forEach((call) => problems.push(...tailProblems(playOne(env, call), `${theme} ${call[0]}`)));
+    LEGACY.forEach((call) => problems.push(...tailProblems(playOne(env, call), `${theme} ${call[0]}`)));
     if (typeof env.sm.play === 'function') {
-      VOICED.forEach((name) => {
+      EVENTS.forEach((name) => {
         const nodes = playOne(env, name);
         if (!sources(nodes).length) problems.push(`${theme} ${name}: played nothing`);
         problems.push(...tailProblems(nodes, `${theme} ${name}`));
@@ -345,7 +315,7 @@ test('score: a back or forward page change with no click still plays the riser o
   assert.equal(risers, 1);
 });
 
-test('sound fix: copying the email plays the press, then one soft note, not a second press', async () => {
+test('sound fix: copying the email plays its select once', async () => {
   const env = setup();
   env.sm.setMasterEnabled(true);
   env.document.body.innerHTML = '<button class="talk-chip-copy pill-btn" type="button" data-copy="x">Copy email</button>';
@@ -362,13 +332,10 @@ test('sound fix: copying the email plays the press, then one soft note, not a se
   c.currentTime = 1.2;
   const m2 = mark(env);
   // What js/components/talk-chip.js:157-158 does once the copy succeeds.
-  env.sm.playSuccessSound();
+  env.sm.playSelectSound();
   await settle();
-  const after = oscs(since(env, m2));
   assert.ok(heard > 0, 'the press gesture is heard');
-  assert.ok(after.length > 0 && after.every((o) => Math.abs(cents(startFreq(o), A4)) < 0.5 || Math.abs(cents(startFreq(o), 2 * A4)) < 0.5),
-    'the copy success is not one soft A4 note');
-  assert.ok(!after.some((o) => Math.abs(cents(startFreq(o), E4)) < 0.5), 'the copy success repeated the press');
+  assert.equal(sources(since(env, m2)).length, 0, 'the copy success repeated the select the press already played');
 });
 
 test('sound fix: the first sound after the context was paused still plays', async () => {
@@ -390,7 +357,7 @@ test('sound: a sound whose resume lands too late is skipped, not burst out later
   c.state = 'suspended';
   c.resume = () => new Promise((resolve) => setTimeout(() => { c.state = 'running'; resolve(); }, 450));
   const m = mark(env);
-  env.sm.playPressSound();
+  env.sm.playHoverSound();
   await settle(500);
   assert.equal(sources(since(env, m)).length, 0);
 });
@@ -407,18 +374,15 @@ test('sound fix: the press sound lands on pointer down and the release on let go
   await settle();
   const down = since(env, m);
   assert.ok(sources(down).length > 0, 'nothing plays on pointer down');
-  assert.ok(oscs(down).some((o) => Math.abs(cents(startFreq(o), E4)) < 0.5), 'pointer down plays the felt press, E4 falling');
+  assert.ok(oscs(down).some((o) => Math.abs(cents(startFreq(o), 320)) < 0.5), 'pointer down plays the Clay press');
 
   c.currentTime = 3.1;
   m = mark(env);
   pointer(env, btn, 'pointerup');
   await settle();
   const up = since(env, m);
-  const rel = oscs(up).find((o) => Math.abs(cents(startFreq(o), G4)) < 0.5);
-  assert.ok(rel, 'let go plays the felt release from G4');
-  const end = rel.frequency.events.find((e) => e.kind === 'exp');
-  assert.ok(end && Math.abs(cents(end.v, A4)) < 0.5, 'the release rises to A4 as the control springs back up');
-  assert.ok(!oscs(up).some((o) => Math.abs(cents(startFreq(o), E4)) < 0.5), 'let go does not repeat the press');
+  assert.ok(oscs(up).some((o) => Math.abs(cents(startFreq(o), 410)) < 0.5), 'let go plays the Clay release');
+  assert.ok(!oscs(up).some((o) => Math.abs(cents(startFreq(o), 320)) < 0.5), 'let go does not repeat the press');
 });
 
 test('sound: a cancelled press plays no release, and only the primary button presses', async () => {
@@ -459,8 +423,10 @@ test('sound fix: pitched voices use the 432 Hz tuning, with no A of the 440 tuni
   ['light', 'dark'].forEach((theme) => {
     const env = setup({ theme });
     env.sm.setMasterEnabled(true);
-    const pitched = [['playSuccessSound'], ['playLightsaberIgnite'], ['playLightsaberRetract']];
-    const calls = pitched.concat(VOICED);
+    const pitched = [['playStepperEnter'], ['playStepperExit'], ['playMotif', 'about'], ['playStepDown'], ['playStepUp']];
+    const calls = typeof env.sm.play === 'function'
+      ? pitched.concat(['success', 'tick', 'hover', 'motif', 'stepDown', 'stepUp'])
+      : pitched;
     calls.forEach((call) => {
       const label = `${theme} ${typeof call === 'string' ? call : call[0]}`;
       oscs(playOne(env, call)).forEach((o) => {
@@ -468,7 +434,7 @@ test('sound fix: pitched voices use the 432 Hz tuning, with no A of the 440 tuni
         if (steady && !on432(startFreq(o))) offTable.push(`${label}: ${startFreq(o).toFixed(2)} Hz`);
       });
     });
-    LEGACY_VOICED.map((c) => c).concat(VOICED).forEach((call) => {
+    LEGACY.map((c) => c).concat(typeof env.sm.play === 'function' ? EVENTS : []).forEach((call) => {
       const label = `${theme} ${typeof call === 'string' ? call : call[0]}`;
       oscs(playOne(env, call)).forEach((o) => freqValues(o).forEach((f) => {
         const off = cents(f, 440);
@@ -480,116 +446,68 @@ test('sound fix: pitched voices use the 432 Hz tuning, with no A of the 440 tuni
   assert.deepEqual(on440, [], 'pitches on the A of the 440 tuning');
 });
 
-test('sound fix: repeats are identical, no per-play detune or level move (D-142)', async () => {
+test('sound: repeats vary by a few cents, never sample-identical', async () => {
   const env = setup({ random: null });
   env.sm.setMasterEnabled(true);
   const firsts = [];
-  const peaks = [];
-  const offsets = [];
   for (let i = 0; i < 3; i++) {
     const nodes = playOne(env, ['playSelectSound']);
     await settle();
     firsts.push(startFreq(oscs(nodes)[0]));
-    peaks.push(Math.max(...sources(nodes).map(pathGain)));
-    offsets.push(nodes.filter((n) => n.kind === 'noise').map((n) => n.offset).join(','));
   }
-  assert.equal(new Set(firsts).size, 1, `three plays gave ${firsts.join(', ')} Hz`);
-  assert.equal(new Set(offsets).size, 1, `the thump started at different noise offsets: ${offsets.join(' | ')}`);
-  assert.equal(new Set(peaks.map((p) => p.toFixed(9))).size, 1, `three plays peaked at ${peaks.join(', ')}`);
+  assert.equal(new Set(firsts).size, 3, `three plays gave ${firsts.join(', ')} Hz`);
+  const spread = Math.max(...firsts.map((f) => Math.abs(cents(f, firsts[0]))));
+  assert.ok(spread <= 14, `repeats spread ${spread.toFixed(1)} cents, more than a few`);
 });
 
 /* ---- Palettes follow the theme --------------------------------------- */
 
-// The press body: its pitch and the lowpass it sits under.
-function pressBody(env) {
+function pressFreq(env) {
   const nodes = playOne(env, ['playSelectSound']);
-  const body = oscs(nodes)[0];
-  const lps = nodes.filter((n) => n.kind === 'filter' && n.type === 'lowpass').map((n) => n.frequency.peak());
-  return { f: startFreq(body), lp: Math.max(...lps), peak: Math.max(...sources(nodes).map(pathGain)) };
+  return startFreq(oscs(nodes)[0]);
 }
 
-test('sound: light and dark are one felt family; dark is the same notes, softer and quieter', () => {
+test('sound: light plays Clay, dark plays Glass, and a theme flip switches the set', () => {
   const env = setup({ theme: 'light' });
   env.sm.setMasterEnabled(true);
-  const light = pressBody(env);
+  assert.ok(Math.abs(cents(pressFreq(env), 320)) < 0.5, 'light theme press is the Clay body');
   env.document.documentElement.setAttribute('data-theme', 'dark');
-  const dark = pressBody(env);
-  assert.ok(Math.abs(cents(light.f, E4)) < 0.5 && Math.abs(cents(dark.f, E4)) < 0.5, 'both themes press from E4');
-  assert.ok(dark.lp < light.lp, `dark lowpass ${dark.lp} Hz is not under light ${light.lp} Hz`);
-  assert.ok(dark.peak < light.peak, 'dark is not quieter than light');
-  assert.ok(light.lp <= 800, `the light press is filtered at ${light.lp} Hz, over the 800 Hz felt ceiling`);
+  assert.ok(Math.abs(cents(pressFreq(env), 1150)) < 0.5, 'dark theme press is the Glass drop');
 
   const sys = setup({ theme: null, system: 'dark' });
   sys.sm.setMasterEnabled(true);
-  assert.equal(pressBody(sys).lp, dark.lp, 'no data-theme follows the system scheme');
+  assert.ok(Math.abs(cents(pressFreq(sys), 1150)) < 0.5, 'no data-theme follows the system scheme');
 
   // The theme toggle asks for the theme sound in the same frame it picks
   // the theme; the attribute lands a frame later inside the view transition.
   const flip = setup({ theme: 'light' });
   flip.sm.setMasterEnabled(true);
   flip.window.themeManager = { userPreference: 'dark' };
-  assert.equal(pressBody(flip).lp, dark.lp, 'the chosen theme wins over a lagging attribute');
+  assert.ok(Math.abs(cents(pressFreq(flip), 1150)) < 0.5, 'the chosen theme wins over a lagging attribute');
 });
 
-test('sound: a theme flip keeps the bed playing, moved to the night felt', async () => {
+test('sound: a theme flip moves the bed to the other palette', async () => {
   const env = setup({ theme: 'light', prefs: { master: true, bed: true, motifs: false, level: 'low' } });
   env.sm.setMasterEnabled(true);
   await settle();
   assert.equal(env.sm.bedPlaying, true);
-  assert.equal(env.sm.bedNodes && env.sm.bedNodes.palette, 'felt');
+  assert.equal(env.sm.bedNodes && env.sm.bedNodes.palette, 'clay');
   env.document.documentElement.setAttribute('data-theme', 'dark');
   env.window.dispatchEvent(new env.window.CustomEvent('themechange', { detail: { theme: 'dark' } }));
   await settle();
   assert.equal(env.sm.bedPlaying, true);
-  assert.equal(env.sm.bedNodes && env.sm.bedNodes.palette, 'feltNight');
+  assert.equal(env.sm.bedNodes && env.sm.bedNodes.palette, 'glass');
 });
 
-test('sound fix: hover, scroll, sections, the stepper and page changes make no sound (D-146)', async () => {
-  const problems = [];
-  ['light', 'dark'].forEach((theme) => {
-    const env = setup({ theme });
-    env.sm.setMasterEnabled(true);
-    SILENT.forEach((name) => {
-      if (sources(playOne(env, name)).length) problems.push(`${theme} ${name}`);
-    });
-    LEGACY_SILENT.forEach((call) => {
-      if (sources(playOne(env, call)).length) problems.push(`${theme} ${call[0]}`);
-    });
-    if (sources(playOne(env, ['playTickSound'])).length) problems.push(`${theme} playTickSound`);
-  });
-  assert.deepEqual(problems, [], 'these played a sound');
-});
-
-test('score fix: sections coming into view and hovering make no sound', async () => {
-  const seen = [];
-  const env = setup({ score: false });
-  // The score names IntersectionObserver as a bare global.
-  const IO = class {
-    constructor(cb) { this.cb = cb; seen.push(this); }
-    observe(el) { this.el = el; }
-    disconnect() {}
-  };
-  env.window.IntersectionObserver = IO;
-  const hadIO = 'IntersectionObserver' in globalThis;
-  const prevIO = globalThis.IntersectionObserver;
-  globalThis.IntersectionObserver = IO;
-  env.document.body.innerHTML = '<section id="intro"></section><section id="selected-work"></section>'
-    + '<footer class="site-footer"></footer><a class="nav-link" href="#x">x</a>';
+test('sound: the hero stepper climbs one note per line and walks back down', () => {
+  const env = setup({ theme: 'light' });
   env.sm.setMasterEnabled(true);
-  run(env.window, AS, Math);
-  const c = env.ctx();
-  c.currentTime = 4;
-  const m = mark(env);
-  seen.forEach((o) => ['#intro', '#selected-work', '.site-footer'].forEach((sel) => {
-    const el = env.document.querySelector(sel);
-    o.cb([{ isIntersecting: true, target: el }]);
-    o.cb([{ isIntersecting: false, target: el }]);
-  }));
-  pointer(env, env.document.querySelector('.nav-link'), 'pointerover');
-  await settle();
-  if (hadIO) globalThis.IntersectionObserver = prevIO; else delete globalThis.IntersectionObserver;
-  assert.ok(seen.length > 0, 'the score observed no sections');
-  assert.equal(sources(since(env, m)).length, 0, 'a section or a hover made a sound');
+  const note = (call) => startFreq(oscs(playOne(env, call))[0]);
+  playOne(env, ['playStepperEnter']);
+  assert.ok(Math.abs(cents(note(['playStepDown']), 384.87)) < 0.5, 'first step forward is G4');
+  assert.ok(Math.abs(cents(note(['playStepDown']), 432)) < 0.5, 'second step forward is A4');
+  assert.ok(Math.abs(cents(note(['playStepUp']), 384.87)) < 0.5, 'a step back is G4 again');
+  assert.ok(Math.abs(cents(note(['playStepDown', 4]), 576.65)) < 0.5, 'a passed line index wins: line 4 is D5');
 });
 
 /* ---- Kept behaviour --------------------------------------------------- */
@@ -597,7 +515,7 @@ test('score fix: sections coming into view and hovering make no sound', async ()
 test('sound kept: with the master switch off nothing plays and no context is made', () => {
   const env = setup({ prefs: { master: false, bed: true, motifs: true, level: 'med' } });
   LEGACY.forEach((call) => env.sm[call[0]](call[1]));
-  VOICED.concat(SILENT).forEach((name) => env.sm.play(name));
+  if (typeof env.sm.play === 'function') EVENTS.forEach((name) => env.sm.play(name));
   env.sm.startBed();
   env.document.body.innerHTML = '<button class="btn">Go</button>';
   pointer(env, env.document.querySelector('button'), 'pointerdown');
@@ -618,77 +536,19 @@ test('sound kept: turning the master off mutes every voice and stops the bed', a
   assert.equal(sources(since(env, m)).length, 0);
 });
 
-test('sound fix: reduced motion keeps the bed silent but presses still answer (D-138)', async () => {
+test('sound kept: reduced motion silences the riser, motifs, bed and press sounds', async () => {
   const env = setup({ reduced: true, prefs: { master: true, bed: true, motifs: true, level: 'low' } });
   env.sm.setMasterEnabled(true);
   env.document.body.innerHTML = '<button class="btn">Go</button>';
-  let m = mark(env);
+  const m = mark(env);
   env.sm.playRiser();
   env.sm.playMotif('intro');
   env.sm.startBed();
-  await settle();
-  assert.equal(sources(since(env, m)).length, 0, 'the riser, a motif or the bed played');
-  assert.equal(env.sm.bedPlaying, false);
-  env.ctx().currentTime = 2;
-  m = mark(env);
   pointer(env, env.document.querySelector('button'), 'pointerdown');
+  pointer(env, env.document.querySelector('button'), 'pointerup');
   await settle();
-  assert.ok(sources(since(env, m)).length > 0, 'a press under reduced motion was silent');
-});
-
-/* ---- Record once, replay (D-128) --------------------------------------- */
-
-test('sound fix: switching sound on makes no noise up front, and noise is half a second', async () => {
-  const env = setup();
-  env.sm.setMasterEnabled(true);
-  const c = env.ctx();
-  assert.equal((c.buffers || []).length, 0, 'switch-on built noise buffers before any sound needed them');
-  playOne(env, ['playSelectSound']);
-  const made = c.buffers || [];
-  assert.ok(made.length > 0, 'a played press made no noise');
-  made.forEach((b) => assert.ok(b.length <= c.sampleRate * 0.5, `a noise buffer is ${b.length / c.sampleRate} s long`));
-});
-
-test('sound fix: each voiced event is recorded once per theme after switch-on, then replayed as one buffer', async () => {
-  const env = setup({ record: true });
-  env.sm.setMasterEnabled(true);
-  for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
-  const renders = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(renders, VOICED.length * 2, `${renders} recordings for ${VOICED.length} events in 2 themes`);
-
-  const c = env.ctx();
-  c.currentTime = 3;
-  let m = mark(env);
-  env.sm.playPressSound();
-  await settle();
-  const played = since(env, m);
-  assert.equal(sources(played).length, 1, 'a recorded press built more than one source');
-  assert.equal(oscs(played).length, 0, 'a recorded press still built oscillators');
-  assert.ok(sources(played)[0].buffer && sources(played)[0].buffer.recording, 'the press did not play its recording');
-
-  c.currentTime = 4;
-  m = mark(env);
-  env.sm.playPressSound();
-  await settle();
-  const again = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(again, renders, 'a second press recorded again');
-  assert.equal(sources(since(env, m))[0].buffer, sources(played)[0].buffer, 'the second press used a different recording');
-});
-
-test('sound: a press leans gently toward where it was tapped (D-141)', async () => {
-  const env = setup({ record: true });
-  env.sm.setMasterEnabled(true);
-  for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
-  Object.defineProperty(env.window, 'innerWidth', { value: 1000, configurable: true });
-  env.document.body.innerHTML = '<button class="btn" type="button">Go</button>';
-  const c = env.ctx();
-  c.currentTime = 5;
-  const m = mark(env);
-  pointer(env, env.document.querySelector('button'), 'pointerdown', { clientX: 1000 });
-  await settle();
-  const pan = since(env, m).find((n) => n.kind === 'panner');
-  assert.ok(pan, 'the press was not placed');
-  assert.ok(pan.pan.value > 0.25 && pan.pan.value <= 0.3, `a tap at the right edge panned ${pan.pan.value}`);
+  assert.equal(sources(since(env, m)).length, 0);
+  assert.equal(env.sm.bedPlaying, false);
 });
 
 test('sound kept: the public voices older callers use are all still there', () => {
@@ -700,88 +560,4 @@ test('sound kept: the public voices older callers use are all still there', () =
     'playRiser', 'startBed', 'stopBed', 'setBedScene', 'playMotif', 'toggleMute',
     'setVolume', 'prefersReducedMotion', 'init', 'warmup'
   ].forEach((name) => assert.equal(typeof env.sm[name], 'function', name));
-});
-
-test('sound fix: under reduced motion a tap on a pill or sticker still answers (D-138)', async () => {
-  const env = setup({ reduced: true, score: true });
-  env.sm.setMasterEnabled(true);
-  env.document.body.innerHTML = '<button class="sticker" type="button">s</button>';
-  env.ctx().currentTime = 3;
-  const m = mark(env);
-  env.document.querySelector('button').dispatchEvent(new env.window.MouseEvent('click', { bubbles: true, cancelable: true }));
-  await settle();
-  assert.ok(sources(since(env, m)).length > 0, 'a sticker tap under reduced motion was silent');
-});
-
-test('sound fix: a returning visitor with sound already on gets the recordings on first gesture', async () => {
-  const env = setup({ record: true, prefs: { master: true, bed: false, motifs: false, level: 'low' } });
-  env.document.dispatchEvent(new env.window.MouseEvent('mousemove', { bubbles: true }));
-  for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
-  const renders = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(renders, VOICED.length * 2, `a returning visitor got ${renders} recordings`);
-});
-
-test('sound fix: a press leans toward the tap before its recording is ready too', async () => {
-  const env = setup();
-  env.sm.setMasterEnabled(true);
-  Object.defineProperty(env.window, 'innerWidth', { value: 1000, configurable: true });
-  env.document.body.innerHTML = '<button class="btn" type="button">Go</button>';
-  env.ctx().currentTime = 5;
-  const m = mark(env);
-  pointer(env, env.document.querySelector('button'), 'pointerdown', { clientX: 0 });
-  await settle();
-  const pan = since(env, m).find((n) => n.kind === 'panner');
-  assert.ok(pan && pan.pan.value < -0.25, 'a live press at the left edge was not placed left');
-});
-
-test('sound: a failed recording is not retried on every tap', async () => {
-  const env = setup({ record: true });
-  env.window.OfflineAudioContext = class { constructor() { throw new Error('unsupported rate'); } };
-  env.sm.setMasterEnabled(true);
-  await settle(50);
-  let tries = 0;
-  env.window.OfflineAudioContext = class { constructor() { tries++; throw new Error('unsupported rate'); } };
-  for (let i = 0; i < 5; i++) { env.ctx().currentTime += 1; env.sm.playPressSound(); }
-  await settle(50);
-  assert.equal(tries, 0, `a broken recorder was tried ${tries} more times`);
-});
-
-test('sound fix: dragging a sticker plays pick and drop, not a select on top', async () => {
-  const env = setup({ score: true });
-  env.sm.setMasterEnabled(true);
-  env.document.body.innerHTML = '<button class="sticker" type="button">s</button>';
-  let selects = 0;
-  const orig = env.sm.playSelectSound;
-  env.sm.playSelectSound = function () { const r = orig.apply(this, arguments); if (r !== false) selects++; return r; };
-  env.ctx().currentTime = 2;
-  env.sm.playPickSound();
-  env.ctx().currentTime = 2.3;
-  env.sm.playDropSound();
-  env.document.querySelector('button').dispatchEvent(new env.window.MouseEvent('click', { bubbles: true, cancelable: true }));
-  await settle();
-  assert.equal(selects, 0, 'the click that ends a drag voiced a select too');
-});
-
-test('sound fix: switching sound off stops the recording queue', async () => {
-  const env = setup({ record: true });
-  env.window.requestIdleCallback = (fn) => setTimeout(fn, 40);
-  env.sm.setMasterEnabled(true);
-  env.sm.setMasterEnabled(false);
-  await settle(120);
-  const renders = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(env.sm.bakeQueue.length, 0, 'the queue survived switch-off');
-  assert.equal(renders, 0, `${renders} recordings were made after sound was switched off`);
-});
-
-test('sound: in dark mode a recorded press plays the night recording, not the light one', async () => {
-  const env = setup({ record: true, theme: 'dark' });
-  env.sm.setMasterEnabled(true);
-  for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
-  env.ctx().currentTime = 3;
-  const m = mark(env);
-  env.sm.playPressSound();
-  await settle();
-  const src = sources(since(env, m))[0];
-  assert.equal(src.buffer, env.sm.baked['feltNight|press'], 'dark played a recording other than the night press');
-  assert.notEqual(env.sm.baked['feltNight|press'], env.sm.baked['felt|press']);
 });

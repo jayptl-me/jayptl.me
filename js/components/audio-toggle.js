@@ -18,29 +18,35 @@
             if (window.SoundManager && typeof window.SoundManager.getPrefs === 'function') {
                 return window.SoundManager.getPrefs();
             }
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
         return { master: false, bed: false, motifs: false, level: 'low' };
     }
 
     function setMaster(on) {
         try {
             if (window.SoundManager) return window.SoundManager.setMasterEnabled(on);
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
         return on;
     }
 
     function setBed(on) {
         try {
             if (window.SoundManager) return window.SoundManager.setBedEnabled(on);
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
         return on;
     }
 
+    function setMotifs(on) {
+        try {
+            if (window.SoundManager) return window.SoundManager.setMotifsEnabled(on);
+        } catch (e) { /* noop */ }
+        return on;
+    }
 
     function setLevel(level) {
         try {
             if (window.SoundManager) return window.SoundManager.setVolumeLevel(level);
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
         return level;
     }
 
@@ -74,13 +80,17 @@
             '<button type="button" class="audio-switch" id="audioBedSwitch" role="switch" aria-checked="false" aria-labelledby="audioBedLabel">Off</button>' +
             '</div>' +
             '<div class="audio-row">' +
+            '<span id="audioMotifLabel">Motifs</span>' +
+            '<button type="button" class="audio-switch" id="audioMotifSwitch" role="switch" aria-checked="false" aria-labelledby="audioMotifLabel">Off</button>' +
+            '</div>' +
+            '<div class="audio-row">' +
             '<span id="audioLevelLabel">Volume</span>' +
             '<div class="audio-seg" role="group" aria-labelledby="audioLevelLabel">' +
             '<button type="button" class="audio-seg-btn" id="audioLevelLow">Low</button>' +
             '<button type="button" class="audio-seg-btn" id="audioLevelMed">Med</button>' +
             '</div>' +
             '</div>' +
-            '<p class="audio-hint">Quiet felt taps, made in the page. No files, no tracking.</p>';
+            '<p class="audio-hint">Serene pad, synthesized live. No files, no tracking.</p>';
         return panel;
     }
 
@@ -90,11 +100,12 @@
             btn.setAttribute('aria-pressed', p.master ? 'true' : 'false');
             btn.setAttribute('aria-label', p.master ? 'Turn sound off' : 'Turn sound on');
             btn.classList.toggle('is-on', p.master);
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
         if (!panel) return;
         try {
             var master = panel.querySelector('#audioMasterSwitch');
             var bed = panel.querySelector('#audioBedSwitch');
+            var motif = panel.querySelector('#audioMotifSwitch');
             var low = panel.querySelector('#audioLevelLow');
             var med = panel.querySelector('#audioLevelMed');
             if (master) {
@@ -108,11 +119,17 @@
                 bed.classList.toggle('is-on', p.bed);
                 bed.disabled = !p.master;
             }
+            if (motif) {
+                motif.setAttribute('aria-checked', p.motifs ? 'true' : 'false');
+                motif.textContent = p.motifs ? 'On' : 'Off';
+                motif.classList.toggle('is-on', p.motifs);
+                motif.disabled = !p.master;
+            }
             if (low && med) {
                 low.classList.toggle('is-on', p.level !== 'med');
                 med.classList.toggle('is-on', p.level === 'med');
             }
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
     }
 
     function mount() {
@@ -122,7 +139,7 @@
         try {
             var nav = document.getElementById('glassNav');
             host = nav ? nav.querySelector('.nav-controls') : null;
-        } catch { host = null; }
+        } catch (e) { host = null; }
 
         var btn = document.createElement('button');
         btn.type = 'button';
@@ -149,11 +166,11 @@
                 // One popover at a time: nav dropdowns step aside.
                 try {
                     window.dispatchEvent(new CustomEvent('nav:popover-open', { detail: { source: 'audio' } }));
-                } catch { /* noop */ }
+                } catch (e) { /* noop */ }
                 sync(btn, panel);
                 var first = panel.querySelector('.audio-switch');
                 if (first) {
-                    try { first.focus({ preventScroll: true }); } catch { /* noop */ }
+                    try { first.focus({ preventScroll: true }); } catch (e) { /* noop */ }
                 }
             }
         }
@@ -162,8 +179,8 @@
             e.stopPropagation();
             // Plain click toggles master for speed. Long panel stays
             // available through the options below, not hidden here.
-            // Single click on the icon toggles the panel so the bed and
-            // volume stay discoverable. Master flips inside the panel.
+            // Single click on the icon toggles the panel so bed and
+            // motifs stay discoverable. Master flips inside the panel.
             togglePanel();
         });
 
@@ -174,10 +191,12 @@
                 var next = !prefs().master;
                 setMaster(next);
                 if (next && window.SoundManager) {
-                    try { window.SoundManager.playSuccessSound(); } catch { /* silent */ }
+                    try { window.SoundManager.playSuccessSound(); } catch (err) { /* silent */ }
                 }
             } else if (t.id === 'audioBedSwitch') {
                 setBed(!prefs().bed);
+            } else if (t.id === 'audioMotifSwitch') {
+                setMotifs(!prefs().motifs);
             } else if (t.id === 'audioLevelLow') {
                 setLevel('low');
             } else if (t.id === 'audioLevelMed') {
@@ -195,7 +214,7 @@
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && !panel.hidden) {
                 closePanel();
-                try { btn.focus({ preventScroll: true }); } catch { /* noop */ }
+                try { btn.focus({ preventScroll: true }); } catch (err) { /* noop */ }
             }
         });
 
@@ -226,7 +245,7 @@
                 btn.parentNode.insertBefore(panel, btn.nextSibling);
                 sync(btn, panel);
                 return true;
-            } catch { /* fall through to floating */ }
+            } catch (e) { /* fall through to floating */ }
         }
 
         // Fallback floating control when the island nav is absent.
@@ -237,7 +256,7 @@
             document.body.appendChild(panel);
             sync(btn, panel);
             return true;
-        } catch {
+        } catch (e) {
             return false;
         }
     }
@@ -262,6 +281,6 @@
     window.addEventListener('page:ready', function () {
         // Router swaps main but keeps the shell. Re mount is cheap
         // and keeps the toggle alive across soft navigations.
-        try { mount(); } catch { /* noop */ }
+        try { mount(); } catch (e) { /* noop */ }
     });
 })();

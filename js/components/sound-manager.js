@@ -1,41 +1,39 @@
 /**
  * Sound Manager Component
  * Handmade Web Audio kit for the full site. Every voice is synthesized
- * from oscillators and noise made in the page, so there are zero audio
- * files, zero downloads, and zero copyright risk.
+ * at runtime from oscillators and noise generated in the page, so there
+ * are zero audio files, zero downloads, and zero copyright risk.
  *
- * One quiet family, felt (D-140, D-144 to D-146): a felted hammer for
- * press and release, a soft latch for the theme switch, one soft note
- * when something works. Dark is the same felt, softer and a little
- * quieter. Only what the visitor does makes a sound: hover, scroll,
- * sections, the hero stepper and page changes stay silent.
+ * Two palettes, one per theme (D-73):
+ * - Clay, the light theme: soft, damp, matte taps with a small body,
+ *   clay mallet notes for states.
+ * - Glass, the dark theme: a drop on press, a bubble on release, small
+ *   glass bells for states.
+ * The palette is chosen when a sound plays, from the theme the page is
+ * showing, so a theme flip switches the whole set (the bed included).
  *
  * Score model, default off:
  * - Master switch gates every sound. Default off until the visitor
  *   taps sound on. Persisted in localStorage.
- * - Voiced events: press (pointer down), release (let go), select,
- *   pick, drop, success, theme to dark, theme to light.
- * - Silent events, kept as methods for older callers: hover, tick,
- *   stepper steps, stepper enter and exit, page riser, section motifs.
+ * - Events: press (pointer down), release (let go), select, hover,
+ *   tick, pick, drop, success, theme to dark, theme to light, stepper
+ *   steps, stepper enter and exit, page riser, section motifs.
  * - Bed: a slow pad tuned to A4 = 432 Hz. Starts only after explicit
  *   opt in.
  *
- * Record once, replay (D-128): after sound is switched on, each voiced
- * event is rendered once per palette in an OfflineAudioContext, one per
- * idle moment, and later plays are a single buffer source. Until its
- * recording is ready an event plays live from the same recipe. Repeats
- * are identical (D-142). The noise is half a second, made once.
- *
- * Signal path: voice, master gain (the volume, applied once and only
- * here), a limiter at -6 dBFS, speakers. Every envelope starts at 0,
- * falls to 60 dB under its own peak and reaches 0 before its source
- * stops. One tuning everywhere: A4 = 432 Hz, pentatonic.
+ * Signal path: voice, voice bus, master gain (the volume, applied once
+ * and only here), a limiter at -6 dBFS, speakers. Every envelope starts
+ * at 0, falls to 60 dB under its own peak and reaches 0 before its
+ * source stops, so no voice starts or ends on a step. Each play is
+ * detuned within 7 cents, moved within 1 dB and has its filters moved
+ * within 5 percent, so repeats never sound identical. One tuning
+ * everywhere: A4 = 432 Hz, pentatonic.
  *
  * Safety: no autoplay. Context is created only on user gesture or on
  * explicit enable. A suspended context is resumed before a voice plays,
  * so the first sound after a pause is not dropped. Pauses the bed when
- * the tab hides. Under reduced motion the bed stays silent; presses and
- * releases still answer, because a silent press feels broken (D-138).
+ * the tab hides. Under reduced motion the motifs, riser, press sounds
+ * and bed stay silent.
  *
  * @file components/sound-manager.js
  * @author Jay Patel
@@ -54,6 +52,16 @@
         A5: 864.00, C6: 1027.47
     };
 
+    var MOTIFS = {
+        intro: ['E4', 'A4'],
+        now: ['D4', 'G4'],
+        work: ['C4', 'E4'],
+        sticker: ['G4', 'C5'],
+        about: ['A3', 'E4'],
+        footer: ['E4', 'D4'],
+        generic: ['C4', 'G4']
+    };
+
     // Hero stepper: one note per line, climbing as the visitor moves forward.
     var SCALE = ['E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
 
@@ -70,21 +78,15 @@
     };
 
     // Master gain per level. The recipes are set for a master of 1, where
-    // the felt press peaks near -21 dBFS. Low, the default, sits at the
-    // edge of hearing (D-146), about 5 dB under Med.
-    var LEVELS = { low: 0.45, med: 0.8 };
+    // the loudest events peak near -18 dBFS; Low is the level they were
+    // auditioned at, about 2 dB under that.
+    var LEVELS = { low: 0.8, med: 1.0 };
 
-    var THEME_PALETTE = { light: 'felt', dark: 'feltNight' };
+    var THEME_PALETTE = { light: 'clay', dark: 'glass' };
 
-    // Repeats are identical (D-142): no per-play detune, level or filter moves.
-    var VAR_CENTS = 0;
-    var VAR_DB = 0;
-    var VAR_FILTER = 0;
-
-    // Recordings: mono, 32 kHz (every voice sits under 2 kHz), length per
-    // event in seconds, long enough for its whole tail.
-    var BAKE_RATE = 32000;
-    var BAKE_LEN = { press: 0.3, release: 0.25, select: 0.4, pick: 0.3, drop: 0.35, success: 0.8, themeDark: 0.5, themeLight: 0.5 };
+    var VAR_CENTS = 7;
+    var VAR_DB = 1.0;
+    var VAR_FILTER = 0.05;
 
     // A sound asked for while the context resumes plays only if the
     // resume lands within this window, so nothing queues up and bursts.
@@ -106,7 +108,7 @@
                 motifs: parsed.motifs === true,
                 level: parsed.level === 'med' ? 'med' : 'low'
             };
-        } catch {
+        } catch (e) {
             return fallback;
         }
     }
@@ -114,7 +116,7 @@
     function savePrefs(prefs) {
         try {
             localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
-        } catch { /* storage is a bonus, never breaks sound */ }
+        } catch (e) { /* storage is a bonus, never breaks sound */ }
     }
 
     function noop() { /* intentionally empty */ }
@@ -124,81 +126,48 @@
     function db(x) { return Math.pow(10, x / 20); }
     function rnd(a, b) { return a + Math.random() * (b - a); }
 
-    // White, pink and brown noise, half a second each, made once per
-    // kind on first use and copied into each context that needs it. The
-    // old two-second set of all three froze switch-on for 37 to 46 ms.
-    var NOISE_SECONDS = 0.5;
-    var noiseSamples = {};
-    // Per context, so recordings and live plays do not evict each other.
-    var noiseCache = typeof WeakMap === 'function' ? new WeakMap() : null;
+    // White, pink and brown noise, two seconds each, made once per context.
+    var noiseCache = { ctx: null, bufs: null };
 
-    function makeNoise(kind, len) {
-        var d = new Float32Array(len);
-        var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, last = 0, max = 0, i, w;
-        for (i = 0; i < len; i++) {
-            w = Math.random() * 2 - 1;
-            if (kind === 'white') {
-                d[i] = w;
-            } else if (kind === 'pink') {
-                b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759;
-                b2 = 0.96900 * b2 + w * 0.1538520; b3 = 0.86650 * b3 + w * 0.3104856;
-                b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980;
-                d[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362;
-                b6 = w * 0.115926;
-            } else {
-                last = (last + 0.02 * w) / 1.02;
-                d[i] = last;
+    function noiseFor(ctx) {
+        if (noiseCache.ctx === ctx && noiseCache.bufs) return noiseCache.bufs;
+        var len = Math.floor(ctx.sampleRate * 2);
+        var out = {};
+        ['white', 'pink', 'brown'].forEach(function (kind) {
+            var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+            var d = buf.getChannelData(0);
+            var b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, last = 0, max = 0, i, w;
+            for (i = 0; i < len; i++) {
+                w = Math.random() * 2 - 1;
+                if (kind === 'white') {
+                    d[i] = w;
+                } else if (kind === 'pink') {
+                    b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759;
+                    b2 = 0.96900 * b2 + w * 0.1538520; b3 = 0.86650 * b3 + w * 0.3104856;
+                    b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980;
+                    d[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362;
+                    b6 = w * 0.115926;
+                } else {
+                    last = (last + 0.02 * w) / 1.02;
+                    d[i] = last;
+                }
+                if (Math.abs(d[i]) > max) max = Math.abs(d[i]);
             }
-            if (Math.abs(d[i]) > max) max = Math.abs(d[i]);
-        }
-        if (max > 0) {
-            for (i = 0; i < len; i++) d[i] = d[i] / max;
-        }
-        return d;
-    }
-
-    // The bed loops its noise, so it gets its own four-second buffer,
-    // made only when the bed starts; half a second would repeat at 2 Hz.
-    var bedNoiseCache = typeof WeakMap === 'function' ? new WeakMap() : null;
-    function bedNoiseFor(ctx, kind) {
-        var key = kind || 'pink';
-        var bufs = bedNoiseCache ? bedNoiseCache.get(ctx) : null;
-        if (!bufs) {
-            bufs = {};
-            if (bedNoiseCache) bedNoiseCache.set(ctx, bufs);
-        }
-        if (bufs[key]) return bufs[key];
-        var len = Math.floor(ctx.sampleRate * 4);
-        var buf = ctx.createBuffer(1, len, ctx.sampleRate);
-        var src = makeNoise(key, len);
-        var dst = buf.getChannelData(0);
-        for (var i = 0; i < len; i++) dst[i] = src[i];
-        bufs[key] = buf;
-        return buf;
-    }
-
-    function noiseFor(ctx, kind) {
-        kind = kind || 'white';
-        var bufs = noiseCache ? noiseCache.get(ctx) : null;
-        if (!bufs) {
-            bufs = {};
-            if (noiseCache) noiseCache.set(ctx, bufs);
-        }
-        if (bufs[kind]) return bufs[kind];
-        var len = Math.floor(ctx.sampleRate * NOISE_SECONDS);
-        if (!noiseSamples[kind] || noiseSamples[kind].length < len) noiseSamples[kind] = makeNoise(kind, len);
-        var buf = ctx.createBuffer(1, len, ctx.sampleRate);
-        var src = noiseSamples[kind];
-        var dst = buf.getChannelData(0);
-        for (var i = 0; i < len; i++) dst[i] = src[i];
-        bufs[kind] = buf;
-        return buf;
+            if (max > 0) {
+                for (i = 0; i < len; i++) d[i] = d[i] / max;
+            }
+            out[kind] = buf;
+        });
+        noiseCache.ctx = ctx;
+        noiseCache.bufs = out;
+        return out;
     }
 
     // The toolkit every recipe receives as S.
     function kit(ctx, out, variation) {
         var v = variation === false ? 0 : 1;
-        var S = { ctx: ctx, out: out, TUNE: TUNE, SCALE: SCALE, db: db };
+        var noise = noiseFor(ctx);
+        var S = { ctx: ctx, out: out, TUNE: TUNE, MOTIFS: MOTIFS, SCALE: SCALE, db: db };
 
         S.det = function () { return Math.pow(2, rnd(-VAR_CENTS, VAR_CENTS) * v / 1200); };
         S.lvl = function (x) { return db(x + rnd(-VAR_DB, VAR_DB) * v); };
@@ -275,14 +244,13 @@
             if (!o.hp) o = Object.assign({}, o, { hp: 150, hpq: 0.5 });
             var t = o.t, a = o.a == null ? 0.001 : o.a;
             var src = ctx.createBufferSource();
-            src.buffer = noiseFor(ctx, o.color || 'white');
+            src.buffer = noise[o.color || 'white'];
             var g = ctx.createGain();
             g.connect(S.out);
             var into = filters(o, t, g);
             src.connect(into);
             var e = S.env(g.gain, t, a, S.lvl(o.db), o.d, o.hold);
-            // A fixed offset, so every play of a voice is identical (D-142).
-            src.start(t, 0);
+            src.start(t, rnd(0, 1.5));
             src.stop(e + 0.01);
             return e;
         };
@@ -320,7 +288,7 @@
             });
             if (o.noise) {
                 var n = ctx.createBufferSource(), ng = ctx.createGain(), last = n;
-                n.buffer = bedNoiseFor(ctx, o.noise.color || 'pink');
+                n.buffer = noise[o.noise.color || 'pink'];
                 n.loop = true;
                 if (o.noise.hp) {
                     var h = ctx.createBiquadFilter();
@@ -352,7 +320,7 @@
                     else { gp.cancelScheduledValues(when); gp.setValueAtTime(gp.value, when); }
                     gp.setTargetAtTime(0, when, tc);
                     nodes.forEach(function (x) {
-                        try { x.stop(when + tc * 8.5); } catch { /* noop */ }
+                        try { x.stop(when + tc * 8.5); } catch (e) { /* noop */ }
                     });
                 }
             };
@@ -361,68 +329,159 @@
         return S;
     }
 
-    /* ---- One family, felt ---------------------------------------------- */
-    // A felted hammer on a string, damped (D-140): a short pink thump
-    // under 600 Hz and a body tone under 800 Hz, glide start and end on
-    // scale notes. Night is the same felt with the filters closed to 0.7
-    // and 2 dB quieter (D-145, D-146). Nothing here puts real energy
-    // above 2 kHz, the line every sound the owner liked stayed under
-    // (D-143, pm/proof-2026-11-06/sound-depth/harsh.json).
+    /* ---- Palette A, Clay: the light theme ----------------------------- */
+    // Soft, damp, matte. A fingertip on fired clay: a dull tap with a
+    // small wooden body, never a beep. Mallet notes only for states.
 
-    function feltTouch(S, t, p, o) {
-        S.noise({ t: t, color: 'pink', lp: 600 * p.lp, d: 0.010, db: o.ndb + p.off + 2 });
-        S.tone({ t: t, f: S.note(o.f), to: S.note(o.to), glide: o.glide, a: 0.003, d: o.d * 1.4,
-            db: o.db + p.off, lp: 800 * p.lp, partials: [[1, 1, 1], [2, 0.3, 0.5]] });
+    function clayMallet(S, t, f, lvl, d) {
+        // Soft clay marimba: a triangle body plus a short knock four times up.
+        S.tone({ t: t, f: f, type: 'triangle', a: 0.003, d: d || 0.32, db: lvl, lp: 1800,
+            partials: [[1, 1, 1], [3.98, 0.18, 0.12]] });
+        S.noise({ t: t, color: 'pink', bp: 900, q: 0.8, d: 0.012, db: lvl - 12 });
     }
 
-    function feltNote(S, t, p, name, lvl, d) {
-        S.tone({ t: t, f: S.note(name), a: 0.006, d: d, db: lvl + p.off, lp: 1200 * p.lp,
-            sweep: { on: 'lp', to: 600 * p.lp, dur: d }, partials: [[1, 1, 1], [2, 0.3, 0.45]] });
-        S.noise({ t: t, color: 'pink', lp: 500 * p.lp, d: 0.009, db: lvl + p.off - 9 });
-    }
+    var CLAY = {};
+    CLAY.press = function (S, t) {
+        S.noise({ t: t, bp: 1150, q: 1.1, d: 0.016, db: -14 });
+        S.tone({ t: t, f: 320, to: 200, glide: 0.028, a: 0.0025, d: 0.05, db: -21, lp: 1000 });
+    };
+    CLAY.release = function (S, t) {
+        S.noise({ t: t, bp: 2300, q: 1.4, d: 0.008, db: -21 });
+        S.tone({ t: t, f: 410, to: 370, glide: 0.02, a: 0.002, d: 0.03, db: -29, lp: 1600 });
+    };
+    CLAY.select = function (S, t) { CLAY.press(S, t); CLAY.release(S, t + 0.095); };
+    CLAY.hover = function (S, t) {
+        S.noise({ t: t, hp: 2500, bp: 4200, q: 0.9, d: 0.006, db: -24 });
+    };
+    CLAY.tick = function (S, t) {
+        S.noise({ t: t, bp: 2600, q: 2.5, d: 0.009, db: -18 });
+        // A5 of the 432 table, so the faint pitch stays in tune with the motifs.
+        S.tone({ t: t, f: S.note('A5'), a: 0.0015, d: 0.014, db: -36, lp: 2000 });
+    };
+    CLAY.pick = function (S, t) {
+        S.noise({ t: t, bp: 1400, q: 1, d: 0.014, db: -18 });
+        S.tone({ t: t, f: 260, to: 390, glide: 0.045, a: 0.004, d: 0.07, db: -22, lp: 1200 });
+    };
+    CLAY.drop = function (S, t) {
+        S.tone({ t: t, f: 340, to: 190, glide: 0.05, a: 0.003, d: 0.11, db: -21, lp: 900 });
+        S.noise({ t: t, color: 'pink', lp: 700, d: 0.045, db: -20 });
+    };
+    CLAY.success = function (S, t) {
+        clayMallet(S, t, S.note('G4'), -21, 0.36);
+        clayMallet(S, t + 0.075, S.note('D5'), -22, 0.42);
+    };
+    CLAY.themeDark = function (S, t) {
+        S.noise({ t: t, color: 'pink', lp: 1900, sweep: { on: 'lp', to: 260, dur: 0.38 }, a: 0.05, d: 0.36, db: -17 });
+        // Sinks to A2 of the 432 table, not the 110 Hz A of the other tuning.
+        S.tone({ t: t, f: 180, to: S.note('A2'), glide: 0.3, a: 0.02, d: 0.32, db: -30, lp: 700 });
+        clayMallet(S, t + 0.03, S.note('E4'), -27, 0.3);
+    };
+    CLAY.themeLight = function (S, t) {
+        S.noise({ t: t, color: 'pink', lp: 350, sweep: { on: 'lp', to: 2600, dur: 0.3 }, a: 0.12, d: 0.24, db: -17 });
+        S.tone({ t: t + 0.06, f: 288, to: 432, glide: 0.25, a: 0.04, d: 0.25, db: -27, lp: 1400 });
+    };
+    CLAY.stepDown = function (S, t, o) { clayMallet(S, t, S.note(S.SCALE[o.i || 0]), -22, 0.26); };
+    CLAY.stepUp = function (S, t, o) { clayMallet(S, t, S.note(S.SCALE[o.i || 0]), -24, 0.2); };
+    CLAY.stepperEnter = function (S, t) {
+        clayMallet(S, t, S.note('A3'), -23, 0.3);
+        clayMallet(S, t + 0.09, S.note('E4'), -24, 0.34);
+        S.noise({ t: t, color: 'pink', lp: 1200, a: 0.06, d: 0.2, db: -28 });
+    };
+    CLAY.stepperExit = function (S, t) {
+        clayMallet(S, t, S.note('E4'), -24, 0.28);
+        clayMallet(S, t + 0.09, S.note('A3'), -24, 0.32);
+        S.noise({ t: t, color: 'pink', lp: 1200, sweep: { on: 'lp', to: 300, dur: 0.3 }, a: 0.03, d: 0.3, db: -26 });
+    };
+    CLAY.riser = function (S, t) {
+        S.noise({ t: t, color: 'pink', bp: 500, q: 0.9, sweep: { on: 'bp', to: 2000, dur: 0.36 }, a: 0.22, d: 0.2, db: -12 });
+    };
+    CLAY.motif = function (S, t, o) {
+        var pair = S.MOTIFS[o.name] || S.MOTIFS.generic;
+        clayMallet(S, t, S.note(pair[0]), -25, 0.5);
+        clayMallet(S, t + 0.17, S.note(pair[1]), -25, 0.55);
+    };
 
-    // The theme switch: a soft latch, a physical object (D-146). Dark
-    // closes downward, light opens upward; a second, smaller catch lands
-    // 45 ms later, as a latch does.
-    function feltLatch(S, t, p, from, to) {
-        S.noise({ t: t, color: 'pink', lp: 600 * p.lp, d: 0.012, db: -14 + p.off });
-        S.tone({ t: t, f: S.note(from), to: S.note(to), glide: 0.06, a: 0.003, d: 0.12, db: -21 + p.off,
-            lp: 600 * p.lp, partials: [[1, 1, 1], [2, 0.25, 0.5]] });
-        S.noise({ t: t + 0.045, color: 'pink', lp: 500 * p.lp, d: 0.008, db: -22 + p.off });
-    }
-
-    function feltSet(p) {
-        var E = {};
-        E.press = function (S, t) {
-            feltTouch(S, t, p, { ndb: -14, f: 'E4', to: 'G3', glide: 0.028, d: 0.05, db: -21 });
-        };
-        // The release rises as the control springs back up.
-        E.release = function (S, t) {
-            feltTouch(S, t, p, { ndb: -21, f: 'G4', to: 'A4', glide: 0.02, d: 0.03, db: -27 });
-        };
-        E.select = function (S, t) { E.press(S, t); E.release(S, t + 0.095); };
-        E.pick = function (S, t) {
-            feltTouch(S, t, p, { ndb: -18, f: 'C4', to: 'G4', glide: 0.045, d: 0.06, db: -23 });
-        };
-        E.drop = function (S, t) {
-            feltTouch(S, t, p, { ndb: -16, f: 'E4', to: 'G3', glide: 0.05, d: 0.09, db: -22 });
-        };
-        // Something lasting worked (copied, sent, booked): one soft note.
-        E.success = function (S, t) { feltNote(S, t, p, 'A4', -24, 0.3); };
-        E.themeDark = function (S, t) { feltLatch(S, t, p, 'E3', 'A2'); };
-        E.themeLight = function (S, t) { feltLatch(S, t, p, 'A2', 'E3'); };
-        return E;
-    }
-
-    function feltBed(S, t) {
-        return S.pad({ t: t, db: -32, type: 'triangle', lp: 700,
+    function clayBed(S, t) {
+        return S.pad({ t: t, db: -30, type: 'triangle', lp: 900,
             voices: [['A3', 0.5, 0.051], ['E4', 0.35, 0.067], ['A4', 0.22, 0.083]],
-            noise: { color: 'pink', lp: 500, level: 0.2 } });
+            noise: { color: 'pink', lp: 650, level: 0.25 } });
+    }
+
+    /* ---- Palette B, Glass: the dark theme ----------------------------- */
+    // Clear and wet. A drop pressing in on press, a bubble letting go on
+    // release, small glass bells for states.
+
+    function glassBell(S, t, f, lvl, d) {
+        // Small glass bar: inharmonic partials 1, 2.76, 5.40, the upper ones die first.
+        return S.tone({ t: t, f: f, a: 0.0015, d: d, db: lvl, lp: 6000,
+            partials: [[1, 1, 1], [2.76, 0.35, 0.35], [5.40, 0.12, 0.15]] });
+    }
+
+    var GLASS = {};
+    GLASS.press = function (S, t) {
+        // A drop pressing in: pitch falls fast.
+        S.tone({ t: t, f: 1150, to: 620, glide: 0.02, a: 0.0015, d: 0.045, db: -20, lp: 5000 });
+        S.noise({ t: t, hp: 5000, d: 0.003, db: -30 });
+    };
+    GLASS.release = function (S, t) {
+        // A bubble letting go: pitch rises, like a real bubble.
+        S.tone({ t: t, f: 680, to: 1250, glide: 0.025, a: 0.0015, d: 0.04, db: -26, lp: 5000 });
+    };
+    GLASS.select = function (S, t) { GLASS.press(S, t); GLASS.release(S, t + 0.09); };
+    GLASS.hover = function (S, t) { glassBell(S, t, S.note('C6'), -36, 0.04); };
+    GLASS.tick = function (S, t) { glassBell(S, t, S.note('G5'), -30, 0.06); };
+    GLASS.pick = function (S, t) {
+        S.tone({ t: t, f: 480, to: 1100, glide: 0.035, a: 0.002, d: 0.07, db: -22, lp: 5000 });
+    };
+    GLASS.drop = function (S, t) {
+        S.tone({ t: t, f: 1000, to: 330, glide: 0.04, a: 0.0015, d: 0.09, db: -21, lp: 4000 });
+        S.noise({ t: t + 0.01, lp: 1500, d: 0.02, db: -26 });
+    };
+    GLASS.success = function (S, t) {
+        glassBell(S, t, S.note('C5'), -21, 0.55);
+        glassBell(S, t + 0.08, S.note('G5'), -23, 0.7);
+    };
+    GLASS.themeDark = function (S, t) {
+        // Pouring down into the glass: three bells falling, a swish under them.
+        glassBell(S, t, S.note('G5'), -24, 0.5);
+        glassBell(S, t + 0.07, S.note('E5'), -24, 0.5);
+        glassBell(S, t + 0.14, S.note('C5'), -23, 0.55);
+        S.noise({ t: t, bp: 3500, q: 1.2, sweep: { on: 'bp', to: 900, dur: 0.3 }, a: 0.03, d: 0.3, db: -24 });
+    };
+    GLASS.themeLight = function (S, t) {
+        glassBell(S, t, S.note('C5'), -24, 0.45);
+        glassBell(S, t + 0.07, S.note('E5'), -24, 0.45);
+        glassBell(S, t + 0.14, S.note('G5'), -24, 0.55);
+        S.noise({ t: t, bp: 900, q: 1.2, sweep: { on: 'bp', to: 3500, dur: 0.3 }, a: 0.05, d: 0.28, db: -24 });
+    };
+    GLASS.stepDown = function (S, t, o) { glassBell(S, t, S.note(S.SCALE[o.i || 0]) * 2, -24, 0.28); };
+    GLASS.stepUp = function (S, t, o) { glassBell(S, t, S.note(S.SCALE[o.i || 0]) * 2, -26, 0.22); };
+    GLASS.stepperEnter = function (S, t) {
+        S.tone({ t: t, f: 400, to: 900, glide: 0.05, a: 0.002, d: 0.09, db: -24, lp: 5000 });
+        glassBell(S, t + 0.06, S.note('A5'), -26, 0.4);
+    };
+    GLASS.stepperExit = function (S, t) {
+        glassBell(S, t, S.note('A5'), -26, 0.3);
+        S.tone({ t: t + 0.05, f: 900, to: 300, glide: 0.05, a: 0.002, d: 0.1, db: -24, lp: 4000 });
+    };
+    GLASS.riser = function (S, t) {
+        S.noise({ t: t, bp: 800, q: 2.2, sweep: { on: 'bp', to: 4000, dur: 0.38 }, a: 0.24, d: 0.18, db: -15 });
+    };
+    GLASS.motif = function (S, t, o) {
+        var pair = S.MOTIFS[o.name] || S.MOTIFS.generic;
+        glassBell(S, t, S.note(pair[0]) * 2, -26, 0.6);
+        glassBell(S, t + 0.17, S.note(pair[1]) * 2, -26, 0.7);
+    };
+
+    function glassBed(S, t) {
+        return S.pad({ t: t, db: -34, type: 'sine', lp: 3000,
+            voices: [['A4', 0.5, 0.06], ['E5', 0.3, 0.083], ['A5', 0.15, 0.1]],
+            noise: { color: 'white', hp: 2500, lp: 6000, level: 0.04 } });
     }
 
     var PALETTES = {
-        felt: { events: feltSet({ lp: 1, off: -2 }), bed: feltBed },
-        feltNight: { events: feltSet({ lp: 0.7, off: -4 }), bed: feltBed }
+        clay: { events: CLAY, bed: clayBed },
+        glass: { events: GLASS, bed: glassBed }
     };
 
     /* ---- Manager ------------------------------------------------------ */
@@ -431,6 +490,7 @@
         constructor() {
             this.audioContext = null;
             this.masterGain = null;
+            this.motifGain = null;
             this.limiter = null;
             this.isEnabled = true;
             this.isMuted = false;
@@ -451,12 +511,11 @@
             this.wasBedPlaying = false;
             this.bedToken = null;
 
-            // Recordings, one per palette and event (D-128).
-            this.baked = {};
-            this.baking = {};
-            this.bakeQueue = [];
-            this.bakeTimer = null;
-            this.bakeFailed = false;
+            // Motif throttling
+            this.lastMotifAt = 0;
+            this.lastMotifPerSection = {};
+            this.motifCooldownMs = 8000;
+            this.motifGlobalMs = 1200;
 
             // Hero stepper position, for callers that do not pass one.
             this.stepIndex = 0;
@@ -493,7 +552,7 @@
                 window.dispatchEvent(new CustomEvent('soundchange', {
                     detail: this.getPrefs()
                 }));
-            } catch { /* noop */ }
+            } catch (e) { /* noop */ }
         }
 
         setMasterEnabled(on) {
@@ -501,7 +560,6 @@
             this.isMuted = !this.prefs.master;
             if (this.prefs.master === false) {
                 this.stopBed(true);
-                this.stopBaking();
             }
             savePrefs(this.prefs);
             this.emitChange();
@@ -509,7 +567,6 @@
                 this.init();
                 this.warmup();
                 this.resumeContext();
-                this.bakeAll();
                 if (this.prefs.bed) {
                     this.startBed();
                 }
@@ -557,7 +614,7 @@
                         0.05
                     );
                 }
-            } catch { /* noop */ }
+            } catch (e) { /* noop */ }
         }
 
         /**
@@ -566,6 +623,11 @@
         bus() {
             if (this.masterGain && this.audioContext) return this.masterGain;
             return this.audioContext ? this.audioContext.destination : null;
+        }
+
+        motifBus() {
+            if (this.motifGain && this.audioContext) return this.motifGain;
+            return this.bus();
         }
 
         /**
@@ -578,23 +640,23 @@
                 var tm = window.themeManager;
                 var pref = tm ? tm.userPreference : null;
                 if (pref === 'light' || pref === 'dark') return pref;
-            } catch { /* fall through */ }
+            } catch (e) { /* fall through */ }
             try {
                 var attr = document.documentElement.getAttribute('data-theme');
                 if (attr === 'light' || attr === 'dark') return attr;
-            } catch { /* fall through */ }
+            } catch (e) { /* fall through */ }
             try {
                 return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            } catch {
+            } catch (e) {
                 return 'light';
             }
         }
 
         /**
-         * Palette for the current theme: felt in light, the softer felt at night.
+         * Palette for the current theme: clay in light, glass in dark.
          */
         getPalette() {
-            return THEME_PALETTE[this.currentTheme()] || 'felt';
+            return THEME_PALETTE[this.currentTheme()] || 'clay';
         }
 
         /**
@@ -614,7 +676,7 @@
                 var ctx;
                 try {
                     ctx = new AudioContext({ latencyHint: 'interactive' });
-                } catch {
+                } catch (e) {
                     ctx = new AudioContext();
                 }
                 this.audioContext = ctx;
@@ -635,8 +697,12 @@
                     lim.connect(ctx.destination);
                     this.limiter = lim;
                     out = lim;
-                } catch { /* plays without the limiter */ }
+                } catch (e) { /* plays without the limiter */ }
                 this.masterGain.connect(out);
+
+                this.motifGain = ctx.createGain();
+                this.motifGain.gain.value = 1.0;
+                this.motifGain.connect(this.masterGain);
 
                 this.initialized = true;
                 this.resumeContext();
@@ -655,7 +721,7 @@
                     p.then(noop, noop);
                     return p;
                 }
-            } catch { /* noop */ }
+            } catch (e) { /* noop */ }
             return null;
         }
 
@@ -669,6 +735,7 @@
             if (!this.initialized) this.init();
             const ctx = this.audioContext;
             if (!ctx) return;
+            try { noiseFor(ctx); } catch (e) { /* made on first play instead */ }
             if (ctx.state !== 'running') return;
 
             const now = ctx.currentTime;
@@ -721,7 +788,7 @@
             const ctx = this.audioContext;
             if (!ctx) return false;
             if (ctx.state === 'running') {
-                try { fn(ctx); } catch { /* a voice never breaks the page */ }
+                try { fn(ctx); } catch (e) { /* a voice never breaks the page */ }
                 return true;
             }
             if (ctx.state === 'closed') return false;
@@ -729,141 +796,42 @@
             const go = function () {
                 if (fresh && Date.now() - asked > STALE_MS) return;
                 if (ctx.state !== 'running') return;
-                try { fn(ctx); } catch { /* noop */ }
+                try { fn(ctx); } catch (e) { /* noop */ }
             };
             try {
                 const p = ctx.resume();
                 if (p && typeof p.then === 'function') p.then(go, noop);
                 else go();
-            } catch {
+            } catch (e) {
                 return false;
             }
             return true;
         }
 
         /**
-         * Render one event once into a buffer, off the main thread, for
-         * replay. A context-free or failed render leaves the live path.
+         * Play one event from the current theme's palette.
+         * Returns false when it cannot play (muted, unknown, no audio).
          */
-        bake(paletteName, name) {
-            var key = paletteName + '|' + name;
-            if (this.bakeFailed || this.baked[key] || this.baking[key]) return false;
-            var Off = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-            var palette = PALETTES[paletteName];
-            var recipe = palette && palette.events[name];
-            if (!Off || typeof recipe !== 'function') return false;
-            var self = this;
-            try {
-                var octx = new Off(1, Math.ceil(BAKE_RATE * (BAKE_LEN[name] || 0.5)), BAKE_RATE);
-                var bus = octx.createGain();
-                bus.connect(octx.destination);
-                recipe(kit(octx, bus, false), 0, {});
-                this.baking[key] = true;
-                var done = function (buf) {
-                    delete self.baking[key];
-                    if (buf) self.baked[key] = buf;
-                };
-                // One failed recording stops further tries: the live path
-                // keeps playing, and no tap pays for a doomed render.
-                var fail = function () { delete self.baking[key]; self.bakeFailed = true; };
-                var pr = octx.startRendering();
-                if (pr && typeof pr.then === 'function') pr.then(done, fail);
-                else octx.oncomplete = function (e) { done(e && e.renderedBuffer); };
-                return true;
-            } catch {
-                delete this.baking[key];
-                this.bakeFailed = true;
-                return false;
-            }
-        }
-
-        /**
-         * Queue a recording of every voiced event in both palettes, one
-         * per idle moment, so switching sound on never blocks a frame.
-         */
-        bakeAll() {
-            if (this.bakeFailed || this.bakeQueue.length) return;
-            var self = this;
-            Object.keys(PALETTES).forEach(function (pal) {
-                Object.keys(PALETTES[pal].events).forEach(function (name) {
-                    if (!self.baked[pal + '|' + name]) self.bakeQueue.push([pal, name]);
-                });
-            });
-            this.bakeNext();
-        }
-
-        /** Sound switched off: drop the queue and cancel the next job. */
-        stopBaking() {
-            this.bakeQueue = [];
-            if (this.bakeTimer) {
-                try {
-                    if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(this.bakeTimer);
-                    clearTimeout(this.bakeTimer);
-                } catch { /* noop */ }
-                this.bakeTimer = null;
-            }
-        }
-
-        bakeNext() {
-            if (this.bakeTimer || !this.bakeQueue.length) return;
-            var self = this;
-            var step = function () {
-                self.bakeTimer = null;
-                var job = self.bakeQueue.shift();
-                if (job) self.bake(job[0], job[1]);
-                self.bakeNext();
-            };
-            if (typeof window.requestIdleCallback === 'function') {
-                this.bakeTimer = window.requestIdleCallback(step, { timeout: 500 });
-            } else {
-                this.bakeTimer = setTimeout(step, 30);
-            }
-        }
-
-        /**
-         * Play one event from the current theme's palette: its recording
-         * when ready, else live from the same recipe while the recording
-         * is made. Returns false when it cannot play (muted, silent
-         * event, no audio). pan is -1 to 1, applied only to recordings.
-         */
-        play(name, opts, pan) {
+        play(name, opts, busName) {
             if (!this.canPlay()) return false;
-            const paletteName = this.getPalette();
-            const palette = PALETTES[paletteName];
+            const palette = PALETTES[this.getPalette()];
             const recipe = palette && palette.events[name];
             if (typeof recipe !== 'function') return false;
             const options = opts || {};
             const self = this;
-            const key = paletteName + '|' + name;
             return this.whenRunning(function (ctx) {
                 if (!self.canPlay()) return;
-                let into = self.bus();
-                if (typeof pan === 'number' && pan && typeof ctx.createStereoPanner === 'function') {
-                    const pn = ctx.createStereoPanner();
-                    pn.pan.value = Math.max(-1, Math.min(1, pan));
-                    pn.connect(into);
-                    into = pn;
-                }
-                const buf = self.baked[key];
-                if (buf) {
-                    const src = ctx.createBufferSource();
-                    src.buffer = buf;
-                    src.connect(into);
-                    src.start(ctx.currentTime + 0.003);
-                    return;
-                }
                 const voiceBus = ctx.createGain();
-                voiceBus.connect(into);
-                recipe(kit(ctx, voiceBus, false), ctx.currentTime + 0.003, options);
-                self.bakeAll();
+                voiceBus.connect(busName === 'motif' ? self.motifBus() : self.bus());
+                recipe(kit(ctx, voiceBus, true), ctx.currentTime + 0.003, options);
             }, true);
         }
 
-        /** Pointer down on a pressable control; pan leans it to the tap (D-141). */
-        playPressSound(pan) { return this.play('press', null, pan); }
+        /** Pointer down on a pressable control. */
+        playPressSound() { return this.play('press'); }
 
         /** Let go of a pressable control, as it springs back. */
-        playReleaseSound(pan) { return this.play('release', null, pan); }
+        playReleaseSound() { return this.play('release'); }
 
         /**
          * A choice with no press of its own: press then release. Skipped
@@ -874,28 +842,17 @@
             return this.play('select');
         }
 
-        /** Pointer enters. Silent: hover is not a decision (D-146). */
+        /** Pointer enters. */
         playHoverSound() { return this.play('hover'); }
 
-        /** A card, sheet or row changes. Silent: passing, not doing. */
+        /** A card, sheet or row changes. */
         playTickSound() { return this.play('tick'); }
 
-        /**
-         * Something picked up. Marks the gesture, so the click that a drag
-         * ends in does not voice a select on top of it.
-         */
-        playPickSound() {
-            var ok = this.play('pick');
-            if (ok !== false) this.lastGestureAt = Date.now();
-            return ok;
-        }
+        /** Something picked up. */
+        playPickSound() { return this.play('pick'); }
 
-        /** Something dropped or reset; also marks the gesture. */
-        playDropSound() {
-            var ok = this.play('drop');
-            if (ok !== false) this.lastGestureAt = Date.now();
-            return ok;
-        }
+        /** Something dropped or reset. */
+        playDropSound() { return this.play('drop'); }
 
         /** Copied, booked, switched on. */
         playSuccessSound() { return this.play('success'); }
@@ -1010,7 +967,7 @@
             if (!nodes || !this.audioContext) return;
             try {
                 nodes.handle.stop(this.audioContext.currentTime, immediate === true);
-            } catch { /* noop */ }
+            } catch (e) { /* noop */ }
         }
 
         /**
@@ -1038,15 +995,29 @@
                     this.audioContext.currentTime,
                     0.6
                 );
-            } catch { /* noop */ }
+            } catch (e) { /* noop */ }
         }
 
         /**
-         * Section arrive and leave are silent; motion carries them (D-146).
-         * Kept for older callers.
+         * Two note motif per section, from the current palette. Throttled
+         * per section and globally. Master plus motifs prefs must both be
+         * on. Silent under reduced motion.
          */
-        playMotif() {
-            return false;
+        playMotif(name) {
+            if (!this.canPlay()) return false;
+            if (this.prefs.motifs === false) return false;
+            if (this.prefersReducedMotion()) return false;
+
+            var key = MOTIFS[name] ? name : 'generic';
+            var nowMs = Date.now();
+            if (nowMs - this.lastMotifAt < this.motifGlobalMs) return false;
+            var lastForSection = this.lastMotifPerSection[key] || 0;
+            if (nowMs - lastForSection < this.motifCooldownMs) return false;
+
+            if (!this.play('motif', { name: key }, 'motif')) return false;
+            this.lastMotifAt = nowMs;
+            this.lastMotifPerSection[key] = nowMs;
+            return true;
         }
 
         /**
@@ -1070,7 +1041,7 @@
         prefersReducedMotion() {
             try {
                 return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            } catch {
+            } catch (e) {
                 return false;
             }
         }
@@ -1082,7 +1053,7 @@
     // A theme flip moves the bed to the other palette. Voices pick their
     // palette when they play, so they follow on their own.
     window.addEventListener('themechange', function () {
-        try { window.SoundManager.onThemeChange(); } catch { /* noop */ }
+        try { window.SoundManager.onThemeChange(); } catch (e) { /* noop */ }
     });
 
     // Pause the bed when the tab hides, resume on return only if
@@ -1098,13 +1069,13 @@
                     try {
                         var s = sm.audioContext.suspend();
                         if (s && s.then) s.then(noop, noop);
-                    } catch { /* noop */ }
+                    } catch (e) { /* noop */ }
                 }
             } else if (sm.wasBedPlaying && sm.prefs.master && sm.prefs.bed) {
                 sm.resumeContext();
                 sm.wasBedPlaying = false;
             }
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
     });
 
     // Explicit opt in only. No eager warmup while master is off, so
@@ -1116,9 +1087,8 @@
             if (sm && sm.prefs.master) {
                 sm.init();
                 sm.warmup();
-                sm.bakeAll();
             }
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
     };
 
     document.addEventListener('mousemove', primeOnGesture, { once: true, passive: true });
@@ -1130,36 +1100,23 @@
             if (sm && sm.prefs.master && !sm.initialized) {
                 sm.init();
                 sm.warmup();
-                sm.bakeAll();
             }
-        } catch { /* noop */ }
+        } catch (e) { /* noop */ }
     }, { once: true });
 
     // Press feedback on .btn and .pill-btn: the press sound lands on
     // pointer down with the squash, the release sound on let go as the
-    // control springs back. Delegated, throttled, gated on master.
-    // Never blocks the tap.
+    // control springs back. Delegated, throttled, gated on master,
+    // skipped under reduced motion. Never blocks the tap.
     (function wirePressSounds() {
         var lastPress = 0;
         var held = null;
 
-        // Presses answer under reduced motion too: a silent press feels
-        // broken (D-138). Only the master switch gates them.
         function ready() {
             var sm = window.SoundManager;
             if (!sm || !sm.prefs.master) return null;
+            if (sm.prefersReducedMotion()) return null;
             return sm;
-        }
-
-        // Gentle left-right lean from where the tap landed (D-141).
-        function panAt(event) {
-            try {
-                var w = window.innerWidth || 0;
-                if (!w || typeof event.clientX !== 'number') return 0;
-                return Math.max(-1, Math.min(1, (event.clientX / w) * 2 - 1)) * 0.3;
-            } catch {
-                return 0;
-            }
         }
 
         document.addEventListener('pointerdown', function (event) {
@@ -1173,22 +1130,20 @@
                 if (!target || target.disabled) return;
                 var now = Date.now();
                 if (now - lastPress < 120) return;
-                var pan = panAt(event);
-                if (sm.playPressSound(pan) === false) return;
+                if (sm.playPressSound() === false) return;
                 lastPress = now;
-                held = { id: event.pointerId, pan: pan };
-            } catch { /* press stays silent */ }
+                held = { id: event.pointerId };
+            } catch (ignore) { /* press stays silent */ }
         }, { passive: true });
 
         document.addEventListener('pointerup', function (event) {
             try {
                 if (!held || held.id !== event.pointerId) return;
-                var pan = held.pan;
                 held = null;
                 var sm = ready();
                 if (!sm) return;
-                if (sm.playReleaseSound(pan) !== false) sm.lastGestureAt = Date.now();
-            } catch { /* release stays silent */ }
+                if (sm.playReleaseSound() !== false) sm.lastGestureAt = Date.now();
+            } catch (ignore) { /* release stays silent */ }
         }, { passive: true });
 
         document.addEventListener('pointercancel', function (event) {

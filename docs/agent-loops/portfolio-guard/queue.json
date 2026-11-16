@@ -1,0 +1,117 @@
+{
+ "loop": "portfolio-guard",
+ "finish_line": "Guard only: the existing test suite passes on the box; security headers stay in parity between scripts/security-headers.js, render.yaml and _headers (tests/security-headers.test.mjs); every page in pages/ has its dist/<slug>/index.html; no internal link, anchor or asset in the built site is broken (a link test exists and has a negative control); no inline script or on*= handler exists; the em dash, emoji and locked hero bookend rules are enforced by tests. No taste or design change of any kind.",
+ "units": [
+  {
+   "id": "G00",
+   "title": "Baseline: run bun run test on the box and record the real node --test verdict lines (tests/ has 10 files; services/api/test too); record bun run build and bun run validate verdicts",
+   "status": "todo",
+   "priority": 1,
+   "source": "AGENTS.md:68-73; package.json scripts test, build, validate",
+   "notes": "Report anything that fails as a finding; do not weaken a test.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G01",
+   "title": "Security headers parity: scripts/security-headers.js versus render.yaml versus _headers; confirm tests/security-headers.test.mjs passes and add a negative control (a planted header drift turns it red)",
+   "status": "todo",
+   "priority": 2,
+   "source": "AGENTS.md:69; tests/security-headers.test.mjs:61-63",
+   "notes": "A header change itself is protected: report, do not edit.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G02",
+   "title": "Broken-link test: a new tests/links.test.mjs that walks dist/ and fails on any internal href, src, anchor or asset that does not resolve (the only link test today covers llms.txt). Internal only, no network. Negative control with a planted dead link in a fixture",
+   "status": "todo",
+   "priority": 2,
+   "source": "tests/artifacts.test.mjs:38 (the only link check); AGENTS.md:68",
+   "notes": "External links are listed in the report, never fetched.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G03",
+   "title": "Fix any broken href found by G02 in pages/ or markdown/ (href text only), or report it if the fix needs a content decision",
+   "status": "todo",
+   "priority": 3,
+   "source": "AGENTS.md:68",
+   "notes": "Depends on G02.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G04",
+   "title": "Inline-script guard: no inline <script> block and no on*= handler in pages/, markdown/ or built dist (the CSP has no unsafe-inline for scripts); test with a negative control",
+   "status": "todo",
+   "priority": 4,
+   "source": "AGENTS.md:69; tests/security-headers.test.mjs:61",
+   "notes": "",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G05",
+   "title": "Page-to-dist coverage: every pages/ slug has dist/<slug>/index.html and a markdown companion; confirm tests/artifacts.test.mjs:253 and :281 pass, and add a negative control",
+   "status": "todo",
+   "priority": 4,
+   "source": "AGENTS.md:68; tests/artifacts.test.mjs:253,281",
+   "notes": "",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G06",
+   "title": "Hard-rule scans as tests: zero em dashes and zero emojis in pages/, markdown/, css/, js/ and docs (no dedicated test exists today); negative control with a planted em dash",
+   "status": "todo",
+   "priority": 5,
+   "source": "AGENTS.md:19-20",
+   "notes": "Existing em dashes in the tree are findings for Jay, not edits.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G07",
+   "title": "Locked hero bookends: a test that the homepage still opens 'LOOKING FOR JAY?' and closes 'Ahhhh, Just Jay!' (no test covers this today)",
+   "status": "todo",
+   "priority": 6,
+   "source": "AGENTS.md:21",
+   "notes": "Test only; the middle words are Jay's.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G08",
+   "title": "Theme-ramp guard: light-theme rules never use the turquoise ramp (#00b8cc) and dark-theme rules never use the blue ramp (#2196f3) outside the token definitions. Mechanical test, report-only on any hit",
+   "status": "todo",
+   "priority": 7,
+   "source": "AGENTS.md:17-18,44,54",
+   "notes": "Taste-adjacent: test and report, never recolour.",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  },
+  {
+   "id": "G09",
+   "title": "Clean-build rule: confirm scripts/validate.js fails when a source is newer than dist/build-info.json, with a negative control",
+   "status": "todo",
+   "priority": 8,
+   "source": "AGENTS.md:73",
+   "notes": "",
+   "contract": null,
+   "builds": 0,
+   "history": []
+  }
+ ],
+ "questions": []
+}

@@ -359,6 +359,38 @@ body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
     opacity: 0.8;
 }
 
+/* Reduce motion switch row (D-49): a button styled as a menu row, with its
+   state in mono on the right. */
+.dropdown-switch {
+    width: 100%;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-switch-state {
+    margin-left: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.dropdown-switch[aria-checked="true"] .dropdown-switch-state {
+    color: var(--primary-800);
+    opacity: 1;
+}
+
+html[data-theme="dark"] .dropdown-switch[aria-checked="true"] .dropdown-switch-state {
+    color: var(--theme-primary);
+}
+
 .dropdown-divider {
     height: 1px;
     margin: 6px 4px;

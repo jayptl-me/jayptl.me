@@ -37,7 +37,6 @@ function makeWindow({ width = 1280, height = 800, reduced = false } = {}) {
   window.setTimeout = setTimeout;
   window.clearTimeout = clearTimeout;
   window.fetch = async () => ({ ok: false, text: async () => '' });
-  const fakeDate = { now: () => now };
   const flush = (ms = 16, count = 1) => {
     for (let i = 0; i < count; i++) {
       now += ms;
@@ -65,7 +64,7 @@ const PROJECTS = [
   { title: 'Vini and Tini', when: '2026' }
 ];
 
-function deckHtml({ reduced = false } = {}) {
+function deckHtml() {
   const pills = PROJECTS.map((p, i) =>
     `<button type="button" class="work-deck-pill${i === 0 ? ' is-active' : ''}" data-workdeck-pill role="tab" aria-selected="${i === 0}">0${i + 1}</button>`).join('');
   const sheets = PROJECTS.map((p, i) => `
@@ -202,7 +201,7 @@ test('deck: it replaced the scroll stack on home (owner, 16 Nov)', () => {
   const html = src('index.html');
   assert.ok(!/scroll-stack/.test(html), 'the scroll stack is still on the home page');
   assert.ok(/<script defer src="\/js\/components\/overlap-deck.js"><\/script>/.test(html), 'the deck script is not loaded');
-  assert.ok(/@import 'components\/overlap-deck.css';/.test(src('css\/main.css')), 'the deck styles are not imported');
+  assert.ok(/@import 'components\/overlap-deck.css';/.test(src('css/main.css')), 'the deck styles are not imported');
   assert.ok(/id="selected-work"/.test(html), 'links to #selected-work must keep working');
 });
 
@@ -478,7 +477,7 @@ function borrowedDeckClasses(html) {
   const used = new Set();
   for (const attr of html.match(/class="[^"]*"/g) || []) {
     for (const cls of attr.slice(7, -1).split(/\s+/)) {
-      if (/^deck-/.test(cls)) used.add(cls);
+      if (cls.startsWith('deck-')) used.add(cls);
     }
   }
   return Array.from(used).sort();

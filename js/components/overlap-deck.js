@@ -81,7 +81,7 @@
             this.reducedMotion = false;
             try {
                 this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
 
             this.frame = this.frame.bind(this);
             this._onWheel = this._onWheel.bind(this);
@@ -143,7 +143,7 @@
                     if (this._motionQuery.addEventListener) this._motionQuery.addEventListener('change', this._onMotionChange);
                     else if (this._motionQuery.addListener) this._motionQuery.addListener(this._onMotionChange);
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
 
             // The deck starts at rest on sheet one: styles, not an animation.
             // Under reduced motion nothing is written at all, the CSS grid is
@@ -167,7 +167,7 @@
             this.lastTime = 0;
             try {
                 this._rafId = window.requestAnimationFrame(this.frame);
-            } catch (e) {
+            } catch {
                 this.animating = false;
             }
         }
@@ -358,7 +358,7 @@
             this.velocity = 0;
             try {
                 this.viewport.setPointerCapture(e.pointerId);
-            } catch (err) { /* noop */ }
+            } catch { /* noop */ }
             this.viewport.classList.add('is-dragging');
         }
 
@@ -387,7 +387,7 @@
             this.viewport.classList.remove('is-dragging');
             try {
                 if (e.pointerId !== undefined) this.viewport.releasePointerCapture(e.pointerId);
-            } catch (err) { /* noop */ }
+            } catch { /* noop */ }
 
             if (this.dragMoved > DRAG_CANCEL_PX) this.suppressClick = true;
 
@@ -421,7 +421,7 @@
             this.reducedMotion = e.matches;
             if (this.reducedMotion) {
                 this.animating = false;
-                try { window.cancelAnimationFrame(this._rafId); } catch (err) { /* noop */ }
+                try { window.cancelAnimationFrame(this._rafId); } catch { /* noop */ }
                 this.resetStyles();
                 this.setActive(Math.round(this.target));
             } else {
@@ -445,11 +445,11 @@
             this._destroyed = true;
             this.animating = false;
             this.dragging = false;
-            try { window.cancelAnimationFrame(this._rafId); } catch (e) { /* noop */ }
+            try { window.cancelAnimationFrame(this._rafId); } catch { /* noop */ }
             clearTimeout(this._resizeTimer);
             try {
                 if (this.observer && typeof this.observer.disconnect === 'function') this.observer.disconnect();
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this.observer = null;
             try {
                 window.removeEventListener('resize', this._onResize);
@@ -457,7 +457,7 @@
                     if (this._motionQuery.removeEventListener) this._motionQuery.removeEventListener('change', this._onMotionChange);
                     else if (this._motionQuery.removeListener) this._motionQuery.removeListener(this._onMotionChange);
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             this._motionQuery = null;
             this.root = null;
             this.viewport = null;
@@ -473,7 +473,7 @@
             if (window.overlapDeck && typeof window.overlapDeck.destroy === 'function') {
                 window.overlapDeck.destroy();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
         var root = document.getElementById('overlapDeck') || document.getElementById('selected-work-deck');
         window.overlapDeck = root ? new OverlapDeck(root) : null;
     }
@@ -481,7 +481,7 @@
     /* Re-scan hook for seamless revisits, the scroll-stack.js convention. */
     try {
         window.OverlapDeckRefresh = init;
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
@@ -491,5 +491,5 @@
 
     try {
         window.addEventListener('page:ready', init);
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
 })();

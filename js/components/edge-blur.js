@@ -21,22 +21,47 @@
     var band = null;
     var overlayWatch = null;
     var ticking = false;
+    // The footer's visibility comes from an IntersectionObserver, so a scroll
+    // frame never measures layout (perf benchmark 16 Nov: this read was the
+    // top long-frame script while scrolling home on desktop).
+    var footerWatch = null;
+    var watchedFooter = null;
+    var footerOnScreen = false;
 
     function stepperHolds() {
         var overlay = document.querySelector('.text-reveal-container');
         return Boolean(overlay && !overlay.classList.contains('released'));
     }
 
+    function watchFooter() {
+        var footer = document.querySelector('body > footer');
+        if (footer === watchedFooter) return;
+        if (footerWatch) footerWatch.disconnect();
+        footerWatch = null;
+        watchedFooter = footer;
+        footerOnScreen = false;
+        if (!footer || !('IntersectionObserver' in window)) return;
+        footerWatch = new IntersectionObserver(function (entries) {
+            footerOnScreen = entries[entries.length - 1].isIntersecting;
+            queue();
+        });
+        footerWatch.observe(footer);
+    }
+
     function update() {
         ticking = false;
         if (!band) return;
-        var doc = document.documentElement;
         // Step away once the footer is on screen, so its lines never sit
         // under the blur, or near the end on pages without one.
-        var footer = document.querySelector('body > footer');
-        var atEnd = footer
-            ? footer.getBoundingClientRect().top < window.innerHeight
-            : window.scrollY + window.innerHeight >= doc.scrollHeight - END_ZONE;
+        var atEnd;
+        if (watchedFooter && footerWatch) {
+            atEnd = footerOnScreen;
+        } else if (watchedFooter) {
+            atEnd = watchedFooter.getBoundingClientRect().top < window.innerHeight;
+        } else {
+            var doc = document.documentElement;
+            atEnd = window.scrollY + window.innerHeight >= doc.scrollHeight - END_ZONE;
+        }
         band.classList.toggle('is-away', atEnd || stepperHolds());
     }
 
@@ -74,12 +99,14 @@
         window.addEventListener('scroll', queue, { passive: true });
         window.addEventListener('resize', queue, { passive: true });
         watchOverlay();
+        watchFooter();
         update();
     }
 
     function refresh() {
         if (band && !band.isConnected) document.body.appendChild(band);
         watchOverlay();
+        watchFooter();
         queue();
     }
 

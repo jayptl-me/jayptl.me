@@ -74,11 +74,15 @@
         var rows = Math.max(1, Math.ceil(height / baseSize));
         var size = baseSize;
 
-        // If viewport has an excessive count of cells (e.g. 4K / ultrawide displays),
-        // step up size in integer multiples of the architectural 50px site grid (e.g. 100px)
-        // so every tile covers an exact 2x2 grid stride with zero subpixel shear.
-        if (cols * rows > 750) {
-            size = baseSize * 2;
+        // Keep the tile count small: step the size up in whole multiples of the
+        // architectural 50px site grid (100, 150, ...) until at most MAX_CELLS
+        // tiles remain, so every tile still covers an exact grid stride. Each
+        // tile is an animated SVG rect; 750 of them dropped a median 78 frames
+        // per page change (perf benchmark 16 Nov). Owner's pick: "Lighter page
+        // change", fewer and larger squares.
+        var MAX_CELLS = 300;
+        for (var step = 2; cols * rows > MAX_CELLS && step <= 20; step++) {
+            size = baseSize * step;
             cols = Math.max(1, Math.ceil(width / size));
             rows = Math.max(1, Math.ceil(height / size));
         }
@@ -259,7 +263,10 @@
         dissolve: function (element, options) {
             var opts = Object.assign({}, options, { mode: 'dissolve' });
             return animateClip(element, opts);
-        }
+        },
+
+        /** The tile grid for a box (used by tests to hold the tile budget). */
+        buildGrid: buildGrid
     };
 
     root.PixelSwap = PixelSwap;

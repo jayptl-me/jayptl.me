@@ -110,7 +110,7 @@ function lookViolations(html) {
   if (/mask|clip-path|\btop\s*[:]|transition:[^;}]*\b(top|left|height|width)\b/.test(css.replace(/top:100%/, ''))) {
     v.push('the exit animates something other than transform and opacity');
   }
-  if (!/html\.pl-rm \.pl-sig,html\.pl-rm \.pl-dot\{animation:none;stroke-dashoffset:0\}/.test(css)) v.push('reduced motion does not show the static mark');
+  if (!/html\.pl-rm \.pl-sig\{animation:none;stroke-dashoffset:0\}/.test(css)) v.push('reduced motion does not show the static mark');
   // The CSS failsafe must free both the paper and the scroll lock, and only after the
   // script's own hard ceiling (8 s) plus the minimum and the lift have had their time.
   const fs1 = /\.pl\{[^}]*animation:pl-fs 1ms (\d+(?:\.\d+)?)s forwards/.exec(css);
@@ -531,4 +531,17 @@ test('router, negative control: appending page CSS to the head puts it before ma
   assert.ok(ROUTER.includes(insert));
   const old = ROUTER.replace(insert, '(document.head || document.documentElement).appendChild(link);');
   assert.notDeepEqual(routerOrder(old), ['head-style', '/css/main.css', 'crit', '/css/pages/about.css', '/css/pages/extra.css']);
+});
+
+// Jay, 16 Nov 2026 (D-194): "Remove the top dot only". The signature had two
+// marks: the j dot tapped on at the top and the pen dot where the line ends.
+// The top one goes; the end dot, "perfect", stays.
+test('preloader signature: no top dot, the end dot stays', () => {
+  assert.ok(!/class="pl-dot"/.test(HOME), 'the top j dot is still drawn');
+  assert.ok(!/\.pl-dot\b/.test(HOME), 'a .pl-dot style is left behind');
+  assert.ok(/<circle class="pl-pen" cx="176" cy="84"/.test(HOME), 'the end dot is gone');
+});
+
+test('preloader signature, negative control: a page with the top dot is caught', () => {
+  assert.ok(/class="pl-dot"/.test('<path class="pl-dot" d="M0 0"/>'));
 });

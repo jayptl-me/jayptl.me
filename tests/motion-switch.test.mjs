@@ -19,7 +19,26 @@ const has = (css, s) => css.replace(/\s+/g, ' ').includes(s.replace(/\s+/g, ' ')
 test('motion css: a reduce rule is copied under the switch, same specificity', () => {
   const out = addMotionSwitch('@media (prefers-reduced-motion: reduce) { .a, .b:hover { animation: none; } }');
   assert.ok(has(out, '@media (prefers-reduced-motion: reduce)'), 'original block kept');
-  assert.ok(has(out, `${ON} .a, ${ON} .b:hover { animation: none; }`), out);
+  assert.ok(has(out, `${ON} .a, ${ON}.a, ${ON} .b:hover, ${ON}.b:hover { animation: none; }`), out);
+});
+
+test('motion css: a class that lives on <html> (.js) still matches, switch off and on', () => {
+  const off = addMotionSwitch('@media (prefers-reduced-motion: no-preference) { .js .doodle-draw path { transition: none; } }');
+  assert.ok(has(off, `${OFF}.js .doodle-draw path`), off);
+  const on = addMotionSwitch('@media (prefers-reduced-motion: reduce) { .js [data-split] .w { transition-delay: 0s; } }');
+  assert.ok(has(on, `${ON}.js [data-split] .w`), on);
+});
+
+test('motion css: a type selector is never glued to the root', () => {
+  const out = addMotionSwitch('@media (prefers-reduced-motion: reduce) { body .a { animation: none; } }');
+  assert.ok(has(out, `${ON} body .a {`) && !out.includes(`${ON}body`), out);
+});
+
+test('motion css: unsafe query shapes stop the build', () => {
+  assert.throws(() => addMotionSwitch('@media (prefers-reduced-motion: reduce) and (min-width: 600px) { .a { x: 1; } }'), /unsupported query/);
+  assert.throws(() => addMotionSwitch('@media not (prefers-reduced-motion: reduce) { .a { x: 1; } }'), /unsupported query/);
+  assert.throws(() => addMotionSwitch('@media (prefers-reduced-motion) { .a { x: 1; } }'), /unsupported query/);
+  assert.throws(() => addMotionSwitch('@media (prefers-reduced-motion: reduce) { @supports (x: y) { .a { x: 1; } } }'), /cannot be copied/);
 });
 
 test('motion css: html and :root selectors get the switch on themselves', () => {
@@ -36,18 +55,18 @@ test('motion css: pseudo-elements of the root keep working', () => {
 
 test('motion css: motion-only rules stop when the switch is on', () => {
   const out = addMotionSwitch('@media (prefers-reduced-motion: no-preference) { .a { transition: transform 1s; } }');
-  assert.ok(has(out, `@media (prefers-reduced-motion: no-preference) { ${OFF} .a { transition: transform 1s; } }`), out);
+  assert.ok(has(out, `@media (prefers-reduced-motion: no-preference) { ${OFF} .a, ${OFF}.a { transition: transform 1s; } }`), out);
 });
 
 test('motion css: an OR query with reduce is copied too', () => {
   const out = addMotionSwitch('@media (prefers-reduced-motion: reduce), (prefers-contrast: more) { .s { scroll-behavior: auto; } }');
-  assert.ok(has(out, `${ON} .s { scroll-behavior: auto; }`), out);
+  assert.ok(has(out, `${ON} .s, ${ON}.s { scroll-behavior: auto; }`), out);
 });
 
-test('motion css: keyframes inside a block are not prefixed', () => {
-  const out = addMotionSwitch('@media (prefers-reduced-motion: reduce) { @keyframes k { from { opacity: 0; } to { opacity: 1; } } .a { animation: k 1s; } }');
+test('motion css: keyframes inside a motion-only block are not prefixed', () => {
+  const out = addMotionSwitch('@media (prefers-reduced-motion: no-preference) { .a { animation: k 1s; } @keyframes k { from { opacity: 0; } to { opacity: 1; } } }');
   assert.ok(!/:where\([^)]*\)\s*(from|to)\b/.test(out), out);
-  assert.ok(has(out, `${ON} .a { animation: k 1s; }`), out);
+  assert.ok(has(out, `${OFF} .a, ${OFF}.a { animation: k 1s; }`), out);
 });
 
 test('motion css: other css is untouched', () => {
@@ -82,19 +101,38 @@ function run(script, { stored = null, deviceReduce = false } = {}) {
     classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c), contains: (c) => classes.has(c) }
   };
   const doc = { documentElement: el, cookie: '', addEventListener() {}, querySelector: () => null, getElementById: () => null };
+  const winListeners = new Map();
+  const on = (map, t, f) => { if (!map.has(t)) map.set(t, new Set()); map.get(t).add(f); };
   const win = {
-    matchMedia: (q) => ({ matches: /reduced-motion:\s*reduce/.test(q) ? deviceReduce : /no-preference/.test(q) ? !deviceReduce : false, media: q }),
+    matchMedia: (q) => {
+      const l = new Map();
+      return {
+        matches: /reduced-motion:\s*reduce/.test(q) ? deviceReduce : /no-preference/.test(q) ? !deviceReduce : false, media: q,
+        addEventListener: (t, f) => on(l, t, f), removeEventListener: (t, f) => l.get(t)?.delete(f)
+      };
+    },
     localStorage: store(local), sessionStorage: store(new Map([['jayptl-preloaded', '1']])),
-    setTimeout() {}, requestAnimationFrame() {}, performance: { now: () => 0 }, addEventListener() {}, dispatchEvent() {}
+    setTimeout() {}, requestAnimationFrame() {}, performance: { now: () => 0 },
+    addEventListener: (t, f) => on(winListeners, t, f), removeEventListener: (t, f) => winListeners.get(t)?.delete(f),
+    dispatchEvent: (e) => { (winListeners.get(e.type) || []).forEach((f) => f(e)); return true; }
   };
   win.window = win; win.document = doc;
   vm.runInNewContext(script, win);
+  const set = (v) => { if (v) el.setAttribute('data-motion', 'reduce'); else el.removeAttribute('data-motion'); win.dispatchEvent({ type: 'motion:change' }); };
   return {
     attr: attrs['data-motion'] || null,
     reduce: win.matchMedia('(prefers-reduced-motion: reduce)').matches,
     noPref: win.matchMedia('(prefers-reduced-motion: no-preference)').matches,
     dark: win.matchMedia('(prefers-color-scheme: dark)').matches,
-    flip: (on) => { if (on) el.setAttribute('data-motion', 'reduce'); else el.removeAttribute('data-motion'); return [win.matchMedia('(prefers-reduced-motion: reduce)').matches, win.matchMedia('(prefers-reduced-motion: no-preference)').matches]; }
+    flip: (v) => { set(v); return [win.matchMedia('(prefers-reduced-motion: reduce)').matches, win.matchMedia('(prefers-reduced-motion: no-preference)').matches]; },
+    held: () => {
+      const list = win.matchMedia('(prefers-reduced-motion: reduce)');
+      const heard = [];
+      const fn = (e) => heard.push(e.matches);
+      list.addEventListener('change', fn);
+      return { list, heard, set, stop: () => list.removeEventListener('change', fn) };
+    },
+    native: !!(win.matchMedia.native)
   };
 }
 
@@ -122,6 +160,25 @@ test('motion runtime: flipping the switch on a live page changes the answer', ()
     assert.deepEqual(r.flip(true), [true, false]);
     assert.deepEqual(r.flip(false), [false, true]);
   }
+});
+
+test('motion runtime: a list held since load updates and hears the switch both ways', () => {
+  for (const s of [THEME, HOME_INLINE]) {
+    const h = run(s, {}).held();
+    assert.ok(h.list.matches === false);
+    h.set(true);
+    assert.ok(h.list.matches === true, 'held list did not update on');
+    h.set(false);
+    assert.ok(h.list.matches === false, 'held list did not update off');
+    assert.deepEqual(h.heard, [true, false]);
+    h.stop();
+    h.set(true);
+    assert.deepEqual(h.heard, [true, false], 'removed listener still called');
+  }
+});
+
+test('motion runtime: the native matchMedia stays reachable for the device check', () => {
+  for (const s of [THEME, HOME_INLINE]) assert.ok(run(s, {}).native);
 });
 
 test('motion runtime: the home inline script and theme-detection.js agree in every case', () => {

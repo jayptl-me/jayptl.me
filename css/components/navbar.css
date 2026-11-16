@@ -1057,7 +1057,18 @@ html[data-theme="light"] .nav-toggle:hover {
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(3) { opacity: 1; transform: translateY(0); --stagger-delay: 240ms; }
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(4) { opacity: 1; transform: translateY(0); --stagger-delay: 260ms; }
 .glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(5) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
-.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(6) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
+.glass-nav.open .mobile-social-row .mobile-social-pill:nth-child(n+6) { opacity: 1; transform: translateY(0); --stagger-delay: 280ms; }
+
+/* Reduce motion pill (D-49): the pressed look shows the switch is on. */
+.mobile-social-pill[role="switch"][aria-checked="true"] {
+    border-color: var(--primary-800);
+    color: var(--primary-800);
+}
+
+html[data-theme="dark"] .mobile-social-pill[role="switch"][aria-checked="true"] {
+    border-color: var(--theme-primary);
+    color: var(--theme-primary);
+}
 
 /* Grid of Cards */
 .mobile-grid {

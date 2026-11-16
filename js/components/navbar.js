@@ -601,7 +601,7 @@
     const ddState = new Map();
     let scrollAnchor = null;
 
-    const menuLinks = (dd) => Array.from(dd.querySelectorAll('.dropdown-menu a[href]'));
+    const menuLinks = (dd) => Array.from(dd.querySelectorAll('.dropdown-menu a[href], .dropdown-menu [data-motion-switch]'));
 
     const onScrollWhileOpen = () => {
       if (scrollAnchor === null) return;
@@ -785,17 +785,34 @@
     // The early theme scripts read the stored choice and set data-motion; the
     // build copies every reduced-motion rule under it; matchMedia answers to it.
     const MOTION_KEY = 'jayptl.motion';
+    // When the device itself asks for less motion the site already honours it
+    // everywhere and cannot undo it, so the switch shows On, says why, and is
+    // not toggleable.
+    const deviceReduces = () => {
+      try {
+        const native = window.matchMedia && window.matchMedia.native;
+        return !!(native && native.call(window, '(prefers-reduced-motion: reduce)').matches);
+      } catch { return false; }
+    };
     const syncMotionSwitches = () => {
-      const on = document.documentElement.getAttribute('data-motion') === 'reduce';
+      const device = deviceReduces();
+      const on = device || document.documentElement.getAttribute('data-motion') === 'reduce';
       nav.querySelectorAll('[data-motion-switch]').forEach((b) => {
         b.setAttribute('aria-checked', on ? 'true' : 'false');
+        if (device) {
+          b.setAttribute('aria-disabled', 'true');
+          b.title = 'Your device already asks for less motion';
+        } else {
+          b.removeAttribute('aria-disabled');
+          b.removeAttribute('title');
+        }
         const state = b.querySelector('.dropdown-switch-state');
-        if (state) state.textContent = on ? 'On' : 'Off';
+        if (state) state.textContent = device ? 'Device' : on ? 'On' : 'Off';
       });
     };
     nav.addEventListener('click', (e) => {
       const b = e.target.closest && e.target.closest('[data-motion-switch]');
-      if (!b) return;
+      if (!b || b.getAttribute('aria-disabled') === 'true') return;
       const on = document.documentElement.getAttribute('data-motion') !== 'reduce';
       if (on) document.documentElement.setAttribute('data-motion', 'reduce');
       else document.documentElement.removeAttribute('data-motion');

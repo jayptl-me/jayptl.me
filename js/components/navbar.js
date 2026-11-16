@@ -176,6 +176,11 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <span>Privacy Policy</span>
                   </a>
+                  <button type="button" class="dropdown-item dropdown-switch" role="switch" aria-checked="false" data-motion-switch>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4M17 12h4M9 12h6"/><circle cx="12" cy="12" r="9"/></svg>
+                    <span>Reduce motion</span>
+                    <span class="dropdown-switch-state" aria-hidden="true">Off</span>
+                  </button>
                   <div class="dropdown-divider"></div>
                   <a href="${githubHref}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
@@ -311,6 +316,10 @@
                 <button type="button" class="mobile-social-pill" data-copy="${email}" aria-label="Copy email ${email}">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   <span>Copy email</span>
+                </button>
+                <button type="button" class="mobile-social-pill" role="switch" aria-checked="false" data-motion-switch>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4M17 12h4M9 12h6"/><circle cx="12" cy="12" r="9"/></svg>
+                  <span>Reduce motion</span>
                 </button>
               </div>
             </div>
@@ -592,7 +601,7 @@
     const ddState = new Map();
     let scrollAnchor = null;
 
-    const menuLinks = (dd) => Array.from(dd.querySelectorAll('.dropdown-menu a[href]'));
+    const menuLinks = (dd) => Array.from(dd.querySelectorAll('.dropdown-menu a[href], .dropdown-menu [data-motion-switch]'));
 
     const onScrollWhileOpen = () => {
       if (scrollAnchor === null) return;
@@ -771,6 +780,50 @@
       if (window.relockGooeyNav) window.relockGooeyNav();
     });
     window.addEventListener('popstate', () => closeAllDropdowns());
+
+    // 2.4 Reduce motion switch (D-49): the visitor's choice beats the device.
+    // The early theme scripts read the stored choice and set data-motion; the
+    // build copies every reduced-motion rule under it; matchMedia answers to it.
+    const MOTION_KEY = 'jayptl.motion';
+    // When the device itself asks for less motion the site already honours it
+    // everywhere and cannot undo it, so the switch shows On, says why, and is
+    // not toggleable.
+    const deviceReduces = () => {
+      try {
+        const native = window.matchMedia && window.matchMedia.native;
+        return !!(native && native.call(window, '(prefers-reduced-motion: reduce)').matches);
+      } catch { return false; }
+    };
+    const syncMotionSwitches = () => {
+      const device = deviceReduces();
+      const on = device || document.documentElement.getAttribute('data-motion') === 'reduce';
+      nav.querySelectorAll('[data-motion-switch]').forEach((b) => {
+        b.setAttribute('aria-checked', on ? 'true' : 'false');
+        if (device) {
+          b.setAttribute('aria-disabled', 'true');
+          b.title = 'Your device already asks for less motion';
+        } else {
+          b.removeAttribute('aria-disabled');
+          b.removeAttribute('title');
+        }
+        const state = b.querySelector('.dropdown-switch-state');
+        if (state) state.textContent = device ? 'Device' : on ? 'On' : 'Off';
+      });
+    };
+    nav.addEventListener('click', (e) => {
+      const b = e.target.closest && e.target.closest('[data-motion-switch]');
+      if (!b || b.getAttribute('aria-disabled') === 'true') return;
+      const on = document.documentElement.getAttribute('data-motion') !== 'reduce';
+      if (on) document.documentElement.setAttribute('data-motion', 'reduce');
+      else document.documentElement.removeAttribute('data-motion');
+      try {
+        if (on) localStorage.setItem(MOTION_KEY, 'reduce');
+        else localStorage.removeItem(MOTION_KEY);
+      } catch { /* the choice still holds for this page */ }
+      syncMotionSwitches();
+      window.dispatchEvent(new CustomEvent('motion:change', { detail: { reduce: on } }));
+    });
+    syncMotionSwitches();
 
     // 2.5 Gooey hover/active nav effect (desktop & mobile rails)
     loadGooeyEffect();

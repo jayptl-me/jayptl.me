@@ -65,7 +65,7 @@
     var FALLBACK_HIGHLIGHT = '#00b8cc';
     var MIN_PARTICLES = 900;
     var MAX_PARTICLES = 5200;
-    var LOOP_MAX = 2000; // nanotech loop: fine dust needs room between grains
+    var LOOP_MAX = 2600; // nanotech loop: fine dust needs room between grains
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -413,14 +413,14 @@
             var off = document.createElement('canvas');
             var g = off.getContext('2d', { willReadFrequently: true });
             if (!g) return null;
-            // Fit the word's real ink box inside the host (94% wide, 78% tall),
+            // Fit the word's real ink box inside the host (82% wide, 78% tall),
             // so tall glyphs like "?" are never clipped on a short hero.
             var size = baseSize * 1.6;
             g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;
             var m = g.measureText(word);
             var wdt = Math.max(1, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || m.width));
             var hgt = Math.max(1, (m.actualBoundingBoxAscent || size * 0.78) + (m.actualBoundingBoxDescent || size * 0.22));
-            size = size * Math.min(1, (W * 0.94) / wdt, (H * 0.78) / hgt);
+            size = size * Math.min(1, (W * 0.82) / wdt, (H * 0.78) / hgt);
             off.width = Math.max(1, W);
             off.height = Math.max(1, H);
             g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;

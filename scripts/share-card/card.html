@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+  Share card source (direction B, Porcelain; D-53, 30 Oct 2026). Rendered once
+  to assets/share-card.png at 1200 x 630 by scripts/share-card/render.mjs on a
+  build box. Light clay on the blue ramp, the discipline line as the headline,
+  a marker swipe, a filled pill with the domain, one arrow from the site's own
+  doodle sprite. Never published itself (asset-policy is an allow-list).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>jayptl.me share card</title>
+<style>
+  @font-face { font-family: "Space Grotesk"; src: url("../../assets/fonts/space-grotesk-400.woff2") format("woff2"); font-weight: 300 700; }
+  @font-face { font-family: "IBM Plex Mono"; src: url("../../assets/fonts/plex-mono-400.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "IBM Plex Mono"; src: url("../../assets/fonts/plex-mono-600.woff2") format("woff2"); font-weight: 600; }
+  @font-face { font-family: "Architects Daughter"; src: url("../../assets/fonts/architects-daughter-400.woff2") format("woff2"); }
+
+  :root {
+    --primary-50: #e3f2fd; --primary-100: #bbdefb; --primary-200: #90caf9;
+    --primary-500: #2196f3; --primary-700: #1976d2; --primary-800: #1565c0; --primary-900: #0d47a1;
+    --neutral-50: #f8f9fa; --neutral-100: #f1f3f5; --neutral-200: #e9ecef;
+    --neutral-700: #495057; --neutral-900: #212529;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(900px 520px at 88% 8%, var(--primary-50), transparent 70%),
+      linear-gradient(180deg, #fbfcfd 0%, var(--neutral-100) 100%);
+    color: var(--neutral-900);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    position: relative;
+  }
+  /* Porcelain clay slab: soft raised surface, no hard shadow */
+  .slab {
+    position: absolute; inset: 56px 64px;
+    border-radius: 36px;
+    background: linear-gradient(160deg, #ffffff 0%, var(--neutral-50) 100%);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.9),
+      inset 0 -3px 0 rgba(13,71,161,.05),
+      0 24px 48px -28px rgba(13,71,161,.28),
+      0 2px 6px rgba(13,71,161,.06);
+    border: 1px solid rgba(144,202,249,.45);
+    padding: 64px 72px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace; font-size: 22px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--primary-800);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .kicker::before { content: ""; width: 36px; height: 2px; background: var(--primary-500); border-radius: 2px; }
+  h1 { font-weight: 600; font-size: 76px; line-height: 1.04; letter-spacing: -.02em; margin-top: 26px; max-width: 880px; }
+  .swipe { position: relative; white-space: nowrap; z-index: 0; }
+  .swipe svg { position: absolute; left: -10px; right: -10px; bottom: -2px; width: calc(100% + 20px); height: 40px; z-index: -1; color: var(--primary-100); }
+  .foot { display: flex; align-items: flex-end; justify-content: space-between; }
+  .name { font-family: "IBM Plex Mono", monospace; font-size: 24px; color: var(--neutral-700); }
+  .name b { color: var(--neutral-900); font-weight: 600; }
+  .pill {
+    font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 28px; color: #fff;
+    background: linear-gradient(180deg, var(--primary-500), var(--primary-800));
+    padding: 16px 30px; border-radius: 999px;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 10px 22px -12px rgba(13,71,161,.6);
+  }
+  .note { position: absolute; right: 236px; bottom: 196px; display: flex; align-items: center; gap: 4px; transform: rotate(-5deg); }
+  .note span { font-family: "Architects Daughter", cursive; font-size: 30px; color: var(--neutral-700); }
+  .note svg { width: 84px; height: 32px; color: var(--primary-700); transform: rotate(38deg) translate(6px, 18px); }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="d-marker" viewBox="0 0 120 24"><path d="M6 15 C30 12 62 14 88 11 C100 10 108 10 114 10" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="d-arrow" viewBox="0 0 64 24"><path d="M3 14 C 18 14 31 12 46 8 M37 3.5 C 40.5 5.5 43.5 7 46 8 M38.5 15.5 C 41 12.5 43.5 10 46 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+  <div class="slab">
+    <div>
+      <p class="kicker">Software engineer</p>
+      <h1>Full-stack, mobile &amp; <span class="swipe">applied AI.<svg viewBox="0 0 120 24" preserveAspectRatio="none"><use href="#d-marker"/></svg></span></h1>
+    </div>
+    <div class="foot">
+      <p class="name"><b>Jay Patel</b> · hand-written HTML, CSS and JS</p>
+      <p class="pill">jayptl.me</p>
+    </div>
+  </div>
+  <div class="note"><span>come say hi</span><svg viewBox="0 0 64 24"><use href="#d-arrow"/></svg></div>
+</body>
+</html>

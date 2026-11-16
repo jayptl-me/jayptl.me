@@ -27,6 +27,7 @@ const ASSET_FILES = [
   'logo-96.png',
   'logo-512.png',
   'logo-1024.png',
+  'share-card.png',
   'doodle-sprite.svg'
 ];
 

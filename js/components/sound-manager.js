@@ -1133,7 +1133,7 @@
                 if (sm.playPressSound() === false) return;
                 lastPress = now;
                 held = { id: event.pointerId };
-            } catch (ignore) { /* press stays silent */ }
+            } catch { /* press stays silent */ }
         }, { passive: true });
 
         document.addEventListener('pointerup', function (event) {
@@ -1143,7 +1143,7 @@
                 var sm = ready();
                 if (!sm) return;
                 if (sm.playReleaseSound() !== false) sm.lastGestureAt = Date.now();
-            } catch (ignore) { /* release stays silent */ }
+            } catch { /* release stays silent */ }
         }, { passive: true });
 
         document.addEventListener('pointercancel', function (event) {

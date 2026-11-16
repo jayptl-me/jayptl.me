@@ -86,7 +86,7 @@ test('loop: each frame draws in four fills, no glow, fine dust', async () => {
   assert.ok(frames.length > 10, `only ${frames.length} drawn frames`);
   assert.ok(frames.every((f) => f.fills === 4), `fills per frame: ${[...new Set(frames.map((f) => f.fills))]}`);
   assert.ok(!s.log.shadow.some((v) => v > 0), 'shadowBlur used');
-  const bad = s.log.styles.filter((v) => /^rgba\(/.test(v) && !/^rgba\(\d+,\d+,\d+,[0-9.]+\)$/.test(v));
+  const bad = s.log.styles.filter((v) => v.startsWith('rgba(') && !/^rgba\(\d+,\d+,\d+,[0-9.]+\)$/.test(v));
   assert.ok(bad.length === 0, `invalid fill colour: ${bad[0]}`);
   assert.ok(s.log.styles.some((v) => /^rgba\(\d+,\d+,\d+,/.test(v)), 'no rgba fill used');
   assert.ok(s.inst.particles.every((p) => p.size >= 0.8 && p.size <= 1.8), 'particles are not fine dust');

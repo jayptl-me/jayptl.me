@@ -7,18 +7,23 @@
  * One quiet family, felt (D-140, D-144 to D-146): a felted hammer for
  * press and release, a soft latch for the theme switch, one soft note
  * when something works. Dark is the same felt, softer and a little
- * quieter. Only what the visitor does makes a sound: hover, scroll,
- * sections, the hero stepper and page changes stay silent.
+ * quieter. Reopened 16 Nov (D-192, D-194, D-207): page changes, section
+ * arrive and leave, hover by intent and the hero nano loop make calm,
+ * soft felt sounds again, each rate limited; scroll and the stepper stay
+ * silent.
  *
  * Score model, default off:
  * - Master switch gates every sound. Default off until the visitor
  *   taps sound on. Persisted in localStorage.
  * - Voiced events: press (pointer down), release (let go), select,
  *   pick, drop, success, theme to dark, theme to light.
- * - Silent events, kept as methods for older callers: hover, tick,
- *   stepper steps, stepper enter and exit, page riser, section motifs.
- * - Bed: a slow pad tuned to A4 = 432 Hz. Starts only after explicit
- *   opt in.
+ * - Calm events: page riser, section arrive and leave (motifs), hover
+ *   after the pointer settles (Balanced intent rule), nano loop stages.
+ * - Silent events, kept as methods for older callers: tick, stepper
+ *   steps, stepper enter and exit.
+ * - Bed: a slow pad on the Om pitch, C#3 = 136.07 Hz in the same
+ *   A4 = 432 Hz tuning, with its octave and harmonics so small speakers
+ *   carry it. Starts only after explicit opt in.
  *
  * Record once, replay (D-128): after sound is switched on, each voiced
  * event is rendered once per palette in an OfflineAudioContext, one per
@@ -51,7 +56,12 @@
         A2: 108.00, C3: 128.43, D3: 144.16, E3: 161.82, G3: 192.43,
         A3: 216.00, C4: 256.87, D4: 288.33, E4: 323.63, G4: 384.87,
         A4: 432.00, C5: 513.74, D5: 576.65, E5: 647.27, G5: 769.74,
-        A5: 864.00, C6: 1027.47
+        A5: 864.00, C6: 1027.47,
+        // The Om bed (D-192): C#3 is the "Om" 136.1 Hz (Cousto's figure)
+        // in this same 432 tuning, with its octave and the G#4 and C#5 near
+        // its 3rd and 4th harmonics, so laptop and phone speakers, which
+        // roll off below about 150 to 200 Hz, still carry the pitch.
+        Cs3: 136.07, Cs4: 272.14, Gs4: 407.75, Cs5: 544.29
     };
 
     // Hero stepper: one note per line, climbing as the visitor moves forward.
@@ -84,7 +94,8 @@
     // Recordings: mono, 32 kHz (every voice sits under 2 kHz), length per
     // event in seconds, long enough for its whole tail.
     var BAKE_RATE = 32000;
-    var BAKE_LEN = { press: 0.3, release: 0.25, select: 0.4, pick: 0.3, drop: 0.35, success: 0.8, themeDark: 0.5, themeLight: 0.5 };
+    var BAKE_LEN = { press: 0.3, release: 0.25, select: 0.4, pick: 0.3, drop: 0.35, success: 0.8, themeDark: 0.5, themeLight: 0.5,
+        riser: 1.2, arrive: 1.4, leave: 1.3, hover: 0.5, nanoSearch: 2.0, nanoForm: 1.6, nanoWonder: 2.6, nanoQuestion: 1.8, nanoRelease: 2.0 };
 
     // A sound asked for while the context resumes plays only if the
     // resume lands within this window, so nothing queues up and bursts.
@@ -93,6 +104,14 @@
     // A select asked for this soon after a press gesture voiced its
     // release is the same gesture, already heard.
     var SELECT_ECHO_MS = 400;
+
+    // Hover by intent, Balanced (D-194; numbers and sources in
+    // pm/research-hover-intent-sound-2026-11-16.md: hoverIntent 100 ms and
+    // 6 px, NN/g 0.3 to 0.5 s rest, Baymard 300 to 500 ms).
+    var HOVER = { rest: 300, window: 300, maxSpeed: 60, quietAfterScroll: 300, gap: 1200, perMinute: 6, perElement: 60000 };
+
+    // Section arrive and leave limits (D-129, D-192).
+    var MOTIF = { perSection: 1500, gap: 350, maxScreensPerSecond: 3 };
 
     function loadPrefs() {
         var fallback = { master: false, bed: false, motifs: false, level: 'low' };
@@ -411,13 +430,58 @@
         E.success = function (S, t) { feltNote(S, t, p, 'A4', -24, 0.3); };
         E.themeDark = function (S, t) { feltLatch(S, t, p, 'E3', 'A2'); };
         E.themeLight = function (S, t) { feltLatch(S, t, p, 'A2', 'E3'); };
+
+        // Calm events (D-192): soft attack, low, felt, quieter than a press.
+        // Page change: a soft swell as the page covers, a settle as it lands.
+        E.riser = function (S, t) {
+            S.noise({ t: t, color: 'pink', lp: 420 * p.lp, a: 0.1, d: 0.3, db: -31 + p.off }); // the noise buffer is 0.5 s
+            S.tone({ t: t + 0.05, f: S.note('A3'), to: S.note('E4'), glide: 0.3, a: 0.12, d: 0.45,
+                db: -32 + p.off, lp: 700 * p.lp, partials: [[1, 1, 1], [2, 0.2, 0.5]] });
+        };
+        // Section arrive: one soft low note; leave: the same, falling, quieter.
+        E.arrive = function (S, t) {
+            S.tone({ t: t, f: S.note('E3'), to: S.note('A3'), glide: 0.25, a: 0.3, d: 0.6,
+                db: -31 + p.off, lp: 650 * p.lp, partials: [[1, 1, 1], [2, 0.18, 0.5]] });
+        };
+        E.leave = function (S, t) {
+            S.tone({ t: t, f: S.note('A3'), to: S.note('E3'), glide: 0.3, a: 0.25, d: 0.55,
+                db: -35 + p.off, lp: 600 * p.lp, partials: [[1, 1, 1], [2, 0.15, 0.5]] });
+        };
+        // Hover, only after the pointer settles (D-194): a felt breath.
+        E.hover = function (S, t) {
+            S.noise({ t: t, color: 'pink', lp: 520 * p.lp, a: 0.02, d: 0.09, db: -33 + p.off });
+            S.tone({ t: t, f: S.note('A4'), a: 0.02, d: 0.14, db: -36 + p.off, lp: 900 * p.lp,
+                partials: [[1, 1, 1]] });
+        };
+        // Hero nano loop (D-207): calm and curious.
+        E.nanoSearch = function (S, t) {
+            S.tone({ t: t, f: S.note('A3'), a: 0.3, d: 0.9, db: -37 + p.off, lp: 450 * p.lp, partials: [[1, 1, 1], [2, 0.1, 0.4]] });
+        };
+        E.nanoForm = function (S, t) {
+            feltNote(S, t, p, 'E4', -33, 0.5);
+            feltNote(S, t + 0.22, p, 'A4', -34, 0.6);
+        };
+        E.nanoWonder = function (S, t) {
+            S.tone({ t: t, f: S.note('D4'), to: S.note('E4'), glide: 0.9, a: 0.45, d: 1.2,
+                db: -35 + p.off, lp: 650 * p.lp, partials: [[1, 1, 1], [2, 0.15, 0.5]] });
+        };
+        E.nanoQuestion = function (S, t) {
+            feltNote(S, t, p, 'A4', -33, 0.45);
+            feltNote(S, t + 0.24, p, 'C5', -33, 0.7);
+        };
+        E.nanoRelease = function (S, t) {
+            S.tone({ t: t, f: S.note('G4'), to: S.note('D4'), glide: 0.7, a: 0.12, d: 0.9,
+                db: -36 + p.off, lp: 600 * p.lp, partials: [[1, 1, 1]] });
+        };
         return E;
     }
 
+    // The bed on the Om pitch (D-192): C#3 with its octave and two upper
+    // partials, soft triangle voices and pink air under 650 Hz.
     function feltBed(S, t) {
         return S.pad({ t: t, db: -32, type: 'triangle', lp: 700,
-            voices: [['A3', 0.5, 0.051], ['E4', 0.35, 0.067], ['A4', 0.22, 0.083]],
-            noise: { color: 'pink', lp: 500, level: 0.2 } });
+            voices: [['Cs3', 0.5, 0.051], ['Cs4', 0.35, 0.067], ['Gs4', 0.16, 0.083], ['Cs5', 0.1, 0.059]],
+            noise: { color: 'pink', lp: 650, level: 0.2 } });
     }
 
     var PALETTES = {
@@ -457,6 +521,8 @@
             this.bakeQueue = [];
             this.bakeTimer = null;
             this.bakeFailed = false;
+            this.intent = null;
+            this.motifs = null;
 
             // Hero stepper position, for callers that do not pass one.
             this.stepIndex = 0;
@@ -874,8 +940,75 @@
             return this.play('select');
         }
 
-        /** Pointer enters. Silent: hover is not a decision (D-146). */
-        playHoverSound() { return this.play('hover'); }
+        /**
+         * Pointer enters something. Plays only when the visitor settles on
+         * it (Balanced rule, D-194, pm/research-hover-intent-sound-2026-11-16.md):
+         * a mouse, not touch; the pointer rests over the element for 300 ms
+         * at under about 60 px/s; no scroll in the last 300 ms; at least
+         * 1.2 s since the last hover sound, at most 6 a minute, and once
+         * per element per minute. Fast travel and flicks stay silent.
+         * Returns true when a check was scheduled.
+         */
+        playHoverSound(el) {
+            if (!this.canPlay() || this.prefersReducedMotion()) return false;
+            const I = this.intent;
+            if (!I || I.pointerType !== 'mouse') return false;
+            const self = this;
+            const target = el || null;
+            clearTimeout(I.timer);
+            I.timer = setTimeout(function () {
+                const now = Date.now();
+                if (now - I.lastScroll < HOVER.quietAfterScroll) return;
+                if (I.speed() > HOVER.maxSpeed) return;
+                if (target && target.matches && !target.matches(':hover')) return;
+                if (now - I.lastHover < HOVER.gap) return;
+                I.recent = I.recent.filter(function (t) { return now - t < 60000; });
+                if (I.recent.length >= HOVER.perMinute) return;
+                if (target) {
+                    const last = I.byEl.get(target);
+                    if (last && now - last < HOVER.perElement) return;
+                    I.byEl.set(target, now);
+                }
+                if (self.play('hover') !== false) {
+                    I.lastHover = now;
+                    I.recent.push(now);
+                }
+            }, HOVER.rest);
+            return true;
+        }
+
+        /**
+         * Watch the pointer cheaply: one passive pointermove storing the
+         * last positions with their event timestamps, one passive scroll
+         * stamp. No layout reads.
+         */
+        watchIntent() {
+            if (this.intent) return;
+            const I = {
+                pointerType: '', samples: [], lastScroll: 0, lastHover: 0,
+                recent: [], byEl: new WeakMap(), timer: null,
+                speed: function () {
+                    // Only movement inside the window counts: a pointer that
+                    // stopped sends no events, so old samples mean "resting".
+                    const now = performance.now();
+                    const s = I.samples.filter(function (x) { return now - x.t <= HOVER.window; });
+                    if (s.length < 2) return 0;
+                    const a = s[0], b = s[s.length - 1];
+                    const dt = (b.t - a.t) / 1000;
+                    return dt > 0 ? Math.hypot(b.x - a.x, b.y - a.y) / dt : 0;
+                }
+            };
+            this.intent = I;
+            try {
+                window.addEventListener('pointermove', function (e) {
+                    I.pointerType = e.pointerType;
+                    const t = e.timeStamp;
+                    I.samples.push({ x: e.clientX, y: e.clientY, t: t });
+                    while (I.samples.length > 2 && t - I.samples[0].t > HOVER.window) I.samples.shift();
+                }, { passive: true });
+                window.addEventListener('scroll', function () { I.lastScroll = Date.now(); }, { passive: true });
+            } catch { /* intent stays empty: hover stays silent */ }
+        }
 
         /** A card, sheet or row changes. Silent: passing, not doing. */
         playTickSound() { return this.play('tick'); }
@@ -1042,11 +1175,39 @@
         }
 
         /**
-         * Section arrive and leave are silent; motion carries them (D-146).
-         * Kept for older callers.
+         * A section arrives ('arrive') or leaves ('leave') (D-192, reopening
+         * D-146 on the owner's words). Calm by rule (D-129): the same section
+         * at most once per 1.5 s, any two section sounds at least 0.35 s
+         * apart, skipped while scrolling faster than about 3 screens a
+         * second, silent under reduced motion. key names the section.
          */
-        playMotif() {
-            return false;
+        playMotif(kind, key) {
+            if (kind !== 'arrive' && kind !== 'leave') return false;
+            if (!this.canPlay() || this.prefersReducedMotion()) return false;
+            const now = Date.now();
+            const M = this.motifs || (this.motifs = { last: 0, byKey: {}, scrollY: 0, scrollAt: 0 });
+            const y = window.scrollY || 0;
+            const screens = M.scrollAt ? Math.abs(y - M.scrollY) / Math.max(1, window.innerHeight) / Math.max(0.001, (now - M.scrollAt) / 1000) : 0;
+            M.scrollY = y;
+            M.scrollAt = now;
+            if (screens > MOTIF.maxScreensPerSecond) return false;
+            if (now - M.last < MOTIF.gap) return false;
+            const k = (key || 'section') + '|' + kind;
+            if (M.byKey[k] && now - M.byKey[k] < MOTIF.perSection) return false;
+            M.last = now;
+            M.byKey[k] = now;
+            return this.play(kind);
+        }
+
+        /**
+         * The hero's nano loop entered a stage (D-207): search, form, drift,
+         * question (the "?" word), release. Calm and curious; silent under
+         * reduced motion and while the master switch is off.
+         */
+        playNano(stage) {
+            if (this.prefersReducedMotion()) return false;
+            const name = { search: 'nanoSearch', form: 'nanoForm', drift: 'nanoWonder', question: 'nanoQuestion', release: 'nanoRelease' }[stage];
+            return name ? this.play(name) : false;
         }
 
         /**
@@ -1078,6 +1239,7 @@
 
     // Create global instance
     window.SoundManager = new SoundManager();
+    try { window.SoundManager.watchIntent(); } catch { /* hover stays silent */ }
 
     // A theme flip moves the bed to the other palette. Voices pick their
     // palette when they play, so they follow on their own.

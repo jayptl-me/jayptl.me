@@ -675,151 +675,77 @@ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(p){if(!s
             </div>
         </section>
 
-        <!-- 04 · Selected work (Bespoke Horizontal Scroll Stack) -->
-        <section id="selected-work" class="home-section home-section--scroll-stack" aria-labelledby="workHeading">
-            <div class="scroll-stack-container" id="scrollStackContainer">
-                <div class="scroll-stack-stage" id="scrollStackStage">
-                    <div class="container scroll-stack-header-wrap">
-                        <div class="scroll-stack-header">
-                            <div>
-                                <p class="hud-label">04 · <span class="sr-only">Selected work</span></p>
-                                <h2 id="workHeading" class="section-title">Selected work</h2>
-                            </div>
-                            <div class="scroll-stack-hud" id="scrollStackHud" aria-live="polite">
-                                <span class="scroll-stack-readout font-mono" id="scrollStackReadout">STACK // 01 OF 04</span>
-                                <div class="scroll-stack-track-meter" aria-hidden="true">
-                                    <div class="scroll-stack-meter-fill" id="scrollStackMeterFill" style="width: 25%;"></div>
-                                </div>
-                                <div class="scroll-stack-pills" id="scrollStackPills" role="tablist" aria-label="Project card selector">
-                                    <button type="button" class="scroll-stack-pill is-active" data-index="0" aria-label="Jump to Aviz Health" role="tab" aria-selected="true">01</button>
-                                    <button type="button" class="scroll-stack-pill" data-index="1" aria-label="Jump to Swalook CRM" role="tab" aria-selected="false">02</button>
-                                    <button type="button" class="scroll-stack-pill" data-index="2" aria-label="Jump to Genuinest" role="tab" aria-selected="false">03</button>
-                                    <button type="button" class="scroll-stack-pill" data-index="3" aria-label="Jump to Vini &amp; Tini" role="tab" aria-selected="false">04</button>
-                                </div>
-                            </div>
-                        </div>
+        <!-- 04 · Selected work (overlap deck, owner's pick 16 Nov: replaces the scroll stack) -->
+        <section id="selected-work" class="home-section home-section--overlap-deck" aria-labelledby="workHeading">
+            <div class="container work-deck" id="selected-work-deck" data-component="overlap-deck">
+                <div class="work-deck-head">
+                    <div>
+                        <p class="hud-label">04 · <span class="sr-only">Selected work</span></p>
+                        <h2 id="workHeading" class="section-title">Selected work</h2>
                     </div>
-
-                    <div class="scroll-stack-viewport" id="scrollStackViewport">
-                        <div class="scroll-stack-track" id="scrollStackTrack">
-                            <!-- Aviz Health -->
-                            <article class="scroll-stack-card work-card" data-project="Aviz Health" style="--card-index: 0;" data-morph>
-                                <a class="scroll-stack-card-cover work-card-cover" href="/projects/aviz-health" aria-label="Aviz Health case study">
-                                    <span class="scroll-stack-badge work-badge">Live on Play</span>
-                                    <div class="scroll-stack-cover-visual">
-                                        <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
-                                        <span class="scroll-stack-cover-title">Aviz Health</span>
-                                        <span class="scroll-stack-cover-tagline">Connected Healthcare Ecosystem</span>
-                                    </div>
-                                </a>
-                                <div class="scroll-stack-card-body work-card-body">
-                                    <div class="scroll-stack-card-main">
-                                        <span class="scroll-stack-card-num">PROJECT // 01</span>
-                                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><time datetime="2025-12">Dec 2025 to now</time><span class="ship-role">Full-stack developer</span></p>
-                                        <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/aviz-health">Aviz Health</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">A connected healthcare ecosystem, three Flutter apps, a Next.js 16 mission control, and a Bun + Hono backend firing near-instant bookings and ambulance SOS dispatch.</p>
-                                        <ul class="tag-row" aria-label="Technologies used">
-                                            <li>Flutter ×3</li><li>Next.js 16</li><li>Bun + Hono</li><li>MongoDB</li>
-                                        </ul>
-                                    </div>
-                                    <div class="scroll-stack-card-footer">
-                                        <div class="scroll-stack-actions">
-                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/aviz-health">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- Swalook CRM -->
-                            <article class="scroll-stack-card work-card" data-project="Swalook CRM" style="--card-index: 1;" data-morph>
-                                <a class="scroll-stack-card-cover work-card-cover" href="/projects/swalook" aria-label="Swalook CRM case study">
-                                    <span class="scroll-stack-badge work-badge">In Production</span>
-                                    <div class="scroll-stack-cover-visual">
-                                        <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
-                                        <span class="scroll-stack-cover-title">Swalook CRM</span>
-                                        <span class="scroll-stack-cover-tagline">Enterprise Salon Automation</span>
-                                    </div>
-                                </a>
-                                <div class="scroll-stack-card-body work-card-body">
-                                    <div class="scroll-stack-card-main">
-                                        <span class="scroll-stack-card-num">PROJECT // 02</span>
-                                        <p class="ship-line"><span class="ship-pill" data-status="live">Live</span><time datetime="2026-01">Jan 2026 to now</time><span class="ship-role">Full-stack developer</span></p>
-                                        <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/swalook">Swalook CRM</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">Ground-up overhaul of an enterprise salon-management platform: a Next.js 16 monorepo, 35+ documented API endpoints, Redis caching, and a Flutter app with ML Kit AR previews.</p>
-                                        <ul class="tag-row" aria-label="Technologies used">
-                                            <li>Next.js 16</li><li>Bun + Hono</li><li>Redis</li><li>Flutter</li>
-                                        </ul>
-                                    </div>
-                                    <div class="scroll-stack-card-footer">
-                                        <div class="scroll-stack-actions">
-                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/swalook">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- Genuinest -->
-                            <article class="scroll-stack-card work-card" data-project="Genuinest" style="--card-index: 2;" data-morph>
-                                <a class="scroll-stack-card-cover work-card-cover" href="/projects/genuinest" aria-label="Genuinest case study">
-                                    <span class="scroll-stack-badge work-badge">Founding Engineer (Contract)</span>
-                                    <div class="scroll-stack-cover-visual">
-                                        <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
-                                        <span class="scroll-stack-cover-title">Genuinest</span>
-                                        <span class="scroll-stack-cover-tagline">Cloud Migration &amp; Infrastructure</span>
-                                    </div>
-                                </a>
-                                <div class="scroll-stack-card-body work-card-body">
-                                    <div class="scroll-stack-card-main">
-                                        <span class="scroll-stack-card-num">PROJECT // 03</span>
-                                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><time datetime="2026-01">Jan 2026 to now</time><span class="ship-role">Founding engineer (contract)</span></p>
-                                        <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/genuinest">Genuinest</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">As Founding Engineer (Contract): a Flutter product on Bun + Hono, then the fun part, migrating off big cloud bills to Docker, Coolify, Traefik, and a 20TB self-hosted MinIO cluster.</p>
-                                        <ul class="tag-row" aria-label="Technologies used">
-                                            <li>Flutter + Riverpod</li><li>Bun + Hono</li><li>Docker</li><li>Coolify</li>
-                                        </ul>
-                                    </div>
-                                    <div class="scroll-stack-card-footer">
-                                        <div class="scroll-stack-actions">
-                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/genuinest">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <!-- Vini & Tini -->
-                            <article class="scroll-stack-card work-card" data-project="Vini and Tini" style="--card-index: 3;" data-morph>
-                                <a class="scroll-stack-card-cover work-card-cover" href="/projects/vini-tini" aria-label="Vini and Tini case study">
-                                    <span class="scroll-stack-badge work-badge">On HuggingFace</span>
-                                    <div class="scroll-stack-cover-visual">
-                                        <div class="scroll-stack-cover-grid" aria-hidden="true"></div>
-                                        <span class="scroll-stack-cover-title">Vini &amp; Tini</span>
-                                        <span class="scroll-stack-cover-tagline">Small Language Models, From Scratch</span>
-                                    </div>
-                                </a>
-                                <div class="scroll-stack-card-body work-card-body">
-                                    <div class="scroll-stack-card-main">
-                                        <span class="scroll-stack-card-num">PROJECT // 04</span>
-                                        <p class="ship-line"><span class="ship-pill" data-status="building">Building</span><span class="ship-role">Research, Vini is on Hugging Face</span></p>
-                                        <h3 class="scroll-stack-card-title work-card-title"><a href="/projects/vini-tini">Vini &amp; Tini</a></h3>
-                                        <p class="scroll-stack-card-desc work-card-desc">Two small language models trained from scratch: Vini, a BitNet b1.58 edge assistant, and Tini, a dense TypeScript coder. Built to learn what an LLM really takes.</p>
-                                        <ul class="tag-row" aria-label="Technologies used">
-                                            <li>PyTorch</li><li>BitNet b1.58</li><li>HuggingFace</li>
-                                        </ul>
-                                    </div>
-                                    <div class="scroll-stack-card-footer">
-                                        <div class="scroll-stack-actions">
-                                            <a class="pill-btn pill-btn--filled scroll-stack-cta" href="/projects/vini-tini">Read the case study <span class="arrow arrow--right" aria-hidden="true"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
+                    <div class="work-deck-controls">
+                        <div class="work-deck-pills" role="tablist" aria-label="Projects">
+                            <button type="button" class="work-deck-pill is-active" data-workdeck-pill role="tab" aria-selected="true" aria-label="Aviz Health">01</button>
+                            <button type="button" class="work-deck-pill" data-workdeck-pill role="tab" aria-selected="false" aria-label="Swalook CRM">02</button>
+                            <button type="button" class="work-deck-pill" data-workdeck-pill role="tab" aria-selected="false" aria-label="Genuinest">03</button>
+                            <button type="button" class="work-deck-pill" data-workdeck-pill role="tab" aria-selected="false" aria-label="Vini and Tini">04</button>
                         </div>
-                    </div>
-
-                    <div class="container scroll-stack-footer-wrap">
-                        <p class="work-all-link"><a href="/projects">View the full project index</a></p>
                     </div>
                 </div>
+                <div class="work-deck-viewport" data-workdeck-viewport tabindex="0" role="group" aria-roledescription="carousel" aria-label="Selected work, use the arrow keys to move between projects">
+                    <div class="work-deck-track" data-workdeck-track>
+                        <article class="work-deck-sheet is-active" data-workdeck-sheet data-side="active" data-title="Aviz Health" data-when="Dec 2025 to now" style="--workdeck-shot-position: 50% 50%;">
+                            <div class="work-deck-shot"><div class="work-deck-shot-move" data-workdeck-shot-move><img src="/assets/case-studies/aviz-health/deck/emergency-dispatch.jpg" width="2080" height="1200" alt="Aviz Health: the emergency medical response screen with one-tap SOS dispatch" loading="lazy" decoding="async"></div></div>
+                            <span class="work-deck-shade" data-workdeck-shade aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--prev" aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--next" aria-hidden="true"></span>
+                            <div class="work-deck-caption">
+                                <p class="work-deck-kicker">Live on Play</p>
+                                <h3 class="work-deck-title"><a href="/projects/aviz-health">Aviz Health</a></h3>
+                                <p class="work-deck-tagline">A connected healthcare ecosystem: three Flutter apps, a Next.js 16 mission control and a Bun + Hono backend for near-instant bookings and ambulance SOS dispatch.</p>
+                                <p class="work-deck-when"><time datetime="2025-12">Dec 2025 to now</time></p>
+                            </div>
+                        </article>
+                        <article class="work-deck-sheet" data-workdeck-sheet data-side="next" data-title="Swalook CRM" data-when="Jan 2026 to now" style="--workdeck-shot-position: 50% 30%;">
+                            <div class="work-deck-shot"><div class="work-deck-shot-move" data-workdeck-shot-move><img src="/assets/case-studies/swalook-crm/deck/billing-demo.webp" width="2000" height="1256" alt="Swalook CRM: the salon billing screen" loading="lazy" decoding="async"></div></div>
+                            <span class="work-deck-shade" data-workdeck-shade aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--prev" aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--next" aria-hidden="true"></span>
+                            <div class="work-deck-caption">
+                                <p class="work-deck-kicker">In production</p>
+                                <h3 class="work-deck-title"><a href="/projects/swalook">Swalook CRM</a></h3>
+                                <p class="work-deck-tagline">A ground-up overhaul of an enterprise salon platform: a Next.js 16 monorepo, 35+ documented API endpoints, Redis caching and a Flutter app with AR previews.</p>
+                                <p class="work-deck-when"><time datetime="2026-01">Jan 2026 to now</time></p>
+                            </div>
+                        </article>
+                        <article class="work-deck-sheet" data-workdeck-sheet data-side="next" data-title="Genuinest" data-when="Jan 2026 to now" style="--workdeck-shot-position: 50% 50%;">
+                            <div class="work-deck-shot"><div class="work-deck-shot-move" data-workdeck-shot-move><img src="/assets/case-studies/genuinest/deck/app-screens.jpg" width="2080" height="1200" alt="Genuinest: the community commerce app screens" loading="lazy" decoding="async"></div></div>
+                            <span class="work-deck-shade" data-workdeck-shade aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--prev" aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--next" aria-hidden="true"></span>
+                            <div class="work-deck-caption">
+                                <p class="work-deck-kicker">Founding engineer, contract</p>
+                                <h3 class="work-deck-title"><a href="/projects/genuinest">Genuinest</a></h3>
+                                <p class="work-deck-tagline">A Flutter product on Bun + Hono, then moved off big cloud bills to Docker, Coolify, Traefik and a 20TB self-hosted MinIO cluster.</p>
+                                <p class="work-deck-when"><time datetime="2026-01">Jan 2026 to now</time></p>
+                            </div>
+                        </article>
+                        <article class="work-deck-sheet" data-workdeck-sheet data-side="next" data-title="Vini and Tini" data-when="2026" style="--workdeck-shot-position: 50% 50%;">
+                            <div class="work-deck-shot"><div class="work-deck-shot-move" data-workdeck-shot-move><img src="/assets/case-studies/vini-tini/deck/model-card.jpg" width="2080" height="1200" alt="Vini and Tini: the model card" loading="lazy" decoding="async"></div></div>
+                            <span class="work-deck-shade" data-workdeck-shade aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--prev" aria-hidden="true"></span>
+                            <span class="work-deck-spine work-deck-spine--next" aria-hidden="true"></span>
+                            <div class="work-deck-caption">
+                                <p class="work-deck-kicker">On HuggingFace</p>
+                                <h3 class="work-deck-title"><a href="/projects/vini-tini">Vini &amp; Tini</a></h3>
+                                <p class="work-deck-tagline">Two small language models trained from scratch: Vini, a BitNet b1.58 edge assistant, and Tini, a dense TypeScript coder.</p>
+                                <p class="work-deck-when"><time datetime="2026">2026</time></p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <p class="work-deck-live" data-workdeck-live role="status" aria-live="polite">Aviz Health, sheet 1 of 4, Dec 2025 to now</p>
+                <div class="work-deck-foot"><a class="work-all-link" href="/projects">View the full project index</a></div>
             </div>
         </section>
 
@@ -931,6 +857,7 @@ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(p){if(!s
     <!-- JavaScript - Non-blocking load -->
     <script defer src="/js/performance.js"></script>
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/console-hello.js"></script>
     <script defer src="/js/components/custom-cursor.js"></script>
     <script defer src="/js/components/particle-text.js"></script>
     <script defer src="/js/components/split-text.js"></script>
@@ -946,7 +873,7 @@ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(p){if(!s
     <script defer src="/js/components/audio-toggle.js"></script>
     <script defer src="/js/components/audio-score.js"></script>
     <script defer src="/js/components/featured-work.js"></script>
-    <script defer src="/js/components/scroll-stack.js"></script>
+    <script defer src="/js/components/overlap-deck.js"></script>
     <script defer src="/js/components/doodle.js"></script>
     <script defer src="/js/components/mount.js"></script>
     <script defer src="/js/components/arrive.js"></script>

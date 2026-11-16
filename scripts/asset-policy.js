@@ -49,7 +49,8 @@ function ships(relPath) {
   const head = parts[0];
   if (parts.length === 1) return ASSET_FILES.includes(head);
   if (ASSET_DIRS.includes(head)) return true;
-  if (ASSET_IMAGE_DIRS.includes(head)) return ASSET_IMAGE_FILES.includes(parts[parts.length - 1]);
+  // The home deck's shots live in <project>/deck/ (D-152, D-192).
+  if (ASSET_IMAGE_DIRS.includes(head)) return ASSET_IMAGE_FILES.includes(parts[parts.length - 1]) || parts[parts.length - 2] === 'deck';
   return false;
 }
 

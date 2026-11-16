@@ -96,3 +96,12 @@ test('edge blur: a scroll frame never measures the footer once it is observed', 
   frames.splice(0).forEach((f) => f(0));
   assert.ok(document.querySelector('.edge-blur').classList.contains('is-away'), 'band did not step away when the footer came on screen');
 });
+
+test('hero grid: the endless pan slides a layer with transform, never background-position', () => {
+  const css = read('css/components/scroll-reveal.css');
+  const frames = keyframes(css, 'gridPan');
+  assert.ok(frames, 'gridPan keyframes missing');
+  assert.ok(!/background-position/.test(frames), 'the pan repaints the whole screen every frame');
+  assert.ok(/transform:\s*translate3d\(50px,\s*50px,\s*0\)/.test(frames), frames);
+  assert.ok(/inset:\s*-50px 0 0 -50px/.test(block(css, '.text-reveal-container::before')), 'the layer is not one cell larger, the pan would show an edge');
+});

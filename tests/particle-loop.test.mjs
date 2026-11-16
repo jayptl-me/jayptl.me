@@ -150,3 +150,12 @@ test('loop: at 10 frames a second the word still forms before its stage ends', a
   const mean = off.reduce((a, b) => a + b, 0) / off.length;
   assert.ok(mean < 2, `mean distance from the letters ${mean.toFixed(1)} px at a slow frame rate`);
 });
+
+test('loop: light mode draws dense, strong ink so the pattern reads (owner, 16 Nov)', async () => {
+  const s = setup();
+  await settle();
+  s.inst.replay();
+  s.step(16, 10);
+  const alphas = s.log.styles.filter((v) => v.startsWith('rgba(')).map((v) => parseFloat(v.split(',')[3]));
+  assert.ok(alphas.length && Math.min(...alphas) >= 0.8, `faint ink in light mode: ${Math.min(...alphas)}`);
+});

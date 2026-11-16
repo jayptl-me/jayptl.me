@@ -72,12 +72,12 @@
   background: linear-gradient(to bottom, transparent, var(--sf-fog));
 }
 
-/* Touch devices: three layers are enough and cheaper. */
-@media (pointer: coarse) {
-  .edge-blur-layer:nth-child(1),
-  .edge-blur-layer:nth-child(2) {
-    display: none;
-  }
+/* Three layers everywhere (2, 4 and 8px). The two faintest (0.5 and 1px)
+   were already off on touch devices as "enough and cheaper"; the perf
+   benchmark (16 Nov) found the band among the top costs on desktop too. */
+.edge-blur-layer:nth-child(1),
+.edge-blur-layer:nth-child(2) {
+  display: none;
 }
 
 @media (prefers-reduced-transparency: reduce) {

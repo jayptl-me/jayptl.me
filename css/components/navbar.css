@@ -133,19 +133,40 @@ body:has(.text-reveal-container:not(.released)) .glass-nav:not(.visible) {
     border-radius: 50%;
     background-color: #10b981;
     border: 2px solid #0b1118;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    /* Own stacking context so the pulse disc can sit behind the dot, where
+       the old box-shadow was painted, and still above the avatar. */
+    z-index: 1;
+}
+
+/* The pulse is a same-colour disc that grows and fades, drawn with transform
+   and opacity only. It used to animate box-shadow, which repainted the frosted
+   nav pill every frame on every page (perf benchmark 16 Nov: idle CPU 57% to
+   0.5% on a phone case study with this and other loops off). The disc starts
+   exactly over the dot (same colour, so no visible change) and reaches the old
+   6px ring: (9 + 2 * 6) / 9 = 2.333. */
+.nav-status-dot::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background-color: rgba(16, 185, 129, 0.7);
+    z-index: -1;
+    pointer-events: none;
     animation: navStatusPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes navStatusPulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        transform: scale(1);
+        opacity: 1;
     }
     70% {
-        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+        transform: scale(2.333);
+        opacity: 0;
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        transform: scale(1);
+        opacity: 0;
     }
 }
 
@@ -2021,7 +2042,8 @@ html.no-scroll {
     .mobile-card,
     .mobile-all-projects,
     .mobile-social-pill,
-    .nav-status-dot {
+    .nav-status-dot,
+    .nav-status-dot::after {
         animation: none !important;
         transition: none !important;
     }

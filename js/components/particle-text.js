@@ -344,8 +344,8 @@
             for (var i = 0; i < list.length; i++) {
                 var p = list[i], ax, ay, s = p.seed * 1000;
                 if (st.mode === 'form') {
-                    ax = (p.targetX - p.x) * 0.0065;
-                    ay = (p.targetY - p.y) * 0.0065;
+                    ax = (p.targetX - p.x) * 0.01;
+                    ay = (p.targetY - p.y) * 0.01;
                 } else if (st.mode === 'drift') {
                     var rx = p.x - cx, ry = p.y - cy, d = Math.sqrt(rx * rx + ry * ry) + 1;
                     var pull = (H * (0.18 + 0.14 * p.seed) - d) * 0.0009;
@@ -364,8 +364,8 @@
                         ay += (dy / dist) * f;
                     }
                 }
-                p.vx = (p.vx + ax) * 0.92;
-                p.vy = (p.vy + ay) * 0.92;
+                p.vx = (p.vx + ax) * (st.mode === 'form' ? 0.85 : 0.92);
+                p.vy = (p.vy + ay) * (st.mode === 'form' ? 0.85 : 0.92);
                 p.x += p.vx;
                 p.y += p.vy;
                 if (Math.abs(p.vx) + Math.abs(p.vy) > 0.03) moving++;
@@ -377,7 +377,7 @@
                 ctx.shadowBlur = 0;
                 ctx.globalAlpha = 1;
                 for (var b = 0; b < 4; b++) {
-                    ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + ((0.55 + b * 0.1) * fade).toFixed(2) + ')';
+                    ctx.fillStyle = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + ((0.55 + b * 0.1) * fade).toFixed(2) + ')';
                     ctx.beginPath();
                     for (var j = b; j < list.length; j += 4) {
                         var q = list[j], r = q.size / 2;

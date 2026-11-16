@@ -28,9 +28,9 @@ function setup({ reduced = false, loop = 'LOOKING FOR|JAY|?' } = {}) {
   window.matchMedia = (q) => ({ matches: /reduce/.test(q) ? reduced : false, media: q, addEventListener() {}, removeEventListener() {} });
   delete window.ResizeObserver;
   delete window.IntersectionObserver;
-  const log = { fills: 0, arcs: 0, clears: 0, shadow: [], perFrame: [] };
+  const log = { fills: 0, arcs: 0, clears: 0, shadow: [], perFrame: [], styles: [] };
   const ctx = (canvas) => ({
-    canvas, fillStyle: '', globalAlpha: 1, font: '', textAlign: '', textBaseline: '',
+    canvas, set fillStyle(v) { log.styles.push(v); }, get fillStyle() { return ''; }, globalAlpha: 1, font: '', textAlign: '', textBaseline: '',
     set shadowBlur(v) { log.shadow.push(v); }, get shadowBlur() { return 0; }, shadowColor: '',
     setTransform() {}, clearRect() { log.clears++; log.perFrame.push({ fills: 0, arcs: 0 }); },
     beginPath() {}, moveTo() {}, closePath() {},
@@ -86,6 +86,9 @@ test('loop: each frame draws in four fills, no glow, fine dust', async () => {
   assert.ok(frames.length > 10, `only ${frames.length} drawn frames`);
   assert.ok(frames.every((f) => f.fills === 4), `fills per frame: ${[...new Set(frames.map((f) => f.fills))]}`);
   assert.ok(!s.log.shadow.some((v) => v > 0), 'shadowBlur used');
+  const bad = s.log.styles.filter((v) => /^rgba\(/.test(v) && !/^rgba\(\d+,\d+,\d+,[0-9.]+\)$/.test(v));
+  assert.ok(bad.length === 0, `invalid fill colour: ${bad[0]}`);
+  assert.ok(s.log.styles.some((v) => /^rgba\(\d+,\d+,\d+,/.test(v)), 'no rgba fill used');
   assert.ok(s.inst.particles.every((p) => p.size >= 0.8 && p.size <= 1.8), 'particles are not fine dust');
 });
 

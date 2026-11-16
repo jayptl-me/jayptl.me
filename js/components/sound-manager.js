@@ -108,7 +108,7 @@
                 motifs: parsed.motifs === true,
                 level: parsed.level === 'med' ? 'med' : 'low'
             };
-        } catch (e) {
+        } catch {
             return fallback;
         }
     }
@@ -116,7 +116,7 @@
     function savePrefs(prefs) {
         try {
             localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
-        } catch (e) { /* storage is a bonus, never breaks sound */ }
+        } catch { /* storage is a bonus, never breaks sound */ }
     }
 
     function noop() { /* intentionally empty */ }
@@ -320,7 +320,7 @@
                     else { gp.cancelScheduledValues(when); gp.setValueAtTime(gp.value, when); }
                     gp.setTargetAtTime(0, when, tc);
                     nodes.forEach(function (x) {
-                        try { x.stop(when + tc * 8.5); } catch (e) { /* noop */ }
+                        try { x.stop(when + tc * 8.5); } catch { /* noop */ }
                     });
                 }
             };
@@ -552,7 +552,7 @@
                 window.dispatchEvent(new CustomEvent('soundchange', {
                     detail: this.getPrefs()
                 }));
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         }
 
         setMasterEnabled(on) {
@@ -614,7 +614,7 @@
                         0.05
                     );
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         }
 
         /**
@@ -640,14 +640,14 @@
                 var tm = window.themeManager;
                 var pref = tm ? tm.userPreference : null;
                 if (pref === 'light' || pref === 'dark') return pref;
-            } catch (e) { /* fall through */ }
+            } catch { /* fall through */ }
             try {
                 var attr = document.documentElement.getAttribute('data-theme');
                 if (attr === 'light' || attr === 'dark') return attr;
-            } catch (e) { /* fall through */ }
+            } catch { /* fall through */ }
             try {
                 return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            } catch (e) {
+            } catch {
                 return 'light';
             }
         }
@@ -676,7 +676,7 @@
                 var ctx;
                 try {
                     ctx = new AudioContext({ latencyHint: 'interactive' });
-                } catch (e) {
+                } catch {
                     ctx = new AudioContext();
                 }
                 this.audioContext = ctx;
@@ -697,7 +697,7 @@
                     lim.connect(ctx.destination);
                     this.limiter = lim;
                     out = lim;
-                } catch (e) { /* plays without the limiter */ }
+                } catch { /* plays without the limiter */ }
                 this.masterGain.connect(out);
 
                 this.motifGain = ctx.createGain();
@@ -721,7 +721,7 @@
                     p.then(noop, noop);
                     return p;
                 }
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
             return null;
         }
 
@@ -735,7 +735,7 @@
             if (!this.initialized) this.init();
             const ctx = this.audioContext;
             if (!ctx) return;
-            try { noiseFor(ctx); } catch (e) { /* made on first play instead */ }
+            try { noiseFor(ctx); } catch { /* made on first play instead */ }
             if (ctx.state !== 'running') return;
 
             const now = ctx.currentTime;
@@ -788,7 +788,7 @@
             const ctx = this.audioContext;
             if (!ctx) return false;
             if (ctx.state === 'running') {
-                try { fn(ctx); } catch (e) { /* a voice never breaks the page */ }
+                try { fn(ctx); } catch { /* a voice never breaks the page */ }
                 return true;
             }
             if (ctx.state === 'closed') return false;
@@ -796,13 +796,13 @@
             const go = function () {
                 if (fresh && Date.now() - asked > STALE_MS) return;
                 if (ctx.state !== 'running') return;
-                try { fn(ctx); } catch (e) { /* noop */ }
+                try { fn(ctx); } catch { /* noop */ }
             };
             try {
                 const p = ctx.resume();
                 if (p && typeof p.then === 'function') p.then(go, noop);
                 else go();
-            } catch (e) {
+            } catch {
                 return false;
             }
             return true;
@@ -967,7 +967,7 @@
             if (!nodes || !this.audioContext) return;
             try {
                 nodes.handle.stop(this.audioContext.currentTime, immediate === true);
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         }
 
         /**
@@ -995,7 +995,7 @@
                     this.audioContext.currentTime,
                     0.6
                 );
-            } catch (e) { /* noop */ }
+            } catch { /* noop */ }
         }
 
         /**
@@ -1041,7 +1041,7 @@
         prefersReducedMotion() {
             try {
                 return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            } catch (e) {
+            } catch {
                 return false;
             }
         }
@@ -1053,7 +1053,7 @@
     // A theme flip moves the bed to the other palette. Voices pick their
     // palette when they play, so they follow on their own.
     window.addEventListener('themechange', function () {
-        try { window.SoundManager.onThemeChange(); } catch (e) { /* noop */ }
+        try { window.SoundManager.onThemeChange(); } catch { /* noop */ }
     });
 
     // Pause the bed when the tab hides, resume on return only if
@@ -1069,13 +1069,13 @@
                     try {
                         var s = sm.audioContext.suspend();
                         if (s && s.then) s.then(noop, noop);
-                    } catch (e) { /* noop */ }
+                    } catch { /* noop */ }
                 }
             } else if (sm.wasBedPlaying && sm.prefs.master && sm.prefs.bed) {
                 sm.resumeContext();
                 sm.wasBedPlaying = false;
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     });
 
     // Explicit opt in only. No eager warmup while master is off, so
@@ -1088,7 +1088,7 @@
                 sm.init();
                 sm.warmup();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     };
 
     document.addEventListener('mousemove', primeOnGesture, { once: true, passive: true });
@@ -1101,7 +1101,7 @@
                 sm.init();
                 sm.warmup();
             }
-        } catch (e) { /* noop */ }
+        } catch { /* noop */ }
     }, { once: true });
 
     // Press feedback on .btn and .pill-btn: the press sound lands on

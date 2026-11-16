@@ -29,10 +29,15 @@
     -webkit-backdrop-filter: blur(4px);
 }
 
-.audio-toggle:hover,
+.audio-toggle:hover {
+    transform: scale(1.08);
+}
+
+/* Keyboard focus shows the pill ring, not just a scale. */
 .audio-toggle:focus-visible {
     transform: scale(1.08);
-    outline: none;
+    outline: 2px solid var(--sf-accent);
+    outline-offset: 3px;
 }
 
 .audio-toggle:active {

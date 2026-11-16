@@ -65,7 +65,7 @@
     var FALLBACK_HIGHLIGHT = '#00b8cc';
     var MIN_PARTICLES = 900;
     var MAX_PARTICLES = 5200;
-    var LOOP_MAX = 2600; // nanotech loop: fine dust needs room between grains
+    var LOOP_MAX = 4200; // nanotech loop: dense enough to read the pattern, still fine dust (owner, 16 Nov)
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -295,7 +295,7 @@
             return s;
         };
 
-        inst.loopEnter = function (index, now) {
+        inst.loopEnter = function (index, now, quiet) {
             var L = inst.loopState;
             L.si = index % L.stages.length;
             L.start = now;
@@ -307,6 +307,14 @@
                     p.targetX = t[i * 2];
                     p.targetY = t[i * 2 + 1];
                 });
+            }
+            // A calm, curious sound per stage (D-207), only with sound on.
+            if (!quiet) {
+                try {
+                    var sm = window.SoundManager;
+                    var word = st.mode === 'form' ? inst.opts.loop[st.word] : '';
+                    if (sm && sm.playNano) sm.playNano(word === '?' ? 'question' : st.mode);
+                } catch { /* sound never breaks the loop */ }
             }
         };
 
@@ -379,14 +387,18 @@
             var still = moving <= list.length * 0.01; // fewer than 1% still drifting
             if (!still || !L.settled) {
                 var ctx = inst.ctx, c = inst.theme.color;
+                // Light mode needs much stronger ink to read on porcelain; dark
+                // a little (owner, 16 Nov). Grains are slightly larger in light.
+                var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+                var a0 = dark ? 0.66 : 0.82, aStep = dark ? 0.08 : 0.06, grow = dark ? 1 : 1.18;
                 ctx.clearRect(0, 0, W, H);
                 ctx.shadowBlur = 0;
                 ctx.globalAlpha = 1;
                 for (var b = 0; b < 4; b++) {
-                    ctx.fillStyle = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + ((0.55 + b * 0.1) * fade).toFixed(2) + ')';
+                    ctx.fillStyle = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + ((a0 + b * aStep) * fade).toFixed(2) + ')';
                     ctx.beginPath();
                     for (var j = b; j < list.length; j += 4) {
-                        var q = list[j], r = q.size / 2;
+                        var q = list[j], r = q.size / 2 * grow;
                         ctx.moveTo(q.x + r, q.y);
                         ctx.arc(q.x, q.y, r, 0, 6.2832);
                     }
@@ -470,7 +482,7 @@
             var keep = inst.loopState;
             inst.loopState = { stages: inst.loopStages(), si: 0, start: performance.now(), settled: false };
             inst.loopOn = true;
-            if (keep) inst.loopEnter(keep.si, performance.now() - Math.min(keep.stages[keep.si].ms, performance.now() - keep.start));
+            if (keep) inst.loopEnter(keep.si, performance.now() - Math.min(keep.stages[keep.si].ms, performance.now() - keep.start), true);
             return true;
         };
 

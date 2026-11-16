@@ -108,7 +108,36 @@
                 try { observer.observe(t); } catch { /* noop */ }
             });
         } catch { /* noop */ }
+
+        // Section arrive and leave (D-192): a line across the middle of the
+        // screen, so tall sections such as Selected work count too. The
+        // manager applies the calm limits (D-129).
+        try {
+            if (lineObserver) lineObserver.disconnect();
+            var inside = new WeakSet();
+            lineObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var sm = sound();
+                    if (!sm || !masterOn()) return;
+                    var name = motifFor(entry.target);
+                    try {
+                        if (entry.isIntersecting) {
+                            inside.add(entry.target);
+                            sm.playMotif('arrive', name);
+                        } else if (inside.has(entry.target)) {
+                            inside.delete(entry.target);
+                            sm.playMotif('leave', name);
+                        }
+                    } catch { /* score never breaks scroll */ }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+            targets.forEach(function (t) {
+                try { lineObserver.observe(t); } catch { /* noop */ }
+            });
+        } catch { /* noop */ }
     }
+
+    var lineObserver = null;
 
     // The riser plays once per page change. A routed link click plays it
     // with the cover; page:ready then plays it only for a navigation no
@@ -160,10 +189,27 @@
         }, { passive: true });
     }
 
+    // Hover by intent (D-194): the manager only plays once the pointer
+    // settles on a link, button or card; travel and flicks stay silent.
+    var HOVER_TARGETS = 'a[href], button, [role="button"], .card, [data-hover-sound]';
+    function wireHover() {
+        var lastEl = null;
+        document.addEventListener('pointerover', function (e) {
+            try {
+                if (e.pointerType !== 'mouse' || !masterOn()) return;
+                var el = e.target && e.target.closest ? e.target.closest(HOVER_TARGETS) : null;
+                if (!el || el === lastEl) return;
+                lastEl = el;
+                var sm = sound();
+                if (sm && sm.playHoverSound) sm.playHoverSound(el);
+            } catch { /* hover never breaks */ }
+        }, { passive: true });
+    }
 
     function init() {
         bindMotifObserver();
         wireClicks();
+        wireHover();
         window.addEventListener('page:ready', function () {
             try {
                 bindMotifObserver();

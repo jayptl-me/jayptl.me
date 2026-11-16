@@ -1,0 +1,573 @@
+/**
+ * Overlap Deck Component, Bespoke Physical Print Stack
+ *
+ * Second, parallel build of the homepage "Selected work" section. It sits next
+ * to the current .scroll-stack block, which stays live and untouched, so the
+ * owner can compare the real thing before anything switches over.
+ *
+ * Geometry (owner ruling, 2026-10-29): one sheet ratio for every shot.
+ * The sheet is 1040 x 600 CSS px, ratio 1.73333. At that shape the three real
+ * source families survive at 91.85 percent (2940 x 1558), 92.31 percent
+ * (1440 x 900) and 96.20 percent (1400 x 777) under object-fit: cover, and the
+ * three re-captured shots are 2080 x 1200 device px, so they survive at 100
+ * percent with no crop at all.
+ *
+ * Architecture:
+ * - Sheets overlap like prints on a table: each neighbour is offset by a fixed
+ *   fraction of the track, so only its outer edge shows. That edge is the
+ *   spine, and it carries the project name and the year.
+ * - The active sheet lifts to full scale and reveals the shot and the caption.
+ * - Depth is opacity on a shade layer and a scale on the sheet. No dynamic CSS
+ *   filter is written per frame, and no preserve-3d is used anywhere in this
+ *   file, so a tilted neighbour can never paint over the focused sheet.
+ * - Parallax: the shot layer inside a sheet translates against the sheet, so
+ *   it moves slower than the sheet itself. The layer carries a bleed so the
+ *   translate never exposes an edge.
+ * - Inertia lives in js/components/overlap-deck.js.
+ *
+ * Theme Specifications (design law, jayptl.me/AGENTS.md):
+ * - Light: the skeuomorphic blue ramp, scrim anchored on --primary-900.
+ * - Dark: glassmorphism on the turquoise ramp, scrim anchored on --accent-900.
+ * - The two ramps never mix and no colour is invented here.
+ *
+ * @file components/overlap-deck.css
+ * @author Jay Patel
+ */
+
+/* ==========================================================================
+   01 · SECTION SHELL AND HEAD
+   ========================================================================== */
+.home-section--overlap-deck {
+  position: relative;
+  padding-block: var(--space-8) var(--space-10);
+}
+
+.work-deck-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--theme-border-light);
+}
+
+.work-deck-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--theme-surface-secondary);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-surface-shadow-sm);
+}
+
+/* The counter is gone. The pills are the pointer and the keyboard control, and
+   the announcement lives in the status element in section 08. */
+.work-deck-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.work-deck-pill {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--theme-text-tertiary);
+  cursor: pointer;
+  transition:
+    color 180ms var(--ease-snap),
+    background-color 180ms var(--ease-snap),
+    box-shadow 180ms var(--ease-snap),
+    transform 140ms var(--ease-snap);
+}
+
+/* The visible pill stays small; the touch target is 44px tall. */
+.work-deck-pill::after {
+  content: "";
+  position: absolute;
+  inset: -10px -3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-deck-pill:hover {
+    color: var(--theme-text);
+    background: var(--theme-border-light);
+  }
+}
+
+/* The fixed press is the fallback; with the squish running
+   (css/components/squish.css), the squash is the press. */
+html:not(.squish-on) .work-deck-pill:active {
+  transform: scale(0.94);
+}
+
+.work-deck-pill:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 2px;
+}
+
+.work-deck-pill.is-active {
+  color: #fff;
+  background: var(--theme-primary);
+  border-color: var(--theme-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+/* ==========================================================================
+   02 · VIEWPORT AND TRACK GEOMETRY
+   ========================================================================== */
+.work-deck-viewport {
+  position: relative;
+  width: 100%;
+  padding-block: var(--space-6);
+  /* No perspective and no transform-style here or below: the deck is 2D. */
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.work-deck-viewport.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.work-deck-viewport:focus-visible {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: 4px;
+  border-radius: var(--rounded-2xl);
+}
+
+.work-deck-track {
+  position: relative;
+  width: min(1040px, 92vw);
+  /* The one sheet ratio: 1040 x 600. */
+  aspect-ratio: 1040 / 600;
+  margin-inline: auto;
+  /* --workdeck-step is the same 0.135 the engine carries as STEP, and a test
+     in tests/overlap-deck.test.mjs fails if the two ever drift. The parallax
+     factor lives only in js/components/overlap-deck.js, because that is the
+     only place it is applied. */
+  --workdeck-step: 0.07;
+  /* The bleed only has to cover the parallax excursion: PARALLAX x STEP of the
+     track width, 2.43 percent. At 9 percent the sheet showed just 85 percent of
+     the frame it was given, so a shot framed on a screen still arrived with its
+     edges cut. 3 percent keeps the edge covered and the framing honest. A guard
+     in tests/overlap-deck.test.mjs fails if the two ever drift apart. */
+  /* Enough slack to cover the parallax excursion, and no more. The guard at
+     tests/overlap-deck.test.mjs:532 requires bleed >= STEP * PARALLAX, which at
+     0.135 * 0.045 is 0.61 percent; 0.7 is the shipped margin. The old 3 percent
+     is what cropped the shot's own headline and chips. */
+  --workdeck-bleed: 0.7%;
+}
+
+/* ==========================================================================
+   03 · SHEET
+   ========================================================================== */
+.work-deck-sheet {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--rounded-2xl);
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  contain: layout paint style;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-sizing: border-box;
+  transition: box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
+}
+
+/* Light Mode Taste: porcelain sheet with directional depth. */
+html[data-theme="light"] .work-deck-sheet {
+  background: rgba(244, 248, 252, 0.96);
+  border: 1px solid rgba(33, 150, 243, 0.16);
+  box-shadow:
+    0 14px 32px -6px rgba(33, 150, 243, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    inset 0 2px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 1px rgba(33, 150, 243, 0.10);
+}
+
+html[data-theme="light"] .work-deck-sheet.is-active {
+  border-color: rgba(33, 150, 243, 0.32);
+  box-shadow:
+    0 22px 48px -8px rgba(33, 150, 243, 0.26),
+    0 6px 16px rgba(0, 0, 0, 0.07),
+    inset 0 2px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 1px rgba(33, 150, 243, 0.14);
+}
+
+/* Dark Mode Taste: liquid glass sheet with a specular rim and turquoise glow. */
+html[data-theme="dark"] .work-deck-sheet {
+  background: linear-gradient(135deg, rgba(14, 22, 33, 0.88), rgba(8, 13, 20, 0.96));
+  border: 1px solid rgba(0, 184, 204, 0.22);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 24px -2px rgba(0, 184, 204, 0.16),
+    0 16px 36px -8px rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme="dark"] .work-deck-sheet.is-active {
+  border-color: rgba(0, 184, 204, 0.45);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.32),
+    0 0 32px 0 rgba(0, 184, 204, 0.32),
+    0 24px 48px -10px rgba(0, 0, 0, 0.75);
+}
+
+.work-deck-sheet a {
+  text-decoration: none;
+}
+
+/* Keyboard focus anywhere in a sheet rings the whole sheet. */
+.work-deck-sheet:focus-within {
+  outline: 2px solid var(--sf-accent);
+  outline-offset: -2px;
+}
+
+.work-deck-sheet:has(a:focus:not(:focus-visible)) {
+  outline: none;
+}
+
+/* ==========================================================================
+   04 · SHOT LAYER AND PARALLAX
+   ========================================================================== */
+.work-deck-shot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--theme-bg-secondary);
+}
+
+/* The parallax layer is wider than the sheet by the bleed on both edges, so
+   translating the shot inside it can never expose a bare corner. */
+.work-deck-shot-move {
+  position: absolute;
+  inset-block: 0;
+  inset-inline: calc(var(--workdeck-bleed) * -1);
+  will-change: transform;
+}
+
+.work-deck-shot-move img {
+  display: block;
+  width: 100%;
+  /* css/base/reset.css:227-236 forces height: auto !important on every img.
+     A sheet of a fixed ratio needs the shot to fill its box, so this one
+     declaration answers that rule. It is scoped to this component and nothing
+     else inherits it. The shot stays an img, not a background image, because
+     the picture is content: it carries alt text, loading="lazy" and
+     decoding="async", none of which a CSS background can have. */
+  height: 100% !important;
+  object-fit: cover;
+  object-position: var(--workdeck-shot-position, 50% 50%);
+}
+
+/* Depth: opacity on a flat shade layer, never a per-frame CSS filter. */
+.work-deck-shade {
+  position: absolute;
+  inset: 0;
+  background: var(--theme-bg);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+html[data-theme="light"] .work-deck-shade {
+  background: #eef4fa;
+}
+
+html[data-theme="dark"] .work-deck-shade {
+  background: #050a10;
+}
+
+/* ==========================================================================
+   05 · CAPTION PLATE AND TYPE
+   The type sits on an opaque plate over the shot, not on a veil. The veil was
+   tried first and rejected outright on 2026-10-30: a feathered ramp either lets
+   the screenshot's own text read through it or shows a curved edge, and no stop
+   table fixes a composition that has the caption fighting the product. This
+   overturns the no-plate rule from D-45, which is Jay's call and is recorded as
+   D-55. He then rejected the solid deep-ramp fill and chose the obsidian glass
+   material in both themes, recorded as D-59.
+   ========================================================================== */
+
+.work-deck-caption {
+  position: absolute;
+  inset-inline-start: var(--space-6);
+  inset-block-end: var(--space-6);
+  max-inline-size: 56%;
+  display: grid;
+  gap: var(--space-2);
+  /* --space-6/8/10 are the only steps of this ramp that exist: a --space-7 in
+     here used to make the whole declaration invalid at computed-value time, the
+     padding collapsed to zero and the type ran into the sheet's edge. */
+  padding: var(--space-5) var(--space-6) var(--space-6);
+  box-sizing: border-box;
+  /* Obsidian glass, the project's own dark material, in both themes. The border
+     and the perimeter glow read --primary-500-rgb, which is the brand blue in
+     light and maps to the turquoise accent in dark, so one rule set honours the
+     never-turquoise-in-light and never-blue-in-dark rule instead of fighting it.
+     The blur is the cost of the material: it is a paint cost on a layer the
+     engine translates, so it is measured, not assumed, in the frame numbers. */
+  background: linear-gradient(135deg, rgba(14, 22, 33, 0.86), rgba(8, 13, 20, 0.92));
+  /* No backdrop blur: at 86 to 92% opacity it could not be seen and cost a
+     repaint per frame (perf benchmark 16 Nov). */
+  border: 1px solid rgba(var(--primary-500-rgb), 0.24);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 20px -2px rgba(var(--primary-500-rgb), 0.15),
+    0 16px 36px -8px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 220ms var(--ease-out), transform 320ms var(--ease-out);
+}
+
+.work-deck-sheet.is-active .work-deck-caption {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.work-deck-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.work-deck-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+  /* Set here and not only on the link: the heading itself inherited the page's
+     near-black body colour, so a title with no link would have painted dark on
+     dark, and the contrast probe read the run as #111827 rather than as the
+     white it is meant to be. */
+  color: #fff;
+}
+
+.work-deck-title a {
+  color: #fff;
+}
+
+.work-deck-tagline {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.work-deck-when {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* ==========================================================================
+   06 · SPINE
+   A neighbour reduces to its outer edge. The label sits on the edge that faces
+   away from the active sheet, which is the only part of it a reader can see.
+   ========================================================================== */
+.work-deck-spine {
+  position: absolute;
+  /* Physical, not logical. The spine sets writing-mode: vertical-rl on itself,
+     and in a vertical writing mode inline-size is the height and inset-block is
+     the left and right pair. Written logically the spine measured the full
+     1038px sheet width and painted its gradient across the product. */
+  top: 0;
+  bottom: 0;
+  width: calc(var(--workdeck-step) * 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
+  /* One ramp for both sides, dark toward the outer edge. The previous spine is
+     rotated half a turn, which flips its local axis with it, so the same
+     declaration lands dark on its own left edge too. */
+  /* Fade into the page surface rather than tinting the neighbour with a hue.
+     The mask carries the ramp, so the colour is whatever the theme's own surface
+     is and no rgb triple is needed. A hue tint could not work here: the strip
+     sits over art that runs from pure white to near black. */
+  background: var(--theme-surface-secondary);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 55%, #000 100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 55%, #000 100%);
+}
+
+.work-deck-spine--next {
+  right: 0;
+  writing-mode: vertical-rl;
+}
+
+.work-deck-spine--prev {
+  left: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+
+
+.work-deck-sheet[data-side="next"] .work-deck-spine--next,
+.work-deck-sheet[data-side="prev"] .work-deck-spine--prev {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   07 · STATUS ANNOUNCEMENT
+   ========================================================================== */
+/* The dropped counter's job: assistive tech hears the sheet that took focus.
+   It is visually hidden, never display: none, which would mute the live
+   region. See css/utilities/display.css for the clip pattern. */
+.work-deck-live {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   08 · FOOTER LINK
+   ========================================================================== */
+.work-deck-foot {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-6);
+}
+
+/* ==========================================================================
+   09 · PHONE (the 600 tier and below)
+   Overlap and drag are a pointer affordance. On a phone the sheets open into a
+   plain vertical list, every shot and caption visible, nothing to discover.
+   ========================================================================== */
+@media (max-width: 599.98px) {
+  .work-deck-viewport {
+    cursor: default;
+    touch-action: auto;
+    padding-block-start: var(--space-4);
+  }
+
+  .work-deck-track {
+    width: 100%;
+    aspect-ratio: auto;
+    display: grid;
+    gap: var(--space-5);
+    padding-inline: var(--space-4);
+    box-sizing: border-box;
+  }
+
+  .work-deck-sheet {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 1040 / 600;
+    transform: none !important;
+    opacity: 1 !important;
+    z-index: auto !important;
+  }
+
+  .work-deck-shade {
+    opacity: 0 !important;
+  }
+
+  .work-deck-shot-move {
+    inset-inline: 0;
+    transform: none !important;
+  }
+
+  .work-deck-spine {
+    display: none;
+  }
+
+  .work-deck-sheet .work-deck-caption {
+    opacity: 1;
+  }
+
+  .work-deck-caption {
+    transform: none;
+    max-inline-size: 100%;
+    padding: var(--space-4) var(--space-5) var(--space-5);
+  }
+
+  .work-deck-title {
+    font-size: 1.375rem;
+  }
+
+  .work-deck-tagline {
+    font-size: 0.8125rem;
+  }
+
+  .work-deck-head {
+    padding-inline: var(--space-4);
+  }
+}
+
+/* ==========================================================================
+   10 · REDUCED MOTION (Strict Accessibility Law)
+   The end state, not the journey: no overlap, no lift, no parallax. Sheets sit
+   in a single readable row that the pills and the keyboard still move through.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .work-deck-track {
+    width: min(1040px, 92vw);
+    aspect-ratio: auto;
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .work-deck-sheet {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 1040 / 600;
+    transform: none !important;
+    opacity: 1 !important;
+    z-index: auto !important;
+    transition: none !important;
+  }
+
+  .work-deck-shade {
+    opacity: 0 !important;
+  }
+
+  .work-deck-shot-move {
+    inset-inline: 0;
+    transform: none !important;
+  }
+
+  .work-deck-spine {
+    display: none;
+  }
+
+  .work-deck-sheet .work-deck-caption {
+    opacity: 1;
+  }
+
+  .work-deck-caption {
+    transform: none;
+  }
+
+  .work-deck-pill {
+    transition: none !important;
+  }
+
+  .work-deck-viewport {
+    cursor: default;
+  }
+}

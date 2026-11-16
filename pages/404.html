@@ -46,6 +46,13 @@
         <div class="error-doodle" aria-hidden="true">
             <svg class="doodle" width="64" height="48"><use href="#d-circle"/></svg>
         </div>
+        <pre class="error-ascii" aria-hidden="true">+--------------------------+
+| o o o   ########   *  ok |
++--------------------------+
+| o o o   ########   *  ok |
++--------------------------+
+| o o o   ###.. ?    .  404|
++--------------------------+</pre>
         <p class="error-code hud-readout">404</p>
         <h1 id="nfTitle">Lost in the homelab</h1>
         <p>The page you were looking for doesn't exist or may have moved. Even the best-tended racks drop a packet now and then.</p>
@@ -128,6 +135,7 @@
 
     <!-- Load universal navbar and components -->
     <script defer src="/js/components/navbar.js"></script>
+    <script defer src="/js/components/console-hello.js"></script>
     <script defer src="/js/components/pixel-swap.js"></script>
     <script defer src="/js/components/page-transition.js"></script>
     <script defer src="/js/components/page-router.js"></script>

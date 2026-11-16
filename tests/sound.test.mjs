@@ -1,7 +1,8 @@
 // Tests for the sound manager and the audio score: one quiet felt family
 // in both themes (D-140, D-144 to D-146), recordings made once and
-// replayed (D-128), identical repeats (D-142), and silence on hover,
-// scroll, sections and page changes. The audio engine is a recording
+// replayed (D-128), identical repeats (D-142); scroll, ticks and the stepper stay
+// silent; page changes, sections, hover by intent and the hero nano loop make
+// calm sounds (D-192, D-194, D-207). The audio engine is a recording
 // stub: every node, connection, start, stop and automation event is kept
 // so the graph can be checked without sound.
 import test from 'node:test';
@@ -24,8 +25,10 @@ const GLOBALS = [
 
 // Only what the visitor does makes a sound.
 const VOICED = ['press', 'release', 'select', 'pick', 'drop', 'success', 'themeDark', 'themeLight'];
-// Passing, scrolling and page changes stay silent (D-146).
-const SILENT = ['hover', 'tick', 'stepDown', 'stepUp', 'stepperEnter', 'stepperExit', 'riser', 'motif'];
+// Scroll, ticks and the hero stepper stay silent (D-146, kept by D-192).
+const SILENT = ['tick', 'stepDown', 'stepUp', 'stepperEnter', 'stepperExit'];
+// Calm events (D-192, D-194, D-207): soft, low, quieter than a press.
+const CALM = ['riser', 'arrive', 'leave', 'hover', 'nanoSearch', 'nanoForm', 'nanoWonder', 'nanoQuestion', 'nanoRelease'];
 
 // Every public voice the site called before D-73, with its argument.
 const LEGACY = [
@@ -33,7 +36,7 @@ const LEGACY = [
   ['playLightsaberRetract'], ['playStepUp'], ['playStepDown'],
   ['playStepperEnter'], ['playStepperExit'], ['playRiser'], ['playMotif', 'intro']
 ];
-const LEGACY_VOICED = [['playSelectSound'], ['playLightsaberIgnite'], ['playLightsaberRetract']];
+const LEGACY_VOICED = [['playSelectSound'], ['playLightsaberIgnite'], ['playLightsaberRetract'], ['playRiser']];
 const LEGACY_SILENT = LEGACY.filter((c) => !LEGACY_VOICED.some((v) => v[0] === c[0]));
 
 const E4 = 323.63, G4 = 384.87, A4 = 432;
@@ -544,7 +547,7 @@ test('sound: a theme flip keeps the bed playing, moved to the night felt', async
   assert.equal(env.sm.bedNodes && env.sm.bedNodes.palette, 'feltNight');
 });
 
-test('sound fix: hover, scroll, sections, the stepper and page changes make no sound (D-146)', async () => {
+test('sound: ticks, scroll and the hero stepper still make no sound (D-146, kept by D-192)', async () => {
   const problems = [];
   ['light', 'dark'].forEach((theme) => {
     const env = setup({ theme });
@@ -560,12 +563,108 @@ test('sound fix: hover, scroll, sections, the stepper and page changes make no s
   assert.deepEqual(problems, [], 'these played a sound');
 });
 
-test('score fix: sections coming into view and hovering make no sound', async () => {
+test('sound: page changes, sections, hover and the nano loop are calm: soft, felt, quieter than a press', async () => {
+  const env = setup();
+  env.sm.setMasterEnabled(true);
+  const peak = (nodes) => Math.max(...sources(nodes).map(pathGain));
+  const press = peak(playOne(env, 'press'));
+  const problems = [];
+  CALM.forEach((name) => {
+    const nodes = playOne(env, name);
+    if (!sources(nodes).length) problems.push(`${name}: silent`);
+    else if (peak(nodes) >= press) problems.push(`${name}: as loud as a press`);
+    tailProblems(nodes, name).forEach((p) => problems.push(p));
+  });
+  assert.deepEqual(problems, []);
+});
+
+test('sound: under reduced motion the calm sounds stay silent, presses still answer (D-138)', () => {
+  const env = setup({ reduced: true });
+  env.sm.setMasterEnabled(true);
+  assert.equal(env.sm.playRiser(), false);
+  assert.equal(env.sm.playMotif('arrive', 'intro'), false);
+  assert.equal(env.sm.playNano('form'), false);
+  assert.equal(env.sm.playHoverSound(), false);
+  assert.ok(sources(playOne(env, 'press')).length > 0);
+});
+
+test('sound: section sounds follow the calm limits (D-129)', () => {
+  const env = setup();
+  env.sm.setMasterEnabled(true);
+  const played = [];
+  const real = env.sm.play.bind(env.sm);
+  env.sm.play = (name, o, p) => { played.push(name); return real(name, o, p); };
+  env.sm.playMotif('arrive', 'intro');
+  env.sm.playMotif('leave', 'intro'); // within 0.35 s of the last: dropped
+  env.sm.playMotif('arrive', 'now');  // also within the gap
+  assert.deepEqual(played, ['arrive']);
+  env.sm.motifs.last -= 400;
+  env.sm.playMotif('arrive', 'intro'); // the same section within 1.5 s: dropped
+  assert.deepEqual(played, ['arrive']);
+  env.sm.playMotif('arrive', 'now');
+  assert.deepEqual(played, ['arrive', 'arrive']);
+  assert.equal(env.sm.playMotif('hello', 'now'), false, 'only arrive and leave');
+});
+
+test('sound: hover plays only after the pointer settles, never on fast travel (Balanced, D-194)', async () => {
+  const env = setup();
+  env.sm.setMasterEnabled(true);
+  const played = [];
+  const real = env.sm.play.bind(env.sm);
+  env.sm.play = (name, o, p) => { played.push(name); return real(name, o, p); };
+  const I = env.sm.intent;
+  assert.ok(I, 'intent watcher not running');
+  I.pointerType = 'mouse';
+  // Fast travel: samples inside the window, 600 px in 100 ms.
+  const now = () => env.window.performance.now();
+  I.samples = [{ x: 0, y: 0, t: now() }, { x: 600, y: 0, t: now() + 100 }];
+  const keepSpeed = I.speed;
+  I.speed = () => 6000;
+  env.sm.playHoverSound();
+  await settle(360);
+  assert.deepEqual(played, [], 'a flick played a hover');
+  // Settled: no recent movement.
+  I.speed = keepSpeed;
+  I.samples = [];
+  env.sm.playHoverSound();
+  await settle(360);
+  assert.deepEqual(played, ['hover']);
+  // Within 1.2 s of the last: silent.
+  env.sm.playHoverSound();
+  await settle(360);
+  assert.deepEqual(played, ['hover']);
+  // Touch never plays.
+  I.pointerType = 'touch';
+  assert.equal(env.sm.playHoverSound(), false);
+});
+
+test('sound: the nano loop has a sound per stage, and "?" sounds like a question', () => {
+  const env = setup();
+  env.sm.setMasterEnabled(true);
+  const played = [];
+  const real = env.sm.play.bind(env.sm);
+  env.sm.play = (name, o, p) => { played.push(name); return real(name, o, p); };
+  ['search', 'form', 'drift', 'question', 'release'].forEach((s) => env.sm.playNano(s));
+  assert.deepEqual(played, ['nanoSearch', 'nanoForm', 'nanoWonder', 'nanoQuestion', 'nanoRelease']);
+  assert.equal(env.sm.playNano('bogus'), false);
+});
+
+test('sound: the bed sits on the Om pitch, C#3 136.07 Hz, with its octave (D-192)', async () => {
+  const env = setup({ prefs: { master: true, bed: true, motifs: false, level: 'low' } });
+  const m = mark(env);
+  env.sm.setMasterEnabled(true);
+  env.sm.startBed();
+  await settle();
+  const freqs = oscs(since(env, m)).map(startFreq);
+  assert.ok(freqs.some((f) => Math.abs(cents(f, 136.07)) < 15), `no C#3 in ${freqs.map((f) => f.toFixed(1))}`);
+  assert.ok(freqs.some((f) => Math.abs(cents(f, 272.14)) < 15), 'no C#4 octave');
+});
+
+test('score: a section crossing the middle of the screen plays arrive, then leave', async () => {
   const seen = [];
   const env = setup({ score: false });
-  // The score names IntersectionObserver as a bare global.
   const IO = class {
-    constructor(cb) { this.cb = cb; seen.push(this); }
+    constructor(cb, opts) { this.cb = cb; this.opts = opts || {}; seen.push(this); }
     observe(el) { this.el = el; }
     disconnect() {}
   };
@@ -573,23 +672,19 @@ test('score fix: sections coming into view and hovering make no sound', async ()
   const hadIO = 'IntersectionObserver' in globalThis;
   const prevIO = globalThis.IntersectionObserver;
   globalThis.IntersectionObserver = IO;
-  env.document.body.innerHTML = '<section id="intro"></section><section id="selected-work"></section>'
-    + '<footer class="site-footer"></footer><a class="nav-link" href="#x">x</a>';
+  env.document.body.innerHTML = '<section id="intro"></section><section id="selected-work"></section>';
   env.sm.setMasterEnabled(true);
+  const calls = [];
+  env.sm.playMotif = (kind, key) => { calls.push(kind + ':' + key); return true; };
   run(env.window, AS, Math);
-  const c = env.ctx();
-  c.currentTime = 4;
-  const m = mark(env);
-  seen.forEach((o) => ['#intro', '#selected-work', '.site-footer'].forEach((sel) => {
-    const el = env.document.querySelector(sel);
-    o.cb([{ isIntersecting: true, target: el }]);
-    o.cb([{ isIntersecting: false, target: el }]);
-  }));
-  pointer(env, env.document.querySelector('.nav-link'), 'pointerover');
-  await settle();
+  const line = seen.find((o) => o.opts.rootMargin === '-50% 0px -50% 0px');
+  assert.ok(line, 'no middle-line observer');
+  const intro = env.document.querySelector('#intro');
+  line.cb([{ isIntersecting: false, target: intro }]); // the first report: never a leave
+  line.cb([{ isIntersecting: true, target: intro }]);
+  line.cb([{ isIntersecting: false, target: intro }]);
   if (hadIO) globalThis.IntersectionObserver = prevIO; else delete globalThis.IntersectionObserver;
-  assert.ok(seen.length > 0, 'the score observed no sections');
-  assert.equal(sources(since(env, m)).length, 0, 'a section or a hover made a sound');
+  assert.deepEqual(calls, ['arrive:intro', 'leave:intro']);
 });
 
 /* ---- Kept behaviour --------------------------------------------------- */
@@ -654,7 +749,7 @@ test('sound fix: each voiced event is recorded once per theme after switch-on, t
   env.sm.setMasterEnabled(true);
   for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
   const renders = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(renders, VOICED.length * 2, `${renders} recordings for ${VOICED.length} events in 2 themes`);
+  assert.equal(renders, (VOICED.length + CALM.length) * 2, `${renders} recordings for ${VOICED.length + CALM.length} events in 2 themes`);
 
   const c = env.ctx();
   c.currentTime = 3;
@@ -718,7 +813,7 @@ test('sound fix: a returning visitor with sound already on gets the recordings o
   env.document.dispatchEvent(new env.window.MouseEvent('mousemove', { bubbles: true }));
   for (let i = 0; i < 100 && (env.sm.bakeQueue.length || Object.keys(env.sm.baking).length || env.sm.bakeTimer); i++) await settle(10);
   const renders = env.audio.offline.reduce((n, o) => n + o.renders, 0);
-  assert.equal(renders, VOICED.length * 2, `a returning visitor got ${renders} recordings`);
+  assert.equal(renders, (VOICED.length + CALM.length) * 2, `a returning visitor got ${renders} recordings`);
 });
 
 test('sound fix: a press leans toward the tap before its recording is ready too', async () => {

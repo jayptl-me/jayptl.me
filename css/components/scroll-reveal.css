@@ -41,7 +41,12 @@
 .text-reveal-container::before {
   content: '';
   position: absolute;
-  inset: 0;
+  /* One 50px cell larger at the top and left, so sliding it one cell with a
+     transform shows the same endless pan. Animating background-position
+     repainted the whole screen every frame (perf benchmark 16 Nov: desktop
+     home ran at 6 fps; with the pan off, 60). A transform is composited. */
+  inset: -50px 0 0 -50px;
+  will-change: transform;
   /* Perspective grid pattern - HIGH VISIBILITY & ANIMATED */
   background:
     /* Vertical lines */
@@ -77,11 +82,11 @@
 
 @keyframes gridPan {
   0% {
-    background-position: 0 0;
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    background-position: 50px 50px;
+    transform: translate3d(50px, 50px, 0);
   }
 }
 

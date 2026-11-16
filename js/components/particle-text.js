@@ -65,6 +65,7 @@
     var FALLBACK_HIGHLIGHT = '#00b8cc';
     var MIN_PARTICLES = 900;
     var MAX_PARTICLES = 5200;
+    var LOOP_MAX = 2600; // nanotech loop: fine dust needs room between grains
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -165,7 +166,10 @@
             fontSize: d.ptFontSize || DEFAULTS.fontSize,
             fontWeight: d.ptFontWeight || DEFAULTS.fontWeight,
             fontFamily: d.ptFontFamily || DEFAULTS.fontFamily,
-            glow: d.ptGlow === undefined ? DEFAULTS.glow : d.ptGlow !== 'false'
+            glow: d.ptGlow === undefined ? DEFAULTS.glow : d.ptGlow !== 'false',
+            // Nanotech loop (D-204, D-207): words the particles keep building,
+            // e.g. "LOOKING FOR|JAY|?". Off when absent.
+            loop: d.ptLoop ? String(d.ptLoop).split('|').map(function (s) { return s.trim(); }).filter(Boolean) : null
         };
     }
 
@@ -260,9 +264,214 @@
                 if (over.duration) o.gatherDuration = over.duration;
                 if (over.stagger !== undefined) o.stagger = over.stagger;
             }
+            if (inst.loopOn) {
+                inst.loopRestart();
+                return;
+            }
             inst.startGather(true);
             o.gatherDuration = keepMs;
             o.stagger = keepStagger;
+        };
+
+        /* ----- nanotech loop (D-204, D-207) -------------------------------
+           The particles behave like calm nanotech: they search, build a word,
+           wonder (a slow orbit), build the next word, and let go, forever.
+           Calm by design (owner: "finer graded and calming, not alarming"):
+           fine dust, soft ink, a weak spring with heavy damping (no
+           overshoot), long holds. Cheap by design: no shadowBlur, four tone
+           groups with one fill each, and once a word holds still the loop
+           stops drawing and sleeps until the next stage. */
+        inst.loopOn = false;
+        inst.loopTimer = null;
+
+        inst.loopStages = function () {
+            var w = inst.opts.loop;
+            var s = [{ mode: 'search', ms: 4200 }];
+            w.forEach(function (word, i) {
+                s.push({ mode: 'form', word: i, ms: i === 0 ? 4600 : 4200 });
+                if (i === 0 && w.length > 1) s.push({ mode: 'drift', ms: 3800 });
+            });
+            s.push({ mode: 'release', ms: 2600 });
+            return s;
+        };
+
+        inst.loopEnter = function (index, now) {
+            var L = inst.loopState;
+            L.si = index % L.stages.length;
+            L.start = now;
+            L.settled = false;
+            var st = L.stages[L.si];
+            if (st.mode === 'form') {
+                var t = inst.loopTargets[st.word];
+                inst.particles.forEach(function (p, i) {
+                    p.targetX = t[i * 2];
+                    p.targetY = t[i * 2 + 1];
+                });
+            }
+        };
+
+        inst.loopRestart = function () {
+            if (!inst.loopState) return;
+            inst.loopEnter(0, performance.now());
+            inst.clearLoopTimer();
+            inst.resume();
+        };
+
+        inst.clearLoopTimer = function () {
+            if (inst.loopTimer !== null) {
+                window.clearTimeout(inst.loopTimer);
+                inst.loopTimer = null;
+            }
+        };
+
+        inst.loopFrame = function (now) {
+            var L = inst.loopState;
+            var st = L.stages[L.si];
+            var t = now - L.start;
+            if (t > st.ms) {
+                inst.loopEnter(L.si + 1, now);
+                st = L.stages[L.si];
+                t = 0;
+            }
+            var W = inst.width, H = inst.height, cx = W / 2, cy = H / 2;
+            var time = now / 1000;
+            var fade = st.mode === 'release' ? 1 - 0.55 * Math.sin(Math.PI * Math.min(1, t / st.ms)) : 1;
+            var ptr = inst.pointer;
+            ptr.smoothX += (ptr.x - ptr.smoothX) * 0.12;
+            ptr.smoothY += (ptr.y - ptr.smoothY) * 0.12;
+            var R = inst.fxRadius, push = inst.fxRepel * 0.02;
+            // Time-based steps: one unit is a 60 fps frame, so words form on time
+            // on slow devices too (capped so a stalled tab never jumps far).
+            var sdt = clamp((now - (L.last || now - 16.67)) / 16.67, 0.25, 3);
+            L.last = now;
+            var damp = Math.pow(st.mode === 'form' ? 0.85 : 0.92, sdt);
+            var moving = 0;
+            var list = inst.particles;
+            for (var i = 0; i < list.length; i++) {
+                var p = list[i], ax, ay, s = p.seed * 1000;
+                if (st.mode === 'form') {
+                    ax = (p.targetX - p.x) * 0.01;
+                    ay = (p.targetY - p.y) * 0.01;
+                } else if (st.mode === 'drift') {
+                    var rx = p.x - cx, ry = p.y - cy, d = Math.sqrt(rx * rx + ry * ry) + 1;
+                    var pull = (H * (0.18 + 0.14 * p.seed) - d) * 0.0009;
+                    ax = (-ry / d) * 0.018 + (rx / d) * pull;
+                    ay = (rx / d) * 0.018 + (ry / d) * pull;
+                } else {
+                    ax = Math.cos(time * 0.35 + s) * 0.012 + (cx - p.x) * 0.00012;
+                    ay = Math.sin(time * 0.42 + s * 1.3) * 0.012 + (cy - p.y) * 0.00018;
+                    if (st.mode === 'release') { ax += (p.x - cx) * 0.00035; ay += (p.y - cy) * 0.00035; }
+                }
+                if (ptr.active && R > 0) {
+                    var dx = p.x - ptr.smoothX, dy = p.y - ptr.smoothY, dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist > 0 && dist < R) {
+                        var f = (1 - dist / R) * (1 - dist / R) * push;
+                        ax += (dx / dist) * f;
+                        ay += (dy / dist) * f;
+                    }
+                }
+                p.vx = (p.vx + ax * sdt) * damp;
+                p.vy = (p.vy + ay * sdt) * damp;
+                p.x += p.vx * sdt;
+                p.y += p.vy * sdt;
+                if (Math.abs(p.vx) + Math.abs(p.vy) > 0.03) moving++;
+            }
+            var still = moving <= list.length * 0.01; // fewer than 1% still drifting
+            if (!still || !L.settled) {
+                var ctx = inst.ctx, c = inst.theme.color;
+                ctx.clearRect(0, 0, W, H);
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+                for (var b = 0; b < 4; b++) {
+                    ctx.fillStyle = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + ((0.55 + b * 0.1) * fade).toFixed(2) + ')';
+                    ctx.beginPath();
+                    for (var j = b; j < list.length; j += 4) {
+                        var q = list[j], r = q.size / 2;
+                        ctx.moveTo(q.x + r, q.y);
+                        ctx.arc(q.x, q.y, r, 0, 6.2832);
+                    }
+                    ctx.fill();
+                }
+                L.settled = still;
+            }
+            // A word that holds still: stop drawing and sleep to the next stage.
+            if (L.settled && st.mode === 'form' && !ptr.active) {
+                inst.raf = null;
+                inst.clearLoopTimer();
+                inst.loopTimer = window.setTimeout(function () {
+                    inst.loopTimer = null;
+                    inst.resume();
+                }, Math.max(16, st.ms - t));
+                return;
+            }
+            inst.raf = window.requestAnimationFrame(inst.frame);
+        };
+
+        /* Sample one word into one target per particle, centred, fitted to the box. */
+        inst.sampleWord = function (word, family, baseSize) {
+            var W = inst.width, H = inst.height;
+            var off = document.createElement('canvas');
+            var g = off.getContext('2d', { willReadFrequently: true });
+            if (!g) return null;
+            // Fit the word's real ink box inside the host (82% wide, 78% tall),
+            // so tall glyphs like "?" are never clipped on a short hero.
+            var size = baseSize * 1.6;
+            g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;
+            var m = g.measureText(word);
+            var wdt = Math.max(1, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || m.width));
+            var hgt = Math.max(1, (m.actualBoundingBoxAscent || size * 0.78) + (m.actualBoundingBoxDescent || size * 0.22));
+            size = size * Math.min(1, (W * 0.82) / wdt, (H * 0.78) / hgt);
+            off.width = Math.max(1, W);
+            off.height = Math.max(1, H);
+            g.font = inst.opts.fontWeight + ' ' + size + 'px ' + family;
+            m = g.measureText(word);
+            var asc = m.actualBoundingBoxAscent || size * 0.78, desc = m.actualBoundingBoxDescent || size * 0.22;
+            g.textAlign = 'center';
+            g.textBaseline = 'alphabetic';
+            g.fillStyle = '#fff';
+            g.fillText(word, W / 2, H / 2 + (asc - desc) / 2);
+            var data;
+            try { data = g.getImageData(0, 0, off.width, off.height).data; } catch { return null; }
+            var pts = [];
+            for (var y = 0; y < off.height; y += 2) {
+                for (var x = 0; x < off.width; x += 2) {
+                    if (data[(y * off.width + x) * 4 + 3] > 128) pts.push(x, y);
+                }
+            }
+            if (!pts.length) return null;
+            var n = inst.particles.length, out = new Float32Array(n * 2), count = pts.length / 2;
+            for (var i = 0; i < n; i++) {
+                var k = Math.floor(((i * 7919) % n) / n * count) * 2;
+                out[i * 2] = pts[k] + (((i * 37) % 10) / 10 - 0.5) * 1.5;
+                out[i * 2 + 1] = pts[k + 1] + (((i * 53) % 10) / 10 - 0.5) * 1.5;
+            }
+            return out;
+        };
+
+        /* After a build: turn the field into nanotech dust and start (or keep) the loop. */
+        inst.setupLoop = function (family, baseSize) {
+            var words = inst.opts.loop;
+            // Fine dust needs room between grains: at most LOOP_MAX particles,
+            // spread evenly over the field (halves the drawing cost too).
+            if (inst.particles.length > LOOP_MAX) {
+                var keepEvery = inst.particles.length / LOOP_MAX;
+                inst.particles = inst.particles.filter(function (_, i) {
+                    return Math.floor(i / keepEvery) !== Math.floor((i - 1) / keepEvery);
+                });
+            }
+            var targets = words.map(function (w) { return inst.sampleWord(w, family, baseSize); });
+            if (targets.some(function (t) { return !t; })) return false;
+            inst.loopTargets = targets;
+            inst.particles.forEach(function (p) {
+                p.vx = 0;
+                p.vy = 0;
+                p.size = 0.8 + p.seed * 1.0; // 0.4 to 0.9 px radius: fine dust
+            });
+            var keep = inst.loopState;
+            inst.loopState = { stages: inst.loopStages(), si: 0, start: performance.now(), settled: false };
+            inst.loopOn = true;
+            if (keep) inst.loopEnter(keep.si, performance.now() - Math.min(keep.stages[keep.si].ms, performance.now() - keep.start));
+            return true;
         };
 
         /* ----- frame ----------------------------------------------------- */
@@ -281,6 +490,10 @@
         inst.frame = function (now) {
             if (inst.destroyed || inst.paused) {
                 inst.raf = null;
+                return;
+            }
+            if (inst.loopOn) {
+                inst.loopFrame(now);
                 return;
             }
             var o = inst.opts;
@@ -354,6 +567,7 @@
 
         inst.pause = function () {
             inst.paused = true;
+            inst.clearLoopTimer();
             if (inst.raf !== null) {
                 window.cancelAnimationFrame(inst.raf);
                 inst.raf = null;
@@ -499,6 +713,25 @@
                 inst.pointer.smoothX = inst.pointer.x;
                 inst.pointer.smoothY = inst.pointer.y;
 
+                // Nanotech loop: reduced motion keeps the static full text below.
+                inst.loopOn = false;
+                inst.clearLoopTimer();
+                if (o.loop && !inst.reducedMotion && inst.setupLoop(family, size)) {
+                    var wasRunning = inst.formed;
+                    inst.formed = true;
+                    if (inst.wantPlay) {
+                        inst.wantPlay = false;
+                        inst.wantOpts = null;
+                        inst.lastReplay = performance.now();
+                        inst.loopRestart();
+                    } else if (wasRunning) {
+                        inst.resume();
+                    } else if (!o.manual) {
+                        inst.loopRestart();
+                    }
+                    return;
+                }
+
                 if (inst.reducedMotion) {
                     inst.gathering = false;
                     inst.formed = true;
@@ -639,6 +872,7 @@
         };
         inst.onVisibility = function () {
             if (document.hidden) {
+                inst.clearLoopTimer();
                 if (inst.raf !== null) {
                     window.cancelAnimationFrame(inst.raf);
                     inst.raf = null;
@@ -651,6 +885,7 @@
         inst.destroy = function () {
             inst.destroyed = true;
             inst.buildId += 1;
+            inst.clearLoopTimer();
             if (inst.raf !== null) window.cancelAnimationFrame(inst.raf);
             if (inst.resizeRaf !== null) window.cancelAnimationFrame(inst.resizeRaf);
             if (inst.resizeObs) inst.resizeObs.disconnect();

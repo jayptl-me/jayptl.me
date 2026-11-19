@@ -1,16 +1,16 @@
 # What I'm on, this month.
 
-> What Jay Patel is building, training and open to right now. Updated September 28, 2026.
+> What Jay Patel is building, training and open to right now. Updated November 19, 2026.
 
 A now page: what has my attention at the moment, in the spirit of the [now page](https://nownownow.com/about) idea. If you are reading it much later, it is probably stale; the date says how stale.
 
-Updated Sep 28, 2026 · from Anand, India
+Updated Nov 19, 2026 · from Anand, India
 
 ## Building
 
 - **Aviz Health**, live on Google Play as v2.0; three Flutter apps and a Next.js admin on one Bun + Hono backend. [Case study](https://jayptl.me/projects/aviz-health)
-- **Swalook CRM**, the ground-up rebuild: Next.js 16 Turborepo, Bun + Hono + Drizzle on PostgreSQL. [Case study](https://jayptl.me/projects/swalook)
-- **Genuinest**, founding engineer (contract): the Flutter app, the API, and the self-hosted infrastructure under it. [Case study](https://jayptl.me/projects/genuinest)
+- **YardA**, a self-hosted second brain: an encrypted notes API on MongoDB and a CLI that keeps the local Markdown tree and the database in sync, with a .yardaignore manifest deciding what may sync.
+- **ARMS**, the agent rules and memory service the rest of the stack reads from; product pages live at [arms.whyknot.live](https://arms.whyknot.live).
 
 ## Training
 

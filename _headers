@@ -28,10 +28,6 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# Service worker - no cache
-/sw.js
-  Cache-Control: no-cache, no-store, must-revalidate
-
 # Versioned resume PDFs: attachments of canonical /resume until a role
 # has distinct content. Static-host parity for server.js PDF headers.
 # (Google: X-Robots-Tag is the only noindex that works for PDFs;

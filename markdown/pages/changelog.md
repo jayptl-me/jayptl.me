@@ -6,6 +6,18 @@ Updates to Jay Patel's site, newest first. The design decisions behind them live
 
 ## Updates
 
+### Nov 6, 2026
+
+Presses you can feel: buttons squish under your finger and spring back. Cards stop jumping as you scroll, the first screen paints sooner, and headlines on inner pages arrive instead of popping in.
+
+### Oct 29, 2026
+
+Faster pages: six font files instead of ten, styles flattened at build, scripts loaded in parallel. Resume downloads point at files that actually exist.
+
+### Oct 8, 2026
+
+The projects page, rebuilt: nine features up top, an archive of twenty-two you can open row by row, and covers taken from the live sites.
+
 ### Sep 28, 2026
 
 **The big one.** A Command Deck on Cmd K, eased mouse-wheel scrolling, a static blur band at the bottom edge, a desktop control dock, and twelve new hand-drawn ink marks.

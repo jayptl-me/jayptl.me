@@ -27,9 +27,21 @@ Founding Engineer (Contract) · Self-hosted infrastructure. Built the core Flutt
 
 AI/ML research. Two small language models trained from scratch: Vini, a ~50M BitNet b1.58 edge assistant (model card and configs public at [jayptl-rq/vini-pico](https://huggingface.co/jayptl-rq/vini-pico)), and Tini, an ~85M dense TypeScript coding model whose weights are not public yet.
 
-### Tenet PG Management
+### Thhiya
 
-Full PG/hostel management platform in a Bun + Turborepo monorepo: Next.js 16 dashboard, Hono backend with SSE and UPI payments, PDF invoices, shipped with Playwright and Vitest coverage.
+Global partner-discovery and workforce-management platform. Engineered stealth-scraping pipelines aggregating corporate regulations for 195 countries, with Gemini-powered provider matching and a 20% latency reduction.
+
+### BhawBhaw / Wocofy
+
+Pet-services marketplace spanning four products: user and vendor React Native apps plus customer and admin Next.js web apps, maps, payments, charts, document pipelines, and speech-enabled search included.
+
+### School Of Hatha Yoga
+
+Modern corporate web ecosystem: React 18 + Shadcn UI + Framer Motion frontend over a JWT-authenticated Hono API with Zod validation, responsive, themed, and deployed via Render.
+
+### Ambica Impex Platform
+
+Export/import business ERP as a monorepo: customer-facing site with Three.js postprocessing and GSAP, an admin dashboard with ExcelJS exports, and a Hono backend with server-side PDF generation.
 
 ### Ai-Vestor
 
@@ -52,7 +64,7 @@ First place, FinTech track, CHARUSAT-Odoo Hackathon 2025 (650+ applicants, 75 te
 
 - **Now, Self-Hosted AI Agent Stack**: Personal AI infrastructure: Ollama local inference, Hermes Agent with persistent memory, OpenClaude coding agent, n8n workflows with MCP connectors, and Qdrant/Chroma RAG over local corpora.
 - **2026, [Tenet PG Management](https://github.com/jayptl-me/tenet_management)**: Full PG/hostel management platform: Next.js 16 dashboard with four theme modes (including cartoon brutalist, because taste), Hono backend with SSE, UPI payments, PDF invoices, QR codes, and a documented Flutter phase.
-- **2026, [Whyknot.live (y-knot)](https://www.whyknot.live/)**: Astro-based waitlist marketing site with React islands, a Hono backend on MongoDB + Redis, email via Resend/Nodemailer, an Astro admin panel, and DOMPurify sanitization.
+- **2026, [Whyknot.live (y-knot)](https://www.whyknot.live/)**: Website-discovery and launch platform: a scored library of shipped sites, verified maker profiles, launches and threads — the public home of the Resquest/Whyknot products, including arms.whyknot.live.
 - **2026, [jayptl.me, This Site](https://github.com/jayptl-me/jayptl.me)**: The portfolio itself: hand-rolled HTML/CSS/JS with a scroll-reveal narrative engine, WebAudio sound design, skeuomorphic/glassmorphic theme duality, and a Bun-powered minify-and-deploy pipeline. No frameworks were harmed.
 - **2026, NDS Services**: Multi-service monorepo combining a Next.js admin shell, Bun + Hono API, and a Flutter mobile notes app, with Render deployment config baked in.
 - **2026, Within**: Social connection app in Flutter with a full app/backend/frontend/testing structure.

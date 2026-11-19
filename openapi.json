@@ -3,7 +3,7 @@
   "info": {
     "title": "jayptl.me",
     "version": "1.1.0",
-    "description": "Public HTTP interface of jayptl.me, the personal portfolio of Jay Patel (Software Engineer: Full-Stack, Mobile and Applied AI).\n\nThis is a content site, so the API surface consists of content pages, agent-facing resources, and a small JSON service:\n\n- Every HTML page is also available as Markdown via content negotiation: send `Accept: text/markdown` to the same URL, or fetch the `.md` companion path directly. Negotiated responses carry `Vary: Accept`.\n- Requests that cannot be satisfied (unknown API path, unsupported Accept header, wrong method) receive structured JSON errors with `error.code`, `error.message`, and `error.hint` fields.\n- `/api/health` is a liveness probe intended for monitors and deploy health checks.",
+    "description": "Public HTTP interface of jayptl.me, the personal portfolio of Jay Patel (Software Engineer: Full-Stack, Mobile and Applied AI).\n\nThis is a content site, so the API surface consists of content pages, agent-facing resources, and a small JSON service:\n\n- Every HTML page is also available as Markdown via content negotiation: send `Accept: text/markdown` to the same URL, or fetch the `.md` companion path directly. Negotiated responses carry `Vary: Accept`.\n- Requests that cannot be satisfied (unknown API path, unsupported Accept header, wrong method) receive structured JSON errors with `error.code`, `error.message`, and `error.hint` fields.\n- `/api/health` is a liveness probe implemented by `scripts/server.js` for Node-served deployments; the production static host does not expose it. The separate backend API's liveness probe is `https://api.jayptl.me/v1/health`.",
     "contact": {
       "name": "Jay Patel",
       "email": "hello@jayptl.me",
@@ -94,7 +94,7 @@
       "get": {
         "tags": ["Pages"],
         "summary": "Projects index",
-        "description": "All 33 shipped projects with featured case-study links. Markdown variant: /projects.md.",
+        "description": "All 31 shipped projects with featured case-study links. Markdown variant: /projects.md.",
         "responses": {
           "200": {
             "description": "Page content.",
@@ -169,11 +169,157 @@
         }
       }
     },
+    "/contact": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Contact page",
+        "description": "Ways to reach Jay Patel: email, book-a-call, socials. Markdown variant: /contact.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/book": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Book a call",
+        "description": "Pick a 15-minute slot; booking is live via the api.jayptl.me service. Markdown variant: /book.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/now": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Now page",
+        "description": "What Jay Patel is building, training and open to right now, with its update date. Markdown variant: /now.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/uses": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Uses page",
+        "description": "Tools and setup Jay Patel uses. Markdown variant: /uses.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/colophon": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Colophon",
+        "description": "How the site is made: stack, type, tooling decisions. Markdown variant: /colophon.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/changelog": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Site changelog",
+        "description": "Dated updates to jayptl.me, newest first. Markdown variant: /changelog.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/ai": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "AI details page",
+        "description": "How this site treats AI crawlers and what AI work Jay Patel does. Markdown variant: /ai.md.",
+        "responses": {
+          "200": {
+            "description": "Page content.",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "text/markdown": { "schema": { "type": "string" } }
+            }
+          },
+          "406": { "$ref": "#/components/responses/NotAcceptable" }
+        }
+      }
+    },
+    "/resumes/{role}.pdf": {
+      "get": {
+        "tags": ["Pages"],
+        "summary": "Role-specific resume PDF",
+        "description": "Stable public URL for a one-page resume PDF per role track. Served from /assets/resumes/ with X-Robots-Tag: noindex and a Link rel=canonical header pointing at /resume.",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["fde", "fullstack", "frontend", "backend", "mobile", "ai", "web3"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume PDF.",
+            "content": {
+              "application/pdf": { "schema": { "type": "string", "format": "binary" } }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
     "/api/health": {
       "get": {
         "tags": ["API"],
         "summary": "Health check",
-        "description": "Liveness probe. Returns JSON service status for monitors and deploy health checks.",
+        "description": "Liveness probe implemented by scripts/server.js for Node-served deployments. Not present on the production static host; for the separate backend API use https://api.jayptl.me/v1/health.",
         "responses": {
           "200": {
             "description": "Service is healthy.",

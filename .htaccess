@@ -1,21 +1,72 @@
 # Apache configuration for jayptl.me
-# Enable rewrite engine
+# Mirrors the .htaccess generated into dist/ by scripts/build.js — keep
+# routes and headers in sync with render.yaml and scripts/security-headers.js.
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
+
     # Force HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-    
-    # Remove trailing slashes
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
-    
-    # Clean URLs - redirect old paths to new pages structure
+
+    # Markdown content negotiation (acceptmarkdown.com): serve the .md
+    # companion when the client's Accept header prefers text/markdown.
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^$ index.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^about$ pages/about.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^resume$ pages/resume.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^privacy$ pages/privacy.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects$ pages/projects/index.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/aviz-health$ pages/projects/aviz-health.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/swalook$ pages/projects/swalook.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/genuinest$ pages/projects/genuinest.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^projects/vini-tini$ pages/projects/vini-tini.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^contact$ pages/contact.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^book$ pages/book.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^now$ pages/now.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^uses$ pages/uses.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^colophon$ pages/colophon.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^changelog$ pages/changelog.md [T=text/markdown; charset=utf-8,L]
+    RewriteCond %{HTTP:Accept} text/markdown
+    RewriteRule ^ai$ pages/ai.md [T=text/markdown; charset=utf-8,L]
+
+    # Clean URLs - rewrite to pages folder
     RewriteRule ^about$ /pages/about.html [L]
+    RewriteRule ^resume$ /pages/resume.html [L]
     RewriteRule ^privacy$ /pages/privacy.html [L]
     RewriteRule ^design-system$ /pages/design-system.html [L]
-    
+    RewriteRule ^projects$ /pages/projects/index.html [L]
+    RewriteRule ^projects/aviz-health$ /pages/projects/aviz-health.html [L]
+    RewriteRule ^projects/swalook$ /pages/projects/swalook.html [L]
+    RewriteRule ^projects/genuinest$ /pages/projects/genuinest.html [L]
+    RewriteRule ^projects/vini-tini$ /pages/projects/vini-tini.html [L]
+    RewriteRule ^contact$ /pages/contact.html [L]
+    RewriteRule ^book$ /pages/book.html [L]
+    RewriteRule ^now$ /pages/now.html [L]
+    RewriteRule ^uses$ /pages/uses.html [L]
+    RewriteRule ^colophon$ /pages/colophon.html [L]
+    RewriteRule ^changelog$ /pages/changelog.html [L]
+    RewriteRule ^ai$ /pages/ai.html [L]
+
+    # Legacy redirects
+    RewriteRule ^about\.html$ /pages/about.html [R=301,L]
+    RewriteRule ^privacy\.html$ /pages/privacy.html [R=301,L]
+    RewriteRule ^projects\.html$ /pages/projects/index.html [R=301,L]
+
     # Custom error pages
     ErrorDocument 404 /pages/404.html
     ErrorDocument 500 /pages/500.html
@@ -33,6 +84,11 @@
     Header always set Permissions-Policy "accelerometer=(), browsing-topics=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
     Header always set Cross-Origin-Opener-Policy "same-origin"
     Header always set Cross-Origin-Resource-Policy "same-site"
+
+    # Negotiated representations vary by Accept
+    <FilesMatch "\.(html|md)$">
+        Header set Vary "Accept, Accept-Encoding"
+    </FilesMatch>
 </IfModule>
 
 # Compression
@@ -43,7 +99,7 @@
 # Browser caching
 <IfModule mod_expires.c>
     ExpiresActive On
-    
+
     # Images
     ExpiresByType image/jpg "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
@@ -52,23 +108,26 @@
     ExpiresByType image/svg+xml "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
     ExpiresByType image/x-icon "access plus 1 year"
-    
+
     # CSS and JavaScript
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
     ExpiresByType text/javascript "access plus 1 month"
-    
+
     # Fonts
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
     ExpiresByType font/ttf "access plus 1 year"
     ExpiresByType font/otf "access plus 1 year"
-    
+
     # HTML
     ExpiresByType text/html "access plus 0 seconds"
-    
+
     # Manifest and XML
     ExpiresByType application/manifest+json "access plus 1 week"
     ExpiresByType application/xml "access plus 0 seconds"
     ExpiresByType text/xml "access plus 0 seconds"
 </IfModule>
+
+# Disable Directory Browsing
+Options -Indexes

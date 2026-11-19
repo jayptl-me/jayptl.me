@@ -30,7 +30,7 @@ Every page is also available as Markdown by sending `Accept: text/markdown` (e.g
 ## API
 
 - [OpenAPI specification](https://jayptl.me/openapi.json): Machine-readable description of every public endpoint, content types, and error format.
-- [Health endpoint](https://jayptl.me/api/health): Liveness probe returning JSON service status.
+- [Health endpoint](https://api.jayptl.me/v1/health): Liveness probe for the separate API service, returning JSON service status.
 - [Error format](https://jayptl.me/openapi.json): JSON error bodies (`error.code`, `error.message`, `error.hint`) for /api/* paths and JSON-preferring clients.
 
 ## Policies

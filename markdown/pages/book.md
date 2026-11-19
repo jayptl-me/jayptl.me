@@ -6,7 +6,7 @@ Pick a slot and leave your name and email. Google sends the invite right away, a
 
 ## Pick a time
 
-Online booking opens soon. Until then, email [hello@jayptl.me](mailto:hello@jayptl.me?subject=15%20minute%20call) with two or three times that suit you, and your time zone.
+Booking is live: open times come straight from the calendar on [jayptl.me/book](https://jayptl.me/book). Prefer email? Write to [hello@jayptl.me](mailto:hello@jayptl.me?subject=15%20minute%20call) with two or three times that suit you, and your time zone.
 
 ## How it works
 

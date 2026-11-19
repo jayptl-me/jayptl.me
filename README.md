@@ -2,28 +2,26 @@
 
 Professional portfolio website showcasing software development, UI/UX design, and creative direction work.
 
-## 🤖 Agent readiness
+## Agent readiness
 
 This site is built to be consumable by AI agents and crawlers without a browser:
 
 - **Content without JavaScript**, every page's meaningful content (H1, copy, project descriptions) and JSON-LD structured data live in the raw HTML.
 - **Markdown content negotiation** ([acceptmarkdown.com](https://acceptmarkdown.com)), send `Accept: text/markdown` to any page URL to get its Markdown twin, or fetch the `.md` companion directly (`/index.md`, `/about.md`, `/projects/aviz-health.md`, …). Negotiated responses carry `Vary: Accept`.
-- **Structured JSON errors**, `/api/*` paths and JSON-preferring clients get `{ error: { code, message, hint } }` bodies (404/405/406) instead of HTML error pages.
+- **Structured JSON errors**, `/api/*` paths and JSON-preferring clients get `{ error: { code, message, hint } }` bodies (404/405/406) instead of HTML error pages when served through `scripts/server.js`.
 - **Machine-readable surface**:
-  - [`/openapi.json`](openapi.json), OpenAPI 3.1 description of every public endpoint
+  - [`/openapi.json`](openapi.json), OpenAPI 3.1 description of the public endpoints
   - [`/llms.txt`](llms.txt), curated index for LLMs ([llmstxt.org](https://llmstxt.org) format)
   - `/llms-full.txt`, all pages flattened to Markdown (generated at build time)
-  - `/api/health`, JSON liveness probe (Render health check)
 - **AI crawlers allowed**, `robots.txt` explicitly allows GPTBot, ClaudeBot, ChatGPT-User, PerplexityBot, Google-Extended, Applebot-Extended, DeepSeekBot, and more.
-- Serving uses `scripts/server.js` (Node), which implements the negotiation, JSON errors, clean URLs, security headers, and caching. `render.yaml` deploys it as a Render web service. The `_redirects` / `_headers` / `.htaccess` files remain for static-host/Apache parity (the `.htaccess` includes equivalent Apache negotiation rules).
+- Production is a **Render static site** (`render.yaml`, `runtime: static`) behind Cloudflare; the negotiation, JSON errors, clean URLs and security headers ship through `dist/.htaccess` parity files and Render's route/header config. `scripts/server.js` (Node) provides the same behaviours for local preview and non-Render hosts. The backend API is a **separate Render web service** (`services/api`, live at `api.jayptl.me`) — it is intentionally not part of this static deploy.
 
 ### Verification
 
 ```bash
 curl -si -H "Accept: text/markdown" https://jayptl.me/          # markdown + Vary: Accept
-curl -s https://jayptl.me/api/health                              # {"status":"ok",...}
-curl -s -H "Accept: application/json" https://jayptl.me/api/nope  # JSON 404 with hint
-bun run test                                                      # clean build + the behavior suite
+curl -s https://api.jayptl.me/v1/health                        # {"ok":true,...} — separate API service
+bun run test                                                   # clean build + the behaviour suite
 ```
 
 ### Cloudflare / WAF notes (dashboard, not repo)
@@ -31,9 +29,9 @@ bun run test                                                      # clean build 
 The domain is proxied through Cloudflare in front of Render. Two settings live only in the Cloudflare dashboard:
 
 1. **Bot AI allowlist**, Security → Bots: disable "Block AI bots"/Bot Fight Mode challenges for this zone (or add WAF exceptions for `GPTBot`, `ClaudeBot`, `ChatGPT-User`, `PerplexityBot`). As of 2026-08 these four received 403s from the edge even though the origin serves them.
-2. **Apex canonicalization**, `jayptl.me` currently 301s to `www.jayptl.me` while all canonical tags/sitemap use the apex. Flip the redirect to `www → apex` (recommended, matches canonicals) or update canonicals/sitemap/llms.txt to the www host.
+2. **Apex canonicalization**, `www.jayptl.me` 301s to the apex, matching the canonical tags, sitemap and llms.txt. Keep it that way: if the redirect is ever flipped to `apex → www`, update canonicals/sitemap/llms.txt to the www host instead.
 
-## ✨ Features
+## Features
 
 - **Responsive Design** - Mobile-first approach, works on all devices
 - **Dark/Light Theme** - System preference detection with manual toggle
@@ -43,7 +41,7 @@ The domain is proxied through Cloudflare in front of Render. Two settings live o
 - **Modern Stack** - Vanilla HTML/CSS/JS, no frameworks
 - **Production Build** - Automated build pipeline with Bun
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 jayptl.me/
@@ -51,6 +49,13 @@ jayptl.me/
 ├── pages/                  # Content pages
 │   ├── about.html          # About page
 │   ├── resume.html         # Resume page
+│   ├── contact.html        # Contact page
+│   ├── book.html           # Book-a-call page
+│   ├── now.html            # /now page
+│   ├── uses.html           # /uses page
+│   ├── colophon.html       # Colophon
+│   ├── changelog.html      # Site changelog
+│   ├── ai.html             # AI details page
 │   ├── projects/           # Projects index & case studies
 │   │   ├── index.html
 │   │   ├── aviz-health.html
@@ -62,8 +67,7 @@ jayptl.me/
 │   ├── 404.html            # Error page
 │   └── 500.html            # Server error page
 ├── css/                    # Stylesheets
-│   ├── main.css            # Main entry point
-│   ├── critical.css        # Critical above-the-fold inline CSS
+│   ├── main.css            # Main entry point (critical CSS is inlined per page)
 │   ├── base/               # Reset, fonts, variables, theme
 │   ├── components/         # Component styles (doodle, hud, sticker, navbar, etc.)
 │   ├── layout/             # Layout patterns
@@ -78,9 +82,10 @@ jayptl.me/
 │   ├── fonts/              # Self-hosted woff2 font subsets
 │   ├── icons/              # Dual-render SVG icons
 │   ├── case-studies/       # Project screenshots
+│   ├── resumes/            # Role-specific resume PDFs
 │   └── doodle-sprite.svg   # Shared SVG doodle sprite
 ├── markdown/               # Markdown twins of each page (copied into dist/)
-├── docs/                   # Redesign research, decisions, and icon system specs
+├── services/api/           # The backend API (separate Render web service, api.jayptl.me)
 ├── preview/                # Dev sandboxes (font stack preview, contact sheet)
 ├── tests/                  # node:test suites (negotiation, server, artifacts)
 ├── scripts/                # Build, server, and optimization automation
@@ -96,11 +101,12 @@ jayptl.me/
 └── site.webmanifest        # PWA manifest
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) 1.0.0+ (fast JavaScript runtime)
+- [Bun](https://bun.sh) 1.4.4+ (dependency install and build)
+- [Node](https://nodejs.org) 26+ (most scripts and the preview server run on Node)
 
 ### Installation
 
@@ -108,30 +114,28 @@ jayptl.me/
 # Install dependencies
 bun install
 
-# Start development server
-bun run dev
-# Opens at http://localhost:8000
-
 # Build for production
 bun run build
 
-# Preview production build
+# Preview the production build (http://localhost:8000)
 bun run serve:dist
 ```
 
-## 🌐 Deployment (Render)
+There is no watch-mode dev server: edit, `bun run build`, then `bun run serve:dist`.
 
-This project is configured for Render deployment via `render.yaml`:
+## Deployment (Render)
+
+This project is configured for Render deployment via `render.yaml` as a static site:
 
 ```yaml
-Build Command: bun install --frozen-lockfile && bun run test:deploy
+Build Command: bun install --frozen-lockfile && bun run test:deploy && node scripts/prune-public.js
 Publish Directory: ./dist
 ```
 
 **Deploy Steps:**
 1. Push to GitHub: `git push origin main`
-2. Render auto-builds and deploys
-3. Site live at your custom domain
+2. Render auto-builds and deploys on commit
+3. Site live at the custom domain, proxied through Cloudflare
 
 **Local Testing:**
 ```bash
@@ -139,27 +143,28 @@ bun run build        # Build to dist/
 bun run serve:dist   # Test locally
 ```
 
-See `RENDER_DEPLOYMENT.md` for detailed setup instructions.
+The routes and headers Render serves are declared in `render.yaml`; keep that file authoritative.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **HTML5** - Semantic markup, structured data
 - **CSS3** - Custom properties, Grid, Flexbox
 - **JavaScript** - Vanilla JS, no dependencies
-- **Bun** - Fast runtime and build tool
-- **Render** - Static site hosting
+- **Bun** - Dependency install and build orchestration
+- **Node** - Build tooling, preview server, tests
+- **Render** - Static site hosting (this repo) + a separate web service for `services/api`
 
-## 🎨 Key Features
+## Key Features
 
 - **Custom Cursor** - Interactive cursor effects
-- **Scroll Animations** - GSAP-powered reveals
+- **Scroll Animations** - Hand-rolled reveals (`scroll-reveal.js`, `split-text.js`, `particle-text.js`)
 - **Bento Grid** - Dynamic skill showcase
 - **Theme Toggle** - Persistent dark/light mode
 - **Cookie Consent** - GDPR compliant
-- **Analytics** - Google Analytics integration
-- **PWA Ready** - Web app manifest included
+- **Analytics** - Google Analytics integration (consent-gated)
+- **PWA Ready** - Web app manifest included (no service worker)
 
-## ⚡ Performance
+## Performance
 
 - **Lighthouse Score:** 95+ (Performance, Accessibility, Best Practices, SEO)
 - **Critical CSS:** Inlined for fast first paint
@@ -168,29 +173,36 @@ See `RENDER_DEPLOYMENT.md` for detailed setup instructions.
 - **Compression:** Brotli/Gzip via Render CDN
 - **Caching:** Long-term cache for static assets
 
-## 🔐 Security
+## Security
 
-Headers configured via `render.yaml`:
+Headers configured via `render.yaml` (mirrored in `_headers` and the generated `dist/.htaccess`):
+
+- Content-Security-Policy (self + GA/GTM/Cloudflare Insights + api.jayptl.me)
 - X-Frame-Options: DENY
 - X-Content-Type-Options: nosniff
-- X-XSS-Protection: 1; mode=block
+- X-XSS-Protection: 0 (header retired; CSP carries the load)
 - Referrer-Policy: strict-origin-when-cross-origin
 - Strict-Transport-Security (HSTS)
+- Permissions-Policy (all sensors denied)
+- Cross-Origin-Opener-Policy: same-origin
+- Cross-Origin-Resource-Policy: same-site
 
 Security policy: `.well-known/security.txt` (RFC 9116)
 
-## 📝 Available Scripts
+## Available Scripts
 
 ```bash
-bun run dev             # Start dev server (localhost:8000)
 bun run build           # Build to dist/
-bun run serve:dist      # Preview dist/ locally
+bun run serve:dist      # Preview dist/ locally (Node server, localhost:8000)
 bun run optimize        # Minify assets
 bun run validate        # Check for errors
-bun run deploy:prepare  # Full build pipeline
+bun run lint            # oxlint
+bun run test            # Clean build + behaviour suites
+bun run test:deploy     # Full deploy build + suites (what Render runs)
+bun run deploy:prepare  # Full build pipeline + public prune
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Build fails:**
 ```bash
@@ -201,18 +213,18 @@ bun run build
 
 **Pages not loading:**
 - Check `render.yaml` routes
-- Verify files in `dist/pages/`
+- Verify files in `dist/`
 - Check browser console
 
 **Theme not persisting:**
 - Check browser localStorage
 - Verify `theme-detection.js` loads
 
-## 📄 License
+## License
 
-MIT License - See LICENSE file
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-## 👤 Author
+## Author
 
 **Jay Patel**
 - Website: [jayptl.me](https://jayptl.me)
@@ -220,4 +232,4 @@ MIT License - See LICENSE file
 
 ---
 
-Built with ❤️ by Jay Patel
+Built by Jay Patel

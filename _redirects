@@ -1,26 +1,51 @@
 # Render redirects and rewrites configuration
 #
-# NOTE: This file only applies when the site is deployed as a static site.
-# Production now runs scripts/server.js (see render.yaml), which implements
-# clean URLs itself plus Accept: text/markdown negotiation and JSON API
-# errors, behaviors static hosts cannot express in _redirects.
+# NOTE: This file applies when the site is served as a static site by a host
+# that honours _redirects. Production on Render is `runtime: static` and its
+# routes live in render.yaml (kept authoritative); this file mirrors that
+# route set for static-host parity. scripts/server.js implements the same
+# clean URLs plus Accept: text/markdown negotiation and JSON API errors for
+# hosts that can run Node.
 
 # Clean URLs - rewrite to pages folder (200 = rewrite, not redirect)
 /about           /pages/about.html           200
 /resume          /pages/resume.html          200
 /privacy         /pages/privacy.html         200
 /design-system   /pages/design-system.html   200
+/contact         /pages/contact.html         200
+/book            /pages/book.html            200
+/now             /pages/now.html             200
+/uses            /pages/uses.html            200
+/colophon        /pages/colophon.html        200
+/changelog       /pages/changelog.html       200
+/ai              /pages/ai.html              200
 /projects        /pages/projects/index.html  200
 /projects/aviz-health /pages/projects/aviz-health.html 200
 /projects/swalook     /pages/projects/swalook.html     200
 /projects/genuinest   /pages/projects/genuinest.html   200
 /projects/vini-tini   /pages/projects/vini-tini.html   200
 
+# Stable public resume URLs served from assets/resumes/
+/resumes/fde.pdf       /assets/resumes/fde.pdf       200
+/resumes/fullstack.pdf /assets/resumes/fullstack.pdf 200
+/resumes/frontend.pdf  /assets/resumes/frontend.pdf  200
+/resumes/backend.pdf   /assets/resumes/backend.pdf   200
+/resumes/mobile.pdf    /assets/resumes/mobile.pdf    200
+/resumes/ai.pdf        /assets/resumes/ai.pdf        200
+/resumes/web3.pdf      /assets/resumes/web3.pdf      200
+
 # Legacy redirects - redirect old paths to new Clean URLs (301 = permanent redirect)
 /about.html      /about                      301!
 /resume.html     /resume                     301!
 /privacy.html    /privacy                    301!
 /design-system.html /design-system           301!
+/contact.html    /contact                    301!
+/book.html       /book                       301!
+/now.html        /now                        301!
+/uses.html       /uses                       301!
+/colophon.html   /colophon                   301!
+/changelog.html  /changelog                  301!
+/ai.html         /ai                         301!
 /projects.html   /projects                   301!
 
 # Direct file access redirects (prevent duplicate content)
@@ -28,6 +53,13 @@
 /pages/resume.html /resume                   301!
 /pages/privacy.html /privacy                 301!
 /pages/design-system.html /design-system     301!
+/pages/contact.html /contact                 301!
+/pages/book.html /book                       301!
+/pages/now.html /now                         301!
+/pages/uses.html /uses                       301!
+/pages/colophon.html /colophon               301!
+/pages/changelog.html /changelog             301!
+/pages/ai.html /ai                           301!
 /pages/projects/index.html /projects         301!
 /pages/projects/aviz-health.html /projects/aviz-health 301!
 /pages/projects/swalook.html /projects/swalook     301!

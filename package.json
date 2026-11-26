@@ -23,9 +23,9 @@
     "cssnano": "9.9.0",
     "happy-dom": "^21.0.4",
     "html-minifier-terser": "^7.2.0",
-    "oxlint": "^1.93.0",
-    "postcss": "^8.5.32",
-    "terser": "^5.51.2"
+    "oxlint": "^1.95.0",
+    "postcss": "^8.5.33",
+    "terser": "^5.51.4"
   },
   "engines": {
     "node": "^26.0.0",
